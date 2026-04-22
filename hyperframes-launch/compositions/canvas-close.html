@@ -1,0 +1,525 @@
+<template id="canvas-close-template">
+  <div data-composition-id="canvas-close" data-width="1920" data-height="1080" data-start="0" data-duration="3.93">
+    <canvas id="cc-canvas" width="1920" height="1080"></canvas>
+    <div class="cc-wrap" id="cc-wrap"></div>
+
+    <style>
+      [data-composition-id="canvas-close"] {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #000;
+      }
+      #cc-canvas {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      [data-composition-id="canvas-close"] .cc-wrap {
+        position: absolute; inset: 0;
+        will-change: opacity;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function initCanvasClose() {
+        var root = document.querySelector('[data-composition-id="canvas-close"]');
+        if (!root) { setTimeout(initCanvasClose, 50); return; }
+        var canvas = root.querySelector("#cc-canvas");
+        if (!canvas) { setTimeout(initCanvasClose, 50); return; }
+
+        var W = 1920, H = 1080;
+        var ctx = canvas.getContext("2d");
+        var CELL_W = 10, CELL_H = 16;
+        var COLS = Math.floor(W / CELL_W);
+        var ROWS = Math.floor(H / CELL_H);
+        var GLYPHS = " .,:;+*#@W";
+        var GLYPH_MAX = GLYPHS.length - 1;
+        var BAYER = [
+          [0.03125, 0.53125, 0.15625, 0.65625],
+          [0.78125, 0.28125, 0.90625, 0.40625],
+          [0.21875, 0.71875, 0.09375, 0.59375],
+          [0.96875, 0.46875, 0.84375, 0.34375]
+        ];
+
+        function hash(x, y) {
+          var n = x * 374761393 + y * 668265263;
+          n = (n ^ (n >> 13)) * 1274126177;
+          return ((n ^ (n >> 16)) & 0x7fffffff) / 0x7fffffff;
+        }
+        function vnoise(x, y) {
+          var ix = Math.floor(x), iy = Math.floor(y);
+          var fx = x - ix, fy = y - iy;
+          fx = fx * fx * (3 - 2 * fx);
+          fy = fy * fy * (3 - 2 * fy);
+          var a = hash(ix, iy), b = hash(ix + 1, iy);
+          var c = hash(ix, iy + 1), d = hash(ix + 1, iy + 1);
+          return a + (b - a) * fx + (c - a) * fy + (a - b - c + d) * fx * fy;
+        }
+        function fbm(x, y) {
+          return vnoise(x, y) * 0.5 + vnoise(x * 2.1 + 5.3, y * 2.1 + 3.7) * 0.3 +
+                 vnoise(x * 4.3 + 11.7, y * 4.3 + 7.1) * 0.2;
+        }
+        function clamp01(v) { return v < 0 ? 0 : (v > 1 ? 1 : v); }
+
+        // ═══════════════════════════════════════════════════════
+        // BITMAP FONT 5x5
+        // ═══════════════════════════════════════════════════════
+        var BFONT = {
+          'A': [0b01110, 0b10001, 0b11111, 0b10001, 0b10001],
+          'B': [0b11110, 0b10001, 0b11110, 0b10001, 0b11110],
+          'C': [0b01111, 0b10000, 0b10000, 0b10000, 0b01111],
+          'D': [0b11110, 0b10001, 0b10001, 0b10001, 0b11110],
+          'E': [0b11111, 0b10000, 0b11110, 0b10000, 0b11111],
+          'F': [0b11111, 0b10000, 0b11110, 0b10000, 0b10000],
+          'G': [0b01111, 0b10000, 0b10011, 0b10001, 0b01111],
+          'H': [0b10001, 0b10001, 0b11111, 0b10001, 0b10001],
+          'I': [0b11111, 0b00100, 0b00100, 0b00100, 0b11111],
+          'J': [0b00111, 0b00010, 0b00010, 0b10010, 0b01100],
+          'K': [0b10001, 0b10010, 0b11100, 0b10010, 0b10001],
+          'L': [0b10000, 0b10000, 0b10000, 0b10000, 0b11111],
+          'M': [0b10001, 0b11011, 0b10101, 0b10001, 0b10001],
+          'N': [0b10001, 0b11001, 0b10101, 0b10011, 0b10001],
+          'O': [0b01110, 0b10001, 0b10001, 0b10001, 0b01110],
+          'P': [0b11110, 0b10001, 0b11110, 0b10000, 0b10000],
+          'R': [0b11110, 0b10001, 0b11110, 0b10010, 0b10001],
+          'S': [0b01111, 0b10000, 0b01110, 0b00001, 0b11110],
+          'T': [0b11111, 0b00100, 0b00100, 0b00100, 0b00100],
+          'U': [0b10001, 0b10001, 0b10001, 0b10001, 0b01110],
+          'V': [0b10001, 0b10001, 0b10001, 0b01010, 0b00100],
+          'W': [0b10001, 0b10001, 0b10101, 0b11011, 0b10001],
+          'X': [0b10001, 0b01010, 0b00100, 0b01010, 0b10001],
+          'Y': [0b10001, 0b01010, 0b00100, 0b00100, 0b00100],
+          'Z': [0b11111, 0b00010, 0b00100, 0b01000, 0b11111],
+          ' ': [0b00000, 0b00000, 0b00000, 0b00000, 0b00000]
+        };
+
+        // Text hit test for variable scale
+        function textWS(text, scale) {
+          var stride = 5 * scale + scale;
+          return text.length * stride - scale;
+        }
+        function textHitS(text, sx, sy, c, r, scale) {
+          var charW = 5 * scale, charH = 5 * scale;
+          var stride = charW + scale;
+          if (r < sy || r >= sy + charH || c < sx) return 0;
+          var lc2 = c - sx;
+          if (lc2 >= text.length * stride) return 0;
+          var ci = Math.floor(lc2 / stride);
+          var ic = lc2 - ci * stride;
+          if (ci >= text.length || ic >= charW) return 0;
+          var bx = Math.floor(ic / scale);
+          var by = Math.floor((r - sy) / scale);
+          var ch = text[ci].toUpperCase();
+          var g = BFONT[ch];
+          if (!g) return 0;
+          return (g[by] >> (4 - bx)) & 1;
+        }
+
+        // ═══════════════════════════════════════════════════════
+        // TEXT LAYOUT
+        // ═══════════════════════════════════════════════════════
+        var MAIN_SCALE = 2;
+        var SUB_SCALE = 1;
+        var MAIN_TEXT = "HYPERFRAMES";
+        var SUB_TEXT = "GO MAKE SOMETHING";
+
+        var mainCharH = 5 * MAIN_SCALE;
+        var subCharH = 5 * SUB_SCALE;
+        var gap = 6; // rows between lines
+
+        // Center both lines as a group
+        var totalH = mainCharH + gap + subCharH;
+        var groupY = Math.floor((ROWS - totalH) / 2);
+
+        var mainX = Math.floor((COLS - textWS(MAIN_TEXT, MAIN_SCALE)) / 2);
+        var mainY = groupY;
+        var subX = Math.floor((COLS - textWS(SUB_TEXT, SUB_SCALE)) / 2);
+        var subY = groupY + mainCharH + gap;
+
+        // Build combined text mask
+        var textMask = new Uint8Array(ROWS * COLS);
+        var mainW = textWS(MAIN_TEXT, MAIN_SCALE);
+        for (var r = mainY; r < mainY + mainCharH && r < ROWS; r++) {
+          for (var c = mainX; c < mainX + mainW && c < COLS; c++) {
+            if (textHitS(MAIN_TEXT, mainX, mainY, c, r, MAIN_SCALE)) {
+              textMask[r * COLS + c] = 1;
+            }
+          }
+        }
+        var subW = textWS(SUB_TEXT, SUB_SCALE);
+        for (var r2 = subY; r2 < subY + subCharH && r2 < ROWS; r2++) {
+          for (var c2 = subX; c2 < subX + subW && c2 < COLS; c2++) {
+            if (textHitS(SUB_TEXT, subX, subY, c2, r2, SUB_SCALE)) {
+              textMask[r2 * COLS + c2] = 2; // 2 = subtext
+            }
+          }
+        }
+
+        // ═══════════════════════════════════════════════════════
+        // LIGHTNING BOLTS
+        // ═══════════════════════════════════════════════════════
+        var textTopY = mainY;
+
+        function generateBolt(startX, targetX, seed, branchCount, targetY) {
+          var tgtY = (targetY !== undefined) ? targetY : textTopY;
+          var segments = [];
+          var x = startX, y = 0;
+          var step = 0;
+          while (y < tgtY) {
+            var stepY = 3 + Math.floor(hash(seed + step, 100) * 4);
+            var progress = Math.min(1.0, y / tgtY);
+            var attract = (targetX - x) * progress * 0.35;
+            var jitter = (hash(seed + step, 200) - 0.5) * 14 * (1.0 - progress * 0.8);
+            var stepX = attract + jitter;
+            var newX = Math.max(3, Math.min(COLS - 3, Math.floor(x + stepX)));
+            var newY = Math.min(tgtY, y + stepY);
+            segments.push({ x1: x, y1: y, x2: newX, y2: newY });
+            x = newX; y = newY; step++;
+          }
+          if (segments.length > 0) {
+            var last = segments[segments.length - 1];
+            if (last.y2 < tgtY) {
+              segments.push({ x1: last.x2, y1: last.y2, x2: targetX, y2: tgtY });
+            }
+          }
+          var strikeCol = segments.length > 0 ? segments[segments.length - 1].x2 : targetX;
+
+          var branches = [];
+          var bc = branchCount || Math.floor(hash(seed, 300) * 3) + 2;
+          for (var bi = 0; bi < bc; bi++) {
+            var segIdx = Math.floor(hash(seed + bi * 13, 400) * segments.length);
+            var seg = segments[Math.min(segIdx, segments.length - 1)];
+            var bx = seg.x2, by = seg.y2;
+            var bsegs = [];
+            var bseed = seed + 1000 + bi * 77;
+            var bstep = 0;
+            var blen = 3 + Math.floor(hash(bseed, 500) * 4);
+            var dir = hash(bseed, 600) > 0.5 ? 1 : -1;
+            for (var bs = 0; bs < blen && by < tgtY; bs++) {
+              var bStepY = 2 + Math.floor(hash(bseed + bstep, 700) * 3);
+              var bStepX = dir * (2 + hash(bseed + bstep, 800) * 6);
+              var nbx = Math.max(2, Math.min(COLS - 2, Math.floor(bx + bStepX)));
+              var nby = Math.min(tgtY, by + bStepY);
+              bsegs.push({ x1: bx, y1: by, x2: nbx, y2: nby });
+              bx = nbx; by = nby; bstep++;
+            }
+            branches.push({ segments: bsegs, brightness: 0.3 + hash(bseed, 900) * 0.35 });
+          }
+          return { segments: segments, branches: branches, strikeCol: strikeCol, strikeRow: tgtY };
+        }
+
+        // BFS crawl map — bfsGap controls how far crawl can jump between letters
+        function buildCrawlMap(startCol, startRow, bfsGap) {
+          var GAP = bfsGap || 3;
+          var dist = new Float32Array(ROWS * COLS);
+          for (var i = 0; i < dist.length; i++) dist[i] = -1;
+          var bestD = 9999, bestC = startCol, bestR = startRow;
+          for (var dr = -8; dr <= 8; dr++) {
+            for (var dc = -8; dc <= 8; dc++) {
+              var nr = startRow + dr, nc = startCol + dc;
+              if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS && textMask[nr * COLS + nc]) {
+                var d2 = dr * dr + dc * dc;
+                if (d2 < bestD) { bestD = d2; bestC = nc; bestR = nr; }
+              }
+            }
+          }
+          if (bestD === 9999) return dist;
+          var queue = [bestR * COLS + bestC];
+          dist[bestR * COLS + bestC] = 0;
+          var head = 0;
+          while (head < queue.length) {
+            var cur = queue[head++];
+            var curDist = dist[cur];
+            var cr3 = Math.floor(cur / COLS), cc = cur % COLS;
+            for (var dr2 = -GAP; dr2 <= GAP; dr2++) {
+              for (var dc2 = -GAP; dc2 <= GAP; dc2++) {
+                if (dr2 === 0 && dc2 === 0) continue;
+                var nr3 = cr3 + dr2, nc3 = cc + dc2;
+                if (nr3 < 0 || nr3 >= ROWS || nc3 < 0 || nc3 >= COLS) continue;
+                var ni = nr3 * COLS + nc3;
+                if (dist[ni] >= 0) continue;
+                if (!textMask[ni]) continue;
+                var stepDist = Math.sqrt(dr2 * dr2 + dc2 * dc2);
+                dist[ni] = curDist + stepDist;
+                queue.push(ni);
+              }
+            }
+          }
+          return dist;
+        }
+
+        var letterCenterX = function(idx) {
+          return mainX + idx * (5 * MAIN_SCALE + MAIN_SCALE) + Math.floor(5 * MAIN_SCALE / 2);
+        };
+        var subLetterCenterX = function(idx) {
+          return subX + idx * (5 * SUB_SCALE + SUB_SCALE) + Math.floor(5 * SUB_SCALE / 2);
+        };
+
+        // Compressed timing: 2 quick strikes on main → 1 mega on main → 1 mega on sub
+        // VO: "Hyperframe." 0.00→1.83, "Go make something." 2.08→3.93
+        var BOLTS = [
+          { strikeTime: 0.25, decayRate: 8, bolt: generateBolt(30, letterCenterX(0), 3001, 3), mega: false, crawlSpeed: 70 },
+          { strikeTime: 0.55, decayRate: 8, bolt: generateBolt(160, letterCenterX(10), 3002, 3), mega: false, crawlSpeed: 70 },
+          // Mega on HYPERFRAMES: strikes center, fills main text, holds
+          { strikeTime: 0.85, decayRate: 0, bolt: generateBolt(96, letterCenterX(5), 3777, 8), mega: true, crawlSpeed: 300, holdTime: 3.0 },
+          // BIG strike on subtext — fires just before "Go make something" VO at 2.08
+          { strikeTime: 1.9, decayRate: 0, bolt: generateBolt(96, subLetterCenterX(8), 4888, 14, subY), mega: true, superMega: true, crawlSpeed: 500, holdTime: 2.0 }
+        ];
+
+        for (var bi = 0; bi < BOLTS.length; bi++) {
+          var b = BOLTS[bi].bolt;
+          // Subtext bolt (index 3) needs wider gap to bridge spaces between words
+          var bfsGap = (bi === 3) ? 8 : 3;
+          BOLTS[bi].crawlMap = buildCrawlMap(b.strikeCol, b.strikeRow, bfsGap);
+        }
+
+        // ═══════════════════════════════════════════════════════
+        // ILLUMINATION
+        // ═══════════════════════════════════════════════════════
+        var illumBuf = new Float32Array(ROWS * COLS);
+
+        function boltBrightness(bolt, t) {
+          var dt = t - bolt.strikeTime;
+          if (dt < 0) return 0;
+          if (bolt.mega) {
+            if (dt > (bolt.holdTime || 0) + 1.0) return 0;
+            var attack = clamp01(dt / 0.02);
+            // superMega: slower decay = brighter longer flash, stronger hold glow
+            var decayRate = bolt.superMega ? 2.5 : 4.0;
+            var decay = Math.exp(-dt * decayRate);
+            var flicker = 0;
+            if (dt > 0.04 && dt < 0.08) flicker = (bolt.superMega ? 0.8 : 0.5) * Math.exp(-Math.pow(dt - 0.06, 2) * 8000);
+            if (dt > 0.10 && dt < 0.16) flicker = (bolt.superMega ? 0.6 : 0.3) * Math.exp(-Math.pow(dt - 0.13, 2) * 5000);
+            if (bolt.superMega && dt > 0.18 && dt < 0.25) flicker += 0.4 * Math.exp(-Math.pow(dt - 0.21, 2) * 4000);
+            var holdGlow = (dt < (bolt.holdTime || 0)) ? (bolt.superMega ? 0.25 : 0.15) : 0;
+            return attack * Math.max(decay + flicker, holdGlow);
+          }
+          if (dt > 1.5) return 0;
+          var attack = clamp01(dt / 0.02);
+          var decay = Math.exp(-dt * bolt.decayRate);
+          var flicker = 0;
+          if (dt > 0.04 && dt < 0.08) flicker = 0.5 * Math.exp(-Math.pow(dt - 0.06, 2) * 8000);
+          if (dt > 0.10 && dt < 0.16) flicker = 0.3 * Math.exp(-Math.pow(dt - 0.13, 2) * 5000);
+          return attack * (decay + flicker);
+        }
+
+        function paintSegGlow(x1, y1, x2, y2, strength, radius) {
+          var mnR = Math.max(0, Math.floor(Math.min(y1, y2) - radius));
+          var mxR = Math.min(ROWS - 1, Math.ceil(Math.max(y1, y2) + radius));
+          var mnC = Math.max(0, Math.floor(Math.min(x1, x2) - radius));
+          var mxC = Math.min(COLS - 1, Math.ceil(Math.max(x1, x2) + radius));
+          var dx = x2 - x1, dy = y2 - y1;
+          var lenSq = dx * dx + dy * dy;
+          for (var r = mnR; r <= mxR; r++) {
+            for (var c = mnC; c <= mxC; c++) {
+              var dist;
+              if (lenSq < 0.001) {
+                var ex = c - x1, ey = r - y1;
+                dist = Math.sqrt(ex * ex + ey * ey);
+              } else {
+                var t2 = ((c - x1) * dx + (r - y1) * dy) / lenSq;
+                if (t2 < 0) t2 = 0; if (t2 > 1) t2 = 1;
+                var px = x1 + t2 * dx, py = y1 + t2 * dy;
+                var ex2 = c - px, ey2 = r - py;
+                dist = Math.sqrt(ex2 * ex2 + ey2 * ey2);
+              }
+              if (dist < radius) {
+                var val = strength * (1.0 - dist / radius);
+                var idx = r * COLS + c;
+                if (val > illumBuf[idx]) illumBuf[idx] = val;
+              }
+            }
+          }
+        }
+
+        function paintImpact(cx, cy, strength, radius) {
+          var mnR = Math.max(0, Math.floor(cy - radius));
+          var mxR = Math.min(ROWS - 1, Math.ceil(cy + radius));
+          var mnC = Math.max(0, Math.floor(cx - radius));
+          var mxC = Math.min(COLS - 1, Math.ceil(cx + radius));
+          for (var r = mnR; r <= mxR; r++) {
+            for (var c = mnC; c <= mxC; c++) {
+              var dx = c - cx, dy = r - cy;
+              var dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < radius) {
+                var falloff = 1.0 - (dist / radius);
+                var val = strength * falloff * falloff;
+                var idx = r * COLS + c;
+                if (val > illumBuf[idx]) illumBuf[idx] = val;
+              }
+            }
+          }
+        }
+
+        function paintBolt(boltData, bb, mega, superMega) {
+          var radius = superMega ? 65 : (mega ? 45 : 20);
+          var segs = boltData.segments;
+          for (var i = 0; i < segs.length; i++) {
+            paintSegGlow(segs[i].x1, segs[i].y1, segs[i].x2, segs[i].y2, bb, radius);
+          }
+          var brs = boltData.branches;
+          for (var j = 0; j < brs.length; j++) {
+            var br = brs[j];
+            var brSegs = br.segments;
+            var brStr = bb * br.brightness;
+            var brRad = radius * 0.6;
+            for (var k = 0; k < brSegs.length; k++) {
+              paintSegGlow(brSegs[k].x1, brSegs[k].y1, brSegs[k].x2, brSegs[k].y2, brStr, brRad);
+            }
+          }
+          var impactRadius = superMega ? 80 : (mega ? 55 : 28);
+          paintImpact(boltData.strikeCol, boltData.strikeRow, bb * (superMega ? 1.8 : 1.2), impactRadius);
+        }
+
+        // ═══════════════════════════════════════════════════════
+        // RENDER — warm gold/amber palette instead of green
+        // ═══════════════════════════════════════════════════════
+        function renderAtTime(t) {
+          ctx.fillStyle = "#000";
+          ctx.fillRect(0, 0, W, H);
+          ctx.font = (CELL_H - 2) + "px monospace";
+          ctx.textBaseline = "top";
+
+          // Fade in from black over first 0.4s
+          var fadeIn = clamp01(t / 0.4);
+
+          // Clear illumination buffer
+          for (var i = 0; i < illumBuf.length; i++) illumBuf[i] = 0;
+          var crawlBuf = new Float32Array(ROWS * COLS);
+
+          for (var bi = 0; bi < BOLTS.length; bi++) {
+            var bb = boltBrightness(BOLTS[bi], t);
+            var dt = t - BOLTS[bi].strikeTime;
+            if (bb > 0.001) {
+              paintBolt(BOLTS[bi].bolt, bb, BOLTS[bi].mega, BOLTS[bi].superMega);
+            }
+            if (dt > 0) {
+              var crawlMap = BOLTS[bi].crawlMap;
+              var crawlRadius = dt * BOLTS[bi].crawlSpeed;
+              var holdTime = BOLTS[bi].holdTime || 0;
+              var crawlDecay;
+              if (BOLTS[bi].mega) {
+                crawlDecay = (dt < holdTime) ? 1.0 : Math.exp(-(dt - holdTime) * 3.0);
+              } else {
+                crawlDecay = Math.exp(-dt * 5.0);
+              }
+              if (crawlDecay < 0.005) continue;
+              for (var ci = 0; ci < crawlMap.length; ci++) {
+                if (crawlMap[ci] < 0) continue;
+                if (crawlMap[ci] > crawlRadius) continue;
+                var waveDist = crawlRadius - crawlMap[ci];
+                var waveBright = crawlDecay;
+                if (waveDist < 8 && dt < 1.0) {
+                  waveBright *= (1.0 + (1.0 - waveDist / 8) * 2.0);
+                }
+                if (waveBright > crawlBuf[ci]) crawlBuf[ci] = waveBright;
+              }
+            }
+          }
+
+          var lastFill = "";
+
+          for (var row = 0; row < ROWS; row++) {
+            for (var col = 0; col < COLS; col++) {
+
+              var ambN = fbm(col * 0.03 + t * 0.08, row * 0.04 + t * 0.06);
+              var ambBright = 0.02 + ambN * 0.04;
+
+              // Pre-strike flicker
+              if (t < 0.25) {
+                var flickerN = hash(col * 7 + Math.floor(t * 15), row * 11 + Math.floor(t * 15));
+                if (flickerN > 0.997) ambBright += 0.15 * (1.0 - t / 0.25);
+              }
+
+              var localIllum = illumBuf[row * COLS + col];
+              var crawlIllum = crawlBuf[row * COLS + col];
+              var textType = textMask[row * COLS + col]; // 0=none, 1=main, 2=sub
+              var brightness, cr, cg, cb;
+
+              // Crawl drives visibility — no timer gating needed
+              var effectiveCrawl = crawlIllum;
+
+              if (textType && effectiveCrawl > 0.01) {
+                // Text pixel — warm gold/amber crawl
+                var ci2 = clamp01(effectiveCrawl);
+                brightness = ci2 * fadeIn;
+                var whiteness = clamp01(effectiveCrawl - 0.8) * 3.0;
+                // Warm gold: high R, moderate G, low B; white-hot at peaks
+                cr = Math.round((40 + whiteness * 215 + ci2 * 180) * brightness);
+                cg = Math.round((15 + whiteness * 160 + ci2 * 100) * brightness);
+                cb = Math.round((5 + whiteness * 140 + ci2 * 30) * brightness);
+                if (localIllum > 0.1) {
+                  var boost = localIllum * 0.4;
+                  cr = Math.min(255, cr + Math.round(boost * 220));
+                  cg = Math.min(255, cg + Math.round(boost * 150));
+                  cb = Math.min(255, cb + Math.round(boost * 80));
+                  brightness = Math.min(1.0, brightness + boost);
+                }
+              } else if (localIllum > 0.03) {
+                // Bolt glow in sky — warm amber
+                brightness = localIllum * fadeIn;
+                var coreAmt = clamp01((localIllum - 0.4) * 2.5);
+                cr = Math.round((coreAmt * 240 + localIllum * 80) * brightness);
+                cg = Math.round((coreAmt * 160 + localIllum * 50) * brightness);
+                cb = Math.round((coreAmt * 60 + localIllum * 20) * brightness);
+              } else {
+                // Ambient — very subtle warm dark
+                brightness = ambBright * fadeIn;
+                cr = Math.round((8 + ambN * 15) * brightness);
+                cg = Math.round((4 + ambN * 8) * brightness);
+                cb = Math.round((2 + ambN * 4) * brightness);
+              }
+
+              var dither = BAYER[row & 3][col & 3];
+              var sl = brightness * GLYPH_MAX;
+              var bl2 = Math.floor(sl);
+              var fr = sl - bl2;
+              var rl = bl2 + (fr > dither ? 1 : 0);
+              if (rl > GLYPH_MAX) rl = GLYPH_MAX;
+              if (rl < 1 && brightness > 0.01) rl = 1;
+              if (brightness < 0.01) rl = 0;
+              var ch = GLYPHS[rl];
+
+              if (rl === 0) continue;
+
+              var scanline = 0.92 + 0.08 * Math.sin(row * 0.6 + t * 0.8);
+              var vx = col / COLS - 0.5, vy = row / ROWS - 0.5;
+              var vig = 1.0 - (vx * vx + vy * vy) * 0.35;
+              if (vig < 0.55) vig = 0.55;
+
+              var m = scanline * vig;
+              var fr2 = Math.round(cr * m);
+              var fg = Math.round(cg * m);
+              var fb2 = Math.round(cb * m);
+              if (fr2 > 255) fr2 = 255;
+              if (fg > 255) fg = 255;
+              if (fb2 > 255) fb2 = 255;
+
+              var fill = "rgb(" + fr2 + "," + fg + "," + fb2 + ")";
+              if (fill !== lastFill) {
+                ctx.fillStyle = fill;
+                lastFill = fill;
+              }
+              ctx.fillText(ch, col * CELL_W, row * CELL_H);
+            }
+          }
+        }
+
+        renderAtTime(0);
+
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+        var proxy = { time: 0 };
+        tl.to(proxy, {
+          time: 3.93, duration: 3.93, ease: "none",
+          onUpdate: function () { renderAtTime(proxy.time); }
+        }, 0);
+        window.__timelines["canvas-close"] = tl;
+      })();
+    </script>
+  </div>
+</template>

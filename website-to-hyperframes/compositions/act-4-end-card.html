@@ -1,0 +1,292 @@
+<template id="act-4-end-card-template">
+  <div
+    data-composition-id="act-4-end-card"
+    data-width="1920"
+    data-height="1080"
+    data-start="0"
+    data-duration="8.0"
+  >
+    <!-- Rich dark backdrop with aurora gradient -->
+    <div class="bg-layer bg-deep"></div>
+    <div class="bg-layer bg-aurora"></div>
+    <div class="bg-layer bg-grain"></div>
+
+    <!-- Spotlight / ambient glow -->
+    <div class="spotlight"></div>
+
+    <!-- Floating particles -->
+    <div class="particles">
+      <div class="pt p1"></div><div class="pt p2"></div><div class="pt p3"></div>
+      <div class="pt p4"></div><div class="pt p5"></div><div class="pt p6"></div>
+      <div class="pt p7"></div><div class="pt p8"></div><div class="pt p9"></div>
+      <div class="pt p10"></div><div class="pt p11"></div><div class="pt p12"></div>
+    </div>
+
+    <!-- Wordmark -->
+    <div class="wordmark-wrap">
+      <h1 class="wordmark">
+        <span class="w-piece w-hyper">Hyper</span><span class="w-piece w-frames">Frames</span>
+      </h1>
+    </div>
+
+    <!-- Promise lines -->
+    <div class="promise">
+      <p class="line line-1"><span class="line-inner">Give your agent a URL.</span></p>
+      <p class="line line-2"><span class="line-inner">It does the rest.</span></p>
+    </div>
+
+    <!-- Install pill -->
+    <div class="install">
+      <div class="install-inner">
+        <span class="install-cmd">npx skills add heygen-com/hyperframes</span>
+      </div>
+    </div>
+
+    <!-- Sign-off accent (tiny dot that breathes in final beat) -->
+    <div class="breath-dot"></div>
+
+    <style>
+      @font-face { font-family: "Inter"; src: url("fonts/Inter-Variable.woff2") format("woff2-variations"); font-weight: 100 900; font-display: block; }
+      @font-face { font-family: "JetBrains Mono"; src: url("fonts/JetBrainsMono-Variable.woff2") format("woff2-variations"); font-weight: 100 800; font-display: block; }
+
+      [data-composition-id="act-4-end-card"] {
+        position: relative;
+        width: 1920px; height: 1080px;
+        overflow: hidden;
+        background: #06070B;
+        font-family: "Inter", system-ui, sans-serif;
+      }
+
+      [data-composition-id="act-4-end-card"] .bg-layer { position: absolute; inset: 0; pointer-events: none; }
+
+      [data-composition-id="act-4-end-card"] .bg-deep {
+        background: radial-gradient(1600px 1000px at 50% 65%, #0a0c18 0%, #06070B 55%, #030408 100%);
+      }
+      [data-composition-id="act-4-end-card"] .bg-aurora {
+        background:
+          radial-gradient(900px 500px at 22% 38%, rgba(83, 58, 253, 0.28), transparent 65%),
+          radial-gradient(1100px 700px at 78% 42%, rgba(0, 195, 255, 0.22), transparent 60%),
+          radial-gradient(700px 500px at 50% 80%, rgba(62, 207, 142, 0.18), transparent 65%),
+          radial-gradient(600px 400px at 80% 15%, rgba(244, 75, 204, 0.15), transparent 65%);
+        filter: blur(2px);
+        opacity: 0;
+      }
+      [data-composition-id="act-4-end-card"] .bg-grain {
+        background-image:
+          radial-gradient(circle at 25% 35%, rgba(255,255,255,0.04) 1px, transparent 1px),
+          radial-gradient(circle at 75% 65%, rgba(255,255,255,0.03) 1px, transparent 1px);
+        background-size: 4px 4px, 6px 6px;
+        opacity: 0.5;
+      }
+
+      [data-composition-id="act-4-end-card"] .spotlight {
+        position: absolute;
+        left: 50%; top: 52%;
+        transform: translate(-50%, -50%);
+        width: 1400px; height: 700px;
+        background: radial-gradient(closest-side, rgba(255, 255, 255, 0.06), transparent);
+        filter: blur(1px);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      /* Floating particles */
+      [data-composition-id="act-4-end-card"] .particles { position: absolute; inset: 0; pointer-events: none; }
+      [data-composition-id="act-4-end-card"] .pt {
+        position: absolute;
+        width: 3px; height: 3px;
+        background: #f7f8f8;
+        border-radius: 50%;
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+        opacity: 0;
+      }
+      [data-composition-id="act-4-end-card"] .p1  { left: 12%; top: 28%; }
+      [data-composition-id="act-4-end-card"] .p2  { left: 22%; top: 72%; }
+      [data-composition-id="act-4-end-card"] .p3  { left: 35%; top: 22%; }
+      [data-composition-id="act-4-end-card"] .p4  { left: 48%; top: 82%; }
+      [data-composition-id="act-4-end-card"] .p5  { left: 58%; top: 18%; }
+      [data-composition-id="act-4-end-card"] .p6  { left: 68%; top: 72%; }
+      [data-composition-id="act-4-end-card"] .p7  { left: 78%; top: 28%; }
+      [data-composition-id="act-4-end-card"] .p8  { left: 88%; top: 62%; }
+      [data-composition-id="act-4-end-card"] .p9  { left: 18%; top: 50%; }
+      [data-composition-id="act-4-end-card"] .p10 { left: 42%; top: 38%; }
+      [data-composition-id="act-4-end-card"] .p11 { left: 62%; top: 52%; }
+      [data-composition-id="act-4-end-card"] .p12 { left: 82%; top: 40%; }
+
+      /* Wordmark */
+      [data-composition-id="act-4-end-card"] .wordmark-wrap {
+        position: absolute;
+        left: 0; right: 0; top: 320px;
+        text-align: center;
+      }
+      [data-composition-id="act-4-end-card"] .wordmark {
+        margin: 0;
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 900;
+        font-size: 200px;
+        line-height: 1;
+        letter-spacing: -0.04em;
+      }
+      [data-composition-id="act-4-end-card"] .w-piece {
+        display: inline-block;
+        opacity: 0;
+        filter: blur(20px);
+      }
+      [data-composition-id="act-4-end-card"] .w-hyper { color: #f7f8f8; }
+      [data-composition-id="act-4-end-card"] .w-frames {
+        background: linear-gradient(95deg, #533afd 0%, #00c3ff 45%, #3ecf8e 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      /* Promise lines (smooth reveal via mask-image) */
+      [data-composition-id="act-4-end-card"] .promise {
+        position: absolute;
+        left: 0; right: 0; top: 580px;
+        text-align: center;
+      }
+      [data-composition-id="act-4-end-card"] .promise .line {
+        margin: 0 0 8px 0;
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 500;
+        font-size: 58px;
+        letter-spacing: -0.01em;
+        color: rgba(247, 248, 248, 0.9);
+      }
+      [data-composition-id="act-4-end-card"] .line-inner {
+        display: inline-block;
+        opacity: 0;
+        filter: blur(14px);
+      }
+
+      /* Install pill */
+      [data-composition-id="act-4-end-card"] .install {
+        position: absolute;
+        left: 0; right: 0; top: 810px;
+        text-align: center;
+      }
+      [data-composition-id="act-4-end-card"] .install-inner {
+        display: inline-block;
+        padding: 14px 28px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(8px);
+        opacity: 0;
+      }
+      [data-composition-id="act-4-end-card"] .install-cmd {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 28px;
+        font-weight: 500;
+        color: rgba(247, 248, 248, 0.85);
+        letter-spacing: 0.005em;
+        opacity: 0;
+        filter: blur(8px);
+      }
+
+      /* Breath dot */
+      [data-composition-id="act-4-end-card"] .breath-dot {
+        position: absolute;
+        left: 50%; top: 945px;
+        transform: translateX(-50%);
+        width: 6px; height: 6px;
+        background: #00c3ff;
+        border-radius: 50%;
+        box-shadow: 0 0 16px rgba(0, 195, 255, 0.8);
+        opacity: 0;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        var COMP_ID = "act-4-end-card";
+        var root = document.querySelector('[data-composition-id="' + COMP_ID + '"]');
+        var aurora = root.querySelector(".bg-aurora");
+        var spotlight = root.querySelector(".spotlight");
+        var particles = root.querySelectorAll(".pt");
+        var wHyper = root.querySelector(".w-hyper");
+        var wFrames = root.querySelector(".w-frames");
+        var line1 = root.querySelector(".line-1 .line-inner");
+        var line2 = root.querySelector(".line-2 .line-inner");
+        var install = root.querySelector(".install-inner");
+        var installCmd = root.querySelector(".install-cmd");
+        var breathDot = root.querySelector(".breath-dot");
+
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+
+        // 0.0 - 1.5s: Aurora + spotlight bloom in
+        tl.to(aurora, { opacity: 0.85, duration: 1.2, ease: "power2.out" }, 0.0);
+        tl.to(spotlight, { opacity: 1, duration: 1.4, ease: "power2.out" }, 0.2);
+
+        // 0.2 - 3.0s: Particles twinkle in (staggered)
+        tl.to(particles, {
+          opacity: 0.85,
+          duration: 0.8,
+          stagger: { each: 0.06, from: "random" },
+          ease: "power2.out",
+        }, 0.3);
+
+        // Each particle breathes (opacity + subtle y shift) over remaining Act 4 duration
+        particles.forEach(function (p, i) {
+          var delay = 0.5 + (i % 5) * 0.4;
+          var cycleDur = 2.0 + (i % 3) * 0.5;
+          var totalLeft = 8.0 - delay;
+          var repeats = Math.max(0, Math.floor(totalLeft / cycleDur) - 1);
+          tl.to(p, {
+            opacity: 0.3,
+            y: "+=6",
+            duration: cycleDur,
+            ease: "sine.inOut",
+            repeat: repeats,
+            yoyo: true,
+          }, delay);
+        });
+
+        // 0.8 - 1.8s: Wordmark reveals — blur-to-sharp (no fade — blur easing)
+        tl.to(wHyper, { opacity: 1, filter: "blur(0px)", duration: 0.85, ease: "power2.out" }, 0.9);
+        tl.to(wFrames, { opacity: 1, filter: "blur(0px)", duration: 0.85, ease: "power2.out" }, 1.20);
+
+        // 2.5 - 3.5s: Line 1 reveals (smooth, not typing)
+        tl.to(line1, { opacity: 1, filter: "blur(0px)", duration: 0.8, ease: "power2.out" }, 2.4);
+
+        // 3.5 - 4.3s: Line 2 reveals
+        tl.to(line2, { opacity: 1, filter: "blur(0px)", duration: 0.8, ease: "power2.out" }, 3.3);
+
+        // 4.8 - 5.8s: Install pill frame fades in
+        tl.to(install, { opacity: 1, duration: 0.5, ease: "power2.out" }, 4.8);
+        // Install command reveals (blur-to-sharp, instantly full text)
+        tl.to(installCmd, { opacity: 1, filter: "blur(0px)", duration: 0.8, ease: "power2.out" }, 5.0);
+
+        // 6.0 - 8.0s: Breath dot appears, breathes
+        tl.fromTo(breathDot,
+          { opacity: 0, scale: 0 },
+          { opacity: 0.9, scale: 1.0, duration: 0.5, ease: "back.out(2)" },
+          6.0
+        );
+        tl.to(breathDot, { scale: 1.5, opacity: 0.5, duration: 0.8, ease: "sine.inOut", yoyo: true, repeat: 1 }, 6.5);
+
+        // Wordmark subtle breath through the whole composition
+        tl.to([wHyper, wFrames], {
+          scale: 1.01,
+          duration: 3.5,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: 1,
+          transformOrigin: "50% 50%",
+        }, 1.8);
+
+        // Aurora drifts
+        tl.to(aurora, {
+          x: "+=40", y: "-=20",
+          duration: 7.5,
+          ease: "sine.inOut",
+        }, 0.2);
+
+        window.__timelines[COMP_ID] = tl;
+      })();
+    </script>
+  </div>
+</template>

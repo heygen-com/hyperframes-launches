@@ -1,0 +1,517 @@
+[
+  {
+    "text": "Imagine",
+    "start": 0.07,
+    "end": 0.42
+  },
+  {
+    "text": "you",
+    "start": 0.42,
+    "end": 0.6
+  },
+  {
+    "text": "could",
+    "start": 0.6,
+    "end": 0.89
+  },
+  {
+    "text": "make",
+    "start": 1.02,
+    "end": 1.14
+  },
+  {
+    "text": "videos",
+    "start": 1.14,
+    "end": 1.49
+  },
+  {
+    "text": "like",
+    "start": 1.6,
+    "end": 1.73
+  },
+  {
+    "text": "this.",
+    "start": 1.74,
+    "end": 3.72
+  },
+  {
+    "text": "Your",
+    "start": 3.79,
+    "end": 4.01
+  },
+  {
+    "text": "agent",
+    "start": 4.01,
+    "end": 4.32
+  },
+  {
+    "text": "already",
+    "start": 4.41,
+    "end": 4.9
+  },
+  {
+    "text": "can.",
+    "start": 4.9,
+    "end": 5.36
+  },
+  {
+    "text": "Just",
+    "start": 5.43,
+    "end": 5.62
+  },
+  {
+    "text": "give",
+    "start": 5.62,
+    "end": 5.88
+  },
+  {
+    "text": "it",
+    "start": 5.88,
+    "end": 5.96
+  },
+  {
+    "text": "hyperframes,",
+    "start": 6.05,
+    "end": 6.85
+  },
+  {
+    "text": "open",
+    "start": 6.96,
+    "end": 7.27
+  },
+  {
+    "text": "source,",
+    "start": 7.27,
+    "end": 8.12
+  },
+  {
+    "text": "HTML",
+    "start": 8.12,
+    "end": 8.62
+  },
+  {
+    "text": "in,",
+    "start": 8.62,
+    "end": 9.12
+  },
+  {
+    "text": "video",
+    "start": 9.17,
+    "end": 9.74
+  },
+  {
+    "text": "out,",
+    "start": 9.74,
+    "end": 10.19
+  },
+  {
+    "text": "CSS",
+    "start": 10.59,
+    "end": 10.73
+  },
+  {
+    "text": "animations,",
+    "start": 10.73,
+    "end": 12.23
+  },
+  {
+    "text": "gsap,",
+    "start": 12.3,
+    "end": 12.97
+  },
+  {
+    "text": "Lottie,",
+    "start": 12.97,
+    "end": 14.04
+  },
+  {
+    "text": "shaders,",
+    "start": 14.11,
+    "end": 15.3
+  },
+  {
+    "text": "3JS.",
+    "start": 15.3,
+    "end": 16.04
+  },
+  {
+    "text": "A",
+    "start": 16.51,
+    "end": 16.55
+  },
+  {
+    "text": "div",
+    "start": 16.55,
+    "end": 16.9
+  },
+  {
+    "text": "is",
+    "start": 16.9,
+    "end": 17.04
+  },
+  {
+    "text": "a",
+    "start": 17.13,
+    "end": 17.24
+  },
+  {
+    "text": "keyframe.",
+    "start": 17.24,
+    "end": 18.38
+  },
+  {
+    "text": "Data",
+    "start": 18.65,
+    "end": 18.82
+  },
+  {
+    "text": "attributes",
+    "start": 18.82,
+    "end": 19.42
+  },
+  {
+    "text": "are",
+    "start": 19.42,
+    "end": 19.6
+  },
+  {
+    "text": "your",
+    "start": 19.6,
+    "end": 19.84
+  },
+  {
+    "text": "timeline.",
+    "start": 19.84,
+    "end": 20.5
+  },
+  {
+    "text": "CSS",
+    "start": 20.59,
+    "end": 20.87
+  },
+  {
+    "text": "is",
+    "start": 20.87,
+    "end": 21.1
+  },
+  {
+    "text": "your",
+    "start": 21.1,
+    "end": 21.57
+  },
+  {
+    "text": "look.",
+    "start": 21.57,
+    "end": 22.39
+  },
+  {
+    "text": "JavaScript",
+    "start": 22.45,
+    "end": 23.15
+  },
+  {
+    "text": "is",
+    "start": 23.15,
+    "end": 23.3
+  },
+  {
+    "text": "your",
+    "start": 23.42,
+    "end": 23.61
+  },
+  {
+    "text": "animation",
+    "start": 23.61,
+    "end": 24.25
+  },
+  {
+    "text": "engine.",
+    "start": 24.25,
+    "end": 25
+  },
+  {
+    "text": "Anything",
+    "start": 25.05,
+    "end": 25.6
+  },
+  {
+    "text": "a",
+    "start": 25.6,
+    "end": 25.69
+  },
+  {
+    "text": "browser",
+    "start": 25.69,
+    "end": 26.2
+  },
+  {
+    "text": "can",
+    "start": 26.2,
+    "end": 26.42
+  },
+  {
+    "text": "render",
+    "start": 26.42,
+    "end": 26.87
+  },
+  {
+    "text": "can",
+    "start": 26.87,
+    "end": 26.94
+  },
+  {
+    "text": "be",
+    "start": 27.06,
+    "end": 27.18
+  },
+  {
+    "text": "a",
+    "start": 27.23,
+    "end": 27.31
+  },
+  {
+    "text": "frame",
+    "start": 27.31,
+    "end": 27.68
+  },
+  {
+    "text": "in",
+    "start": 27.68,
+    "end": 27.83
+  },
+  {
+    "text": "your",
+    "start": 27.83,
+    "end": 28.13
+  },
+  {
+    "text": "video.",
+    "start": 28.13,
+    "end": 28.79
+  },
+  {
+    "text": "Drop",
+    "start": 28.87,
+    "end": 29.09
+  },
+  {
+    "text": "in",
+    "start": 29.09,
+    "end": 29.23
+  },
+  {
+    "text": "music,",
+    "start": 29.23,
+    "end": 29.69
+  },
+  {
+    "text": "sound",
+    "start": 29.81,
+    "end": 30.09
+  },
+  {
+    "text": "effects,",
+    "start": 30.09,
+    "end": 30.74
+  },
+  {
+    "text": "footage.",
+    "start": 30.74,
+    "end": 31.5
+  },
+  {
+    "text": "It",
+    "start": 31.57,
+    "end": 31.72
+  },
+  {
+    "text": "all",
+    "start": 31.72,
+    "end": 32.05
+  },
+  {
+    "text": "composes",
+    "start": 32.05,
+    "end": 32.94
+  },
+  {
+    "text": "together.",
+    "start": 32.94,
+    "end": 34.2
+  },
+  {
+    "text": "Your",
+    "start": 34.27,
+    "end": 34.55
+  },
+  {
+    "text": "agent",
+    "start": 34.59,
+    "end": 35.07
+  },
+  {
+    "text": "writes",
+    "start": 35.08,
+    "end": 35.67
+  },
+  {
+    "text": "code",
+    "start": 35.67,
+    "end": 36.06
+  },
+  {
+    "text": "to",
+    "start": 36.06,
+    "end": 36.14
+  },
+  {
+    "text": "compose.",
+    "start": 36.14,
+    "end": 37.28
+  },
+  {
+    "text": "Hyperframes",
+    "start": 37.35,
+    "end": 37.99
+  },
+  {
+    "text": "renders",
+    "start": 37.99,
+    "end": 38.44
+  },
+  {
+    "text": "every",
+    "start": 38.44,
+    "end": 38.76
+  },
+  {
+    "text": "frame",
+    "start": 38.76,
+    "end": 39.08
+  },
+  {
+    "text": "to",
+    "start": 39.08,
+    "end": 39.21
+  },
+  {
+    "text": "MP4.",
+    "start": 39.21,
+    "end": 39.75
+  },
+  {
+    "text": "It's",
+    "start": 39.83,
+    "end": 40.08
+  },
+  {
+    "text": "deterministic,",
+    "start": 40.08,
+    "end": 41.25
+  },
+  {
+    "text": "pixel",
+    "start": 41.36,
+    "end": 41.67
+  },
+  {
+    "text": "perfect",
+    "start": 41.67,
+    "end": 41.74
+  },
+  {
+    "text": "every",
+    "start": 42.11,
+    "end": 42.64
+  },
+  {
+    "text": "time.",
+    "start": 42.64,
+    "end": 43.24
+  },
+  {
+    "text": "Give",
+    "start": 43.31,
+    "end": 43.48
+  },
+  {
+    "text": "your",
+    "start": 43.48,
+    "end": 43.72
+  },
+  {
+    "text": "agent",
+    "start": 43.72,
+    "end": 44.02
+  },
+  {
+    "text": "the",
+    "start": 44.02,
+    "end": 44.13
+  },
+  {
+    "text": "skill.",
+    "start": 44.25,
+    "end": 44.72
+  },
+  {
+    "text": "Tell",
+    "start": 44.79,
+    "end": 44.98
+  },
+  {
+    "text": "it",
+    "start": 44.98,
+    "end": 45.07
+  },
+  {
+    "text": "what",
+    "start": 45.11,
+    "end": 45.32
+  },
+  {
+    "text": "to",
+    "start": 45.41,
+    "end": 45.5
+  },
+  {
+    "text": "make.",
+    "start": 45.5,
+    "end": 45.96
+  },
+  {
+    "text": "Watch",
+    "start": 46.01,
+    "end": 46.56
+  },
+  {
+    "text": "it",
+    "start": 46.56,
+    "end": 46.8
+  },
+  {
+    "text": "build.",
+    "start": 46.8,
+    "end": 47.78
+  },
+  {
+    "text": "Hyperframes.",
+    "start": 47.85,
+    "end": 48.68
+  },
+  {
+    "text": "Go",
+    "start": 48.68,
+    "end": 48.85
+  },
+  {
+    "text": "make",
+    "start": 48.85,
+    "end": 49
+  },
+  {
+    "text": "something.",
+    "start": 49,
+    "end": 49.48
+  }
+]

@@ -1,0 +1,231 @@
+<template id="thesis-template">
+  <div
+    data-composition-id="thesis"
+    data-width="1920"
+    data-height="1080"
+    data-start="0"
+    data-duration="4.52"
+  >
+    <!-- Background OUTSIDE the wrap — always stationary, full-frame coverage.
+         No gap when the wrap slides in from the right. -->
+    <div class="thesis-bg"></div>
+
+    <!-- Transition wrapper — content slides in, bg stays put. -->
+    <div class="thesis-wrap">
+    <div class="thesis-vignette"></div>
+
+    <!-- Thesis statement: 2 lines of staggered kinetic typography. -->
+    <div class="thesis-scene">
+      <div class="thesis-line line-1">
+        <span class="word">Anything</span>
+        <span class="word">a</span>
+        <span class="word">browser</span>
+        <span class="word">can</span>
+        <span class="word">render</span>
+      </div>
+      <div class="thesis-line line-2">
+        <span class="word">can</span>
+        <span class="word">be</span>
+        <span class="word">a</span>
+        <span class="word">frame</span>
+        <span class="word">in</span>
+        <span class="word">your</span>
+        <span class="word last">video.</span>
+      </div>
+    </div>
+
+    <!-- Warm shutter flash overlay (captures on "video"). -->
+    <div class="thesis-flash"></div>
+    </div><!-- /.thesis-wrap -->
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap");
+
+      [data-composition-id="thesis"] {
+        width: 1920px;
+        height: 1080px;
+        position: relative;
+        overflow: hidden;
+        background: #fbf4e3;
+        color: #14110a;
+      }
+
+      /* Vox transition wrapper — starts blurred + offset, settles sharp. */
+      [data-composition-id="thesis"] .thesis-wrap {
+        position: absolute;
+        inset: 0;
+        will-change: transform, filter;
+      }
+      /* Clean, open warm space — matches anatomy's warm cream. */
+      [data-composition-id="thesis"] .thesis-bg {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 45%, #fcf6e7 0%, #f6edd4 100%);
+      }
+      [data-composition-id="thesis"] .thesis-vignette {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 55%, transparent 45%, rgba(110, 70, 15, 0.08) 100%);
+        pointer-events: none;
+      }
+
+      /* Scene container — centered vertically, used for the capture scale-bump. */
+      [data-composition-id="thesis"] .thesis-scene {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 1720px;
+        text-align: center;
+        transform-origin: 50% 50%;
+        will-change: transform;
+      }
+
+      /* Line typography — Instrument Serif, display optical size.
+         Editorial, high-contrast, genuinely distinctive (not Fraunces). */
+      [data-composition-id="thesis"] .thesis-line {
+        font-family: "Instrument Serif", serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 132px;
+        line-height: 1.08;
+        letter-spacing: -0.02em;
+        color: #14110a;
+        white-space: normal;
+      }
+      [data-composition-id="thesis"] .line-2 {
+        margin-top: 18px;
+        font-style: italic;
+        color: #2a1f0a;
+      }
+
+      /* Words: inline-block so we can animate per-word. Start hidden, lifted. */
+      [data-composition-id="thesis"] .word {
+        display: inline-block;
+        opacity: 0;
+        margin: 0 0.16em;
+        will-change: transform, opacity;
+      }
+
+      /* Gradient shimmer — wide gradient with dark leading/trailing edges
+         so it blends from solid text color. Sweeps via background-position. */
+      [data-composition-id="thesis"] .word.is-gradient {
+        background: linear-gradient(90deg,
+          #14110a 0%, #14110a 15%,
+          #5a3215 25%, #c84f1c 40%, #e2b53f 55%, #2a8a7c 70%,
+          #14110a 85%, #14110a 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 300% 100%;
+        background-position: 100% 0;
+      }
+
+      /* Warm shutter flash — subtle radial gradient, screen blend. */
+      [data-composition-id="thesis"] .thesis-flash {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 48%, rgba(255, 208, 140, 0.8) 0%, rgba(255, 208, 140, 0) 70%);
+        opacity: 0;
+        mix-blend-mode: screen;
+        pointer-events: none;
+        z-index: 10;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+        const root = document.querySelector('[data-composition-id="thesis"]');
+
+        const scene = root.querySelector(".thesis-scene");
+        const flash = root.querySelector(".thesis-flash");
+        const line1Words = root.querySelectorAll(".line-1 .word");
+        const line2Words = root.querySelectorAll(".line-2 .word");
+
+        // --- Blur-matched entry (0 → 0.42s) ---
+        // Scene appears instantly (no x offset — bg is always full-frame).
+        // Blur de-ramps from 8px to match the circle beat's exit blur ramp.
+        // The leftward motion is carried by "Anything" sliding from right.
+        const wrap = root.querySelector(".thesis-wrap");
+        gsap.set(wrap, { filter: "blur(22px)" });
+        tl.to(wrap, {
+          filter: "blur(0px)",
+          duration: 0.33,
+          ease: "power2.out",
+        }, 0);
+
+        // Scene anchored center via GSAP so scale bump reads from true center.
+        gsap.set(scene, { xPercent: -50, yPercent: -50, scale: 1 });
+
+        // Words start invisible. "Anything" carries the cut-the-curve leftward
+        // motion — slides from far right at the same speed as the circle exit,
+        // selling the continuous leftward momentum. Subsequent words slide less.
+        gsap.set([...line1Words], { y: 14, opacity: 0 });
+        gsap.set([...line2Words], { y: 14, opacity: 0 });
+
+        // --- Line 1: each word sync'd to transcript onset (abs - 20.97). ---
+        // Anything 0.000 | a 0.330 | browser 0.380 | can 0.730 | render 0.880
+        // "Anything" gets a big rightward offset + fast decel to carry the cut.
+        const line1Cues = [0.00, 0.23, 0.28, 0.63, 0.78];
+        const line1Slides = [360, 120, 60, 25, 12]; // px — "Anything" velocity-matched to exit
+        line1Cues.forEach((t, i) => {
+          gsap.set(line1Words[i], { x: line1Slides[i] });
+          tl.to(line1Words[i],
+            { x: 0, y: 0, opacity: 1, duration: 0.33, ease: "expo.out" },
+            t);
+        });
+
+        // --- Line 2: word-level cues. ---
+        // "can be a frame in your video." — 7 words
+        // "video." is pulled forward to land at master 27.30s (local 2.25) —
+        // visual anticipation ahead of the spoken word (VO "video" onset is 28.13).
+        // The preceding words keep their cadence; only "video." moved.
+        const line2Cues = [1.38, 1.60, 1.70, 1.76, 2.01, 2.11, 2.25];
+        line2Cues.forEach((t, i) => {
+          tl.to(line2Words[i],
+            { y: 0, opacity: 1, duration: 0.20, ease: "power2.out" },
+            t);
+        });
+
+        // --- Capture pulse: fires just after "video." lands. ---
+        // Coupled with the "video." reveal at 2.25 (pulse ~0.19s after land).
+        // Gradient shimmer: add class (starts at bg-position 100% = dark),
+        // then sweep background-position to 0% so the color washes across.
+        const allWords = [...line1Words, ...line2Words];
+        tl.add(() => {
+          allWords.forEach(w => w.classList.add("is-gradient"));
+        }, 2.44);
+        tl.to(allWords, {
+          backgroundPosition: "0% 0",
+          duration: 0.6,
+          ease: "power2.out",
+          stagger: 0.04,
+        }, 2.49);
+        // Scale pulse so the gradient landing feels intentional.
+        tl.to(scene,
+          { scale: 1.012, duration: 0.09, ease: "power2.out" },
+          2.50);
+        tl.to(scene,
+          { scale: 1, duration: 0.28, ease: "power2.inOut" },
+          2.59);
+
+        // --- Settle (3.85 → 4.52). Sustained stillness; text holds. ---
+        // Tiny letter-spacing breath on line 2 (italic) so the frame stays alive.
+        tl.to(root.querySelector(".line-2"),
+          { letterSpacing: "-0.015em", duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 0 },
+          4.10);
+
+        // --- Fade exit (4.52 → 4.82) ---
+        tl.to(wrap, {
+          opacity: 0,
+          duration: 0.3,
+          ease: "power2.in"
+        }, 4.52);
+
+        window.__timelines["thesis"] = tl;
+      })();
+    </script>
+  </div>
+</template>

@@ -1,0 +1,293 @@
+<template id="act5-save-time-template">
+  <div data-composition-id="act5-save-time" data-width="1920" data-height="1080" data-start="0" data-duration="4.13">
+
+    <div class="act5-bg"></div>
+
+    <div class="act5-stack">
+      <!-- Row 1: Save some time → clock -->
+      <div class="row row-1">
+        <span class="r1-row-wrap">
+          <span class="row1-base">Save some&nbsp;</span><span class="row1-time">time</span><img class="row1-clock" src="assets/clock.png" alt="" />
+        </span>
+      </div>
+
+      <!-- Row 2: Save some tokens (gold shimmer on "tokens") -->
+      <div class="row row-2" style="transform: translateY(-50px);">
+        <span class="r2-row-wrap">
+          <span class="row2-base">Save some&nbsp;</span><span class="row2-credits">tokens</span>
+        </span>
+      </div>
+
+      <!-- Row 3: Just click & [drag in orange pill extending off-right] -->
+      <div class="row row-3">
+        <span class="r3-row-wrap">
+          <span class="row3-prefix">Just click &amp;&nbsp;</span><span class="row3-pill"><span class="row3-drag">drag</span></span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Cursor -->
+    <div class="act5-cursor">
+      <svg viewBox="0 0 28 34" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2.5 1.5L2.5 28L8.5 21.5L14 32L18.5 30L13 19.5L22 19.5L2.5 1.5Z" fill="#000000" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700;900&family=Great+Vibes&display=swap');
+
+      [data-composition-id="act5-save-time"] {
+        width: 1920px;
+        height: 1080px;
+        position: relative;
+        overflow: hidden;
+        background: #f5f5f7;
+      }
+      [data-composition-id="act5-save-time"] .act5-bg {
+        position: absolute; inset: 0;
+        background: #f5f5f7;
+      }
+      [data-composition-id="act5-save-time"] .act5-stack {
+        position: absolute;
+        left: 140px;
+        top: 120px;
+        height: 840px;           /* 1080 - 2*120 → symmetric top/bottom padding */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: calc(100% - 140px);
+      }
+      [data-composition-id="act5-save-time"] .row {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 900;
+        font-size: 124px;
+        letter-spacing: -0.04em;
+        color: #1d1d1f;
+        line-height: 1.05;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        /* Each row clips to its own strip so slide-up enters from below */
+        overflow: hidden;
+      }
+      /* inner wrapper is what slides; row itself is the mask */
+      [data-composition-id="act5-save-time"] .r1-row-wrap,
+      [data-composition-id="act5-save-time"] .r2-row-wrap,
+      [data-composition-id="act5-save-time"] .r3-row-wrap {
+        display: inline-flex;
+        align-items: center;
+        will-change: transform, opacity, filter;
+      }
+
+      /* Row 1 — "time" pivots 3D around its left edge */
+      [data-composition-id="act5-save-time"] .row1-time {
+        display: inline-block;
+        transform-origin: left center;
+        backface-visibility: hidden;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="act5-save-time"] .row1-clock {
+        width: 320px;
+        height: 320px;
+        margin-left: -187px;
+        opacity: 0;
+        transform: rotate(-40deg) scale(0.6);
+        transform-origin: center center;
+        will-change: transform, opacity;
+      }
+
+      /* Row 2 — "credits" shimmers gold via animated gradient */
+      [data-composition-id="act5-save-time"] .row2-credits {
+        display: inline-block;
+        background-image: linear-gradient(90deg, #8a6a1a 0%, #d4a72c 25%, #f4d35e 50%, #d4a72c 75%, #8a6a1a 100%);
+        background-size: 200% 100%;
+        background-position: 100% 0;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: #1d1d1f;
+        -webkit-text-fill-color: currentColor;
+        will-change: background-position;
+      }
+      [data-composition-id="act5-save-time"] .row2-credits.shimmer {
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+      }
+
+      /* Row 3 — pill extends off-screen right; "drag" lives inside */
+      [data-composition-id="act5-save-time"] .row-3 {
+        /* Let the pill overflow the comp's right edge */
+        overflow: visible;
+      }
+      [data-composition-id="act5-save-time"] .row3-prefix {
+        display: inline-block;
+      }
+      [data-composition-id="act5-save-time"] .row3-pill {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        min-width: 1200px;     /* extends well past viewport right */
+        padding: 14px 56px;
+        background: #D97757;
+        border-radius: 14px;
+        margin-left: 14px;
+        will-change: margin-left, padding-left, transform;
+      }
+      [data-composition-id="act5-save-time"] .row3-drag {
+        font-family: 'Great Vibes', 'Inter', cursive;
+        font-weight: 400;
+        font-size: 150px;
+        font-style: italic;
+        color: #ffffff;
+        text-decoration: underline;
+        line-height: 1;
+        padding: 0 10px;
+        margin-top: -16px;   /* optical centering */
+      }
+
+      /* Cursor */
+      [data-composition-id="act5-save-time"] .act5-cursor {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 64px;
+        height: 78px;
+        z-index: 10;
+        opacity: 0;
+        transform-origin: 6px 3.5px;
+        pointer-events: none;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="act5-save-time"] .act5-cursor svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      (function () {
+        const scope = document.querySelector('[data-composition-id="act5-save-time"]');
+        const q = (s) => scope.querySelector(s);
+        const tl = gsap.timeline({ paused: true });
+
+        // =====================
+        // Cut-the-curve ENTRY — whole stack decelerates up from blurred state
+        // (matches act4's upward rush out)
+        // =====================
+        tl.fromTo(".act5-stack",
+          { y: -160, filter: "blur(10px)" },
+          { y: 0,    filter: "blur(0px)", duration: 0.55, ease: "expo.out" },
+          0
+        );
+
+        // =====================
+        // Rows slide UP from below (row is an overflow-hidden mask; inner
+        // wrapper is what moves). Sequential stagger, fast + clean.
+        // =====================
+        const wraps = [".r1-row-wrap", ".r2-row-wrap", ".r3-row-wrap"];
+        wraps.forEach((sel, i) => {
+          tl.fromTo(sel,
+            { y: 140, opacity: 0 },
+            { y: 0,   opacity: 1, duration: 0.5, ease: "expo.out" },
+            0.08 + i * 0.12
+          );
+        });
+
+        // Initial states for transform targets
+        gsap.set(".row1-clock", { opacity: 0, rotation: -40, scale: 0.6 });
+        gsap.set(".row1-time",  { rotationY: 0, opacity: 1 });
+
+        // =====================
+        // "time" 3D flip + clock rotate-in (VO end-of-"time" @ 0.81)
+        // =====================
+        const T_TIME = 0.81;
+        tl.to(".row1-time", {
+          rotationY: -90,
+          opacity: 0,
+          duration: 0.18,
+          ease: "power2.in"
+        }, T_TIME);
+        tl.to(".row1-clock", {
+          opacity: 1,
+          rotation: 0,
+          scale: 1,
+          duration: 0.15,
+          ease: "back.out(1.6)"
+        }, T_TIME + 0.1);
+
+        // =====================
+        // "credits" gold shimmer (VO end-of-"credits" @ 2.12)
+        // Gradient sweep left-to-right.
+        // =====================
+        const T_CREDITS = 2.12;
+        tl.call(() => {
+          const el = q(".row2-credits");
+          if (el) el.classList.add("shimmer");
+        }, [], T_CREDITS);
+        tl.fromTo(".row2-credits",
+          { backgroundPosition: "100% 0" },
+          { backgroundPosition: "0% 0", duration: 0.6, ease: "power2.out" },
+          T_CREDITS
+        );
+
+        // =====================
+        // Cursor enters bottom-left, clicks + drags pill leftward.
+        // VO "Just click & drag" phrase starts ~2.65.
+        // =====================
+        const CURSOR_IN_T = 2.45;
+        const CURSOR_ARRIVE_T = CURSOR_IN_T + 0.6;
+
+        gsap.set(".act5-cursor", { x: 180, y: 1180, scale: 1, opacity: 0 });
+        tl.to(".act5-cursor", { opacity: 1, duration: 0.08, ease: "none" }, CURSOR_IN_T);
+        // Land on the left edge of the orange pill
+        tl.to(".act5-cursor", {
+          x: 820, y: 820,
+          duration: 0.6, ease: "power2.out"
+        }, CURSOR_IN_T);
+
+        // Click compress
+        tl.to(".act5-cursor", { scale: 0.82, duration: 0.07, ease: "power4.in" }, CURSOR_ARRIVE_T);
+        tl.to(".act5-cursor", { scale: 1,    duration: 0.16, ease: "back.out(2)" }, CURSOR_ARRIVE_T + 0.08);
+
+        // Drag: pill translates left AND grows to reveal more timeline —
+        // end state covers full screen + 200px (width 2120, left edge at -200,
+        // right edge at 1920). Cursor tracks the same grab point.
+        // Pill starts with left edge ~x=824 and width ~1312.
+        const DRAG_T         = CURSOR_ARRIVE_T + 0.22;
+        const DRAG_DUR       = 0.533;
+        const DRAG_DX        = -1099;    // 75px further than before — pill left ends ~-275
+        const DRAG_WIDTH_END = 2600;     // extends well past right edge so act5 exit slide-left doesn't reveal white
+        tl.to(".row3-pill", {
+          x: DRAG_DX,
+          width: DRAG_WIDTH_END,
+          duration: DRAG_DUR,
+          ease: "power2.inOut"
+        }, DRAG_T);
+        tl.to(".act5-cursor", {
+          x: 820 + DRAG_DX,
+          duration: DRAG_DUR,
+          ease: "power2.inOut"
+        }, DRAG_T);
+
+        // =====================
+        // Cut-the-curve EXIT (LEFT): last 0.45s, whole scene rushes LEFT + blur.
+        // Pairs with act6's entry from the right (matched 10px blur).
+        // =====================
+        const EXIT_T_5 = 4.13 - 0.14; // 3.99
+        tl.to(scope, {
+          x: -280,
+          filter: "blur(22px)",
+          duration: 0.14,
+          ease: "power3.in"
+        }, EXIT_T_5);
+
+        // Pad timeline
+        tl.to({}, { duration: 4.13 }, 0);
+
+        window.__timelines["act5-save-time"] = tl;
+      })();
+    </script>
+  </div>
+</template>

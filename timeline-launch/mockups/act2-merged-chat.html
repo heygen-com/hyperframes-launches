@@ -1,0 +1,288 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Act 2 Merged · Persistent Chat on Intro BG (keyframe)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+
+    html, body {
+      margin: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      font-family: "Inter", -apple-system, sans-serif;
+    }
+
+    .stage {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      background: #f5f5f7;
+    }
+
+    /* "Timing is tricky" headline — positioned where it would be mid-scroll:
+       pushed up but still partially visible above the chat column */
+    .headline {
+      position: absolute;
+      top: 110px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 56px;
+      white-space: nowrap;
+      opacity: 0.35; /* being pushed off — dimming as it leaves */
+    }
+    .headline .word {
+      font-size: 150px;
+      font-weight: 900;
+      letter-spacing: -0.035em;
+      line-height: 1;
+      color: #1d1d1f;
+    }
+    .bell {
+      width: 220px;
+      height: 220px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bell svg { width: 100%; height: 100%; display: block;
+      filter: drop-shadow(0 10px 18px rgba(29,29,31,0.18));
+    }
+
+    /* Chat column — no app chrome, no bg, just floating bubbles centered.
+       Thread is anchored to bottom and grows upward. */
+    .chat-column {
+      position: absolute;
+      left: 50%;
+      bottom: 240px;
+      transform: translateX(-50%);
+      width: 1100px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    /* Fade mask so messages dissolve into the headline area */
+    .chat-column {
+      -webkit-mask-image: linear-gradient(180deg,
+        transparent 0,
+        rgba(0,0,0,0.25) 12%,
+        #000 32%,
+        #000 100%);
+              mask-image: linear-gradient(180deg,
+        transparent 0,
+        rgba(0,0,0,0.25) 12%,
+        #000 32%,
+        #000 100%);
+    }
+
+    .msg-user {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .msg-user .bubble {
+      max-width: 720px;
+      padding: 22px 30px;
+      background: #ffffff;
+      border: 1px solid rgba(29,29,31,0.08);
+      border-radius: 22px;
+      box-shadow: 0 4px 24px rgba(29,29,31,0.06);
+      font-size: 30px;
+      line-height: 1.4;
+      font-weight: 500;
+      color: #1d1d1f;
+    }
+
+    .msg-claude {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .claude-mark {
+      width: 52px;
+      height: 52px;
+      flex: 0 0 52px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid rgba(29,29,31,0.08);
+      box-shadow: 0 2px 10px rgba(29,29,31,0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .claude-body { padding-top: 10px; }
+    .claude-text {
+      font-size: 32px;
+      line-height: 1.45;
+      color: #1d1d1f;
+      font-weight: 500;
+    }
+    .caret { color: #D97757; margin-left: 3px; }
+
+    /* Composer — parked at bottom, floating on intro bg (no chrome around it) */
+    .composer-wrap {
+      position: absolute;
+      left: 50%;
+      bottom: 60px;
+      transform: translateX(-50%);
+      width: 1100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .composer {
+      width: 100%;
+      min-height: 132px;
+      background: #ffffff;
+      border: 1px solid rgba(29,29,31,0.10);
+      border-radius: 26px;
+      box-shadow: 0 10px 40px rgba(29,29,31,0.08), 0 2px 6px rgba(29,29,31,0.04);
+      padding: 26px 28px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .composer-text {
+      font-size: 26px;
+      color: #1d1d1f;
+      min-height: 34px;
+      font-weight: 500;
+    }
+    .composer-text .typed { color: #1d1d1f; }
+    .composer-text .typing-caret {
+      display: inline-block;
+      width: 2px;
+      height: 28px;
+      background: #D97757;
+      margin-left: 3px;
+      vertical-align: middle;
+    }
+    .composer-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+    }
+    .attach {
+      width: 42px; height: 42px;
+      color: #8c8c90;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .send {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      background: #D97757;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .composer-meta {
+      font-size: 15px;
+      color: #8c8c90;
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+
+    <!-- Headline: "timing is 🔔 tricky" — still visible but dimmed/being pushed up -->
+    <div class="headline">
+      <span class="word">timing</span>
+      <span class="word">is</span>
+      <span class="bell" id="bell-lottie"></span>
+      <span class="word">tricky.</span>
+    </div>
+
+    <!-- Chat thread — anchored to bottom, growing upward, top bubbles fade into headline area -->
+    <div class="chat-column">
+
+      <!-- Older message (fading into mask) -->
+      <div class="msg-user">
+        <div class="bubble">Can you move the sound effect 0.1s earlier?</div>
+      </div>
+
+      <div class="msg-claude">
+        <div class="claude-mark">
+          <svg viewBox="0 0 32 32" width="28" height="28">
+            <g fill="#D97757">
+              <path d="M16 2 L17.4 12.6 L21.2 4.8 L18.7 13.3 L26.2 8.2 L19.5 14.8 L29.4 14 L19.6 16.6 L28 21.6 L18.8 17.8 L22.5 27.2 L16.8 18.4 L15.4 28.8 L14.7 18.2 L9.2 27.2 L13 17.8 L3.8 21.6 L12.3 16.6 L2.6 14 L12.4 14.8 L5.8 8.2 L13.3 13.3 L10.8 4.8 L14.6 12.6 Z"/>
+            </g>
+          </svg>
+        </div>
+        <div class="claude-body">
+          <div class="claude-text">Done.</div>
+        </div>
+      </div>
+
+      <div class="msg-user">
+        <div class="bubble">actually 0.05s earlier</div>
+      </div>
+
+      <div class="msg-user">
+        <div class="bubble">try 0.08</div>
+      </div>
+
+      <div class="msg-user">
+        <div class="bubble">too much, +0.02</div>
+      </div>
+    </div>
+
+    <!-- Composer parked at bottom, mid-type on next prompt -->
+    <div class="composer-wrap">
+      <div class="composer">
+        <div class="composer-text">
+          <span class="typed">split the difference</span><span class="typing-caret"></span>
+        </div>
+        <div class="composer-actions">
+          <div class="attach">
+            <svg viewBox="0 0 24 24" width="22" height="22">
+              <path d="M21 11.5l-8.5 8.5a5 5 0 1 1-7-7l8.5-8.5a3.5 3.5 0 1 1 5 5L11 17.5a2 2 0 1 1-3-3l7-7"
+                    stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="send">
+            <svg viewBox="0 0 24 24" width="18" height="18">
+              <path d="M12 5v14M5 12l7-7 7 7"
+                    stroke="#fff" stroke-width="2" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="composer-meta">Claude can make mistakes. Please double-check responses.</div>
+    </div>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.14/lottie.min.js"></script>
+  <script>
+    (async function () {
+      // Load bell.json (same asset Act 0 uses). Relative path resolves against
+      // the mockup's file:// location -> ../assets/bell.json.
+      try {
+        const resp = await fetch('../assets/bell.json');
+        const outer = await resp.json();
+        const animationData = (outer && typeof outer.content === 'string')
+          ? JSON.parse(outer.content)
+          : outer;
+        const anim = window.lottie.loadAnimation({
+          container: document.getElementById('bell-lottie'),
+          renderer: 'svg',
+          loop: false,
+          autoplay: false,
+          animationData
+        });
+        // Park on a mid-animation frame that looks like a "settled ringing bell"
+        anim.addEventListener('DOMLoaded', () => anim.goToAndStop(60, true));
+      } catch (e) {
+        console.error('bell lottie load failed', e);
+      }
+    })();
+  </script>
+</body>
+</html>

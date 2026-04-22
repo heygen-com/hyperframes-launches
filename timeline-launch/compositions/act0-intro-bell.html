@@ -1,0 +1,327 @@
+<template id="act0-intro-bell-template">
+  <div data-composition-id="act0-intro-bell" data-width="1920" data-height="1080" data-start="0" data-duration="7">
+    <div class="canvas">
+      <div class="reading-zone">
+        <!-- Section 1: "If you've / ever / used AI" -->
+        <div class="section" id="s1">
+          <div class="line s1-l1"><span class="w s1-w1">If</span> <span class="w s1-w2">you've</span></div>
+          <div class="line s1-l2"><span class="w s1-w3">ever</span></div>
+          <div class="line s1-l3"><span class="w s1-w4">used</span> <span class="w s1-w5">AI</span></div>
+        </div>
+
+        <!-- Section 2: "for / video / editing before," -->
+        <div class="section" id="s2">
+          <div class="line s2-l1"><span class="w s2-w1">for</span></div>
+          <div class="line s2-l2"><span class="w s2-w2">video</span></div>
+          <div class="line s2-l3"><span class="w s2-w3">editing</span> <span class="w s2-w4">before,</span></div>
+        </div>
+
+        <!-- Section 3: "you / know / that" -->
+        <div class="section" id="s3">
+          <div class="line s3-l1"><span class="w s3-w1">you</span></div>
+          <div class="line s3-l2"><span class="w s3-w2">know</span></div>
+          <div class="line s3-l3"><span class="w s3-w3">that</span></div>
+        </div>
+
+        <!-- Section 4 (trio): "timing is 🔔 tricky." — retains slide-in -->
+        <div class="group trio" id="trio">
+          <span class="word final" id="w-timing">timing</span>
+          <span class="word final" id="w-is">is</span>
+          <span class="bell-slot" id="bell">
+            <span class="ring ring-2"></span>
+            <span class="ring"></span>
+            <span class="bell-main" id="bell-main">
+              <span class="bell-lottie" id="bell-lottie"></span>
+            </span>
+          </span>
+          <span class="word final" id="w-tricky">tricky.</span>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700;900&family=Playfair+Display:ital,wght@1,700;1,900&display=block');
+
+      [data-composition-id="act0-intro-bell"] {
+        width: 1920px; height: 1080px; position: relative; overflow: hidden;
+        background: #f5f5f7; color: #1d1d1f;
+        font-family: "Inter", -apple-system, sans-serif;
+      }
+      [data-composition-id="act0-intro-bell"] .canvas {
+        position: absolute; inset: 0; background: #f5f5f7;
+      }
+      [data-composition-id="act0-intro-bell"] .reading-zone {
+        position: absolute; inset: 0;
+        overflow: hidden;
+      }
+
+      /* Cascade sections — word-by-word opacity reveals */
+      [data-composition-id="act0-intro-bell"] .section {
+        position: absolute;
+        top: 50%; left: 0; right: 0;
+        transform: translateY(-50%);
+        display: flex; flex-direction: column;
+        align-items: flex-start;
+        opacity: 0;
+        will-change: opacity;
+      }
+      [data-composition-id="act0-intro-bell"] .line {
+        font-family: 'Inter', sans-serif;
+        font-weight: 900;
+        letter-spacing: -0.045em;
+        line-height: 0.88;
+        color: #1d1d1f;
+        white-space: nowrap;
+      }
+      [data-composition-id="act0-intro-bell"] .w {
+        display: inline-block;
+        opacity: 0;
+        will-change: opacity;
+      }
+
+      /* Section 1: If you've / ever / used AI */
+      [data-composition-id="act0-intro-bell"] .s1-l1 { font-size: 220px; margin-left: 140px; }
+      [data-composition-id="act0-intro-bell"] .s1-l2 {
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-weight: 900;
+        font-size: 520px;
+        letter-spacing: -0.02em;
+        margin-left: 240px;
+        margin-top: -10px;
+        color: #29D200;
+      }
+      [data-composition-id="act0-intro-bell"] .s1-l3 { font-size: 280px; margin-left: 780px; margin-top: -10px; }
+
+      /* Section 2: for / video / editing before, */
+      [data-composition-id="act0-intro-bell"] .s2-l1 { font-size: 220px; margin-left: 160px; }
+      [data-composition-id="act0-intro-bell"] .s2-l2 {
+        font-size: 500px;
+        margin-left: 220px;
+        margin-top: -12px;
+        color: #00C4FF;
+      }
+      [data-composition-id="act0-intro-bell"] .s2-l3 { font-size: 200px; margin-left: 220px; margin-top: -4px; }
+
+      /* Section 3: you / know / that */
+      [data-composition-id="act0-intro-bell"] .s3-l1 { font-size: 240px; margin-left: 200px; }
+      [data-composition-id="act0-intro-bell"] .s3-l2 {
+        font-size: 500px;
+        margin-left: 260px;
+        margin-top: -12px;
+      }
+      [data-composition-id="act0-intro-bell"] .s3-w2 {
+        background: linear-gradient(90deg, #00C4FF 0%, #29D200 50%, #00C4FF 100%);
+        background-size: 200% 100%;
+        background-position: 0% 50%;
+        -webkit-background-clip: text;
+                background-clip: text;
+        -webkit-text-fill-color: transparent;
+                color: transparent;
+      }
+      [data-composition-id="act0-intro-bell"] .s3-l3 { font-size: 340px; margin-left: 820px; margin-top: -10px; }
+
+      /* Trio (unchanged "timing is tricky" slide) */
+      [data-composition-id="act0-intro-bell"] .group {
+        position: absolute;
+        left: 50%; top: 50%;
+        display: flex; align-items: center;
+        gap: 56px;
+        white-space: nowrap;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="act0-intro-bell"] .word {
+        font-size: 150px; font-weight: 900;
+        letter-spacing: -0.035em; line-height: 1;
+        color: #1d1d1f;
+        flex-shrink: 0;
+      }
+      [data-composition-id="act0-intro-bell"] .bell-slot {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 0; height: 280px;
+        flex-shrink: 0; overflow: visible;
+        opacity: 0; position: relative;
+        margin: 0 -28px;
+      }
+      [data-composition-id="act0-intro-bell"] .bell-main {
+        position: relative; width: 280px; height: 280px; display: flex;
+        transform-origin: 50% 50%;
+      }
+      [data-composition-id="act0-intro-bell"] .bell-lottie {
+        width: 100%; height: 100%; display: block;
+        filter: drop-shadow(0 10px 18px rgba(29,29,31,0.18));
+      }
+      [data-composition-id="act0-intro-bell"] .bell-lottie svg {
+        width: 100%; height: 100%; display: block;
+      }
+      [data-composition-id="act0-intro-bell"] .ring {
+        position: absolute; left: 50%; top: 50%;
+        width: 364px; height: 364px;
+        margin: -182px 0 0 -182px;
+        border-radius: 50%;
+        border: 3px solid rgba(29, 29, 31, 0.25);
+        opacity: 0; transform: scale(0.4);
+      }
+      [data-composition-id="act0-intro-bell"] .ring-2 { border-color: rgba(29, 29, 31, 0.10); }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.14/lottie.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      (async function () {
+        const scope = document.querySelector('[data-composition-id="act0-intro-bell"]');
+        const q = (s) => scope.querySelector(s);
+        const qa = (s) => Array.from(scope.querySelectorAll(s));
+
+        if (document.fonts && document.fonts.ready) await document.fonts.ready;
+        for (let i = 0; i < 40 && typeof window.lottie === 'undefined'; i++) {
+          await new Promise(r => setTimeout(r, 50));
+        }
+
+        // Sections with per-WORD reveal times aligned to the VO.
+        const sections = [
+          {
+            id: "#s1",
+            words: [
+              { sel: ".s1-w1", t: 0.14 }, // If
+              { sel: ".s1-w2", t: 0.30 }, // you've
+              { sel: ".s1-w3", t: 0.55 }, // ever
+              { sel: ".s1-w4", t: 0.87 }, // used
+              { sel: ".s1-w5", t: 1.06 }  // AI
+            ],
+            out: 1.36
+          },
+          {
+            id: "#s2",
+            words: [
+              { sel: ".s2-w1", t: 1.36 }, // for
+              { sel: ".s2-w2", t: 1.58 }, // video
+              { sel: ".s2-w3", t: 1.92 }, // editing
+              { sel: ".s2-w4", t: 2.48 }  // before,
+            ],
+            out: 3.06
+          },
+          {
+            id: "#s3",
+            words: [
+              { sel: ".s3-w1", t: 3.06 }, // you
+              { sel: ".s3-w2", t: 3.30 }, // know
+              { sel: ".s3-w3", t: 3.54 }  // that
+            ],
+            out: 3.79
+          }
+        ];
+
+        const trioStart = 3.79;
+        const splitT    = 4.90;
+        const SLIDE_DUR = 0.42;
+        const OFFSCREEN_R = 1400;
+
+        const bellSlot = q('#bell');
+        const bellMain = q('#bell-main');
+        const bellLottieEl = q('#bell-lottie');
+        const rings = qa('.ring');
+        const trio = q('#trio');
+        const trioWords = [q('#w-timing'), q('#w-is'), q('#w-tricky')];
+
+        let bellAnim = null;
+        let setBellFrame = () => {};
+        if (typeof window.lottie !== 'undefined') {
+          try {
+            const resp = await fetch('assets/bell.json');
+            const outer = await resp.json();
+            const animationData = (outer && typeof outer.content === 'string') ? JSON.parse(outer.content) : outer;
+            bellAnim = window.lottie.loadAnimation({
+              container: bellLottieEl,
+              renderer: 'svg',
+              loop: false,
+              autoplay: false,
+              animationData
+            });
+            const originalGoToAndStop = bellAnim.goToAndStop.bind(bellAnim);
+            setBellFrame = (f) => { try { originalGoToAndStop(f, true); } catch (e) {} };
+            bellAnim.goToAndStop = function () { /* no-op */ };
+            bellAnim.addEventListener('DOMLoaded', () => setBellFrame(0));
+          } catch (e) {
+            console.error('bell lottie load failed', e);
+          }
+        }
+
+        const tl = gsap.timeline({ paused: true });
+
+        // Initial state
+        sections.forEach(s => {
+          gsap.set(q(s.id), { opacity: 0 });
+          s.words.forEach(w => gsap.set(q(w.sel), { opacity: 0 }));
+        });
+        gsap.set(trio, { xPercent: -50, yPercent: -50, x: OFFSCREEN_R, opacity: 0 });
+        gsap.set(trioWords, { opacity: 1 });
+        gsap.set(bellSlot, { width: 0, opacity: 0 });
+        gsap.set(bellMain, { scale: 0.4, rotation: -8, opacity: 0 });
+        gsap.set(rings, { scale: 0.4, opacity: 0 });
+
+        // Gradient sweep on "know" — continuous color flow while visible
+        tl.fromTo(q('.s3-w2'),
+          { backgroundPosition: '0% 50%' },
+          { backgroundPosition: '-200% 50%', duration: 1.6, ease: 'none' },
+          3.06
+        );
+
+        // Reveal per section
+        const WORD_FADE = 0.18;
+        const SECTION_OUT = 0.08;
+        sections.forEach(s => {
+          const sec = q(s.id);
+          // Section visible at first word cue
+          tl.to(sec, { opacity: 1, duration: 0.01 }, s.words[0].t);
+          // Each word fades in
+          s.words.forEach(w => {
+            tl.to(q(w.sel), {
+              opacity: 1,
+              duration: WORD_FADE,
+              ease: "power2.out"
+            }, w.t);
+          });
+          // Cut-out at section end
+          tl.to(sec, {
+            opacity: 0,
+            duration: SECTION_OUT,
+            ease: "power2.in"
+          }, s.out - SECTION_OUT);
+        });
+
+        // Trio slide-in (unchanged)
+        tl.to(trio, {
+          x: 0, opacity: 1,
+          duration: SLIDE_DUR, ease: "power3.out"
+        }, trioStart);
+
+        tl.to(bellSlot, {
+          width: 280, opacity: 1,
+          duration: 0.5, ease: "power3.out"
+        }, splitT);
+
+        tl.fromTo(bellMain,
+          { scale: 0.4, rotation: -8, opacity: 0 },
+          { scale: 1, rotation: 0, opacity: 1, duration: 0.35, ease: "back.out(2.2)" },
+          splitT + 0.15
+        );
+
+        const bellFrame = { frame: 0 };
+        tl.to(bellFrame, {
+          frame: 140,
+          duration: 1.6,
+          ease: "none",
+          onUpdate: () => setBellFrame(bellFrame.frame)
+        }, splitT + 0.2);
+
+        gsap.set(rings, { opacity: 0 });
+
+        tl.to({}, { duration: 7 }, 0);
+
+        window.__timelines["act0-intro-bell"] = tl;
+      })();
+    </script>
+  </div>
+</template>

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Timeline Editor Launch</title>
+    <style>
+      html, body { margin: 0; padding: 0; background: #f5f5f7; }
+    </style>
+  </head>
+  <body>
+    <div data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="33.53">
+      <!-- Act 0: VO intro — word conveyor → bell shake → late SFX (0 - 7s) -->
+      <div
+        id="act0"
+        data-composition-id="act0-intro-bell"
+        data-composition-src="compositions/act0-intro-bell.html"
+        data-start="0"
+        data-duration="6.7"
+        data-track-index="-1"
+       style="z-index: 1"></div>
+
+      <!-- Act 2 merged: persistent chat on intro bg (6.7 - 15.75s)
+           Replaces old act2a + act0b + act2b. Composer + thread float over the
+           same #f5f5f7 scene with "timing is tricky" pinned at top until spiral
+           pushes it off. Bell reprise + SFX retained; headline never dissolves. -->
+      <div
+        id="act2"
+        data-composition-id="act2-merged-chat"
+        data-composition-src="compositions/act2-merged-chat.html"
+        data-start="6.7"
+        data-duration="9.05"
+        data-track-index="0"
+       style="z-index: 2"></div>
+
+      <!-- Act 3: upward cut → "Not Anymore" reveal → "Just use the timeline" (17.5 - 22.5s) -->
+      <div
+        id="act3"
+        data-composition-id="act3-not-anymore"
+        data-composition-src="compositions/act3-not-anymore.html"
+        data-start="15.75"
+        data-duration="7.45"
+        data-track-index="0"
+       style="z-index: 2"></div>
+
+      <!-- Act 4: final video with zoom-through entry — triggered on cursor click -->
+      <div
+        id="act4"
+        data-composition-id="act4-video"
+        data-composition-src="compositions/act4-video.html"
+        data-start="21.0"
+        data-duration="5.7"
+        data-track-index="1"
+       style="z-index: 2"></div>
+
+      <!-- Act 4 final video — at root so HF drives playback (24.1 - 29.8s) -->
+      <video
+        id="act4-final-video"
+        src="assets/sstest.mp4"
+        data-start="21.0"
+        data-duration="5.7"
+        data-track-index="6"
+        muted
+        playsinline
+        style="position: absolute; inset: 0; width: 1920px; height: 1080px; object-fit: cover; z-index: 6; transform-origin: 50% 50%"
+      ></video>
+
+      <!-- Act 5: Save time / credits / drag — cut-the-curve entry from act4 (28.2 - 32.6s) -->
+      <div
+        id="act5"
+        data-composition-id="act5-save-time"
+        data-composition-src="compositions/act5-save-time.html"
+        data-start="26.7"
+        data-duration="4.13"
+        data-track-index="0"
+       style="z-index: 3"></div>
+
+      <!-- Act 6: Hyperframes + HeyGen logo reveal — cut-the-curve LEFT from act5 (31.1 - 33.8s) -->
+      <div
+        id="act6"
+        data-composition-id="act6-logo"
+        data-composition-src="compositions/act6-logo.html"
+        data-start="30.83"
+        data-duration="2.7"
+        data-track-index="5"
+       style="z-index: 4"></div>
+
+      <!-- Act 6 VO — "Hyperframes" / "HeyGen" -->
+      <audio
+        id="vo-last3"
+        src="assets/vo-last3.mp3"
+        data-start="30.83"
+        data-duration="1.91"
+        data-track-index="2"
+        data-volume="1"
+      ></audio>
+
+      <!-- Click SFX for Act 5 — fires when cursor clicks the timeline pill (30.45s) -->
+      <audio
+        id="click-sfx-2"
+        src="assets/click-sfx.mp3"
+        data-start="29.75"
+        data-duration="0.6"
+        data-track-index="3"
+        data-volume="0.8"
+      ></audio>
+
+      <!-- "Save some tokens" VO — triggers at act5 start -->
+      <audio
+        id="vo-save-time"
+        src="assets/tokens.mp3"
+        data-start="26.7"
+        data-duration="3.58"
+        data-track-index="2"
+        data-volume="1"
+      ></audio>
+
+
+      <!-- VO audio — full intro line, synced to Act 0 -->
+      <audio
+        id="vo-intro"
+        src="assets/vo-intro.mp3"
+        data-start="0"
+        data-duration="5.44"
+        data-track-index="2"
+        data-volume="1"
+       style="z-index: 3"></audio>
+
+      <!-- Bell SFX — rings in sync with Lottie bell shake peak in Act 0 -->
+      <audio
+        id="bell-sfx-1"
+        src="assets/bell.mp3"
+        data-start="6.25"
+        data-duration="1.2"
+        data-track-index="3"
+        data-volume="0.3"
+       style="z-index: 4"></audio>
+
+      <!-- "Not Anymore" VO — triggers right as the upward mask reveal begins (18.5s) -->
+      <audio
+        id="vo-not-anymore"
+        src="assets/vo-not-anymore.mp3"
+        data-start="16.2"
+        data-duration="2.76"
+        data-track-index="2"
+        data-volume="1"
+      ></audio>
+
+      <!-- Click SFX — fires when cursor clicks the timeline bar in Act 3 (24.08s) -->
+      <audio
+        id="click-sfx"
+        src="assets/click-sfx.mp3"
+        data-start="20.78"
+        data-duration="0.6"
+        data-track-index="3"
+        data-volume="0.8"
+      ></audio>
+
+      <!-- Bell SFX reprise — in sync with tighter bell shake in Act 0b -->
+      <audio
+        id="bell-sfx-2"
+        src="assets/bell.mp3"
+        data-start="10.89"
+        data-duration="1.26"
+        data-track-index="3"
+        data-volume="0.3"
+       style="z-index: 4"></audio>
+
+      <!-- VO reprise — plays just "timing is tricky" portion (media-start 3.79 → 5.39 in source) -->
+      <audio
+        id="vo-reprise"
+        src="assets/vo-intro.mp3"
+        data-start="9.41"
+        data-media-start="3.6"
+        data-duration="1.88"
+        data-track-index="2"
+        data-volume="1"
+       style="z-index: 3"></audio>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        window.__timelines["root"] = gsap.timeline({ paused: true });
+      </script>
+    </div>
+  </body>
+</html>

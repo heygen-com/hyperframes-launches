@@ -1,0 +1,10 @@
+{
+  "name": "new-intro",
+  "description": "Hyperframe launch video with glass-frame intro sequence. 15.1s figma-glass-frame opener into CSS/GSAP/Lottie/Shaders/Three.js flex section and full narrative.",
+  "duration": 49.77,
+  "resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "fps": 30
+}

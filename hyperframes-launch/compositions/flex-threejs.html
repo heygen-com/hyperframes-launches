@@ -1,0 +1,172 @@
+<template id="flex-threejs-template">
+  <div
+    data-composition-id="flex-threejs"
+    data-width="1920"
+    data-height="1080"
+    data-start="0"
+    data-duration="1.2"
+  >
+    <div class="three-bg"></div>
+
+    <!-- Warm directional light spot -->
+    <div class="three-light"></div>
+
+    <!-- Ground shadow -->
+    <div class="three-shadow"></div>
+
+    <!-- CSS 3D torus — 16 segments arranged in a ring -->
+    <div class="three-stage">
+      <div class="three-form" id="torus-form"></div>
+    </div>
+
+    <div class="three-label">Three.js</div>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&display=swap");
+
+      [data-composition-id="flex-threejs"] {
+        width: 1920px; height: 1080px;
+        position: relative; overflow: hidden;
+        background: #f0ebe3;
+      }
+      [data-composition-id="flex-threejs"] .three-bg {
+        position: absolute; inset: 0;
+        background:
+          radial-gradient(ellipse at 40% 35%, rgba(255,245,230,0.6) 0%, transparent 50%),
+          radial-gradient(ellipse at 50% 50%, #f0ebe3 0%, #e4ddd2 100%);
+      }
+      [data-composition-id="flex-threejs"] .three-light {
+        position: absolute;
+        top: 15%; left: 35%;
+        width: 600px; height: 600px;
+        background: radial-gradient(circle, rgba(255,235,200,0.25) 0%, transparent 60%);
+        pointer-events: none;
+      }
+
+      [data-composition-id="flex-threejs"] .three-shadow {
+        position: absolute;
+        top: 680px; left: 50%;
+        width: 360px; height: 50px;
+        margin-left: -180px;
+        background: radial-gradient(ellipse, rgba(80,60,40,0.18) 0%, transparent 70%);
+        border-radius: 50%;
+      }
+
+      [data-composition-id="flex-threejs"] .three-stage {
+        position: absolute;
+        top: 42%; left: 50%;
+        width: 0; height: 0;
+        perspective: 900px;
+        perspective-origin: 50% 50%;
+      }
+      [data-composition-id="flex-threejs"] .three-form {
+        position: relative;
+        width: 0; height: 0;
+        transform-style: preserve-3d;
+        will-change: transform;
+      }
+      [data-composition-id="flex-threejs"] .torus-seg {
+        position: absolute;
+        width: 175px; height: 175px;
+        border-radius: 40px;
+        backface-visibility: visible;
+        transform-style: preserve-3d;
+      }
+
+      [data-composition-id="flex-threejs"] .three-label {
+        position: absolute;
+        bottom: 140px; left: 50%;
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 500;
+        font-style: italic;
+        font-size: 64px;
+        color: #5a4a3a;
+        letter-spacing: 0.02em;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+        var root = document.querySelector('[data-composition-id="flex-threejs"]');
+
+        var form = root.querySelector("#torus-form");
+        var label = root.querySelector(".three-label");
+        var shadow = root.querySelector(".three-shadow");
+
+        // Generate torus segments — 16 pieces around a ring (2.5x scale)
+        var SEGS = 16;
+        var RING_R = 400; // major radius (160 × 2.5)
+        var colors = [
+          ["#dbb0b0","#c49090"], ["#c8b8a8","#b0a090"], ["#a8c0a0","#8ea888"],
+          ["#c4b098","#ae9a82"], ["#d4a0a0","#be8a8a"], ["#b8c8b0","#98b088"],
+          ["#d0c0b0","#baa898"], ["#c0a8b8","#a890a0"], ["#dbb0b0","#c49090"],
+          ["#c8b8a8","#b0a090"], ["#a8c0a0","#8ea888"], ["#c4b098","#ae9a82"],
+          ["#d4a0a0","#be8a8a"], ["#b8c8b0","#98b088"], ["#d0c0b0","#baa898"],
+          ["#c0a8b8","#a890a0"]
+        ];
+
+        for (var i = 0; i < SEGS; i++) {
+          var angle = (i / SEGS) * Math.PI * 2;
+          var x = Math.cos(angle) * RING_R;
+          var z = Math.sin(angle) * RING_R;
+          var rotY = -(angle * 180 / Math.PI) + 90;
+
+          var seg = document.createElement("span");
+          seg.className = "torus-seg";
+          var c = colors[i];
+          seg.style.background = "linear-gradient(135deg, " + c[0] + ", " + c[1] + ")";
+          seg.style.transform =
+            "rotateY(" + rotY.toFixed(1) + "deg) " +
+            "translateZ(" + RING_R + "px) " +
+            "rotateY(90deg)";
+          seg.style.marginLeft = "-87px";
+          seg.style.marginTop = "-87px";
+          form.appendChild(seg);
+        }
+
+        // Add inner ring for depth (slightly smaller, offset)
+        for (var j = 0; j < SEGS; j++) {
+          var angle2 = ((j + 0.5) / SEGS) * Math.PI * 2;
+          var rotY2 = -(angle2 * 180 / Math.PI) + 90;
+
+          var seg2 = document.createElement("span");
+          seg2.className = "torus-seg";
+          var c2 = colors[(j + 4) % SEGS];
+          seg2.style.background = "linear-gradient(135deg, " + c2[0] + ", " + c2[1] + ")";
+          seg2.style.width = "125px";
+          seg2.style.height = "125px";
+          seg2.style.borderRadius = "30px";
+          seg2.style.opacity = "0.85";
+          seg2.style.transform =
+            "rotateY(" + rotY2.toFixed(1) + "deg) " +
+            "translateZ(" + (RING_R * 0.7) + "px) " +
+            "rotateY(90deg) translateY(62px)";
+          seg2.style.marginLeft = "-62px";
+          seg2.style.marginTop = "-62px";
+          form.appendChild(seg2);
+        }
+
+        gsap.set(label, { xPercent: -50, opacity: 0, y: 10 });
+        gsap.set(form, { rotationY: -30, rotationX: 25 });
+
+        // Fast Y rotation (~340° over 1.2s) + X oscillation over full duration
+        tl.to(form, { rotationY: 310, duration: 1.2, ease: "sine.inOut" }, 0);
+        tl.to(form, { rotationX: 10, duration: 0.4, ease: "sine.inOut", yoyo: true, repeat: 2 }, 0);
+
+        // Shadow breathes with faster rotation
+        tl.to(shadow, { scaleX: 1.3, scaleY: 0.7, duration: 0.4, ease: "sine.inOut", yoyo: true, repeat: 2 }, 0);
+
+        // Label fades in
+        tl.to(label, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 0.2);
+
+        // Pad timeline to master slot duration (1.21s) to prevent black frames at beat tail
+        tl.to({}, { duration: 1.21 }, 0);
+
+        window.__timelines["flex-threejs"] = tl;
+      })();
+    </script>
+  </div>
+</template>

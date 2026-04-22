@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Editor
+*.swp
+.vscode/
+.idea/
+
+# Node
+node_modules/
+
+# HyperFrames studio preview cache (regenerated on demand)
+.thumbnails/

@@ -1,0 +1,155 @@
+<template id="act0b-reprise-template">
+  <div data-composition-id="act0b-reprise" data-width="1920" data-height="1080" data-start="0" data-duration="2.5">
+    <div class="canvas">
+      <div class="final-row">
+        <span class="word final" id="w-timing">timing</span>
+        <span class="word final" id="w-is">is</span>
+        <span class="bell-slot" id="bell">
+          <span class="ring ring-2"></span>
+          <span class="ring"></span>
+          <span class="bell-main" id="bell-main">
+            <span class="bell-lottie" id="bell-lottie"></span>
+          </span>
+        </span>
+        <span class="word final" id="w-tricky">tricky.</span>
+      </div>
+    </div>
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@900&display=block');
+
+      [data-composition-id="act0b-reprise"] {
+        width: 1920px; height: 1080px; position: relative; overflow: hidden;
+        background: #f5f5f7; color: #1d1d1f;
+        font-family: "Inter", -apple-system, sans-serif;
+      }
+      [data-composition-id="act0b-reprise"] .canvas {
+        position: absolute; inset: 0; background: #f5f5f7;
+      }
+      [data-composition-id="act0b-reprise"] .final-row {
+        position: absolute;
+        left: 50%; top: 50%;
+        transform: translate(-50%, -50%);
+        display: flex; align-items: center;
+        gap: 56px; white-space: nowrap;
+      }
+      [data-composition-id="act0b-reprise"] .word {
+        font-size: 150px; font-weight: 900;
+        letter-spacing: -0.035em; line-height: 1;
+        color: #1d1d1f; flex-shrink: 0;
+        opacity: 0;
+      }
+      [data-composition-id="act0b-reprise"] .bell-slot {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 0; height: 280px;
+        flex-shrink: 0; overflow: visible;
+        opacity: 0; position: relative;
+        margin: 0 -28px;
+      }
+      [data-composition-id="act0b-reprise"] .bell-main {
+        position: relative; width: 280px; height: 280px; display: flex;
+        transform-origin: 50% 50%;
+      }
+      [data-composition-id="act0b-reprise"] .bell-lottie {
+        width: 100%; height: 100%; display: block;
+        filter: drop-shadow(0 10px 18px rgba(29,29,31,0.18));
+      }
+      [data-composition-id="act0b-reprise"] .bell-lottie svg {
+        width: 100%; height: 100%; display: block;
+      }
+      [data-composition-id="act0b-reprise"] .ring {
+        position: absolute; left: 50%; top: 50%;
+        width: 364px; height: 364px;
+        margin: -182px 0 0 -182px;
+        border-radius: 50%;
+        border: 3px solid rgba(29, 29, 31, 0.25);
+        opacity: 0; transform: scale(0.4);
+      }
+      [data-composition-id="act0b-reprise"] .ring-2 { border-color: rgba(29, 29, 31, 0.10); }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.14/lottie.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      (async function () {
+        const scope = document.querySelector('[data-composition-id="act0b-reprise"]');
+        const q = (s) => scope.querySelector(s);
+        const qa = (s) => Array.from(scope.querySelectorAll(s));
+
+        if (document.fonts && document.fonts.ready) await document.fonts.ready;
+        for (let i = 0; i < 40 && typeof window.lottie === 'undefined'; i++) {
+          await new Promise(r => setTimeout(r, 50));
+        }
+
+        const bellLottieEl = q('#bell-lottie');
+        const bellMain = q('#bell-main');
+        const bellSlot = q('#bell');
+        const wTiming = q('#w-timing');
+        const wIs = q('#w-is');
+        const wTricky = q('#w-tricky');
+        const rings = qa('.ring');
+
+        let setBellFrame = () => {};
+        if (typeof window.lottie !== 'undefined') {
+          try {
+            const resp = await fetch('assets/bell.json');
+            const outer = await resp.json();
+            const animationData = (outer && typeof outer.content === 'string') ? JSON.parse(outer.content) : outer;
+            const bellAnim = window.lottie.loadAnimation({
+              container: bellLottieEl,
+              renderer: 'svg',
+              loop: false,
+              autoplay: false,
+              animationData
+            });
+            const originalGoToAndStop = bellAnim.goToAndStop.bind(bellAnim);
+            setBellFrame = (f) => { try { originalGoToAndStop(f, true); } catch (e) {} };
+            bellAnim.goToAndStop = function () { /* no-op: HF auto-seek disabled */ };
+            bellAnim.addEventListener('DOMLoaded', () => setBellFrame(0));
+          } catch (e) {}
+        }
+
+        const tl = gsap.timeline({ paused: true });
+
+        // Initial state — trio hidden, line positioned at center via CSS
+        gsap.set([wTiming, wIs, wTricky], { opacity: 0 });
+        gsap.set(bellSlot, { width: 0, opacity: 0 });
+        gsap.set(bellMain, { scale: 0.4, rotation: -8, opacity: 0 });
+        gsap.set(rings, { scale: 0.4, opacity: 0 });
+
+        // Snap-reveal the trio all at once
+        tl.to([wTiming, wIs, wTricky], {
+          opacity: 1, duration: 0.25, ease: "power2.out"
+        }, 0.1);
+
+        // Split begins immediately — VO says "timing is tricky" during this window
+        const splitT = 0.6;
+        tl.to(bellSlot, {
+          width: 280, opacity: 1,
+          duration: 0.4, ease: "power3.out"
+        }, splitT);
+
+        tl.to(bellMain, {
+          scale: 1, rotation: 0, opacity: 1,
+          duration: 0.3, ease: "back.out(2.2)"
+        }, splitT + 0.1);
+
+        // Bell shake via Lottie frames
+        const bellFrame = { frame: 0 };
+        tl.to(bellFrame, {
+          frame: 140,
+          duration: 1.3,
+          ease: "none",
+          onUpdate: () => setBellFrame(bellFrame.frame)
+        }, splitT + 0.15);
+
+        // Ring halo tween removed — keep rings hidden
+        gsap.set(rings, { opacity: 0 });
+
+        tl.to({}, { duration: 2.5 }, 0);
+        window.__timelines["act0b-reprise"] = tl;
+      })();
+    </script>
+  </div>
+</template>

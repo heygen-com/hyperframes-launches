@@ -1,0 +1,460 @@
+<template id="act3-not-anymore-template">
+  <div data-composition-id="act3-not-anymore" data-width="1920" data-height="1080" data-start="0" data-duration="7.45">
+
+    <!-- Scene A: beige layer (continues Act 2b's bg) — flies UPWARD at peak velocity -->
+    <div class="scene-a-layer">
+      <div class="camera-a">
+        <div class="bg-a"></div>
+      </div>
+    </div>
+
+    <!-- Scene B: white layer — decelerates UPWARD into place, then hosts the reveal -->
+    <div class="scene-b-layer">
+      <div class="camera-b">
+        <div class="bg-b"></div>
+        <div class="hero-wrap">
+          <div class="not-anymore-clip">
+            <div class="not-anymore">Not Anymore</div>
+          </div>
+          <div class="just-use">
+            <span class="ju-left">Just use the</span><span class="ju-pill"></span><span class="ju-right">timeline</span>
+          </div>
+
+          <!-- Mock editor timeline: ruler, playhead, and stacked track clips -->
+          <div class="tl-tracks">
+            <div class="tl-ruler">
+              <span class="tl-ruler-label" style="left: 0%;">0:00</span>
+              <span class="tl-ruler-label" style="left: 33.33%;">0:10</span>
+              <span class="tl-ruler-label" style="left: 66.66%;">0:20</span>
+              <span class="tl-ruler-label" style="left: 100%;">0:30</span>
+              <span class="tl-ruler-tick" style="left: 0%;"></span>
+              <span class="tl-ruler-tick" style="left: 8.33%;"></span>
+              <span class="tl-ruler-tick" style="left: 16.66%;"></span>
+              <span class="tl-ruler-tick" style="left: 25%;"></span>
+              <span class="tl-ruler-tick" style="left: 33.33%;"></span>
+              <span class="tl-ruler-tick" style="left: 41.66%;"></span>
+              <span class="tl-ruler-tick" style="left: 50%;"></span>
+              <span class="tl-ruler-tick" style="left: 58.33%;"></span>
+              <span class="tl-ruler-tick" style="left: 66.66%;"></span>
+              <span class="tl-ruler-tick" style="left: 75%;"></span>
+              <span class="tl-ruler-tick" style="left: 83.33%;"></span>
+              <span class="tl-ruler-tick" style="left: 91.66%;"></span>
+              <span class="tl-ruler-tick" style="left: 100%;"></span>
+            </div>
+            <div class="tl-playhead"><span class="tl-playhead-head"></span></div>
+            <div class="tl-clip tl-clip-1"></div>
+            <div class="tl-clip tl-clip-2"></div>
+            <div class="tl-clip tl-clip-3"></div>
+            <div class="tl-clip tl-clip-4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fake cursor (z:10) — enters bottom-left, grabs + drags timeline -->
+    <div class="tl-cursor">
+      <svg viewBox="0 0 28 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M2.5 1.5L2.5 28L8.5 21.5L14 32L18.5 30L13 19.5L22 19.5L2.5 1.5Z" fill="#000000" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap');
+
+      [data-composition-id="act3-not-anymore"] {
+        width: 1920px;
+        height: 1080px;
+        position: relative;
+        overflow: hidden;
+        background: #F5F4ED;
+      }
+
+      [data-composition-id="act3-not-anymore"] .scene-a-layer,
+      [data-composition-id="act3-not-anymore"] .scene-b-layer {
+        position: absolute;
+        inset: 0;
+        will-change: opacity;
+      }
+      [data-composition-id="act3-not-anymore"] .scene-b-layer { opacity: 0; }
+
+      [data-composition-id="act3-not-anymore"] .camera-a,
+      [data-composition-id="act3-not-anymore"] .camera-b {
+        position: absolute;
+        inset: 0;
+        will-change: transform, filter;
+      }
+
+      [data-composition-id="act3-not-anymore"] .bg-a {
+        position: absolute; inset: 0;
+        background: #F5F4ED;
+      }
+      [data-composition-id="act3-not-anymore"] .bg-b {
+        position: absolute; inset: 0;
+        background: #f5f5f7;
+      }
+
+      [data-composition-id="act3-not-anymore"] .hero-wrap {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+      }
+
+      [data-composition-id="act3-not-anymore"] .not-anymore-clip,
+      [data-composition-id="act3-not-anymore"] .just-use {
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      [data-composition-id="act3-not-anymore"] .not-anymore-clip {
+        clip-path: inset(100% 0 0 0);
+        will-change: clip-path, transform, filter;
+      }
+      [data-composition-id="act3-not-anymore"] .not-anymore {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 900;
+        font-size: 240px;
+        letter-spacing: -0.04em;
+        color: #1d1d1f;
+        line-height: 1;
+        white-space: nowrap;
+      }
+
+      [data-composition-id="act3-not-anymore"] .just-use {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 20px;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 140px;
+        letter-spacing: -0.03em;
+        color: #1d1d1f;
+        line-height: 1;
+        white-space: nowrap;
+        opacity: 0;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="act3-not-anymore"] .ju-left,
+      [data-composition-id="act3-not-anymore"] .ju-right {
+        display: inline-block;
+        padding: 0 14px;
+        will-change: transform, filter;
+      }
+      [data-composition-id="act3-not-anymore"] .ju-pill {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 0;
+        height: 165px;
+        background: #D97757;
+        border-radius: 10px;
+        will-change: width, height, transform;
+      }
+
+      /* Mock editor timeline — ruler, playhead, and stacked track clips */
+      [data-composition-id="act3-not-anymore"] .tl-tracks {
+        grid-column: 1; grid-row: 1;
+        position: relative;
+        width: 1400px; height: 460px;
+        pointer-events: none;
+      }
+      /* Time ruler */
+      [data-composition-id="act3-not-anymore"] .tl-ruler {
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 40px;
+        border-bottom: 1px solid rgba(29,29,31,0.12);
+        opacity: 0;
+        will-change: opacity;
+      }
+      [data-composition-id="act3-not-anymore"] .tl-ruler-label {
+        position: absolute;
+        top: 8px;
+        transform: translateX(-50%);
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 18px; font-weight: 500;
+        color: #86868b;
+        letter-spacing: 0.02em;
+      }
+      [data-composition-id="act3-not-anymore"] .tl-ruler-tick {
+        position: absolute;
+        bottom: 0;
+        width: 1px; height: 8px;
+        background: rgba(29,29,31,0.2);
+      }
+      /* Playhead */
+      [data-composition-id="act3-not-anymore"] .tl-playhead {
+        position: absolute;
+        top: 8px; bottom: 0;
+        left: 0;
+        width: 2px;
+        background: #3ECF8E;
+        opacity: 0;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="act3-not-anymore"] .tl-playhead-head {
+        position: absolute;
+        top: 0; left: 50%;
+        transform: translate(-50%, -8px);
+        width: 0; height: 0;
+        border-left: 9px solid transparent;
+        border-right: 9px solid transparent;
+        border-top: 12px solid #3ECF8E;
+      }
+      /* Clips — taller, anchored below the ruler */
+      [data-composition-id="act3-not-anymore"] .tl-clip {
+        position: absolute;
+        top: 50%;
+        height: 92px;
+        border-radius: 10px;
+        opacity: 0;
+        box-shadow: 0 2px 6px rgba(29,29,31,0.08);
+        will-change: opacity, transform;
+      }
+      /* Track above main */
+      [data-composition-id="act3-not-anymore"] .tl-clip-1 {
+        background: #4A9EFF;
+        width: 620px;
+        left: -520px;
+        transform: translateY(calc(-50% - 120px));
+      }
+      [data-composition-id="act3-not-anymore"] .tl-clip-2 {
+        background: #B47AE8;
+        width: 420px;
+        left: 340px;
+        transform: translateY(calc(-50% - 120px));
+      }
+      /* Track below main */
+      [data-composition-id="act3-not-anymore"] .tl-clip-3 {
+        background: #6BC17A;
+        width: 380px;
+        left: -620px;
+        transform: translateY(calc(-50% + 120px));
+      }
+      [data-composition-id="act3-not-anymore"] .tl-clip-4 {
+        background: #F2C94C;
+        width: 720px;
+        left: 180px;
+        transform: translateY(calc(-50% + 120px));
+      }
+
+      [data-composition-id="act3-not-anymore"] .tl-cursor {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 64px;
+        height: 78px;
+        z-index: 10;
+        opacity: 0;
+        transform-origin: 6px 3.5px;
+        pointer-events: none;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="act3-not-anymore"] .tl-cursor svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      (function () {
+        const scope = document.querySelector('[data-composition-id="act3-not-anymore"]');
+        const q = (s) => scope.querySelector(s);
+
+        const tl = gsap.timeline({ paused: true });
+
+        // Keep pill centered on its left:50%/top:50% anchor as width grows
+        tl.set(".ju-pill", { xPercent: -50, yPercent: -50 }, 0);
+
+        // =====================
+        // Scene A is now suppressed — its upward-accel+blur exit moved to act2b.
+        // Act3 picks up where act2b's exit left off: scene B enters from y=+280,
+        // blur 10px (matching act2b's exit end) and decelerates into place.
+        // =====================
+        tl.set(".scene-a-layer", { opacity: 0 }, 0);
+        tl.set(".scene-b-layer", { opacity: 1 }, 0);
+        tl.set(".camera-b", { y: 280, filter: "blur(10px)" }, 0);
+
+        tl.to(".camera-b", {
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.55,
+          ease: "expo.out"
+        }, 0);
+
+        // =====================
+        // "Not Anymore" upward mask reveal
+        // =====================
+        // Tiny settle beat after scene B lands, then wipe upward
+        const REVEAL_T = 0.45; // scene-A phase moved to act2b, mask wipe kicks in right after scene-B settles
+        tl.fromTo(".not-anymore-clip",
+          { clipPath: "inset(100% 0 0 0)" },
+          { clipPath: "inset(0% 0 0 0)", duration: 0.6, ease: "power3.out" },
+          REVEAL_T
+        );
+
+        // Hold ~2s with "Not Anymore" on screen
+        const EXIT_T = REVEAL_T + 0.6 + 0.9; // hold shortened by 1s
+
+        // =====================
+        // "Not Anymore" exits off-screen LEFT (cubic ease-in)
+        // =====================
+        tl.to(".not-anymore-clip", {
+          x: -2400,
+          filter: "blur(6px)",
+          duration: 0.5,
+          ease: "power3.in"
+        }, EXIT_T);
+        tl.to(".not-anymore-clip", {
+          opacity: 0,
+          duration: 0.2,
+          ease: "none"
+        }, EXIT_T + 0.3);
+
+        // =====================
+        // "Just use the timeline" enters from RIGHT — 0.2s overlap
+        // =====================
+        const ENTER_T = EXIT_T + 0.3; // 0.2s overlap with exit
+        tl.fromTo(".just-use",
+          { x: 2000, opacity: 0, filter: "blur(6px)" },
+          { x: 0, opacity: 1, filter: "blur(0px)", duration: 0.55, ease: "expo.out" },
+          ENTER_T
+        );
+
+        // =====================
+        // Pill expansion — 1s after "Just use the timeline" lands
+        // Pushes "Just use the" left off-screen and "timeline" right off-screen
+        // =====================
+        const LAND_T = ENTER_T + 0.55;         // ~4.35
+        const PILL_T = LAND_T + 1.0;           // ~5.35
+
+        tl.to(".ju-pill", {
+          width: 3600,
+          duration: 0.38,
+          ease: "power3.in"
+        }, PILL_T);
+
+        // Clear the text out quickly so the pill's left + right edges are
+        // equally visible expanding — no perceived "pause then explode" on
+        // the side where longer text was occluding the pill's growth.
+        tl.to(".ju-left", {
+          x: -1800,
+          filter: "blur(6px)",
+          opacity: 0,
+          duration: 0.22,
+          ease: "power2.out"
+        }, PILL_T);
+        tl.to(".ju-right", {
+          x: 1800,
+          filter: "blur(6px)",
+          opacity: 0,
+          duration: 0.22,
+          ease: "power2.out"
+        }, PILL_T);
+
+        // =====================
+        // Pill compacts into a timeline bar, cursor slides up + drags it off-screen
+        // =====================
+        const PILL_END = PILL_T + 0.38;            // ~5.73
+        const COMPACT_T = PILL_END;                // ~5.73 (overlaps tail of expansion — reads smoother)
+
+        // Remove outgoing text from flex layout so pill can truly center
+        tl.set([".ju-left", ".ju-right"], { display: "none" }, COMPACT_T);
+
+        // Pill shrinks from the expanded state into a neat timeline bar (centered)
+        tl.to(".ju-pill", {
+          width: 1400,
+          height: 92,
+          duration: 0.5,
+          ease: "power2.inOut"
+        }, COMPACT_T);
+
+        // Editor UI surfaces: ruler + playhead + surrounding track clips fade in
+        tl.to(".tl-ruler", { opacity: 1, duration: 0.4, ease: "power2.out" }, COMPACT_T + 0.1);
+        tl.to([".tl-clip-1", ".tl-clip-2", ".tl-clip-3", ".tl-clip-4"], {
+          opacity: 1,
+          duration: 0.35,
+          ease: "power2.out",
+          stagger: 0.05
+        }, COMPACT_T + 0.15);
+        // Playhead appears near left edge then drifts forward slowly
+        gsap.set(".tl-playhead", { x: 280 });
+        tl.to(".tl-playhead", { opacity: 1, duration: 0.35, ease: "power2.out" }, COMPACT_T + 0.2);
+        tl.to(".tl-playhead", {
+          x: 980,
+          duration: 2.2,
+          ease: "none"
+        }, COMPACT_T + 0.35);
+
+        // Cursor setup: bottom-left, off-canvas
+        const CURSOR_START_X = 240;
+        const CURSOR_START_Y = 1180;
+        // Target: near the left edge of the compacted timeline bar (grab point)
+        const CURSOR_TARGET_X = 680;
+        const CURSOR_TARGET_Y = 528;
+
+        tl.set(".tl-cursor", {
+          x: CURSOR_START_X,
+          y: CURSOR_START_Y,
+          scale: 1,
+          opacity: 1
+        }, COMPACT_T);
+
+        const CURSOR_MOVE_T = COMPACT_T + 0.15;    // ~5.98
+        const CURSOR_ARRIVE_T = CURSOR_MOVE_T + 0.7;  // ~6.68
+
+        tl.to(".tl-cursor", {
+          x: CURSOR_TARGET_X,
+          y: CURSOR_TARGET_Y,
+          duration: 0.7,
+          ease: "power2.out",
+          overwrite: "auto"
+        }, CURSOR_MOVE_T);
+
+        // Click compress
+        tl.to(".tl-cursor", {
+          scale: 0.82,
+          duration: 0.07,
+          ease: "power4.in"
+        }, CURSOR_ARRIVE_T);
+        tl.to(".tl-cursor", {
+          scale: 1,
+          duration: 0.18,
+          ease: "back.out(2)"
+        }, CURSOR_ARRIVE_T + 0.08);
+
+        // Drag: cursor + pill translate right together
+        const DRAG_T = CURSOR_ARRIVE_T + 0.28;     // ~6.96
+        const DRAG_DUR = 1.1;
+
+        tl.to(".tl-cursor", {
+          x: CURSOR_TARGET_X + 2200,
+          duration: DRAG_DUR,
+          ease: "power2.in",
+          overwrite: "auto"
+        }, DRAG_T);
+        tl.to(".ju-pill", {
+          x: "+=2200",
+          duration: DRAG_DUR,
+          ease: "power2.in"
+        }, DRAG_T);
+
+        // Cursor fades out as it leaves
+        tl.to(".tl-cursor", {
+          opacity: 0,
+          duration: 0.18,
+          ease: "none"
+        }, DRAG_T + DRAG_DUR - 0.2);
+
+        // Hold to end of comp
+        tl.to({}, { duration: 7.45 }, 0);
+
+        window.__timelines["act3-not-anymore"] = tl;
+      })();
+    </script>
+  </div>
+</template>

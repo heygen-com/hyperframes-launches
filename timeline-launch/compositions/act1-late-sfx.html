@@ -1,0 +1,320 @@
+<template id="act1-late-sfx-template">
+  <div data-composition-id="act1-late-sfx" data-width="1920" data-height="1080" data-start="0" data-duration="4">
+    <div class="stage">
+      <div class="grain"></div>
+
+      <div class="label-top">SOUND TEST</div>
+      <div class="label-bottom">press&nbsp;&nbsp;to&nbsp;&nbsp;honk</div>
+
+      <div class="button-wrap">
+        <div class="button-shadow"></div>
+        <div class="button-ring"></div>
+        <div class="button">
+          <svg class="speaker" viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M14 24h10l14-10v36L24 40H14z" fill="currentColor" />
+            <path
+              d="M46 22c4 3 4 17 0 20M52 16c8 6 8 26 0 32"
+              stroke="currentColor"
+              stroke-width="4"
+              fill="none"
+              stroke-linecap="round"
+            />
+          </svg>
+          <div class="button-text">HONK</div>
+        </div>
+      </div>
+
+      <!-- Late-SFX visual burst (fires 0.28s after the click) -->
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="honk-burst">
+        <div class="honk-word">HONK!</div>
+      </div>
+
+      <!-- Simulated cursor -->
+      <svg class="cursor" viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="M4 2 L4 20 L9 15 L12 22 L15 20.5 L12 14 L19 14 Z"
+          fill="#ffffff"
+          stroke="#000000"
+          stroke-width="1.2"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </div>
+
+    <style>
+      [data-composition-id="act1-late-sfx"] {
+        width: 1920px;
+        height: 1080px;
+        position: relative;
+        overflow: hidden;
+        font-family: "Space Mono", ui-monospace, monospace;
+      }
+      [data-composition-id="act1-late-sfx"] .stage {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(1200px 800px at 50% 52%, #1b1b1f 0%, #0b0b0d 70%),
+          #0b0b0d;
+      }
+      [data-composition-id="act1-late-sfx"] .grain {
+        position: absolute;
+        inset: 0;
+        opacity: 0.06;
+        pointer-events: none;
+        background-image:
+          repeating-linear-gradient(0deg, rgba(255,255,255,0.08) 0 1px, transparent 1px 3px);
+        mix-blend-mode: overlay;
+      }
+
+      [data-composition-id="act1-late-sfx"] .label-top,
+      [data-composition-id="act1-late-sfx"] .label-bottom {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #7a7a7a;
+        letter-spacing: 0.42em;
+        text-transform: uppercase;
+        font-size: 22px;
+        font-weight: 500;
+      }
+      [data-composition-id="act1-late-sfx"] .label-top { top: 120px; }
+      [data-composition-id="act1-late-sfx"] .label-bottom { bottom: 120px; letter-spacing: 0.3em; }
+
+      [data-composition-id="act1-late-sfx"] .button-wrap {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 560px;
+        height: 560px;
+        transform: translate(-50%, -50%);
+      }
+      [data-composition-id="act1-late-sfx"] .button-shadow {
+        position: absolute;
+        inset: 30px 0 0 0;
+        border-radius: 50%;
+        background: #6b0a07;
+        filter: blur(1px);
+      }
+      [data-composition-id="act1-late-sfx"] .button-ring {
+        position: absolute;
+        inset: -26px;
+        border-radius: 50%;
+        border: 4px dashed rgba(255, 214, 10, 0.55);
+      }
+      [data-composition-id="act1-late-sfx"] .button {
+        position: absolute;
+        inset: 0 0 24px 0;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at 42% 32%, #ff6b60 0%, #ff3b30 45%, #d0271e 100%);
+        box-shadow:
+          inset 0 -26px 40px rgba(0, 0, 0, 0.3),
+          inset 0 14px 30px rgba(255, 255, 255, 0.18),
+          0 0 0 6px rgba(255, 59, 48, 0.08);
+        color: #fff8f6;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        will-change: transform;
+      }
+      [data-composition-id="act1-late-sfx"] .speaker {
+        width: 96px;
+        height: 96px;
+        opacity: 0.95;
+      }
+      [data-composition-id="act1-late-sfx"] .button-text {
+        font-family: "Archivo Black", "Space Mono", sans-serif;
+        font-size: 108px;
+        font-weight: 900;
+        letter-spacing: 0.02em;
+        color: #fff8f6;
+        text-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
+      }
+
+      [data-composition-id="act1-late-sfx"] .ring {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 560px;
+        height: 560px;
+        margin: -280px 0 0 -280px;
+        border-radius: 50%;
+        border: 6px solid #ffd60a;
+        opacity: 0;
+        pointer-events: none;
+      }
+      [data-composition-id="act1-late-sfx"] .ring-2 {
+        border-color: #ff3b30;
+        border-width: 4px;
+      }
+      [data-composition-id="act1-late-sfx"] .honk-burst {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        pointer-events: none;
+      }
+      [data-composition-id="act1-late-sfx"] .honk-word {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 180px;
+        font-weight: 900;
+        color: #ffd60a;
+        letter-spacing: -0.02em;
+        text-shadow:
+          6px 6px 0 #ff3b30,
+          -2px -2px 0 #ffffff;
+        transform: rotate(-6deg);
+      }
+
+      [data-composition-id="act1-late-sfx"] .cursor {
+        position: absolute;
+        width: 48px;
+        height: 48px;
+        left: 0;
+        top: 0;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+        will-change: transform;
+        z-index: 10;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      (function () {
+        const scope = document.querySelector('[data-composition-id="act1-late-sfx"]');
+        const q = (s) => scope.querySelector(s);
+
+        const tl = gsap.timeline({ paused: true });
+
+        // Idle: soft bob on the button
+        gsap.set(q(".button"), { transformOrigin: "50% 60%" });
+        gsap.set(q(".cursor"), { x: 1680, y: 980 });
+        gsap.set(q(".button-ring"), { rotation: 0, transformOrigin: "50% 50%" });
+
+        // Labels fade in
+        tl.from(q(".label-top"), { opacity: 0, y: -10, duration: 0.5, ease: "power1.out" }, 0.1)
+          .from(q(".label-bottom"), { opacity: 0, y: 10, duration: 0.5, ease: "power1.out" }, 0.2);
+
+        // Button enters with a little pop
+        tl.from(q(".button-wrap"), {
+          scale: 0.86,
+          opacity: 0,
+          duration: 0.55,
+          ease: "back.out(1.8)"
+        }, 0.15);
+
+        // Ambient bob on button during wait
+        tl.to(q(".button"), {
+          y: -8,
+          duration: 0.9,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: 1
+        }, 0.3);
+
+        // Ring slow spin
+        tl.to(q(".button-ring"), { rotation: 12, duration: 2.2, ease: "none" }, 0.1);
+
+        // Cursor glide up to center-left of button
+        tl.to(q(".cursor"), {
+          x: 960,
+          y: 540,
+          duration: 0.95,
+          ease: "power2.inOut"
+        }, 0.45);
+
+        // Cursor hover wiggle
+        tl.to(q(".cursor"), {
+          x: 972, y: 548,
+          duration: 0.18,
+          ease: "sine.inOut"
+        }, 1.5);
+
+        // ---- CLICK at t = 1.72 ----
+        const clickT = 1.72;
+
+        // Cursor press indicator
+        tl.to(q(".cursor"), {
+          scale: 0.82,
+          duration: 0.06,
+          ease: "power2.out",
+          transformOrigin: "0% 0%"
+        }, clickT);
+        tl.to(q(".cursor"), {
+          scale: 1,
+          duration: 0.14,
+          ease: "power2.out",
+          transformOrigin: "0% 0%"
+        }, clickT + 0.06);
+
+        // Button visually reacts IMMEDIATELY on click
+        tl.to(q(".button"), {
+          y: 14,
+          scale: 0.96,
+          duration: 0.06,
+          ease: "power3.out"
+        }, clickT);
+        tl.to(q(".button"), {
+          y: 0,
+          scale: 1,
+          duration: 0.22,
+          ease: "back.out(2.2)"
+        }, clickT + 0.06);
+
+        // Tiny white flash on button face
+        tl.fromTo(q(".button"), { filter: "brightness(1)" }, {
+          filter: "brightness(1.35)",
+          duration: 0.05,
+          ease: "power2.out"
+        }, clickT);
+        tl.to(q(".button"), {
+          filter: "brightness(1)",
+          duration: 0.2,
+          ease: "power2.in"
+        }, clickT + 0.05);
+
+        // Button settles... beat of silence... (0.28s later)
+        const lateT = clickT + 0.28;
+
+        // Shockwave rings
+        tl.fromTo(q(".ring-1"),
+          { scale: 0.4, opacity: 0.85 },
+          { scale: 1.8, opacity: 0, duration: 0.7, ease: "power2.out" },
+          lateT
+        );
+        tl.fromTo(q(".ring-2"),
+          { scale: 0.4, opacity: 0.7 },
+          { scale: 2.2, opacity: 0, duration: 0.85, ease: "power2.out" },
+          lateT + 0.08
+        );
+
+        // HONK! comic burst
+        tl.fromTo(q(".honk-burst"),
+          { opacity: 0, scale: 0.3, rotation: -18 },
+          { opacity: 1, scale: 1, rotation: -6, duration: 0.22, ease: "back.out(2.6)" },
+          lateT
+        );
+        tl.to(q(".honk-burst"), {
+          opacity: 0,
+          scale: 1.12,
+          duration: 0.5,
+          ease: "power2.in"
+        }, lateT + 0.55);
+
+        // Keep cursor parked on the button while burst plays
+        tl.to(q(".cursor"), { x: 974, y: 548, duration: 0.01 }, clickT + 0.4);
+
+        // Pad to 4s so HF visibility doesn't cut early
+        tl.to({}, { duration: 4 }, 0);
+
+        window.__timelines["act1-late-sfx"] = tl;
+      })();
+    </script>
+  </div>
+</template>

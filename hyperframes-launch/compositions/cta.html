@@ -1,0 +1,579 @@
+<template id="cta-template">
+  <div
+    data-composition-id="cta"
+    data-width="1920"
+    data-height="1080"
+    data-start="0"
+    data-duration="5.28"
+  >
+    <div class="cta-bg"></div>
+
+    <!-- Entry/exit wrapper -->
+    <div class="cta-wrap">
+
+      <!-- Workspace toolbar -->
+      <div class="cta-toolbar">
+        <span class="cta-dot" style="background:#ff5f57"></span>
+        <span class="cta-dot" style="background:#febc2e"></span>
+        <span class="cta-dot" style="background:#28c840"></span>
+        <span class="cta-toolbar-title">Terminal — zsh</span>
+      </div>
+
+      <!-- Workspace body — two-column layout -->
+      <div class="cta-body">
+
+        <!-- LEFT: Terminal area -->
+        <div class="cta-left">
+
+          <!-- Terminal prompt line 1: npx hyperframes init -->
+          <div class="cta-term-line cta-line-1">
+            <span class="cta-prompt-char">&#10095;</span>
+            <span class="cta-typed" id="cta-typed-1"></span><span class="cta-cursor" id="cta-cursor-1">&nbsp;</span>
+          </div>
+
+          <!-- Scaffolding output -->
+          <div class="cta-scaffold" id="cta-scaffold">
+            <div class="cta-scaffold-line sl-1" id="sl-1">Creating project structure...</div>
+            <div class="cta-scaffold-line sl-2" id="sl-2">  index.html</div>
+            <div class="cta-scaffold-line sl-3" id="sl-3">  meta.json</div>
+            <div class="cta-scaffold-line sl-4" id="sl-4">  compositions/</div>
+            <div class="cta-scaffold-line sl-5" id="sl-5"><span class="cta-check">&#10003;</span> Project initialized</div>
+          </div>
+
+          <!-- Terminal prompt line 2: the video prompt -->
+          <div class="cta-term-line cta-line-2" id="cta-line-2">
+            <span class="cta-prompt-char">&#10095;</span>
+            <span class="cta-typed" id="cta-typed-2"></span><span class="cta-cursor" id="cta-cursor-2">&nbsp;</span>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: Preview panel -->
+        <div class="cta-right" id="cta-right">
+          <div class="cta-preview-bar">
+            <span class="cta-preview-label">Preview</span>
+            <span class="cta-preview-status" id="cta-status">Building...</span>
+          </div>
+          <div class="cta-preview-canvas" id="cta-canvas">
+            <div class="cta-mini-bg"></div>
+            <div class="cta-mini-title" id="mini-title">Kinetic<br>Typography</div>
+            <div class="cta-mini-block cta-mb-1" id="mini-b1"></div>
+            <div class="cta-mini-block cta-mb-2" id="mini-b2"></div>
+            <div class="cta-mini-block cta-mb-3" id="mini-b3"></div>
+            <div class="cta-mini-line cta-ml-1" id="mini-l1"></div>
+            <div class="cta-mini-line cta-ml-2" id="mini-l2"></div>
+            <div class="cta-mini-circle" id="mini-circ"></div>
+            <div class="cta-mini-timeline" id="mini-tl">
+              <div class="cta-mini-tl-fill" id="mini-tl-fill"></div>
+            </div>
+          </div>
+
+          <!-- Code panel overlay at bottom -->
+          <div class="cta-code-panel" id="cta-code">
+            <pre class="cta-code-text" id="cta-code-text"></pre>
+          </div>
+
+          <!-- Ready badge -->
+          <div class="cta-ready" id="cta-ready">
+            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="cta-ready-icon">
+              <circle cx="10" cy="10" r="8" fill="#81B29A"/>
+              <path d="M6 10l3 3 5-5" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Ready
+          </div>
+        </div>
+
+      </div><!-- /.cta-body -->
+
+    </div><!-- /.cta-wrap -->
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap");
+
+      [data-composition-id="cta"] {
+        width: 1920px; height: 1080px;
+        position: relative; overflow: hidden;
+        background: #f7f3eb;
+      }
+      [data-composition-id="cta"] .cta-bg {
+        position: absolute; inset: 0;
+        background:
+          radial-gradient(ellipse at 40% 40%, rgba(255,252,240,0.7) 0%, transparent 50%),
+          linear-gradient(160deg, #f7f3eb 0%, #efe9dd 100%);
+      }
+      [data-composition-id="cta"] .cta-wrap {
+        position: absolute;
+        top: 60px; left: 120px; right: 120px; bottom: 60px;
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0 24px 80px rgba(60,50,30,0.12), 0 4px 16px rgba(60,50,30,0.06);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        will-change: transform, filter;
+      }
+
+      /* Toolbar */
+      [data-composition-id="cta"] .cta-toolbar {
+        height: 52px;
+        background: #faf8f4;
+        border-bottom: 1px solid #e8e2d6;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      [data-composition-id="cta"] .cta-dot {
+        width: 12px; height: 12px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      [data-composition-id="cta"] .cta-toolbar-title {
+        margin-left: 16px;
+        font-family: "Geist", sans-serif;
+        font-weight: 600;
+        font-size: 15px;
+        color: #8a7e6a;
+        letter-spacing: 0.02em;
+      }
+
+      /* Body — two columns */
+      [data-composition-id="cta"] .cta-body {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+      }
+      [data-composition-id="cta"] .cta-left {
+        width: 600px;
+        padding: 40px 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        border-right: 1px solid #e8e2d6;
+        flex-shrink: 0;
+        overflow: hidden;
+      }
+      [data-composition-id="cta"] .cta-right {
+        flex: 1;
+        position: relative;
+        background: #faf8f4;
+        overflow: hidden;
+        will-change: transform;
+      }
+
+      /* Terminal lines */
+      [data-composition-id="cta"] .cta-term-line {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 40px;
+        flex-shrink: 0;
+      }
+      [data-composition-id="cta"] .cta-prompt-char {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+        font-size: 20px;
+        color: #81B29A;
+        flex-shrink: 0;
+        margin-right: 8px;
+      }
+      [data-composition-id="cta"] .cta-typed {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 400;
+        font-size: 20px;
+        color: #2a2418;
+        white-space: pre;
+      }
+      [data-composition-id="cta"] .cta-cursor {
+        display: inline-block;
+        width: 11px; height: 22px;
+        background: #2a2418;
+        vertical-align: text-bottom;
+        margin-left: 1px;
+      }
+
+      /* Scaffold output */
+      [data-composition-id="cta"] .cta-scaffold {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 12px 0 16px 28px;
+      }
+      [data-composition-id="cta"] .cta-scaffold-line {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 400;
+        font-size: 15px;
+        color: #8a7e6a;
+        line-height: 1.6;
+      }
+      [data-composition-id="cta"] .cta-check {
+        color: #81B29A;
+        font-weight: 700;
+        margin-right: 6px;
+      }
+
+      /* Line 2 (video prompt) */
+      [data-composition-id="cta"] .cta-line-2 {
+        margin-top: 8px;
+      }
+
+      /* Preview panel */
+      [data-composition-id="cta"] .cta-preview-bar {
+        height: 44px;
+        background: #f0ebe3;
+        border-bottom: 1px solid #e0d8ca;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+      }
+      [data-composition-id="cta"] .cta-preview-label {
+        font-family: "Geist", sans-serif;
+        font-weight: 500;
+        font-size: 13px;
+        color: #8a7e6a;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      [data-composition-id="cta"] .cta-preview-status {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 400;
+        font-size: 12px;
+        color: #c8860a;
+      }
+      [data-composition-id="cta"] .cta-preview-canvas {
+        position: absolute;
+        top: 44px; left: 0; right: 0; bottom: 120px;
+        overflow: hidden;
+      }
+      [data-composition-id="cta"] .cta-mini-bg {
+        position: absolute; inset: 0;
+        background: linear-gradient(135deg, #f9f5ef 0%, #f0e8d8 100%);
+      }
+
+      /* Mini composition elements */
+      [data-composition-id="cta"] .cta-mini-title {
+        position: absolute;
+        top: 80px; left: 60px;
+        font-family: "Instrument Serif", serif;
+        font-size: 72px;
+        font-weight: 400;
+        line-height: 1.05;
+        color: #1a1510;
+        letter-spacing: -0.03em;
+      }
+      [data-composition-id="cta"] .cta-mini-block {
+        position: absolute;
+        border-radius: 12px;
+      }
+      [data-composition-id="cta"] .cta-mb-1 {
+        top: 100px; right: 60px;
+        width: 200px; height: 200px;
+        background: #E07A5F;
+      }
+      [data-composition-id="cta"] .cta-mb-2 {
+        top: 320px; right: 60px;
+        width: 200px; height: 80px;
+        background: #81B29A;
+      }
+      [data-composition-id="cta"] .cta-mb-3 {
+        bottom: 100px; left: 60px;
+        width: 280px; height: 60px;
+        background: #3D405B;
+        border-radius: 8px;
+      }
+      [data-composition-id="cta"] .cta-mini-line {
+        position: absolute;
+        height: 8px;
+        border-radius: 4px;
+        background: rgba(60,50,30,0.1);
+      }
+      [data-composition-id="cta"] .cta-ml-1 {
+        top: 300px; left: 60px; width: 320px;
+      }
+      [data-composition-id="cta"] .cta-ml-2 {
+        top: 330px; left: 60px; width: 220px;
+      }
+      [data-composition-id="cta"] .cta-mini-circle {
+        position: absolute;
+        bottom: 100px; right: 80px;
+        width: 100px; height: 100px;
+        border-radius: 50%;
+        border: 4px solid #F2CC8F;
+      }
+      [data-composition-id="cta"] .cta-mini-timeline {
+        position: absolute;
+        bottom: 30px; left: 40px; right: 40px;
+        height: 6px;
+        background: rgba(60,50,30,0.08);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      [data-composition-id="cta"] .cta-mini-tl-fill {
+        height: 100%;
+        width: 0%;
+        background: #E07A5F;
+        border-radius: 3px;
+      }
+
+      /* Code panel */
+      [data-composition-id="cta"] .cta-code-panel {
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 120px;
+        background: #2a2820;
+        border-top: 1px solid #3a3830;
+        overflow: hidden;
+        padding: 12px 16px;
+      }
+      [data-composition-id="cta"] .cta-code-text {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 1.6;
+        color: rgba(255,255,255,0.5);
+        margin: 0;
+        white-space: pre;
+        will-change: transform;
+      }
+
+      /* Ready badge */
+      [data-composition-id="cta"] .cta-ready {
+        position: absolute;
+        top: 52px; right: 12px;
+        padding: 6px 14px 6px 8px;
+        background: rgba(129,178,154,0.15);
+        border: 1.5px solid rgba(129,178,154,0.3);
+        border-radius: 8px;
+        font-family: "Geist", sans-serif;
+        font-weight: 500;
+        font-size: 13px;
+        color: #5a8a6e;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      [data-composition-id="cta"] .cta-ready-icon { width: 18px; height: 18px; }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+        var root = document.querySelector('[data-composition-id="cta"]');
+
+        var wrap = root.querySelector(".cta-wrap");
+        var typed1 = root.querySelector("#cta-typed-1");
+        var cursor1 = root.querySelector("#cta-cursor-1");
+        var typed2 = root.querySelector("#cta-typed-2");
+        var cursor2 = root.querySelector("#cta-cursor-2");
+        var line2 = root.querySelector("#cta-line-2");
+        var right = root.querySelector("#cta-right");
+        var codeText = root.querySelector("#cta-code-text");
+        var codePanel = root.querySelector("#cta-code");
+        var status = root.querySelector("#cta-status");
+        var ready = root.querySelector("#cta-ready");
+
+        // Scaffold lines
+        var sl1 = root.querySelector("#sl-1");
+        var sl2 = root.querySelector("#sl-2");
+        var sl3 = root.querySelector("#sl-3");
+        var sl4 = root.querySelector("#sl-4");
+        var sl5 = root.querySelector("#sl-5");
+        var scaffoldLines = [sl1, sl2, sl3, sl4, sl5];
+
+        // Mini comp elements
+        var miniTitle = root.querySelector("#mini-title");
+        var miniB1 = root.querySelector("#mini-b1");
+        var miniB2 = root.querySelector("#mini-b2");
+        var miniB3 = root.querySelector("#mini-b3");
+        var miniL1 = root.querySelector("#mini-l1");
+        var miniL2 = root.querySelector("#mini-l2");
+        var miniCirc = root.querySelector("#mini-circ");
+        var miniTlFill = root.querySelector("#mini-tl-fill");
+
+        // Strings
+        var CMD_1 = "npx hyperframes init";
+        var CMD_2 = "a product intro with kinetic typography";
+
+        // Code lines that "stream in" during build
+        var CODE_LINES = [
+          '<div data-composition-id="intro"',
+          '  data-width="1920"',
+          '  data-height="1080"',
+          '  data-duration="10">',
+          '',
+          '  <div class="title">',
+          '    Kinetic Typography',
+          '  </div>',
+          '',
+          '  <script>',
+          '    const tl = gsap.timeline();',
+          '    tl.from(".title", {',
+          '      opacity: 0, y: 40,',
+          '      duration: 0.8',
+          '    });',
+          '  <\/script>',
+          '</div>'
+        ];
+
+        // ═══ Initial states ═══
+        gsap.set(wrap, { y: 150, filter: "blur(30px)" });
+        gsap.set(cursor2, { opacity: 0 });
+        gsap.set(line2, { opacity: 0 });
+        gsap.set(right, { x: 400, opacity: 0 });
+        gsap.set(ready, { opacity: 0, y: 8 });
+
+        // Scaffold lines hidden
+        scaffoldLines.forEach(function (el) { gsap.set(el, { opacity: 0, y: 6 }); });
+
+        // Mini comp elements hidden
+        gsap.set(miniTitle, { opacity: 0, y: 30 });
+        gsap.set(miniB1, { opacity: 0, scale: 0.6 });
+        gsap.set(miniB2, { opacity: 0, x: 60 });
+        gsap.set(miniB3, { opacity: 0, y: 20 });
+        gsap.set(miniL1, { scaleX: 0, transformOrigin: "left center" });
+        gsap.set(miniL2, { scaleX: 0, transformOrigin: "left center" });
+        gsap.set(miniCirc, { opacity: 0, scale: 0.3 });
+        gsap.set(miniTlFill, { width: "0%" });
+        gsap.set(codePanel, { opacity: 0 });
+
+        // ═══ Phase 0: Cut-the-curve entry (0 → 1.0s) ═══
+        tl.to(wrap, {
+          y: 0, filter: "blur(0px)",
+          duration: 1.0, ease: "power2.out"
+        }, 0);
+
+        // ═══ Phase 1: Type "npx hyperframes init" (0.3 → 1.3s) ═══
+        // VO: "Give your agent the skill." — 0.00-1.85
+        var type1Start = 0.3;
+        var type1Dur = 0.9;
+        var char1Delay = type1Dur / CMD_1.length;
+
+        // Cursor blink during typing
+        tl.to(cursor1, { opacity: 0, duration: 0.12, yoyo: true, repeat: 5, ease: "steps(1)" }, 0.3);
+
+        for (var i = 0; i < CMD_1.length; i++) {
+          (function (idx) {
+            tl.call(function () {
+              typed1.textContent = CMD_1.substring(0, idx + 1);
+            }, null, type1Start + idx * char1Delay);
+          })(i);
+        }
+
+        // Hide cursor1 after typing done
+        tl.to(cursor1, { opacity: 0, duration: 0.1 }, 1.25);
+
+        // ═══ Phase 1b: Scaffold output (1.3 → 2.0s) ═══
+        tl.to(sl1, { opacity: 1, y: 0, duration: 0.15, ease: "power2.out" }, 1.3);
+        tl.to(sl2, { opacity: 1, y: 0, duration: 0.12, ease: "power2.out" }, 1.42);
+        tl.to(sl3, { opacity: 1, y: 0, duration: 0.12, ease: "power2.out" }, 1.50);
+        tl.to(sl4, { opacity: 1, y: 0, duration: 0.12, ease: "power2.out" }, 1.58);
+        tl.to(sl5, { opacity: 1, y: 0, duration: 0.2, ease: "back.out(1.4)" }, 1.72);
+
+        // ═══ Phase 2: Type prompt (2.1 → 3.3s) ═══
+        // VO: "Tell it what to make." — 2.12-3.33
+        tl.to(line2, { opacity: 1, duration: 0.15, ease: "power2.out" }, 2.05);
+        tl.to(cursor2, { opacity: 1, duration: 0.1 }, 2.05);
+
+        var type2Start = 2.15;
+        var type2Dur = 1.1;
+        var char2Delay = type2Dur / CMD_2.length;
+
+        // Cursor blink during typing
+        tl.to(cursor2, { opacity: 0, duration: 0.12, yoyo: true, repeat: 7, ease: "steps(1)" }, 2.15);
+
+        for (var j = 0; j < CMD_2.length; j++) {
+          (function (idx) {
+            tl.call(function () {
+              typed2.textContent = CMD_2.substring(0, idx + 1);
+            }, null, type2Start + idx * char2Delay);
+          })(j);
+        }
+
+        // ═══ Phase 3: Preview build (3.3 → 5.0s) ═══
+        // VO: "Watch it build." — 3.40-5.20
+
+        // Right panel slides in
+        tl.to(right, {
+          x: 0, opacity: 1,
+          duration: 0.5, ease: "power2.out"
+        }, 3.3);
+
+        // Code panel fades in
+        tl.to(codePanel, { opacity: 1, duration: 0.3, ease: "power2.out" }, 3.5);
+
+        // Stream code lines in
+        var codeStart = 3.55;
+        var lineDelay = 0.06;
+        for (var k = 0; k < CODE_LINES.length; k++) {
+          (function (idx) {
+            tl.call(function () {
+              var lines = CODE_LINES.slice(0, idx + 1).join("\n");
+              codeText.textContent = lines;
+            }, null, codeStart + idx * lineDelay);
+          })(k);
+        }
+
+        // Scroll code up as it fills
+        tl.to(codeText, { y: -40, duration: 0.8, ease: "none" }, 4.0);
+
+        // Mini composition assembles
+        tl.to(miniTitle, {
+          opacity: 1, y: 0,
+          duration: 0.25, ease: "power2.out"
+        }, 3.6);
+
+        tl.to(miniB1, {
+          opacity: 1, scale: 1,
+          duration: 0.2, ease: "back.out(1.5)"
+        }, 3.75);
+        tl.to(miniB2, {
+          opacity: 1, x: 0,
+          duration: 0.2, ease: "power2.out"
+        }, 3.85);
+
+        tl.to(miniL1, { scaleX: 1, duration: 0.2, ease: "power2.out" }, 3.9);
+        tl.to(miniL2, { scaleX: 1, duration: 0.2, ease: "power2.out" }, 3.95);
+
+        tl.to(miniB3, {
+          opacity: 1, y: 0,
+          duration: 0.2, ease: "power2.out"
+        }, 4.0);
+        tl.to(miniCirc, {
+          opacity: 1, scale: 1,
+          duration: 0.25, ease: "back.out(1.5)"
+        }, 4.05);
+
+        tl.to(miniTlFill, {
+          width: "100%",
+          duration: 0.6, ease: "power1.out"
+        }, 3.8);
+
+        // Status → Ready
+        tl.call(function () {
+          status.textContent = "Ready";
+          status.style.color = "#5a8a6e";
+        }, null, 4.5);
+
+        tl.to(ready, {
+          opacity: 1, y: 0,
+          duration: 0.25, ease: "back.out(1.5)"
+        }, 4.5);
+
+        // Gentle settle
+        tl.to(miniB1, { y: -4, duration: 0.4, ease: "sine.inOut", yoyo: true, repeat: 1 }, 4.6);
+
+        // ═══ Phase 4: Zoom-out exit (4.95 → 5.28s) ═══
+        tl.to(wrap, {
+          scale: 0.85, filter: "blur(20px)", opacity: 0.3,
+          duration: 0.33, ease: "power2.in"
+        }, 4.95);
+
+        window.__timelines["cta"] = tl;
+      })();
+    </script>
+  </div>
+</template>

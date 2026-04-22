@@ -1,0 +1,149 @@
+<template id="flex-music-template">
+  <div
+    data-composition-id="flex-music"
+    data-width="1920"
+    data-height="1080"
+    data-start="0"
+    data-duration="0.58"
+  >
+    <div class="mus-bg"></div>
+
+    <!-- Vinyl record — concentric grooves + label -->
+    <div class="mus-record-wrap">
+      <svg class="mus-record" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer disc -->
+        <circle cx="300" cy="300" r="280" fill="#1a1208"/>
+        <!-- Groove rings -->
+        <circle cx="300" cy="300" r="260" fill="none" stroke="rgba(80,60,20,0.3)" stroke-width="1"/>
+        <circle cx="300" cy="300" r="240" fill="none" stroke="rgba(80,60,20,0.25)" stroke-width="0.8"/>
+        <circle cx="300" cy="300" r="220" fill="none" stroke="rgba(80,60,20,0.3)" stroke-width="1"/>
+        <circle cx="300" cy="300" r="200" fill="none" stroke="rgba(80,60,20,0.2)" stroke-width="0.8"/>
+        <circle cx="300" cy="300" r="180" fill="none" stroke="rgba(80,60,20,0.3)" stroke-width="1"/>
+        <circle cx="300" cy="300" r="160" fill="none" stroke="rgba(80,60,20,0.25)" stroke-width="0.8"/>
+        <circle cx="300" cy="300" r="140" fill="none" stroke="rgba(80,60,20,0.3)" stroke-width="1"/>
+        <!-- Shine highlight -->
+        <ellipse cx="240" cy="240" rx="120" ry="80" fill="rgba(255,220,140,0.06)" transform="rotate(-30 240 240)"/>
+        <!-- Label circle -->
+        <circle cx="300" cy="300" r="90" fill="#c8840a"/>
+        <circle cx="300" cy="300" r="88" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <!-- Spindle hole -->
+        <circle cx="300" cy="300" r="8" fill="#1a1208"/>
+        <!-- Label text -->
+        <text x="300" y="290" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="16" fill="#1a1208" letter-spacing="0.1em">HYPERFRAMES</text>
+        <text x="300" y="312" text-anchor="middle" font-family="Inter, sans-serif" font-weight="400" font-size="11" fill="rgba(26,18,8,0.6)">A-SIDE</text>
+      </svg>
+    </div>
+
+    <!-- Tone arm -->
+    <div class="mus-arm-wrap">
+      <svg class="mus-arm" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+        <!-- Pivot base -->
+        <circle cx="100" cy="30" r="18" fill="#2a1f10"/>
+        <circle cx="100" cy="30" r="12" fill="#3d2e18"/>
+        <!-- Arm shaft -->
+        <rect x="97" y="30" width="6" height="280" rx="3" fill="#2a1f10"/>
+        <!-- Headshell -->
+        <rect x="88" y="300" width="24" height="40" rx="4" fill="#3d2e18"/>
+        <!-- Cartridge -->
+        <rect x="94" y="336" width="12" height="16" rx="2" fill="#1a1208"/>
+        <!-- Stylus tip -->
+        <circle cx="100" cy="356" r="2" fill="#c8840a"/>
+      </svg>
+    </div>
+
+    <div class="mus-text">music</div>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
+      [data-composition-id="flex-music"] {
+        width: 1920px; height: 1080px;
+        position: relative; overflow: hidden;
+        background: #f5a623;
+      }
+      [data-composition-id="flex-music"] .mus-bg {
+        position: absolute; inset: 0;
+        background: radial-gradient(ellipse at 45% 48%, #f7c04a 0%, #e8960a 100%);
+      }
+
+      [data-composition-id="flex-music"] .mus-record-wrap {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 520px; height: 520px;
+        transform-origin: 50% 50%;
+      }
+      [data-composition-id="flex-music"] .mus-record {
+        width: 100%; height: 100%;
+        filter: drop-shadow(0 20px 60px rgba(20,12,0,0.4));
+      }
+
+      [data-composition-id="flex-music"] .mus-arm-wrap {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 120px; height: 280px;
+        transform-origin: 50% 15px;
+      }
+      [data-composition-id="flex-music"] .mus-arm {
+        width: 100%; height: 100%;
+        filter: drop-shadow(0 4px 12px rgba(20,12,0,0.3));
+      }
+
+      [data-composition-id="flex-music"] .mus-text {
+        position: absolute;
+        bottom: 120px; left: 50%;
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+        font-size: 64px;
+        color: #2a1808;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        z-index: 2;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+        var root = document.querySelector('[data-composition-id="flex-music"]');
+
+        var recordWrap = root.querySelector(".mus-record-wrap");
+        var armWrap = root.querySelector(".mus-arm-wrap");
+        var text = root.querySelector(".mus-text");
+
+        // Position elements
+        gsap.set(recordWrap, { xPercent: -50, yPercent: -50, y: -30 });
+        gsap.set(armWrap, { x: 180, y: -290, rotation: 35 });
+        gsap.set(text, { xPercent: -50, opacity: 0, y: 8 });
+
+        // Record: scale in with slight rotation
+        gsap.set(recordWrap, { scale: 0.4, opacity: 0, rotation: -90 });
+        tl.to(recordWrap, {
+          scale: 1, opacity: 1, rotation: 0,
+          duration: 0.3, ease: "back.out(1.4)"
+        }, 0);
+
+        // Continuous slow spin
+        tl.to(recordWrap, {
+          rotation: 15, duration: 0.58, ease: "none"
+        }, 0);
+
+        // Tone arm swings down to playing position
+        gsap.set(armWrap, { opacity: 0 });
+        tl.set(armWrap, { opacity: 1 }, 0.08);
+        tl.to(armWrap, {
+          rotation: 18, duration: 0.25, ease: "power2.out"
+        }, 0.1);
+
+        // Text fades in
+        tl.to(text, { opacity: 1, y: 0, duration: 0.15, ease: "power2.out" }, 0.12);
+
+        // Pad
+        tl.to({}, { duration: 0.58 }, 0);
+
+        window.__timelines["flex-music"] = tl;
+      })();
+    </script>
+  </div>
+</template>

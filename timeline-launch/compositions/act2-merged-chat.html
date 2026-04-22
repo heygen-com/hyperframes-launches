@@ -1,0 +1,547 @@
+<template id="act2-merged-chat-template">
+  <div data-composition-id="act2-merged-chat" data-width="1920" data-height="1080" data-start="0" data-duration="9.05">
+    <div class="app">
+
+      <!-- Persistent headline: "timing is 🔔 tricky" — pinned at top, inherited from Act 0 end-state -->
+      <div class="headline" id="headline">
+        <span class="word final" id="w-timing">timing</span>
+        <span class="word final" id="w-is">is</span>
+        <span class="bell-slot" id="bell">
+          <span class="bell-main" id="bell-main">
+            <span class="bell-lottie" id="bell-lottie"></span>
+          </span>
+        </span>
+        <span class="word final" id="w-tricky">tricky.</span>
+      </div>
+
+      <!-- Chat column: thread anchored to bottom, grows upward. Composer parks at bottom -->
+      <div class="chat-column" id="chat-column">
+        <div class="thread" id="thread">
+          <!-- Populated by JS: first exchange then 29-prompt spiral -->
+        </div>
+      </div>
+
+      <div class="composer-wrap" id="composer-wrap">
+        <div class="composer">
+          <div class="composer-text" id="composer-text"></div>
+          <div class="composer-actions">
+            <div class="attach">
+              <svg viewBox="0 0 24 24" width="22" height="22"><path d="M21 11.5l-8.5 8.5a5 5 0 1 1-7-7l8.5-8.5a3.5 3.5 0 1 1 5 5L11 17.5a2 2 0 1 1-3-3l7-7" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+            </div>
+            <div class="send" id="send-btn">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 5v14M5 12l7-7 7 7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Session limit modal -->
+      <div class="limit-modal" id="limit-modal">
+        <div class="limit-icon">
+          <svg viewBox="0 0 24 24" width="32" height="32"><circle cx="12" cy="12" r="10" stroke="#D97757" stroke-width="1.8" fill="none"/><path d="M12 7v5l3 2" stroke="#D97757" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
+        </div>
+        <div class="limit-title">Session limit reached</div>
+        <div class="limit-body">You've hit the message limit for this session. Please try again later.</div>
+      </div>
+    </div>
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+
+      [data-composition-id="act2-merged-chat"] {
+        width: 1920px; height: 1080px; position: relative; overflow: hidden;
+        background: #f5f5f7; color: #1d1d1f;
+        font-family: "Inter", -apple-system, sans-serif;
+      }
+      [data-composition-id="act2-merged-chat"] .app {
+        position: absolute; inset: 0;
+        will-change: transform, filter, opacity;
+      }
+
+      /* Persistent headline at top */
+      [data-composition-id="act2-merged-chat"] .headline {
+        position: absolute;
+        left: 50%; top: 50%;
+        display: flex; align-items: center;
+        gap: 56px; white-space: nowrap;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="act2-merged-chat"] .word {
+        font-size: 150px; font-weight: 900;
+        letter-spacing: -0.035em; line-height: 1;
+        color: #1d1d1f; flex-shrink: 0;
+      }
+      [data-composition-id="act2-merged-chat"] .bell-slot {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 280px; height: 280px;
+        flex-shrink: 0; overflow: visible;
+        position: relative;
+        margin: 0 -28px;
+      }
+      [data-composition-id="act2-merged-chat"] .bell-main {
+        position: relative; width: 280px; height: 280px; display: flex;
+        transform-origin: 50% 50%;
+      }
+      [data-composition-id="act2-merged-chat"] .bell-lottie {
+        width: 100%; height: 100%; display: block;
+        filter: drop-shadow(0 10px 18px rgba(29,29,31,0.18));
+      }
+      [data-composition-id="act2-merged-chat"] .bell-lottie svg {
+        width: 100%; height: 100%; display: block;
+      }
+
+      /* Chat column — floats on intro bg, anchored between headline and composer.
+         Headline settles with its bottom at ~y=335; composer top at ~y=880.
+         Column: top = 385 (50px below headline), bottom = 205 (so its floor is ~875, 5px above composer). */
+      [data-composition-id="act2-merged-chat"] .chat-column {
+        position: absolute;
+        left: 50%;
+        top: 385px;
+        bottom: 205px;
+        transform: translateX(-50%);
+        width: 1100px;
+        /* overflow visible — once stack saturates, the whole column + headline
+           translate up together, so bubbles rise in frame rather than clipping. */
+      }
+      [data-composition-id="act2-merged-chat"] .thread {
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        display: flex; flex-direction: column;
+        gap: 24px;
+        padding: 0 20px;
+        will-change: transform, filter;
+      }
+
+      [data-composition-id="act2-merged-chat"] .exchange {
+        display: flex; flex-direction: column;
+        gap: 14px;
+      }
+      [data-composition-id="act2-merged-chat"] .user-row { display: flex; justify-content: flex-end; }
+      [data-composition-id="act2-merged-chat"] .user-row .bubble {
+        max-width: 720px;
+        padding: 18px 26px;
+        background: #ffffff;
+        border: 1px solid rgba(29,29,31,0.08);
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(29,29,31,0.05);
+        font-size: 26px;
+        line-height: 1.4;
+        font-weight: 500;
+        color: #1d1d1f;
+      }
+      [data-composition-id="act2-merged-chat"] .claude-row {
+        display: flex; gap: 16px; align-items: flex-start;
+      }
+      [data-composition-id="act2-merged-chat"] .claude-mark {
+        width: 44px; height: 44px; flex: 0 0 44px;
+        border-radius: 11px; background: #ffffff;
+        border: 1px solid rgba(29,29,31,0.08);
+        box-shadow: 0 2px 8px rgba(29,29,31,0.04);
+        display: flex; align-items: center; justify-content: center;
+      }
+      [data-composition-id="act2-merged-chat"] .claude-reply {
+        font-size: 28px; color: #1d1d1f;
+        font-weight: 500;
+        padding-top: 6px;
+      }
+
+      /* Composer — parks at bottom, floating */
+      [data-composition-id="act2-merged-chat"] .composer-wrap {
+        position: absolute;
+        left: 50%;
+        bottom: 60px;
+        transform: translateX(-50%);
+        width: 1100px;
+        display: flex; flex-direction: column; align-items: center; gap: 14px;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="act2-merged-chat"] .composer {
+        width: 100%; min-height: 132px;
+        background: #ffffff;
+        border: 1px solid rgba(29,29,31,0.10);
+        border-radius: 26px;
+        box-shadow: 0 10px 40px rgba(29,29,31,0.08), 0 2px 6px rgba(29,29,31,0.04);
+        padding: 26px 28px 22px;
+        display: flex; flex-direction: column; justify-content: space-between;
+      }
+      [data-composition-id="act2-merged-chat"] .composer-text {
+        font-size: 26px; color: #1d1d1f;
+        min-height: 34px; font-weight: 500;
+      }
+      [data-composition-id="act2-merged-chat"] .composer-actions {
+        display: flex; justify-content: flex-end; align-items: center; gap: 12px;
+      }
+      [data-composition-id="act2-merged-chat"] .attach {
+        width: 42px; height: 42px; color: #8c8c90;
+        display: flex; align-items: center; justify-content: center;
+      }
+      [data-composition-id="act2-merged-chat"] .send {
+        width: 42px; height: 42px; border-radius: 12px;
+        background: #D97757;
+        display: flex; align-items: center; justify-content: center;
+      }
+      [data-composition-id="act2-merged-chat"] .composer-meta {
+        font-size: 15px; color: #8c8c90;
+      }
+
+      /* Session limit modal */
+      [data-composition-id="act2-merged-chat"] .limit-modal {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 560px;
+        padding: 44px 48px 42px;
+        background: #FFFFFF;
+        border: 1px solid #E5E5EA;
+        border-radius: 22px;
+        box-shadow: 0 32px 80px rgba(29, 29, 31, 0.22), 0 6px 18px rgba(29, 29, 31, 0.08);
+        display: flex; flex-direction: column; align-items: center;
+        gap: 14px; text-align: center;
+        opacity: 0;
+        z-index: 51;
+      }
+      [data-composition-id="act2-merged-chat"] .limit-icon {
+        width: 68px; height: 68px; border-radius: 50%;
+        background: #FBEFE8;
+        display: flex; align-items: center; justify-content: center;
+        margin-bottom: 4px;
+      }
+      [data-composition-id="act2-merged-chat"] .limit-title {
+        font-size: 30px; font-weight: 700; color: #1d1d1f;
+        letter-spacing: -0.01em;
+      }
+      [data-composition-id="act2-merged-chat"] .limit-body {
+        font-size: 19px; color: #6e6e73; line-height: 1.4;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.14/lottie.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      (async function () {
+        const scope = document.querySelector('[data-composition-id="act2-merged-chat"]');
+        const q = (s) => scope.querySelector(s);
+        const qa = (s) => Array.from(scope.querySelectorAll(s));
+
+        if (document.fonts && document.fonts.ready) await document.fonts.ready;
+        for (let i = 0; i < 40 && typeof window.lottie === 'undefined'; i++) {
+          await new Promise(r => setTimeout(r, 50));
+        }
+
+        // ------- Bell Lottie (reprise ring) -------
+        const bellLottieEl = q('#bell-lottie');
+        let setBellFrame = () => {};
+        if (typeof window.lottie !== 'undefined') {
+          try {
+            const resp = await fetch('assets/bell.json');
+            const outer = await resp.json();
+            const animationData = (outer && typeof outer.content === 'string') ? JSON.parse(outer.content) : outer;
+            const bellAnim = window.lottie.loadAnimation({
+              container: bellLottieEl,
+              renderer: 'svg',
+              loop: false,
+              autoplay: false,
+              animationData
+            });
+            const originalGoToAndStop = bellAnim.goToAndStop.bind(bellAnim);
+            setBellFrame = (f) => { try { originalGoToAndStop(f, true); } catch (e) {} };
+            bellAnim.goToAndStop = function () { /* no-op: HF auto-seek disabled */ };
+            // Bell enters at rest pose (frame 140 — where Act 0 left it, post-shake)
+            bellAnim.addEventListener('DOMLoaded', () => setBellFrame(140));
+          } catch (e) {}
+        }
+
+        // ------- Build thread content -------
+        // First exchange + 29 spiral prompts (preserve original cadence)
+        const firstUserText = "Can you move the sound effect 0.1s earlier?";
+        const spiralPrompts = [
+          // Phase 1 — legible (3)
+          "actually 0.05s earlier", "try 0.08", "too much, +0.02",
+          // Phase 2 — accelerating (6)
+          "0.06?", "split the difference", "one more frame", "back 0.01", "hmm 0.018", "try 0.014",
+          // Phase 3 — blur zone (20)
+          "0.015?", "nudge right", "nope, left", "0.013", "+1ms", "-1ms", "0.0125", "try 0.011",
+          "closer", "still off", "back one frame", "forward one", "0.0118", "just a hair",
+          "0.0122", "0.012 exactly", "0.0119", "half frame", "0.01195", "one tenth ms", "0.01193"
+        ];
+
+        const thread = q('#thread');
+        const composerText = q('#composer-text');
+        const sendBtn = q('#send-btn');
+
+        const claudeMarkSVG = `<svg viewBox="0 0 32 32" width="24" height="24"><g fill="#D97757"><path d="M16 2 L17.4 12.6 L21.2 4.8 L18.7 13.3 L26.2 8.2 L19.5 14.8 L29.4 14 L19.6 16.6 L28 21.6 L18.8 17.8 L22.5 27.2 L16.8 18.4 L15.4 28.8 L14.7 18.2 L9.2 27.2 L13 17.8 L3.8 21.6 L12.3 16.6 L2.6 14 L12.4 14.8 L5.8 8.2 L13.3 13.3 L10.8 4.8 L14.6 12.6 Z"/></g></svg>`;
+
+        // Build elements off-DOM. They're appended at scheduled times so the
+        // bottom-anchored thread always shows the newest bubble flush with bottom;
+        // older bubbles push up into the mask as the stack grows.
+        const makeUserRow = (text) => {
+          const el = document.createElement('div');
+          el.className = 'user-row';
+          el.innerHTML = `<div class="bubble">${text}</div>`;
+          return el;
+        };
+        const makeClaudeRow = () => {
+          const el = document.createElement('div');
+          el.className = 'claude-row';
+          el.innerHTML = `
+            <div class="claude-mark">${claudeMarkSVG}</div>
+            <div class="claude-reply">Done.</div>
+          `;
+          return el;
+        };
+        const makeExchange = (userText) => {
+          const ex = document.createElement('div');
+          ex.className = 'exchange';
+          ex.innerHTML = `
+            <div class="user-row"><div class="bubble">${userText}</div></div>
+            <div class="claude-row">
+              <div class="claude-mark">${claudeMarkSVG}</div>
+              <div class="claude-reply">Done.</div>
+            </div>
+          `;
+          return ex;
+        };
+
+        // First exchange gets split so user bubble and Claude "Done." can reveal
+        // independently with a real dwell.
+        const firstUserRow = makeUserRow(firstUserText);
+        const firstClaudeRow = makeClaudeRow();
+        const firstWrap = document.createElement('div');
+        firstWrap.className = 'exchange';
+        firstWrap.appendChild(firstUserRow);
+        firstWrap.appendChild(firstClaudeRow);
+
+        const spiralEx = spiralPrompts.map(p => makeExchange(p));
+
+        // Initial opacity/y for everything — then we appendChild + tween opacity
+        gsap.set([firstUserRow, firstClaudeRow, firstWrap], { opacity: 0, y: 20 });
+        gsap.set(spiralEx, { opacity: 0, y: 20 });
+
+        // ------- Initial state -------
+        const app = q('.app');
+        const headline = q('#headline');
+        const chatColumn = q('#chat-column');
+        const composerWrap = q('#composer-wrap');
+
+        // Headline starts at frame center (matching Act 0 end-state: translate(-50%,-50%))
+        gsap.set(headline, { xPercent: -50, yPercent: -50, x: 0, y: 0 });
+        // Composer parks off-screen-bottom
+        gsap.set(composerWrap, { y: 260, opacity: 0 });
+        gsap.set(chatColumn, { opacity: 0 });
+        composerText.innerText = "";
+
+        // Camera pan+zoom: anchor on the composer center (y≈940 of 1080 = 87%)
+        gsap.set(app, { transformOrigin: "50% 87%", scale: 1, y: 0 });
+
+        // Push-up mechanic: after appending a new exchange, measure the thread.
+        // If its bottom exceeds (column height - PUSH_MARGIN), translate thread
+        // upward so the newest message stays within the safe zone. Top bubbles
+        // exit via the column's overflow:hidden — clean, no mask.
+        const PUSH_MARGIN = 10;
+        const PUSH_EASE = "power2.out";
+        const PUSH_DUR = 0.28;
+        const pushIfOverflow = () => {
+          const colH = chatColumn.clientHeight;
+          const threadH = thread.scrollHeight;
+          const currentY = Number(gsap.getProperty(thread, "y")) || 0;
+          const bottom = threadH + currentY;
+          const limit = colH - PUSH_MARGIN;
+          if (bottom > limit) {
+            const delta = bottom - limit;
+            gsap.to(thread, {
+              y: currentY - delta,
+              duration: PUSH_DUR,
+              ease: PUSH_EASE,
+              overwrite: "auto"
+            });
+            // Once saturated, the headline rides upward with the stack so
+            // "timing is tricky" gets pushed off-top instead of floating in place.
+            const headY = Number(gsap.getProperty(headline, "y")) || 0;
+            gsap.to(headline, {
+              y: headY - delta,
+              duration: PUSH_DUR,
+              ease: PUSH_EASE,
+              overwrite: "auto"
+            });
+          }
+        };
+
+        const tl = gsap.timeline({ paused: true });
+
+        // =========================================================
+        // BEAT 1 — Camera pans+zooms toward composer, composer slides up
+        // =========================================================
+        // Camera pan+zoom INTO composer: scale up, translate to center vertically,
+        // and shift RIGHT so the composer's left edge sits inside frame with a gap.
+        // At scale 2, composer center (960,940) → (960,540) with y:-400.
+        // Start framed on the LEFT side of the composer (x: 240 shifts composer right).
+        tl.to(app, {
+          scale: 2,
+          y: -400,
+          x: 240,
+          duration: 0.8, ease: "power2.inOut"
+        }, 0.1);
+
+        // Headline drifts from center (y=0 rel to top:50%) to upper area (y ~= -280px)
+        tl.to(headline, {
+          y: -280,
+          duration: 0.8, ease: "power3.out"
+        }, 0.1);
+
+        tl.to(composerWrap, {
+          y: 0, opacity: 1,
+          duration: 0.65, ease: "power3.out"
+        }, 0.2);
+
+        tl.to(chatColumn, {
+          opacity: 1,
+          duration: 0.4, ease: "power2.out"
+        }, 0.6);
+
+        // =========================================================
+        // BEAT 2 — First ask: user types, send pulse, bubble + "Done."
+        // =========================================================
+        const TYPE_START = 1.0;
+        const TYPE_DUR = 0.95;
+        const typeObj = { i: 0 };
+        tl.to(typeObj, {
+          i: firstUserText.length,
+          duration: TYPE_DUR, ease: "none",
+          snap: { i: 1 },
+          onUpdate: () => { composerText.innerText = firstUserText.slice(0, typeObj.i); }
+        }, TYPE_START);
+
+        // Camera pans horizontally from left of composer → right of composer as text types
+        tl.to(app, {
+          x: -240,
+          duration: TYPE_DUR, ease: "power1.inOut"
+        }, TYPE_START);
+
+        // Send pulse + clear composer
+        const SEND_T = TYPE_START + 1.05;
+        tl.to(sendBtn, { scale: 0.88, duration: 0.06, ease: "power2.out" }, SEND_T)
+          .to(sendBtn, { scale: 1, duration: 0.18, ease: "back.out(2)" }, SEND_T + 0.06)
+          .call(() => { composerText.innerText = ""; }, [], SEND_T + 0.07);
+
+        // Camera pans+zooms back out to full view on send
+        tl.to(app, {
+          scale: 1, x: 0, y: 0,
+          duration: 0.2, ease: "power3.inOut"
+        }, SEND_T);
+
+        // User bubble appears in thread (append to DOM then fade in)
+        // Wrap both rows in firstWrap so they stay grouped in the flex column
+        tl.call(() => { thread.appendChild(firstWrap); pushIfOverflow(); }, [], SEND_T + 0.1);
+        tl.to(firstWrap, { opacity: 1, duration: 0.01 }, SEND_T + 0.11);
+        tl.to(firstUserRow, {
+          opacity: 1, y: 0,
+          duration: 0.35, ease: "power2.out"
+        }, SEND_T + 0.15);
+
+        // Claude "Done." revealed ~0.55s later so it reads as a reply, not a snap
+        tl.to(firstClaudeRow, {
+          opacity: 1, y: 0,
+          duration: 0.3, ease: "power2.out"
+        }, SEND_T + 0.7);
+
+        // =========================================================
+        // BEAT 3 — Reprise: bell-sfx-2 at absolute 10.89s = local 4.19s
+        // Lottie 0→140 over 1.3s, peak shake ~mid-tween (~0.65s in).
+        // Pre-roll so peak lines up with SFX: tween starts at 4.19 - 0.65 = 3.54
+        // =========================================================
+        const REPRISE_T = 3.54;
+        const bellFrame = { frame: 0 };
+        tl.call(() => setBellFrame(0), [], REPRISE_T - 0.01);
+        tl.to(bellFrame, {
+          frame: 140,
+          duration: 1.3, ease: "none",
+          onUpdate: () => setBellFrame(bellFrame.frame)
+        }, REPRISE_T);
+
+        // =========================================================
+        // BEAT 4 — Spiral: 29 prompts flood in after reprise settles
+        //          Pace compressed to fit between 4.85 (post-reprise) and 7.65 (hold)
+        // =========================================================
+        const SPIRAL_START = 4.85;
+        const gapFor = (idx) => {
+          if (idx < 3) return 0.26;
+          if (idx < 9) return 0.12;
+          return 0.055;
+        };
+
+        let t = SPIRAL_START;
+        spiralEx.forEach((ex, idx) => {
+          const blurPhase = idx >= 9;
+
+          // Flash prompt in composer
+          tl.call(() => { composerText.innerText = spiralPrompts[idx]; }, [], t);
+          if (!blurPhase) {
+            tl.to(sendBtn, { scale: 0.9, duration: 0.04, ease: "power2.out" }, t + 0.05)
+              .to(sendBtn, { scale: 1, duration: 0.08, ease: "back.out(2)" }, t + 0.09);
+          }
+          tl.call(() => { composerText.innerText = ""; }, [], t + 0.06);
+
+          // Append + fade in; pushIfOverflow shifts thread up when we touch
+          // the 10px margin from composer.
+          tl.call(() => { thread.appendChild(ex); pushIfOverflow(); }, [], t + 0.03);
+          tl.to(ex, {
+            opacity: 1, y: 0,
+            duration: blurPhase ? 0.06 : 0.18,
+            ease: "power2.out"
+          }, t + 0.05);
+
+          t += gapFor(idx);
+        });
+
+        // Motion blur ramps up in phase 3
+        tl.to(thread, {
+          filter: "blur(2.5px)",
+          duration: 0.6, ease: "power2.in"
+        }, SPIRAL_START + 1.6);
+
+        // =========================================================
+        // BEAT 5 — Frustrated hold: composer mid-type, micro-shake
+        // =========================================================
+        const HOLD_T = t + 0.1;
+        tl.call(() => { composerText.innerText = "maybe +0.0005…"; }, [], HOLD_T);
+        tl.to(thread, { filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, HOLD_T);
+        tl.to(scope, {
+          x: -2, duration: 0.05, repeat: 5, yoyo: true, ease: "steps(1)"
+        }, HOLD_T + 0.08);
+
+        // Session limit popup — appears with the shake
+        const modal = q("#limit-modal");
+        gsap.set(modal, { xPercent: -50, yPercent: -50, scale: 0.9 });
+        tl.to(modal, {
+            opacity: 1,
+            scale: 1,
+            duration: 0.3,
+            ease: "back.out(1.8)"
+          }, HOLD_T + 0.08);
+
+        // =========================================================
+        // BEAT 6 — Cut-the-curve EXIT (matches act3 entry at abs 15.75s)
+        // Last 0.45s: whole .app flies UP + 10px blur
+        // =========================================================
+        const EXIT_T = 9.05 - 0.45; // 8.60
+        tl.to(app, {
+          y: -280,
+          filter: "blur(10px)",
+          duration: 0.45,
+          ease: "power3.in",
+          overwrite: "auto"
+        }, EXIT_T);
+        tl.to(app, {
+          opacity: 0,
+          duration: 0.22,
+          ease: "power2.in"
+        }, EXIT_T + 0.23);
+
+        // Pad to full duration
+        tl.to({}, { duration: 9.05 }, 0);
+
+        window.__timelines["act2-merged-chat"] = tl;
+      })();
+    </script>
+  </div>
+</template>

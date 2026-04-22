@@ -1,0 +1,47 @@
+<template id="act4-video-template">
+  <div data-composition-id="act4-video" data-width="1920" data-height="1080" data-start="0" data-duration="5.7">
+
+    <!-- No visible DOM — this comp only drives the entry animation on the
+         root-level <video id="act4-final-video"> element so HF handles the
+         video's currentTime scrubbing normally. -->
+
+    <style>
+      [data-composition-id="act4-video"] {
+        width: 1920px;
+        height: 1080px;
+        position: relative;
+        pointer-events: none;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      (function () {
+        const tl = gsap.timeline({ paused: true });
+
+        // new-intro beat-2→3 zoom-through ease: fast start, decelerates to 0.2
+        const entryEase = (t) => -0.806 * t * t + 1.806 * t;
+
+        const VID = "#act4-final-video";
+
+        tl.fromTo(VID,
+          { scale: 1.45, filter: "blur(14px)" },
+          { scale: 1.0, filter: "blur(0px)", duration: 0.9, ease: entryEase },
+          0
+        );
+
+        // Subtle slow pull during hold — parallax flavor from new-intro beats 2/3
+        tl.to(VID,
+          { scale: 0.96, duration: 4.8, ease: "none" },
+          0.9
+        );
+
+        // Pad so HF keeps comp mounted through its window
+        tl.to({}, { duration: 5.7 }, 0);
+
+        window.__timelines["act4-video"] = tl;
+      })();
+    </script>
+  </div>
+</template>

@@ -1,0 +1,144 @@
+<template id="flex-footage-template">
+  <div
+    data-composition-id="flex-footage"
+    data-width="1920"
+    data-height="1080"
+    data-start="0"
+    data-duration="0.84"
+  >
+    <div class="ftg-bg"></div>
+
+    <!-- Film strip perforations top + bottom -->
+    <div class="film-strip film-top"></div>
+    <div class="film-strip film-bottom"></div>
+
+    <!-- "footage" label above frames -->
+    <div class="ftg-text">footage</div>
+
+    <!-- Scrolling video frames container -->
+    <div class="frames-track">
+      <div class="frame-card">
+        <video id="footage-frame-1" src="../assets/Frame 1.mp4" data-start="0" muted></video>
+      </div>
+      <div class="frame-card">
+        <video id="footage-frame-2" src="../assets/option2.mp4" data-start="0" muted></video>
+      </div>
+      <div class="frame-card">
+        <video id="footage-frame-3" src="../assets/Frame 3.mp4" data-start="0" muted></video>
+      </div>
+    </div>
+
+    <!-- Film grain overlay -->
+    <div class="film-grain"></div>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,500&display=swap");
+
+      [data-composition-id="flex-footage"] {
+        width: 1920px; height: 1080px;
+        position: relative; overflow: hidden;
+        background: #1a1a1a;
+      }
+      [data-composition-id="flex-footage"] .ftg-bg {
+        position: absolute; inset: 0;
+        background: radial-gradient(ellipse at 50% 50%, #262626 0%, #1a1a1a 100%);
+      }
+
+      [data-composition-id="flex-footage"] .film-strip {
+        position: absolute; left: 0; width: 2200px; height: 80px;
+        background:
+          repeating-linear-gradient(90deg,
+            transparent 0px, transparent 40px,
+            #0d0d0d 40px, #0d0d0d 44px,
+            transparent 44px, transparent 60px,
+            rgba(255,255,255,0.06) 60px, rgba(255,255,255,0.06) 80px,
+            transparent 80px, transparent 100px
+          );
+        opacity: 0.7;
+        z-index: 3;
+      }
+      [data-composition-id="flex-footage"] .film-top { top: 0; }
+      [data-composition-id="flex-footage"] .film-bottom { bottom: 0; }
+
+      [data-composition-id="flex-footage"] .ftg-text {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: "EB Garamond", serif;
+        font-weight: 500;
+        font-style: italic;
+        font-size: 160px;
+        color: #f0e6d2;
+        letter-spacing: 0.01em;
+        z-index: 4;
+        text-shadow: 0 6px 24px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.6);
+        opacity: 0;
+      }
+
+      [data-composition-id="flex-footage"] .frames-track {
+        position: absolute;
+        top: 120px; left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 40px;
+        z-index: 2;
+      }
+
+      [data-composition-id="flex-footage"] .frame-card {
+        width: 680px; height: 840px;
+        border-radius: 16px;
+        overflow: hidden;
+        flex-shrink: 0;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      }
+
+      [data-composition-id="flex-footage"] .frame-card video {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      [data-composition-id="flex-footage"] .film-grain {
+        position: absolute; inset: 0;
+        background-image:
+          radial-gradient(circle at 20% 30%, rgba(255,255,255,0.03) 1px, transparent 1px),
+          radial-gradient(circle at 80% 70%, rgba(255,255,255,0.02) 1px, transparent 1px),
+          radial-gradient(circle at 50% 50%, rgba(255,255,255,0.015) 1px, transparent 1px);
+        background-size: 3px 3px, 5px 5px, 7px 7px;
+        pointer-events: none;
+        opacity: 0.6;
+        z-index: 5;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+        var root = document.querySelector('[data-composition-id="flex-footage"]');
+        var text = root.querySelector(".ftg-text");
+        var stripTop = root.querySelector(".film-top");
+        var stripBottom = root.querySelector(".film-bottom");
+        var framesTrack = root.querySelector(".frames-track");
+        var videos = root.querySelectorAll(".frame-card video");
+
+        // Play all videos from the start
+        videos.forEach(function (v) {
+          v.currentTime = 0;
+          v.play().catch(function () {});
+        });
+
+        // Text fades in
+        tl.to(text, { opacity: 1, duration: 0.2, ease: "power2.out" }, 0);
+
+        // Film strips + frames track all scroll left together
+        tl.fromTo(stripTop, { x: 0 }, { x: -100, duration: 0.84, ease: "none" }, 0);
+        tl.fromTo(stripBottom, { x: -50 }, { x: -150, duration: 0.84, ease: "none" }, 0);
+        tl.fromTo(framesTrack, { x: 0 }, { x: -100, duration: 0.84, ease: "none" }, 0);
+
+        window.__timelines["flex-footage"] = tl;
+      })();
+    </script>
+  </div>
+</template>

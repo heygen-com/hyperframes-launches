@@ -1,0 +1,155 @@
+<template id="flex-sfx-template">
+  <div
+    data-composition-id="flex-sfx"
+    data-width="1920"
+    data-height="1080"
+    data-start="0"
+    data-duration="0.93"
+  >
+    <div class="sfx-bg"></div>
+    <div class="sfx-glow"></div>
+
+    <!-- Circular spectrum — 48 bars radiating from center -->
+    <div class="sfx-spectrum" id="sfx-spectrum"></div>
+
+    <div class="sfx-text">sound effects</div>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@500;600&display=swap");
+
+      [data-composition-id="flex-sfx"] {
+        width: 1920px; height: 1080px;
+        position: relative; overflow: hidden;
+        background: #1a1208;
+      }
+      [data-composition-id="flex-sfx"] .sfx-bg {
+        position: absolute; inset: 0;
+        background: radial-gradient(ellipse at 50% 50%, #2a1f10 0%, #0e0a04 100%);
+      }
+
+      /* Warm glow behind spectrum */
+      [data-composition-id="flex-sfx"] .sfx-glow {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 800px; height: 800px;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(circle, rgba(200, 132, 10, 0.25) 0%, transparent 70%);
+        pointer-events: none;
+      }
+
+      [data-composition-id="flex-sfx"] .sfx-spectrum {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 0; height: 0;
+      }
+
+      [data-composition-id="flex-sfx"] .sb {
+        position: absolute;
+        width: 6px;
+        background: linear-gradient(to top, #c8840a, #f5c842);
+        border-radius: 3px;
+        transform-origin: 50% 100%;
+        bottom: 0; left: -3px;
+      }
+
+      [data-composition-id="flex-sfx"] .sfx-text {
+        position: absolute;
+        top: 50%; left: 50%;
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+        font-size: 52px;
+        color: #f5e8c8;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        z-index: 5;
+        text-shadow: 0 0 40px rgba(200, 132, 10, 0.5);
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+        var root = document.querySelector('[data-composition-id="flex-sfx"]');
+
+        var spectrum = root.querySelector(".sfx-spectrum");
+        var glow = root.querySelector(".sfx-glow");
+        var text = root.querySelector(".sfx-text");
+
+        // Generate 48 bars in a circle
+        var BAR_COUNT = 48;
+        var bars = [];
+        // Deterministic "random" heights using a simple hash
+        var HEIGHTS = [];
+        for (var i = 0; i < BAR_COUNT; i++) {
+          // Deterministic pattern: sin-based with variation
+          var h = 80 + 220 * Math.abs(Math.sin(i * 0.7 + 0.3) * Math.cos(i * 1.3 + 0.7));
+          // Add secondary harmonic for visual interest
+          h += 60 * Math.abs(Math.sin(i * 2.1 + 1.5));
+          HEIGHTS.push(Math.round(h));
+        }
+
+        for (var i = 0; i < BAR_COUNT; i++) {
+          var bar = document.createElement("div");
+          bar.className = "sb";
+          var angle = (i / BAR_COUNT) * 360;
+          // Position each bar pointing outward from center
+          bar.style.transformOrigin = "50% 100%";
+          bar.style.transform = "rotate(" + angle + "deg) translateY(-60px)";
+          bar.style.height = "4px";
+          bar.style.opacity = "0";
+          spectrum.appendChild(bar);
+          bars.push(bar);
+        }
+
+        gsap.set(text, { xPercent: -50, yPercent: -50, opacity: 0, scale: 0.85 });
+        gsap.set(glow, { scale: 0.3, opacity: 0 });
+
+        // Glow pulses in
+        tl.to(glow, { scale: 1, opacity: 1, duration: 0.2, ease: "power2.out" }, 0);
+        tl.to(glow, { scale: 1.4, opacity: 0.6, duration: 0.5, ease: "sine.inOut" }, 0.2);
+
+        // Bars spike outward in a staggered wave pattern
+        bars.forEach(function (bar, i) {
+          var delay = (i % 12) * 0.008; // Groups of 12 fire together-ish
+          // Spike up
+          tl.to(bar, {
+            height: HEIGHTS[i],
+            opacity: 0.9,
+            duration: 0.12,
+            ease: "power4.out"
+          }, 0.02 + delay);
+          // Settle to lower height
+          tl.to(bar, {
+            height: HEIGHTS[i] * 0.5,
+            duration: 0.35,
+            ease: "power2.inOut"
+          }, 0.14 + delay);
+          // Second pulse
+          tl.to(bar, {
+            height: HEIGHTS[i] * 0.7,
+            duration: 0.1,
+            ease: "power2.out"
+          }, 0.45 + delay);
+          tl.to(bar, {
+            height: HEIGHTS[i] * 0.35,
+            duration: 0.3,
+            ease: "sine.out"
+          }, 0.55 + delay);
+        });
+
+        // Text fades in with scale
+        tl.to(text, {
+          opacity: 1, scale: 1,
+          duration: 0.18, ease: "power2.out"
+        }, 0.08);
+
+        // Pad
+        tl.to({}, { duration: 0.93 }, 0);
+
+        window.__timelines["flex-sfx"] = tl;
+      })();
+    </script>
+  </div>
+</template>

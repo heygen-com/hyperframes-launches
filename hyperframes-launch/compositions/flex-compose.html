@@ -1,0 +1,248 @@
+<template id="flex-compose-template">
+  <div
+    data-composition-id="flex-compose"
+    data-width="1920"
+    data-height="1080"
+    data-start="0"
+    data-duration="2.03"
+  >
+    <div class="comp-bg"></div>
+
+    <!-- Iris-close wrapper -->
+    <div class="iris-wrap">
+    <!-- Production canvas — elements layer on sequentially -->
+    <div class="comp-stage">
+      <!-- Video frame with A-roll -->
+      <div class="comp-video">
+        <video id="compose-aroll" src="../assets/pill.mp4" data-start="0" muted></video>
+      </div>
+
+      <!-- Branded border/frame -->
+      <div class="comp-frame"></div>
+
+      <!-- Lower third -->
+      <div class="comp-lower">
+        <div class="comp-lower-name">Sarah Chen</div>
+        <div class="comp-lower-title">Product Designer</div>
+      </div>
+
+      <!-- Caption text -->
+      <div class="comp-caption">building something people actually want to use</div>
+
+      <!-- Audio waveform -->
+      <div class="comp-wave" id="comp-wave-bars"></div>
+    </div>
+
+    <div class="comp-label">composes together</div>
+    </div><!-- /.iris-wrap -->
+
+    <!-- Iris glow ring -->
+    <div class="iris-glow"></div>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+      [data-composition-id="flex-compose"] {
+        width: 1920px; height: 1080px;
+        position: relative; overflow: hidden;
+        background: #f8f4ed;
+      }
+      [data-composition-id="flex-compose"] .comp-bg {
+        position: absolute; inset: 0;
+        background: radial-gradient(ellipse at 50% 45%, #faf7f0 0%, #f0ebe2 100%);
+      }
+
+      [data-composition-id="flex-compose"] .comp-stage {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 840px; height: 540px;
+      }
+
+      /* Video frame — dark gradient "screen" */
+      [data-composition-id="flex-compose"] .comp-video {
+        position: absolute; inset: 0;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(40,30,10,0.18), 0 4px 12px rgba(40,30,10,0.1);
+      }
+      [data-composition-id="flex-compose"] .comp-video video {
+        position: absolute; inset: 0;
+        width: 100%; height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      /* Branded frame border */
+      [data-composition-id="flex-compose"] .comp-frame {
+        position: absolute;
+        inset: -6px;
+        border: 3px solid #c84f1c;
+        border-radius: 22px;
+        pointer-events: none;
+      }
+
+      /* Lower third */
+      [data-composition-id="flex-compose"] .comp-lower {
+        position: absolute;
+        bottom: 40px; left: 30px;
+        padding: 12px 18px;
+        background: rgba(248, 244, 237, 0.94);
+        border-radius: 6px;
+        border-left: 4px solid #c84f1c;
+      }
+      [data-composition-id="flex-compose"] .comp-lower-name {
+        font-family: "Geist", sans-serif;
+        font-weight: 600;
+        font-size: 20px;
+        color: #1e1e1e;
+        letter-spacing: 0.01em;
+      }
+      [data-composition-id="flex-compose"] .comp-lower-title {
+        font-family: "Geist", sans-serif;
+        font-weight: 400;
+        font-size: 14px;
+        color: #6a5a40;
+        margin-top: 2px;
+      }
+
+      /* Caption */
+      [data-composition-id="flex-compose"] .comp-caption {
+        position: absolute;
+        bottom: 120px; left: 50%;
+        font-family: "Geist", sans-serif;
+        font-weight: 500;
+        font-size: 22px;
+        color: #f8f4ed;
+        background: rgba(26, 20, 10, 0.75);
+        padding: 8px 20px;
+        border-radius: 6px;
+        white-space: nowrap;
+      }
+
+      /* Audio waveform */
+      [data-composition-id="flex-compose"] .comp-wave {
+        position: absolute;
+        bottom: -50px; left: 0; right: 0;
+        height: 30px;
+        display: flex; align-items: center; justify-content: center; gap: 3px;
+      }
+      [data-composition-id="flex-compose"] .cw-bar {
+        width: 4px;
+        background: #c84f1c;
+        border-radius: 2px;
+        transform-origin: 50% 50%;
+      }
+
+      /* Iris transition */
+      [data-composition-id="flex-compose"] .iris-wrap {
+        position: absolute; inset: 0;
+        clip-path: circle(120% at 50% 50%);
+      }
+      [data-composition-id="flex-compose"] .iris-glow {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 200px; height: 200px;
+        margin-left: -100px; margin-top: -100px;
+        border-radius: 50%;
+        box-shadow:
+          0 0 60px 30px rgba(255, 220, 160, 0.5),
+          0 0 120px 60px rgba(255, 200, 130, 0.25),
+          0 0 200px 100px rgba(255, 180, 100, 0.1);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 10;
+      }
+
+      /* Label */
+      [data-composition-id="flex-compose"] .comp-label {
+        position: absolute;
+        bottom: 80px; left: 50%;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 500;
+        font-size: 28px;
+        color: #8a6a2a;
+        letter-spacing: 0.06em;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+        var root = document.querySelector('[data-composition-id="flex-compose"]');
+
+        var stage = root.querySelector(".comp-stage");
+        var video = root.querySelector(".comp-video");
+        var frame = root.querySelector(".comp-frame");
+        var lower = root.querySelector(".comp-lower");
+        var caption = root.querySelector(".comp-caption");
+        var waveWrap = root.querySelector("#comp-wave-bars");
+        var label = root.querySelector(".comp-label");
+
+        // Center stage + label
+        gsap.set(stage, { xPercent: -50, yPercent: -50, y: -30 });
+        gsap.set(label, { xPercent: -50, opacity: 0, y: 8 });
+        gsap.set(caption, { xPercent: -50, opacity: 0, y: 8 });
+
+        // Initial hidden states
+        gsap.set(video, { scale: 0.9, opacity: 0 });
+        gsap.set(frame, { opacity: 0, scale: 1.05 });
+        gsap.set(lower, { y: 30, opacity: 0 });
+
+        // Generate waveform bars
+        var waveBars = [];
+        var barHeights = [8, 18, 12, 22, 10, 20, 14, 24, 8, 16, 22, 10, 18, 14, 20, 12, 24, 8, 16, 22, 10, 18, 14, 20, 8];
+        for (var i = 0; i < barHeights.length; i++) {
+          var b = document.createElement("span");
+          b.className = "cw-bar";
+          b.style.height = "2px";
+          waveWrap.appendChild(b);
+          waveBars.push(b);
+        }
+        gsap.set(waveWrap, { opacity: 0 });
+
+        // 1. Video frame appears (0 → 0.3s)
+        tl.to(video, { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" }, 0);
+
+        // 2. Lower third slides up (0.3 → 0.6s)
+        tl.to(lower, { y: 0, opacity: 1, duration: 0.25, ease: "power2.out" }, 0.3);
+
+        // 3. Caption appears (0.6 → 1.0s)
+        tl.to(caption, { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }, 0.6);
+
+        // 4. Branded frame surrounds (0.9 → 1.2s)
+        tl.to(frame, { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }, 0.9);
+
+        // 5. Audio waveform pulses (1.4 → 1.7s)
+        tl.to(waveWrap, { opacity: 1, duration: 0.15, ease: "power2.out" }, 1.4);
+        waveBars.forEach(function (bar, idx) {
+          tl.to(bar, {
+            height: barHeights[idx],
+            duration: 0.15,
+            ease: "power2.out",
+            yoyo: true,
+            repeat: 1
+          }, 1.42 + idx * 0.008);
+        });
+
+        // 6. Label settles (1.7 → 2.03s)
+        tl.to(label, { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }, 1.70);
+
+        // --- Cut-the-curve upward exit (1.89 → 2.22s) ---
+        // Matches engine.html's upward entry (y:150→0, blur:30→0, 1.0s, power2.out).
+        // Exit: same direction (upward), 0.33s, power2.in — velocity-matched at cut.
+        var irisWrap = root.querySelector(".iris-wrap");
+        tl.to(irisWrap, {
+          y: -150, filter: "blur(30px)",
+          duration: 0.33, ease: "power2.in"
+        }, 1.89);
+
+        // Pad timeline to master slot duration (2.22s) to prevent black frames at beat tail
+        tl.to({}, { duration: 2.22 }, 0);
+
+        window.__timelines["flex-compose"] = tl;
+      })();
+    </script>
+  </div>
+</template>

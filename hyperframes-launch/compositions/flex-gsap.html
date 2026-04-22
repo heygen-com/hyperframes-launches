@@ -1,0 +1,152 @@
+<template id="flex-gsap-template">
+  <div
+    data-composition-id="flex-gsap"
+    data-width="1920"
+    data-height="1080"
+    data-start="0"
+    data-duration="0.69"
+  >
+    <div class="gsap-bg"></div>
+
+    <!-- Dot grid — generated via JS -->
+    <div class="gsap-grid" id="gsap-grid"></div>
+
+    <style>
+      [data-composition-id="flex-gsap"] {
+        width: 1920px; height: 1080px;
+        position: relative; overflow: hidden;
+        background: #0e100f;
+      }
+      [data-composition-id="flex-gsap"] .gsap-bg {
+        position: absolute; inset: 0;
+        background: radial-gradient(ellipse at 50% 50%, #161816 0%, #0e100f 100%);
+      }
+
+      [data-composition-id="flex-gsap"] .gsap-grid {
+        position: absolute;
+        top: 50%; left: 50%;
+        display: flex;
+        flex-direction: column;
+      }
+      [data-composition-id="flex-gsap"] .g-row {
+        display: flex;
+      }
+      [data-composition-id="flex-gsap"] .g-cell {
+        width: 40px; height: 40px;
+        margin: 8px;
+        background: #fffce1;
+        border-radius: 50%;
+        will-change: transform;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+        var root = document.querySelector('[data-composition-id="flex-gsap"]');
+        var grid = root.querySelector("#gsap-grid");
+
+        var ROWS = 15;
+        var COLS = 25;
+        var CELL_SIZE = 40;
+        var GAP = 16; // 8px margin each side
+        var PITCH = CELL_SIZE + GAP;
+
+        // Grid dimensions for centering
+        var gridW = COLS * PITCH;
+        var gridH = ROWS * PITCH;
+        gsap.set(grid, { marginLeft: -gridW / 2, marginTop: -gridH / 2 });
+
+        // Build grid
+        var cells = [];
+        var cellEls = [];
+        for (var r = 0; r < ROWS; r++) {
+          var rowDiv = document.createElement("div");
+          rowDiv.className = "g-row";
+          for (var c = 0; c < COLS; c++) {
+            var cell = document.createElement("div");
+            cell.className = "g-cell";
+            rowDiv.appendChild(cell);
+            cellEls.push(cell);
+            cells.push({ r: r, c: c, el: cell });
+          }
+          grid.appendChild(rowDiv);
+        }
+
+        // Center of grid (in grid-cell coordinates)
+        var centerR = (ROWS - 1) / 2;
+        var centerC = (COLS - 1) / 2;
+
+        // Pre-compute distance from center for each cell (for stagger)
+        cells.forEach(function (cell) {
+          var dr = cell.r - centerR;
+          var dc = cell.c - centerC;
+          cell.dist = Math.sqrt(dr * dr + dc * dc);
+          // Angle from center (for explosion direction)
+          cell.angle = Math.atan2(dr, dc);
+        });
+
+        var maxDist = Math.sqrt(centerR * centerR + centerC * centerC);
+
+        // === Phase 1: Slow cursor sweep (0 → 0.48s) ===
+        // A "cursor" sweeps left→right. Slowed down so you can savour
+        // the elastic snap-back rippling across the grid.
+        for (var c = 0; c < COLS; c++) {
+          var colCells = cells.filter(function (cell) { return cell.c === c; });
+          var colEls = colCells.map(function (cell) { return cell.el; });
+          var colStart = c * 0.019; // slower stagger (was 0.012)
+
+          // Pull toward cursor path
+          tl.to(colEls, {
+            y: -22,
+            x: 8,
+            duration: 0.08,
+            ease: "power2.out",
+            stagger: 0.004
+          }, colStart);
+
+          // Snap back with elastic
+          tl.to(colEls, {
+            y: 0,
+            x: 0,
+            duration: 0.28,
+            ease: "elastic.out(1, 0.3)",
+            stagger: 0.004
+          }, colStart + 0.08);
+        }
+
+        // === Phase 2: Explosion → blur exit (0.48 → 0.69s) ===
+        // Dots fly outward from center — no settle. Blur ramps on the
+        // whole grid so it transitions into the next beat.
+        cells.forEach(function (cell) {
+          var normDist = cell.dist / maxDist;
+          var flyDist = 160 * (1 - normDist * 0.5);
+          var flyX = Math.cos(cell.angle) * flyDist;
+          var flyY = Math.sin(cell.angle) * flyDist - 100;
+          var staggerDelay = normDist * 0.08;
+
+          // Fly out (no return)
+          tl.to(cell.el, {
+            x: flyX,
+            y: flyY,
+            scale: 0.3,
+            opacity: 0.2,
+            duration: 0.18,
+            ease: "power3.out"
+          }, 0.48 + staggerDelay);
+        });
+
+        // Blur ramp on entire grid — sells the transition
+        tl.to(grid, {
+          filter: "blur(20px)",
+          duration: 0.18,
+          ease: "power2.in"
+        }, 0.52);
+
+        window.__timelines["flex-gsap"] = tl;
+      })();
+    </script>
+  </div>
+</template>

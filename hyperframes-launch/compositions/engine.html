@@ -1,0 +1,409 @@
+<template id="engine-template">
+  <div
+    data-composition-id="engine"
+    data-width="1920"
+    data-height="1080"
+    data-start="0"
+    data-duration="10.68"
+  >
+    <div class="eng-bg"></div>
+
+    <div class="eng-wrap">
+
+    <!-- Tall vertical canvas — camera pans down -->
+    <div class="eng-canvas">
+
+      <!-- ═══ STEP 1: AGENT (centered at y:540) ═══ -->
+      <div class="step step-1">
+        <div class="step-icon si-1">
+          <div class="si-ring si-ring-o"></div>
+          <div class="si-ring si-ring-i"></div>
+          <div class="si-core">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="40" cy="26" r="10" fill="currentColor"/>
+              <path d="M18 60c0-12 10-22 22-22s22 10 22 22" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+              <path d="M52 16l6-6M56 24l6 0M54 32l6 3" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+            </svg>
+          </div>
+        </div>
+        <div class="step-title">Agent</div>
+        <div class="step-sub">writes HTML</div>
+      </div>
+
+      <!-- Flow connector 1→2 -->
+      <svg class="flow-svg flow-1" viewBox="0 0 4 700" xmlns="http://www.w3.org/2000/svg">
+        <line class="fl" x1="2" y1="0" x2="2" y2="700" stroke="currentColor" stroke-width="3" stroke-dasharray="8 8"/>
+      </svg>
+      <div class="flow-pip fp-1"></div>
+
+      <!-- ═══ STEP 2: RENDERER (centered at y:2000) ═══ -->
+      <div class="step step-2">
+        <div class="step-icon si-2">
+          <div class="si-ring si-ring-o"></div>
+          <div class="si-ring si-ring-i"></div>
+          <div class="si-core">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="40" cy="40" r="26" fill="none" stroke="currentColor" stroke-width="4"/>
+              <circle cx="40" cy="40" r="14" fill="none" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+              <circle cx="40" cy="40" r="5" fill="currentColor"/>
+              <line x1="40" y1="6" x2="40" y2="16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <line x1="40" y1="64" x2="40" y2="74" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <line x1="6" y1="40" x2="16" y2="40" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <line x1="64" y1="40" x2="74" y2="40" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="step-title">Renderer</div>
+        <div class="step-sub">captures every frame</div>
+      </div>
+
+      <!-- Flow connector 2→3 -->
+      <svg class="flow-svg flow-2" viewBox="0 0 4 700" xmlns="http://www.w3.org/2000/svg">
+        <line class="fl" x1="2" y1="0" x2="2" y2="700" stroke="currentColor" stroke-width="3" stroke-dasharray="8 8"/>
+      </svg>
+      <div class="flow-pip fp-2"></div>
+
+      <!-- ═══ STEP 3: MP4 (centered at y:3460) ═══ -->
+      <div class="step step-3">
+        <div class="step-icon si-3">
+          <div class="si-ring si-ring-o"></div>
+          <div class="si-ring si-ring-i"></div>
+          <div class="si-core">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="10" width="60" height="60" rx="12" fill="none" stroke="currentColor" stroke-width="4"/>
+              <path d="M32 24L56 40L32 56Z" fill="currentColor"/>
+            </svg>
+          </div>
+        </div>
+        <div class="step-title">MP4</div>
+        <div class="step-sub">ready to ship</div>
+      </div>
+
+      <!-- ═══ DETERMINISTIC (centered at y:4920) ═══ -->
+      <div class="det">
+        <!-- Large centered frame that duplicates -->
+        <div class="det-hero">
+          <div class="det-card det-card-back">
+            <div class="det-scr">
+              <div class="det-hbar"></div>
+              <div class="det-row"><div class="det-sq"></div><div class="det-ln dln1"></div></div>
+              <div class="det-row"><div class="det-circ"></div><div class="det-ln dln2"></div></div>
+              <div class="det-row"><div class="det-tri"></div><div class="det-ln dln3"></div></div>
+              <div class="det-wv"></div>
+            </div>
+          </div>
+          <div class="det-card det-card-front">
+            <div class="det-scr">
+              <div class="det-hbar"></div>
+              <div class="det-row"><div class="det-sq"></div><div class="det-ln dln1"></div></div>
+              <div class="det-row"><div class="det-circ"></div><div class="det-ln dln2"></div></div>
+              <div class="det-row"><div class="det-tri"></div><div class="det-ln dln3"></div></div>
+              <div class="det-wv"></div>
+            </div>
+          </div>
+        </div>
+        <div class="det-word">Deterministic.</div>
+        <div class="det-proof">
+          <svg class="det-chk" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="18" fill="#81B29A"/>
+            <path d="M12 20l6 6 10-10" fill="none" stroke="#F4F1DE" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="det-proof-text">Identical output, every time.</span>
+        </div>
+      </div>
+
+    </div><!-- /.eng-canvas -->
+    </div><!-- /.eng-wrap -->
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap");
+
+      [data-composition-id="engine"] {
+        width: 1920px; height: 1080px;
+        position: relative; overflow: hidden;
+        background: #F4F1DE;
+      }
+      [data-composition-id="engine"] .eng-bg {
+        position: absolute; inset: 0;
+        background:
+          radial-gradient(ellipse at 50% 30%, rgba(255,252,240,0.6) 0%, transparent 50%),
+          linear-gradient(180deg, #F4F1DE 0%, #ece8d2 100%);
+      }
+      [data-composition-id="engine"] .eng-wrap {
+        position: absolute; inset: 0;
+        will-change: transform, filter;
+      }
+      [data-composition-id="engine"] .eng-canvas {
+        position: absolute;
+        top: 0; left: 0;
+        width: 1920px; height: 6000px;
+        will-change: transform;
+      }
+
+      /* ─── Steps ─── */
+      [data-composition-id="engine"] .step {
+        position: absolute;
+        left: 50%; width: 900px; margin-left: -450px;
+        display: flex; flex-direction: column; align-items: center; gap: 32px;
+      }
+      [data-composition-id="engine"] .step-1 { top: 360px; }
+      [data-composition-id="engine"] .step-2 { top: 1820px; }
+      [data-composition-id="engine"] .step-3 { top: 3280px; }
+
+      /* Icon: 360px with concentric rings */
+      [data-composition-id="engine"] .step-icon {
+        position: relative; width: 360px; height: 360px;
+      }
+      [data-composition-id="engine"] .si-ring {
+        position: absolute; border-radius: 50%;
+      }
+      [data-composition-id="engine"] .si-ring-o {
+        inset: 0; border: 2.5px solid currentColor; opacity: 0.12;
+      }
+      [data-composition-id="engine"] .si-ring-i {
+        inset: 36px; border: 2px dashed currentColor; opacity: 0.2;
+      }
+      [data-composition-id="engine"] .si-core {
+        position: absolute; inset: 72px;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 16px 48px rgba(0,0,0,0.1);
+      }
+      [data-composition-id="engine"] .si-core svg { width: 100px; height: 100px; }
+
+      /* Step colors */
+      [data-composition-id="engine"] .si-1 { color: #3D405B; }
+      [data-composition-id="engine"] .si-1 .si-core { background: #eaeaf2; }
+      [data-composition-id="engine"] .si-2 { color: #E07A5F; }
+      [data-composition-id="engine"] .si-2 .si-core { background: #fef0eb; }
+      [data-composition-id="engine"] .si-3 { color: #81B29A; }
+      [data-composition-id="engine"] .si-3 .si-core { background: #eaf5ef; }
+
+      [data-composition-id="engine"] .step-title {
+        font-family: "Instrument Serif", serif;
+        font-weight: 400;
+        font-size: 96px;
+        color: #3D405B;
+        letter-spacing: -0.02em;
+        line-height: 1;
+      }
+      [data-composition-id="engine"] .step-sub {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 400;
+        font-size: 28px;
+        color: #E07A5F;
+        letter-spacing: 0.06em;
+      }
+
+      /* ─── Flow connectors ─── */
+      [data-composition-id="engine"] .flow-svg {
+        position: absolute; left: 50%; margin-left: -2px;
+        width: 4px; height: 700px; color: #c8c0a8;
+      }
+      /* Lines start at bottom of icon (step top + 360 icon + 32 gap) and run to next step */
+      [data-composition-id="engine"] .flow-1 { top: 920px; }
+      [data-composition-id="engine"] .flow-2 { top: 2380px; }
+      [data-composition-id="engine"] .fl { stroke-dasharray: 700; stroke-dashoffset: 700; }
+
+      [data-composition-id="engine"] .flow-pip {
+        position: absolute; left: 50%; margin-left: -10px;
+        width: 20px; height: 20px; border-radius: 50%;
+        background: #E07A5F; opacity: 0;
+      }
+      [data-composition-id="engine"] .fp-1 { top: 1610px; }
+      [data-composition-id="engine"] .fp-2 { top: 3070px; }
+
+      /* ─── Deterministic ─── */
+      [data-composition-id="engine"] .det {
+        position: absolute; top: 4400px;
+        left: 50%; width: 1400px; margin-left: -700px;
+        display: flex; flex-direction: column; align-items: center; gap: 48px;
+      }
+
+      [data-composition-id="engine"] .det-hero {
+        position: relative;
+        width: 640px; height: 420px;
+      }
+      [data-composition-id="engine"] .det-card {
+        position: absolute;
+        width: 640px; height: 420px;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 24px 64px rgba(0,0,0,0.15);
+        border: 2px solid rgba(61,64,91,0.1);
+        will-change: transform;
+      }
+      [data-composition-id="engine"] .det-card-back { z-index: 1; }
+      [data-composition-id="engine"] .det-card-front { z-index: 2; }
+
+      [data-composition-id="engine"] .det-scr {
+        width: 100%; height: 100%;
+        background: #2a2a30;
+        padding: 32px;
+        box-sizing: border-box;
+      }
+      [data-composition-id="engine"] .det-hbar {
+        width: 50%; height: 14px;
+        background: #E07A5F;
+        border-radius: 7px;
+        margin-bottom: 28px;
+      }
+      [data-composition-id="engine"] .det-row {
+        display: flex; align-items: center; gap: 16px;
+        margin-bottom: 20px;
+      }
+      [data-composition-id="engine"] .det-sq {
+        width: 32px; height: 32px;
+        background: #81B29A;
+        border-radius: 6px;
+        flex-shrink: 0;
+      }
+      [data-composition-id="engine"] .det-circ {
+        width: 32px; height: 32px;
+        background: #F2CC8F;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      [data-composition-id="engine"] .det-tri {
+        width: 0; height: 0;
+        border-left: 16px solid transparent;
+        border-right: 16px solid transparent;
+        border-bottom: 28px solid #E07A5F;
+        flex-shrink: 0;
+      }
+      [data-composition-id="engine"] .det-ln {
+        height: 10px; border-radius: 5px;
+        background: rgba(255,255,255,0.12);
+      }
+      [data-composition-id="engine"] .dln1 { width: 75%; }
+      [data-composition-id="engine"] .dln2 { width: 55%; }
+      [data-composition-id="engine"] .dln3 { width: 65%; }
+      [data-composition-id="engine"] .det-wv {
+        margin-top: 20px;
+        height: 24px;
+        background:
+          repeating-linear-gradient(90deg,
+            rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 6px,
+            transparent 6px, transparent 10px);
+        border-radius: 4px;
+      }
+
+      [data-composition-id="engine"] .det-word {
+        font-family: "Instrument Serif", serif;
+        font-weight: 400;
+        font-size: 120px;
+        color: #3D405B;
+        letter-spacing: -0.03em;
+        line-height: 1;
+      }
+      [data-composition-id="engine"] .det-proof {
+        display: flex; align-items: center; gap: 16px;
+        padding: 14px 32px;
+        background: rgba(129,178,154,0.1);
+        border: 2px solid rgba(129,178,154,0.25);
+        border-radius: 14px;
+      }
+      [data-composition-id="engine"] .det-chk { width: 40px; height: 40px; }
+      [data-composition-id="engine"] .det-proof-text {
+        font-family: "Instrument Serif", serif;
+        font-style: italic;
+        font-size: 28px;
+        color: #3D405B;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+        var root = document.querySelector('[data-composition-id="engine"]');
+
+        var wrap = root.querySelector(".eng-wrap");
+        var canvas = root.querySelector(".eng-canvas");
+        var steps = root.querySelectorAll(".step");
+        var flowLines = root.querySelectorAll(".fl");
+        var flowPips = root.querySelectorAll(".flow-pip");
+        var detWord = root.querySelector(".det-word");
+        var detHero = root.querySelector(".det-hero");
+        var cardFront = root.querySelector(".det-card-front");
+        var cardBack = root.querySelector(".det-card-back");
+        var detProof = root.querySelector(".det-proof");
+
+        // --- Cut-the-curve upward entry (0 → 1.0s) ---
+        gsap.set(wrap, { y: 150, filter: "blur(30px)" });
+        tl.to(wrap, { y: 0, filter: "blur(0px)", duration: 1.0, ease: "power2.out" }, 0);
+
+        // Initial states
+        steps.forEach(function (s) { gsap.set(s, { opacity: 0, y: 80, scale: 0.88 }); });
+        gsap.set(detWord, { opacity: 0, y: 40, scale: 0.9 });
+        gsap.set(detHero, { opacity: 1, scale: 1 });
+        gsap.set(detProof, { opacity: 0, y: 20 });
+
+        // Cards stacked (front on top of back, identical position)
+        gsap.set(cardFront, { x: 0, rotation: 0 });
+        gsap.set(cardBack, { x: 0, rotation: 0 });
+
+        // Canvas y places icon center at viewport center.
+        // Icon center = step_top + 180. Viewport center = 540.
+        // Step 1: 360 + 180 = 540. Canvas y = -540 + 540 = 0
+        gsap.set(canvas, { y: 0 });
+
+        // Ring rotations (continuous)
+        root.querySelectorAll(".si-ring-o").forEach(function (r) {
+          tl.to(r, { rotation: 360, duration: 10.68, ease: "none", transformOrigin: "50% 50%" }, 0);
+        });
+        root.querySelectorAll(".si-ring-i").forEach(function (r) {
+          tl.to(r, { rotation: -360, duration: 10.68, ease: "none", transformOrigin: "50% 50%" }, 0);
+        });
+
+        // ═══ STEP 1: "Agent writes HTML" (0.3 → 1.8s) ═══
+        tl.to(steps[0], { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "expo.out" }, 0.3);
+
+        // ═══ PAN TO STEP 2 + connector (1.5 → 3.2s) ═══
+        tl.to(flowLines[0], { strokeDashoffset: 0, duration: 0.7, ease: "power1.inOut" }, 1.5);
+        tl.to(flowPips[0], { opacity: 1, duration: 0.2, ease: "power2.out" }, 2.0);
+
+        // Step 2 icon center: 1820 + 180 = 2000. Canvas y = -2000 + 540 = -1460
+        tl.to(canvas, { y: -1460, duration: 1.2, ease: "power2.inOut" }, 1.8);
+        tl.to(steps[1], { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "expo.out" }, 2.5);
+
+        // ═══ CONTINUOUS PAN: Renderer → MP4 (slide-through) → Det (3.2 → 4.8s) ═══
+        // Flow line 2 draws during pan
+        tl.to(flowLines[1], { strokeDashoffset: 0, duration: 0.7, ease: "power1.inOut" }, 3.2);
+        tl.to(flowPips[1], { opacity: 1, duration: 0.2, ease: "power2.out" }, 3.7);
+
+        // MP4 reveals mid-pan — slides through, camera doesn't park
+        tl.to(steps[2], { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out" }, 3.8);
+
+        // One continuous pan from Renderer (-1460) all the way to Det (-4310)
+        // Det center ≈ 4400 + 450 = 4850. Canvas y = -4850 + 540 = -4310
+        tl.to(canvas, { y: -4310, duration: 2.3, ease: "power2.inOut" }, 3.3);
+
+        // ═══ DETERMINISTIC — synced to VO "Deterministic." at 5.28s local ═══
+        // "Deterministic." word lands on the VO cue
+        tl.to(detWord, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out" }, 5.2);
+
+        // Card splits — reveals identical copies
+        tl.to(cardFront, { x: 180, rotation: 3, duration: 0.7, ease: "power2.out" }, 6.0);
+        tl.to(cardBack, { x: -180, rotation: -3, duration: 0.7, ease: "power2.out" }, 6.0);
+
+        // "Identical output, every time." badge — syncs with VO at 7.12s local
+        tl.to(detProof, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(1.4)" }, 7.0);
+
+        // ═══ HOLD + EXIT (9.5 → 10.68s) ═══
+        // Cards gently breathe
+        tl.to(cardFront, { y: -6, duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 1 }, 9.2);
+        tl.to(cardBack, { y: 6, duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 1 }, 9.2);
+
+        // Cut-the-curve upward exit
+        tl.to(wrap, {
+          y: -150, filter: "blur(30px)",
+          duration: 0.33, ease: "power2.in"
+        }, 10.35);
+
+        window.__timelines["engine"] = tl;
+      })();
+    </script>
+  </div>
+</template>

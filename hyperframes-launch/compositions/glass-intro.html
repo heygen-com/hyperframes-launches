@@ -1,0 +1,1024 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>figma-glass-frame</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,100..900&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=block"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 1920px;
+        height: 1080px;
+        background: #000;
+        overflow: hidden;
+      }
+
+      /* Background shader videos (body-level, full canvas). Both beats share styling. */
+      #bg-video,
+      #bg-video-2 {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        object-fit: cover;
+        z-index: 0;
+      }
+
+      /* Beat 4 background — warm-cream + subtle grid-paper + vignette (from anatomy scene). */
+      #bg-anatomy {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        z-index: 0;
+        background: #fbf4e3;
+      }
+      #bg-anatomy .bg-anat-base {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 45%, #fcf6e7 0%, #f6edd4 100%);
+      }
+      #bg-anatomy .bg-anat-grid {
+        position: absolute;
+        inset: -20px;
+        background-image:
+          linear-gradient(to right, rgba(90, 60, 10, 0.07) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(90, 60, 10, 0.07) 1px, transparent 1px);
+        background-size: 40px 40px;
+      }
+      #bg-anatomy .bg-anat-vignette {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 55%, transparent 40%, rgba(110, 70, 15, 0.09) 100%);
+      }
+
+      /* Master composition holds the liquid glass player card + timeline script. */
+      #master-root {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      /* Liquid glass player cards (beats 2, 3, 4 all share the same styling). */
+      #frame,
+      #frame-2,
+      #frame-3 {
+        position: absolute;
+        left: 120px;
+        top: 67.5px;
+        width: 1680px;
+        height: 945px;
+        border-radius: 56px;
+        background: linear-gradient(
+          160deg,
+          rgba(255, 255, 255, 0.075) 0%,
+          rgba(255, 255, 255, 0.025) 45%,
+          rgba(255, 255, 255, 0.010) 70%,
+          rgba(255, 255, 255, 0.055) 100%
+        );
+        backdrop-filter: blur(14px) saturate(1.12);
+        -webkit-backdrop-filter: blur(14px) saturate(1.12);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow:
+          0 30px 90px rgba(0, 0, 0, 0.42),
+          inset 0 1px 0 rgba(255, 255, 255, 0.22);
+        transform-origin: 50% 50%;
+        z-index: 1;
+      }
+      /* Beat 4 card hugs its 16:9 wrap with the same inner padding as beats 2/3
+         (50/50/50/137 L/T/R/B). Card still centered on canvas (236.5 + 1447/2 = 960). */
+      #frame-3 {
+        left: 236.5px;
+        width: 1447px;
+      }
+
+      /* Video wrappers — nested inside the glass card's upper area.
+         Sit ABOVE the glass so content isn't blurred by backdrop-filter. */
+      #figma-wrap,
+      #spotify-wrap,
+      #beat4-wrap {
+        position: absolute;
+        top: 117.5px;
+        height: 758px;
+        border-radius: 40px;
+        overflow: hidden;
+        z-index: 2;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+        /* Anchor the zoom to the canvas center (not the video's local center)
+           so the frame + video feel like a single "camera push back". */
+        transform-origin: 50% 55.74%;
+      }
+      /* Beats 2 + 3 are 2.085:1 crops for the UI captures. */
+      #figma-wrap,
+      #spotify-wrap {
+        left: 170px;
+        width: 1580px;
+      }
+      /* Beat 4 matches the source clip's 16:9 aspect exactly — at any scale
+         (including the full-frame scale-up), the video covers its wrapper
+         without crop. Same height + horizontal centering as the other wraps. */
+      #beat4-wrap {
+        left: 286.5px;   /* centered in the 1920 canvas: (1920-1347)/2 */
+        width: 1347px;
+      }
+      #figma-wrap video,
+      #spotify-wrap video,
+      #beat4-wrap video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      /* Clean timeline player — sits in the chin of the glass card, below the video.
+         Centered via GSAP xPercent: -50 so GSAP transforms don't fight CSS transform.
+         transform-origin anchors scaling at the canvas center (960, 540) so the
+         player-bar shrinks in lockstep with the frame + video instead of drifting
+         toward its own center at (960, 944). Local Y = 540 − 930 = −390px. */
+      #player-bar {
+        position: absolute;
+        left: 50%;
+        top: 930px;
+        width: 1500px;
+        height: 28px;
+        transform-origin: 50% -390px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        color: rgba(255, 255, 255, 0.92);
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 1;
+        z-index: 3;
+        pointer-events: none;
+      }
+      #play-icon {
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+      }
+      #play-icon svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      #track {
+        flex: 1;
+        height: 3px;
+        background: rgba(255, 255, 255, 0.28);
+        border-radius: 2px;
+        position: relative;
+      }
+      #track-fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 0%;
+        background: #ffffff;
+        border-radius: 2px;
+      }
+      #scrubber {
+        position: absolute;
+        /* Direct positioning instead of transform translate, so GSAP tweens on
+           parent (scale/filter on #player-bar) don't need to fight a CSS
+           transform on this child. */
+        top: -4.5px;         /* centers 12px dot vertically on 3px track */
+        left: 0%;
+        margin-left: -6px;   /* so left:X% puts the scrubber's center at X% */
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      }
+      #time {
+        font-variant-numeric: tabular-nums;
+        opacity: 0.85;
+        min-width: 110px;
+        text-align: right;
+        letter-spacing: 0.02em;
+      }
+
+      /* Beat-4 poster: static first-frame image shown 5.6-7.1 while the
+         video element is dormant (data-start=7.1). Absolute-positioned so it
+         overlays the video inside #beat4-wrap without fighting document flow;
+         visibility toggled by .clip + data-start. */
+      #beat4-poster {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        z-index: 1;
+      }
+
+      /* HyperFrames logo centered on the beat4 poster. z-index above
+         poster (1) and video, fades out when video starts. */
+      #beat4-logo {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        height: auto;
+        z-index: 3;
+        pointer-events: none;
+      }
+      #beat4-logo svg {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      /* Fake mouse cursor. transform-origin at the scaled tip so (x,y)
+         tracks the tip and the click scale anchors at the click point. */
+      #cursor {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 48px;
+        height: 58px;
+        z-index: 10;
+        pointer-events: none;
+        transform-origin: 4.3px 2.6px;
+        will-change: transform, opacity;
+      }
+      #cursor svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      /* Click ripple on the play icon. Positioned via GSAP at click time. */
+      #click-ripple {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.9);
+        z-index: 9;
+        pointer-events: none;
+        transform-origin: 50% 50%;
+        will-change: transform, opacity;
+      }
+
+      /* 2.1s intro: warm cream bg + whole-line clip-mask slide reveal.
+         Mounts only during 0-2.1s. Fixed mask ~200px from right edge;
+         the entire text line slides right-to-left through it. */
+      #text-intro {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        background: radial-gradient(ellipse at 50% 45%, #fcf6e7 0%, #f6edd4 100%);
+        z-index: 100;
+      }
+      #text-intro .intro-vignette {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 55%, transparent 45%, rgba(110, 70, 15, 0.08) 100%);
+        pointer-events: none;
+      }
+      /* Static mask wrapper — clips 200px from the right edge of the
+         frame. Text slides underneath; background is unaffected. */
+      #intro-mask {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        clip-path: inset(0 200px 0 0);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #intro-text {
+        font-family: 'Instrument Serif', serif;
+        font-weight: 400;
+        font-size: 108px;
+        color: #14110a;
+        letter-spacing: -0.02em;
+        line-height: 1.08;
+        white-space: nowrap;
+        padding: 0 40px;
+        will-change: transform, filter;
+      }
+      #intro-text .w {
+        display: inline-block;
+        margin: 0 0.1em;
+        will-change: transform, opacity;
+      }
+      #intro-text .w.is-gradient {
+        background: linear-gradient(90deg,
+          #14110a 0%, #14110a 15%,
+          #5a3215 25%, #c84f1c 40%, #e2b53f 55%, #2a8a7c 70%,
+          #14110a 85%, #14110a 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 300% 100%;
+        background-position: 100% 0;
+      }
+
+      /* Last frame of beat4-clip — holds the final video frame during the
+         drag transition so we don't see black when the clip file has ended.
+         Same pattern as #beat4-poster but inverted timing. */
+      #beat4-lastframe {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        z-index: 1;
+      }
+
+      /* Drag overlay — cursor-dragged frame that wipes right→left over beat 4. */
+      #drag-overlay {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        background: #faf5ea;
+        z-index: 8;
+      }
+
+      /* Beat 5 text: "Ask your agent to add." — same styling as beat 1. */
+      #text-ask {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        z-index: 100;
+      }
+      #ask-mask {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #ask-text {
+        font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', 'Menlo', 'Consolas', monospace;
+        font-weight: 500;
+        font-size: 72px;
+        color: #14110a;
+        letter-spacing: -0.01em;
+        line-height: 1.1;
+        white-space: nowrap;
+        padding: 0 40px;
+        position: relative;
+      }
+      #ask-text .ch {
+        display: inline;
+        visibility: hidden;
+      }
+      #ask-cursor {
+        position: absolute;
+        top: 0.075em;
+        width: 4px;
+        height: 0.85em;
+        background: #14110a;
+        visibility: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Master composition FIRST (per hyperframes root-composition rule).
+         z=1 visually — holds the glass bezel + timeline script. -->
+    <div
+      id="master-root"
+      data-composition-id="glass-intro"
+      data-width="1920"
+      data-height="1080"
+      data-start="0"
+      data-duration="18.24"
+    >
+      <!-- Beat 2 glass player card (visible 2.1-3.85s) -->
+      <div id="frame"></div>
+
+      <!-- Beat 3 glass player card (visible 3.85-5.6s) -->
+      <div id="frame-2"></div>
+
+      <!-- Beat 4 glass player card (visible 5.6-16.04s) -->
+      <div id="frame-3"></div>
+
+      <!-- 2.1s white intro w/ per-word reveal headline synced to #vo-intro.
+           Unmounts at t=2.1 to cut to the shader bg + zoom-through entry. -->
+      <div
+        id="text-intro"
+        class="clip"
+        data-start="0"
+        data-duration="2.1"
+        data-track-index="5"
+      >
+        <div class="intro-vignette"></div>
+        <div id="intro-mask"><div id="intro-text"><span class="w">Imagine</span> <span class="w">you</span> <span class="w">could</span> <span class="w">make</span> <span class="w">videos</span> <span class="w">like</span> <span class="w">this</span></div></div>
+      </div>
+
+      <!-- VO handled by master-level voiceover-fixed.mp3 (starts at 0) -->
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // Entry ease designed so the entry tween's END velocity exactly matches
+        // the linear hold's start velocity. Entry now goes 1.45 → 0.88 (further
+        // depth) over 0.9s, hold continues 0.88 → 0.80 (linear, −0.123/s) over
+        // 0.65s. Match velocity at t=0.9 (beat-local):
+        //   |−0.57 · dp/dt / 0.9s| = |−0.08 / 0.65s|  →  dp/dt(1) = 0.194
+        // Quadratic p(t) = a t^2 + b t with p(0)=0, p(1)=1, p'(1)=0.194 gives
+        // a = −0.806, b = 1.806.
+        const entryEase = (t) => -0.806 * t * t + 1.806 * t;
+
+        // Beat-4 play-icon canvas-absolute position. Player-bar in beat 4 is
+        // 1267 wide (width is set at 6.5 reset), left:50% + xPercent:-50 puts
+        // its left at 960 - 633.5 = 326.5. Play-icon is the first flex child,
+        // 22×22, vertically centered in the 28px bar — center: (337.5, 944).
+        const PLAY_ICON_CX = 337.5;
+        const PLAY_ICON_CY = 944;
+        const CURSOR_START_X = 100;
+        const CURSOR_START_Y = 1180; // below canvas bottom edge
+
+        // =========================================================
+        // INITIAL STATE (t=0): hide the cards so nothing bleeds
+        // through the white intro. Stage them oversized + blurred
+        // ready for their respective zoom-through entries.
+        // =========================================================
+        tl.set("#frame", { scale: 1.45, filter: "blur(14px)", opacity: 0 }, 0);
+        tl.set("#figma-wrap", { scale: 1.45, filter: "blur(14px)", opacity: 0 }, 0);
+        tl.set("#frame-2", { scale: 1.45, filter: "blur(14px)", opacity: 0 }, 0);
+        tl.set("#spotify-wrap", { scale: 1.45, filter: "blur(14px)", opacity: 0 }, 0);
+        tl.set("#frame-3", { scale: 1.45, filter: "blur(14px)", opacity: 0 }, 0);
+        tl.set("#beat4-wrap", { scale: 1.45, filter: "blur(14px)", opacity: 0 }, 0);
+        tl.set("#beat4-lastframe", { opacity: 0 }, 0);
+        tl.set("#beat4-lastframe", { opacity: 1 }, 16.04);
+        tl.set("#player-bar", { opacity: 0, y: 12, xPercent: -50 }, 0);
+        tl.set("#track-fill", { width: "0%" }, 0);
+        tl.set("#scrubber", { left: "0%" }, 0);
+        // Stage the cursor off-canvas (bottom-left) and the ripple at the
+        // play-icon position ready for beat 4's interaction.
+        tl.set("#cursor", { x: CURSOR_START_X, y: CURSOR_START_Y, scale: 1, opacity: 1 }, 0);
+        tl.set("#click-ripple", { x: PLAY_ICON_CX - 30, y: PLAY_ICON_CY - 30, scale: 0, opacity: 0 }, 0);
+        // All bg layers hidden at t=0 — each beat owns its bg.
+        tl.set("#bg-video", { opacity: 0 }, 0);
+        tl.set("#bg-video-2", { opacity: 0 }, 0);
+        tl.set("#bg-anatomy", { opacity: 0 }, 0);
+
+        // =========================================================
+        // BEAT 1 (0-2.1s): thesis-style warm cream bg + per-word
+        // slide-from-right entry with gradient shimmer. Matches
+        // the "anything a browser can render" aesthetic.
+        // =========================================================
+        const WORD_STARTS = [0.09, 0.42, 0.55, 0.85, 1.09, 1.40, 1.64];
+        const wordEls = document.querySelectorAll("#intro-text .w");
+        const WORD_SLIDES = [360, 180, 120, 80, 50, 30, 20];
+
+        // Words start invisible + offset right
+        wordEls.forEach((el, i) => {
+          tl.set(el, { x: WORD_SLIDES[i], y: 14, opacity: 0 }, 0);
+          // Slide in from right at spoken onset
+          tl.to(el, {
+            x: 0, y: 0, opacity: 1, duration: 0.33, ease: "expo.out"
+          }, WORD_STARTS[i]);
+        });
+
+
+        // Exit: container pulls back in z (scale 1→0.6, blur 0→16) in the
+        // last 0.2s before the cut. expo.in mirrors beat 2's zoom-through
+        // expo.out so velocity matches across the scene boundary.
+        tl.to(
+          "#intro-text",
+          { scale: 0.6, filter: "blur(16px)", duration: 0.2, ease: "expo.in" },
+          1.9
+        );
+
+        // === CUT at t=2.1: white unmounts, figma card + blue shader bg appear ===
+        tl.set("#text-intro", { opacity: 0 }, 2.1);
+        tl.set("#frame", { opacity: 1 }, 2.1);
+        tl.set("#figma-wrap", { opacity: 1 }, 2.1);
+        tl.set("#bg-video", { opacity: 1 }, 2.1);
+
+        // =========================================================
+        // BEAT 2 (2.1-3.85s): entry 0.9s (custom ease) → hold 0.6333s (linear) → exit 0.2s
+        // Shifted -0.6s from 2.7-4.45s so the beat-1 reveal ends sooner
+        // (VO's last word "this" finishes revealing at 1.96s).
+        // =========================================================
+        // Entry: 1.45→0.88 scale, 14→0 blur. Goes further in z than a "scale 1"
+        // settled state so the slow pull starts at a deeper depth. entryEase's
+        // end velocity matches the linear hold's rate — no stall.
+        tl.to(
+          "#frame",
+          { scale: 0.88, filter: "blur(0px)", duration: 0.9, ease: entryEase },
+          2.1
+        );
+        tl.to(
+          "#figma-wrap",
+          { scale: 0.88, filter: "blur(0px)", duration: 0.9, ease: entryEase },
+          2.1
+        );
+        tl.to(
+          "#player-bar",
+          { scale: 0.88, filter: "blur(0px)", xPercent: -50, duration: 0.9, ease: entryEase, overwrite: "auto" },
+          2.1
+        );
+        // Hold: slow linear pull, 0.88 → 0.80.
+        tl.to(
+          "#frame",
+          { scale: 0.80, filter: "blur(2px)", duration: 0.6333, ease: "none" },
+          3.0
+        );
+        tl.to(
+          "#figma-wrap",
+          { scale: 0.80, filter: "blur(2px)", duration: 0.6333, ease: "none" },
+          3.0
+        );
+        tl.to(
+          "#player-bar",
+          { scale: 0.80, filter: "blur(2px)", xPercent: -50, duration: 0.6333, ease: "none", overwrite: "auto" },
+          3.0
+        );
+        // Player bar opacity+y entry (only touches opacity, y, xPercent — disjoint
+        // from scale/filter on the card + bar depth tweens).
+        tl.to(
+          "#player-bar",
+          { opacity: 1, y: 0, xPercent: -50, duration: 0.4, ease: "power2.out", overwrite: "auto" },
+          2.6
+        );
+        // Progress fill + scrubber across beat 2's 1.75s
+        tl.to("#track-fill", { width: "100%", duration: 1.75, ease: "none" }, 2.1);
+        tl.to("#scrubber", { left: "100%", duration: 1.75, ease: "none" }, 2.1);
+        // Time readout for beat 2 (0:00 → 0:02)
+        const _t2 = { v: 0 };
+        tl.to(
+          _t2,
+          {
+            v: 2,
+            duration: 1.75,
+            ease: "none",
+            onUpdate: () => {
+              const sec = Math.min(2, Math.floor(_t2.v));
+              const el = document.getElementById("time");
+              if (el) el.textContent = "0:0" + sec + " / 0:02";
+            }
+          },
+          2.1
+        );
+
+        // --- BEAT 2 EXIT (3.6333-3.8333s): frame-aligned so the tween completes on
+        //     frame 115 (t=3.8333), the last rendered frame before the 3.85 cut. expo.in
+        //     is steep at the tail, so unaligned sampling would cause visible size
+        //     mismatch vs beat 3. Card holds at scale 0.40 for ~0.0167s (half frame). ---
+        tl.to(
+          "#frame",
+          { scale: 0.40, filter: "blur(16px)", duration: 0.2, ease: "expo.in" },
+          3.6333
+        );
+        tl.to(
+          "#figma-wrap",
+          { scale: 0.40, filter: "blur(16px)", duration: 0.2, ease: "expo.in" },
+          3.6333
+        );
+        tl.to(
+          "#player-bar",
+          { scale: 0.40, filter: "blur(16px)", xPercent: -50, duration: 0.2, ease: "expo.in" },
+          3.6333
+        );
+
+        // === CUT at t=3.85: figma scene hides, spotify scene + ripple-dipple bg appear ===
+        tl.set("#frame", { opacity: 0 }, 3.85);
+        tl.set("#figma-wrap", { opacity: 0 }, 3.85);
+        tl.set("#bg-video", { opacity: 0 }, 3.85);
+        // Reset + stage the shared player-bar for its second run
+        tl.set(
+          "#player-bar",
+          { opacity: 0, scale: 1, filter: "blur(0px)", y: 12, xPercent: -50 },
+          3.85
+        );
+        tl.set("#track-fill", { width: "0%" }, 3.85);
+        tl.set("#scrubber", { left: "0%" }, 3.85);
+        tl.set("#frame-2", { opacity: 1 }, 3.85);
+        tl.set("#spotify-wrap", { opacity: 1 }, 3.85);
+        tl.set("#bg-video-2", { opacity: 1 }, 3.85);
+
+        // =========================================================
+        // BEAT 3 (3.85-5.6s): entry 0.9s (custom ease) → hold 0.6167s (linear) → exit 0.2s
+        // =========================================================
+        tl.to(
+          "#frame-2",
+          { scale: 0.88, filter: "blur(0px)", duration: 0.9, ease: entryEase },
+          3.85
+        );
+        tl.to(
+          "#spotify-wrap",
+          { scale: 0.88, filter: "blur(0px)", duration: 0.9, ease: entryEase },
+          3.85
+        );
+        tl.to(
+          "#player-bar",
+          { scale: 0.88, filter: "blur(0px)", xPercent: -50, duration: 0.9, ease: entryEase, overwrite: "auto" },
+          3.85
+        );
+        // Hold starts shifted +0.001 (4.7501 vs 4.75) to avoid a lint-detected
+        // float-precision tween tie with the 0.9s entry ending at 4.75 (which
+        // computes as slightly >4.75 from 3.85+0.9). Imperceptible delay.
+        tl.to(
+          "#frame-2",
+          { scale: 0.80, filter: "blur(2px)", duration: 0.6157, ease: "none" },
+          4.7501
+        );
+        tl.to(
+          "#spotify-wrap",
+          { scale: 0.80, filter: "blur(2px)", duration: 0.6157, ease: "none" },
+          4.7501
+        );
+        tl.to(
+          "#player-bar",
+          { scale: 0.80, filter: "blur(2px)", xPercent: -50, duration: 0.6157, ease: "none", overwrite: "auto" },
+          4.7501
+        );
+        tl.to(
+          "#player-bar",
+          { opacity: 1, y: 0, xPercent: -50, duration: 0.4, ease: "power2.out", overwrite: "auto" },
+          4.3501
+        );
+        // Progress fill + scrubber across beat 3's 1.75s
+        tl.to("#track-fill", { width: "100%", duration: 1.75, ease: "none" }, 3.85);
+        tl.to("#scrubber", { left: "100%", duration: 1.75, ease: "none" }, 3.85);
+        // Time readout for beat 3 (reset + 0:00 → 0:02)
+        const _t3 = { v: 0 };
+        tl.set(_t3, { v: 0 }, 3.85);
+        tl.to(
+          _t3,
+          {
+            v: 2,
+            duration: 1.75,
+            ease: "none",
+            onUpdate: () => {
+              const sec = Math.min(2, Math.floor(_t3.v));
+              const el = document.getElementById("time");
+              if (el) el.textContent = "0:0" + sec + " / 0:02";
+            }
+          },
+          3.85
+        );
+
+        // --- BEAT 3 EXIT (5.3667-5.5667s): frame-aligned so the tween completes on
+        //     frame 167 (t=5.5667), the last rendered frame before the 5.6 cut. Matches
+        //     the beat 2 exit sampling so both cards reach scale 0.40 at their final
+        //     visible frame. Card holds at scale 0.40 for ~0.0333s (1 frame) before cut. ---
+        tl.to(
+          "#frame-2",
+          { scale: 0.40, filter: "blur(16px)", duration: 0.2, ease: "expo.in" },
+          5.3667
+        );
+        tl.to(
+          "#spotify-wrap",
+          { scale: 0.40, filter: "blur(16px)", duration: 0.2, ease: "expo.in" },
+          5.3667
+        );
+        tl.to(
+          "#player-bar",
+          { scale: 0.40, filter: "blur(16px)", xPercent: -50, duration: 0.2, ease: "expo.in" },
+          5.3667
+        );
+
+        // === CUT at t=5.6: spotify scene hides, beat-4 scene appears ===
+        tl.set("#frame-2", { opacity: 0 }, 5.6);
+        tl.set("#spotify-wrap", { opacity: 0 }, 5.6);
+        tl.set("#bg-video-2", { opacity: 0 }, 5.6);
+        // Reset + stage the shared player-bar for its third run.
+        // width:1267 = 1447 (beat-4 card width) − 180 (matching 90px L/R gutters).
+        tl.set(
+          "#player-bar",
+          { opacity: 0, scale: 1, filter: "blur(0px)", y: 12, xPercent: -50, width: 1267 },
+          5.6
+        );
+        tl.set("#track-fill", { width: "0%" }, 5.6);
+        tl.set("#scrubber", { left: "0%" }, 5.6);
+        tl.set("#frame-3", { opacity: 1 }, 5.6);
+        tl.set("#beat4-wrap", { opacity: 1 }, 5.6);
+        tl.set("#bg-anatomy", { opacity: 1 }, 5.6);
+
+        // =========================================================
+        // BEAT 4 (5.6-16.04s): beat-clip — settle-and-stop (entry → static hold)
+        // Plays the whole 6s video (with audio). No continuous z-pull.
+        // =========================================================
+        // Entry: 1.45 → 1, blur 14 → 0, expo.out, 0.9s
+        tl.to(
+          "#frame-3",
+          { scale: 1, filter: "blur(0px)", duration: 0.9, ease: "expo.out" },
+          5.6
+        );
+        tl.to(
+          "#beat4-wrap",
+          { scale: 1, filter: "blur(0px)", duration: 0.9, ease: "expo.out" },
+          5.6
+        );
+        tl.to(
+          "#player-bar",
+          { scale: 1, filter: "blur(0px)", xPercent: -50, duration: 0.9, ease: "expo.out", overwrite: "auto" },
+          5.6
+        );
+        // Player-bar opacity+y entry lands at 6.5
+        tl.to(
+          "#player-bar",
+          { opacity: 1, y: 0, xPercent: -50, duration: 0.4, ease: "power2.out", overwrite: "auto" },
+          6.1
+        );
+        // Player-bar is visible for 1.55s in beat 4 (5.6 → 7.15) and the
+        // video doesn't play until the click at 6.8 — easier to read a static
+        // "0:00 / 0:06" than to animate a nearly-invisible scrubber.
+        tl.set("#time", { textContent: "0:00 / 0:08" }, 5.6);
+
+        // =========================================================
+        // BEAT 4 INTERACTION: cursor slides in, clicks the play icon,
+        // which triggers video playback (0.3s later) + full-frame scale-up
+        // (0.1s after the video starts, so 0.4s after click).
+        // =========================================================
+        // Cursor slides from off-canvas bottom-left to the play icon.
+        tl.to(
+          "#cursor",
+          { x: PLAY_ICON_CX, y: PLAY_ICON_CY, duration: 0.7, ease: "power3.out" },
+          6.1
+        );
+        // Click compress — cursor + play-icon squash briefly.
+        tl.to("#cursor",    { scale: 0.82, duration: 0.07, ease: "power4.in" }, 6.8);
+        tl.to("#play-icon", { scale: 0.96, duration: 0.07, ease: "power4.in" }, 6.8);
+        // Ripple expands from the click point as the video starts.
+        tl.set("#click-ripple", { scale: 0, opacity: 0.9 }, 6.8);
+        tl.to("#click-ripple", { scale: 2.5, opacity: 0, duration: 0.2, ease: "power2.out" }, 6.8);
+        // Release — cursor bounces back, play-icon overshoots + settles.
+        // +0.0001 nudge to avoid a lint-detected float tie with the compress end.
+        tl.to("#cursor",    { scale: 1,    duration: 0.2999, ease: "back.out(3)" }, 6.8701);
+        tl.to("#play-icon", { scale: 1.02, duration: 0.1999, ease: "elastic.out(1, 0.4)" }, 6.8701);
+        tl.to("#play-icon", { scale: 1,    duration: 0.2, ease: "power2.out" }, 7.07);
+        // Cursor fades out just before the full-frame scale-up swallows the frame.
+        tl.to("#cursor", { opacity: 0, duration: 0.05, ease: "none" }, 7.15);
+
+        // --- BEAT 4 VIDEO → FULL FRAME (7.2-7.6s, 0.1s after the video starts at 7.1) ---
+        // Scale only the video wrapper so it covers the whole canvas.
+        // Scale 1.4248 = max(1920/1580, 1080/758) — fills height, overflows
+        // horizontally off-canvas (no rounded corners visible).
+        // y = +62 compensates for the wrap's asymmetric transform-origin
+        // (50% 55.74%) so the scaled rect lines up with the canvas edges.
+        // power3.out gives a smooth-but-fast curve.
+        tl.to(
+          "#beat4-wrap",
+          {
+            scale: 1.4248,
+            y: 62,
+            borderRadius: 0,
+            duration: 0.4,
+            ease: "power3.out"
+          },
+          7.2
+        );
+        // Timeline player disappears the moment the full-frame scale starts.
+        tl.set("#player-bar", { opacity: 0 }, 7.2);
+
+        // =========================================================
+        // BEAT 5 TRANSITION (15.74-15.5s): cursor reappears, clicks,
+        // drags a cream overlay right→left across the full canvas,
+        // then VO + text reveal.
+        // =========================================================
+
+        // --- Cursor reappear from bottom-left (15.74) ---
+        tl.set("#cursor", { x: CURSOR_START_X, y: CURSOR_START_Y, scale: 1, opacity: 1, rotation: 90 }, 15.74);
+        // Slide to right edge, y-center (0.4s)
+        tl.to(
+          "#cursor",
+          { x: 1920, y: 540, duration: 0.4, ease: "power3.out" },
+          15.74
+        );
+
+        // --- Click at 16.14 ---
+        tl.to("#cursor", { scale: 0.82, duration: 0.07, ease: "power4.in" }, 16.14);
+        // Ripple at click point
+        tl.set("#click-ripple", { x: 1920 - 30, y: 540 - 30, scale: 0, opacity: 0.9 }, 16.14);
+        tl.to("#click-ripple", { scale: 2.5, opacity: 0, duration: 0.2, ease: "power2.out" }, 16.14);
+        // Release
+        tl.to("#cursor", { scale: 1, duration: 0.1, ease: "back.out(2)" }, 16.147);
+
+        // Drag overlay GSAP is in the separate <script> after #drag-overlay
+        // (that element doesn't exist in the DOM yet when this script runs).
+        // Cursor drags with the leading edge, exits off-screen left (0.6s).
+        tl.to(
+          "#cursor",
+          { x: -50, y: 540, duration: 0.6, ease: "power2.inOut", overwrite: "auto" },
+          16.14
+        );
+        // Fade cursor out as it exits left
+        tl.to("#cursor", { opacity: 0, duration: 0.05, ease: "none" }, 16.69);
+
+        // Beat 5 text animation is in a separate <script> after #text-ask
+        // (those DOM nodes don't exist yet when this script runs).
+
+        // Pad the GSAP timeline to match the 17.0s composition duration. HF
+        // gates #master-root visibility on timeline.duration(), so if GSAP
+        // ends early the master would unmount and flash to black.
+        tl.to({}, { duration: 18.24 }, 0);
+
+        // Hide poster via GSAP at 7.1 (.clip gating unreliable in sub-comp render)
+        tl.set("#beat4-poster", { display: "none" }, 7.1);
+        // Show lastframe hold at 16.04 via GSAP
+        tl.set("#beat4-lastframe", { opacity: 0 }, 0);
+        tl.set("#beat4-lastframe", { opacity: 1 }, 16.04);
+        // Hide beat 5 elements + lastframe at composition end so they don't persist
+        // Z-collapse exit: scale down + blur out in last 0.3s before CSS beat
+        tl.to("#drag-overlay", {
+          scale: 0.6, filter: "blur(16px)", duration: 0.3, ease: "expo.in"
+        }, 17.94);
+        tl.to("#text-ask", {
+          scale: 0.6, filter: "blur(16px)", duration: 0.3, ease: "expo.in"
+        }, 17.94);
+
+        tl.set("#text-ask", { display: "none" }, 18.24);
+        tl.set("#drag-overlay", { display: "none" }, 18.24);
+        tl.set("#beat4-lastframe", { display: "none" }, 18.24);
+        tl.set("#beat4-wrap", { display: "none" }, 18.24);
+        tl.set("#frame-3", { display: "none" }, 18.24);
+
+        // Logo: hidden at start, visible during poster (5.6-7.1), quick fade out at video start
+        tl.set("#beat4-logo", { opacity: 0 }, 0);
+        tl.set("#beat4-logo", { opacity: 1 }, 5.6);
+        tl.to("#beat4-logo", { opacity: 0, duration: 0.15, ease: "power2.in" }, 7.0);
+
+        window.__timelines["glass-intro"] = tl;
+      </script>
+
+      <!-- Backgrounds (z:0) — first in DOM for correct stacking -->
+      <video id="bg-video" src="assets/bg.mp4" data-start="2.1" data-duration="1.75" data-track-index="0" muted playsinline></video>
+      <video id="bg-video-2" src="assets/bg-2.mp4" data-start="3.85" data-duration="1.75" data-track-index="2" muted playsinline></video>
+      <div id="bg-anatomy">
+        <div class="bg-anat-base"></div>
+        <div class="bg-anat-grid"></div>
+        <div class="bg-anat-vignette"></div>
+      </div>
+
+      <!-- Video wraps (z:2) -->
+      <div id="figma-wrap">
+        <video id="figma-video" src="assets/figma-promo.mp4" data-start="2.1" data-duration="1.75" data-media-start="0" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="spotify-wrap">
+        <video id="spotify-video" src="assets/spotify-bento.mp4" data-start="3.85" data-duration="1.75" data-media-start="0" data-track-index="3" muted playsinline></video>
+      </div>
+
+      <!-- Beat 4 clip wrap (z:2) -->
+      <div id="beat4-wrap">
+        <img id="beat4-poster" src="assets/beat4-poster.jpg" alt="">
+        <video id="beat4-video" src="assets/beat4-clip.mp4" data-start="7.1" data-duration="11.14" data-media-start="0" data-track-index="6" muted playsinline></video>
+        <img id="beat4-lastframe" src="assets/beat4-lastframe.jpg" alt="">
+        <img id="beat4-logo" src="assets/hf-logo.svg" alt="">
+      </div>
+
+      <!-- Audio -->
+      <!-- beat4-audio removed — VO is now in master voiceover-fixed.mp3,
+           keeping this would double the voice track -->
+      <!-- vo-ask-agent removed — handled by master-level voiceover-fixed.mp3 -->
+
+      <!-- Cursor (z:10) -->
+      <div id="cursor" class="clip" data-start="6.4" data-duration="10.9" data-track-index="8">
+        <svg viewBox="0 0 28 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M2.5 1.5L2.5 28L8.5 21.5L14 32L18.5 30L13 19.5L22 19.5L2.5 1.5Z" fill="#000000" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <!-- Click ripple (z:9) -->
+      <div id="click-ripple" class="clip" data-start="6.8" data-duration="8.9" data-track-index="9"></div>
+
+      <!-- Drag overlay (z:8) -->
+      <div id="drag-overlay" class="clip" data-start="16.14" data-duration="2.1" data-track-index="12"></div>
+
+      <!-- Beat 5 text -->
+      <div id="text-ask" class="clip" data-start="16.74" data-duration="1.5" data-track-index="14">
+        <div id="ask-mask"><div id="ask-text"><span id="ask-cursor"></span></div></div>
+      </div>
+
+      <!-- Beat 5 GSAP — runs after #drag-overlay and #ask-text are in DOM -->
+      <script>
+      (() => {
+        const tl = window.__timelines["glass-intro"];
+
+        // --- Drag overlay: hidden off-screen right at t=0, wipes in at 16.14 (0.6s) ---
+        tl.set("#drag-overlay", { x: 1920, opacity: 0 }, 0);
+        tl.set("#drag-overlay", { opacity: 1 }, 16.14);
+        tl.to(
+          "#drag-overlay",
+          { x: 0, duration: 0.6, ease: "power2.inOut" },
+          16.14
+        );
+
+        // --- Text reveal: strictly sequential typewriter ---
+        const TEXT = "Ask your agent to add";
+        const askTextEl = document.getElementById("ask-text");
+        const askCursor = document.getElementById("ask-cursor");
+        // Insert character spans BEFORE the cursor element
+        TEXT.split("").forEach(ch => {
+          const span = document.createElement("span");
+          span.className = "ch";
+          span.textContent = ch === " " ? "\u00A0" : ch;
+          askTextEl.insertBefore(span, askCursor);
+        });
+        const chars = askTextEl.querySelectorAll(".ch");
+        const charCount = chars.length; // 21
+
+        // Measure char width + offset from container's left edge
+        chars[0].style.visibility = "visible";
+        const charW = chars[0].getBoundingClientRect().width;
+        const baseLeft = chars[0].offsetLeft;
+        chars[0].style.visibility = "";
+
+        const TEXT_START = 16.64;  // 0.2s earlier
+        const CHAR_DUR = 0.028;  // finishes ~17.23, before zoom transition at 17.30
+        const TYPE_END = TEXT_START + charCount * CHAR_DUR; // ~16.845
+        const CURSOR_LEAD = 15;  // px ahead of next char position
+
+        // Cursor appears just before typing starts
+        const CURSOR_START = 16.54;
+        const cursorX = (i) => baseLeft + i * charW + CURSOR_LEAD;
+        tl.set(askCursor, { visibility: "visible", left: cursorX(0), opacity: 1 }, CURSOR_START);
+
+        // Single blink before typing starts (0.1s window: 16.74-16.84)
+        tl.set(askCursor, { opacity: 0 }, CURSOR_START + 0.05);
+        tl.set(askCursor, { opacity: 1 }, CURSOR_START + 0.1);
+
+        // Type each character sequentially; advance cursor ahead of next char
+        for (let i = 0; i < charCount; i++) {
+          const t = TEXT_START + i * CHAR_DUR;
+          tl.set(chars[i], { visibility: "visible" }, t);
+          tl.set(askCursor, { left: cursorX(i + 1), opacity: 1 }, t);
+        }
+
+        // Resume blinking after typing finishes
+        const BLINK_ON = 0.4;
+        const BLINK_OFF = 0.4;
+        let bt = TYPE_END;
+        while (bt < 18.24) {
+          tl.set(askCursor, { opacity: 1 }, bt);
+          tl.set(askCursor, { opacity: 0 }, bt + BLINK_ON);
+          bt += BLINK_ON + BLINK_OFF;
+        }
+
+        // --- ZOOM-THROUGH EXIT: scale up + fade as flex-css emerges behind ---
+        const TRANS_START = 17.30;  // master time = flex-css data-start
+        const root = document.querySelector('[data-composition-id="glass-intro"]');
+        tl.to(root, {
+          scale: 1.15,
+          opacity: 0,
+          filter: "blur(4px)",
+          duration: 0.6,
+          ease: "power2.in"
+        }, TRANS_START);
+      })();
+    </script>
+
+    <!-- vo-ask-agent removed — handled by master-level voiceover-fixed.mp3 -->
+
+    <!-- z=3: clean timeline player overlay (no data-*, purely visual) -->
+    <div id="player-bar">
+      <div id="play-icon" aria-hidden="true">
+        <svg viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M5 3.5 L18 11 L5 18.5 Z"
+            fill="rgba(255,255,255,0.92)"
+          />
+        </svg>
+      </div>
+      <div id="track">
+        <div id="track-fill"></div>
+        <div id="scrubber"></div>
+      </div>
+      <div id="time">0:00 / 0:05</div>
+      </div>
+    </div>
+  </body>
+</html>

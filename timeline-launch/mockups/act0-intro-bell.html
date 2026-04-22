@@ -1,0 +1,222 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Act 0 · Intro (conveyor → bell)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap">
+  <style>
+    html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden;
+      background: #f5f5f7; color: #1d1d1f;
+      font-family: "Inter", -apple-system, sans-serif;
+    }
+    .canvas {
+      position: relative; width: 1920px; height: 1080px;
+      background: #f5f5f7; overflow: hidden;
+    }
+
+    .scroll-stage {
+      position: absolute; left: 0; right: 0; top: 50%;
+      transform: translateY(-50%);
+      height: 260px;
+      display: flex; align-items: center; justify-content: flex-start;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+              mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+    }
+
+    .scroll-line {
+      display: flex; align-items: center;
+      gap: 56px;
+      white-space: nowrap;
+      will-change: transform;
+    }
+
+    .word {
+      font-size: 150px; font-weight: 900;
+      letter-spacing: -0.035em; line-height: 1;
+      color: #1d1d1f;
+      flex-shrink: 0;
+    }
+    .word.final { position: relative; }
+
+    .bell-slot {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 0; height: 200px;
+      flex-shrink: 0;
+      overflow: visible;
+      opacity: 0;
+      position: relative;
+    }
+    .bell-main { position: relative; width: 180px; height: 180px; display: flex; }
+    .bell-main svg { width: 100%; height: 100%;
+      filter: drop-shadow(0 14px 24px rgba(29,29,31,0.22));
+    }
+
+    .ghost {
+      position: absolute; left: 50%; top: 50%;
+      margin: -90px 0 0 -90px;
+      pointer-events: none;
+      opacity: 0;
+    }
+    .ghost svg { width: 180px; height: 180px; display: block; }
+
+    .ring {
+      position: absolute; left: 50%; top: 50%;
+      width: 260px; height: 260px;
+      margin: -130px 0 0 -130px;
+      border-radius: 50%;
+      border: 3px solid rgba(29, 29, 31, 0.25);
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    .ring-2 { border-color: rgba(29, 29, 31, 0.10); }
+
+    .replay {
+      position: absolute; top: 20px; right: 24px;
+      font-family: "Inter", sans-serif; font-size: 12px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: #b4b0a5; opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="replay">⟳ reload to replay</div>
+
+    <div class="scroll-stage">
+      <div class="scroll-line" id="line">
+        <span class="word">If</span>
+        <span class="word">you've</span>
+        <span class="word">ever</span>
+        <span class="word">used</span>
+        <span class="word">ai</span>
+        <span class="word">for</span>
+        <span class="word">video</span>
+        <span class="word">editing</span>
+        <span class="word">before,</span>
+        <span class="word">you</span>
+        <span class="word">know</span>
+        <span class="word">that</span>
+        <span class="word final" id="w-timing">timing</span>
+        <span class="word final" id="w-is">is</span>
+        <span class="bell-slot" id="bell">
+          <span class="ring ring-2"></span>
+          <span class="ring"></span>
+          <span class="ghost ghost-2" id="ghost-2">
+            <svg viewBox="0 0 64 64"><path d="M32 6 C20 6 14 14 14 24 L14 36 L10 44 L54 44 L50 36 L50 24 C50 14 44 6 32 6 Z" fill="#1d1d1f"/><path d="M28 48 C28 52 30 54 32 54 C34 54 36 52 36 48 Z" fill="#1d1d1f"/><circle cx="32" cy="4" r="2.5" fill="#1d1d1f"/></svg>
+          </span>
+          <span class="ghost ghost-1" id="ghost-1">
+            <svg viewBox="0 0 64 64"><path d="M32 6 C20 6 14 14 14 24 L14 36 L10 44 L54 44 L50 36 L50 24 C50 14 44 6 32 6 Z" fill="#1d1d1f"/><path d="M28 48 C28 52 30 54 32 54 C34 54 36 52 36 48 Z" fill="#1d1d1f"/><circle cx="32" cy="4" r="2.5" fill="#1d1d1f"/></svg>
+          </span>
+          <span class="bell-main" id="bell-main">
+            <svg viewBox="0 0 64 64"><path d="M32 6 C20 6 14 14 14 24 L14 36 L10 44 L54 44 L50 36 L50 24 C50 14 44 6 32 6 Z" fill="#1d1d1f"/><path d="M28 48 C28 52 30 54 32 54 C34 54 36 52 36 48 Z" fill="#1d1d1f"/><circle cx="32" cy="4" r="2.5" fill="#1d1d1f"/></svg>
+          </span>
+        </span>
+        <span class="word final" id="w-tricky">tricky.</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (async () => {
+      await document.fonts.ready;
+      await new Promise(r => requestAnimationFrame(r));
+
+      const line = document.getElementById('line');
+      const bell = document.getElementById('bell');
+      const bellMain = document.getElementById('bell-main');
+      const ghost1 = document.getElementById('ghost-1');
+      const ghost2 = document.getElementById('ghost-2');
+      const rings = document.querySelectorAll('.ring');
+      const wTiming = document.getElementById('w-timing');
+      const wIs = document.getElementById('w-is');
+      const wTricky = document.getElementById('w-tricky');
+
+      // Non-final words — everything before "timing"
+      const allWords = Array.from(line.querySelectorAll('.word'));
+      const finalWords = [wTiming, wIs, wTricky];
+      const nonFinalWords = allWords.filter(w => !finalWords.includes(w));
+
+      const frameCenter = 960;
+
+      // Center the BELL GAP (between "is" and "tricky") at frame center
+      const isRect = wIs.getBoundingClientRect();
+      const trickyRect = wTricky.getBoundingClientRect();
+      const gapCenterX = (isRect.right + trickyRect.left) / 2;
+      const finalOffset = frameCenter - gapCenterX;
+
+      // Start offscreen right — first word just entering from right edge
+      const firstWord = line.children[0];
+      const firstRect = firstWord.getBoundingClientRect();
+      const startOffset = 1920 - firstRect.left + 200;
+
+      gsap.set(line, { x: startOffset });
+
+      const tl = gsap.timeline();
+
+      // Phase 1 (0.0 – 4.8s): Conveyor scrolls, decelerating, lands on final trio centered.
+      // Slower pace to ride the VO.
+      tl.to(line, {
+        x: finalOffset,
+        duration: 4.8,
+        ease: "power3.out"
+      }, 0);
+
+      // Phase 2 (4.6s): Fade all non-final words away so only "timing is tricky" remains.
+      tl.to(nonFinalWords, {
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.out"
+      }, 4.6);
+
+      // Phase 3 (5.2s): text splits — "timing is" shifts left, "tricky" shifts right, bell slot expands
+      tl.to(wTiming, { x: -80, duration: 0.55, ease: "power3.out" }, 5.2);
+      tl.to(wIs,     { x: -80, duration: 0.55, ease: "power3.out" }, 5.2);
+      tl.to(wTricky, { x:  80, duration: 0.55, ease: "power3.out" }, 5.2);
+      tl.to(bell,    { width: 200, opacity: 1, duration: 0.55, ease: "power3.out" }, 5.2);
+
+      // Phase 4 (5.4s): bell pops in with overshoot
+      tl.fromTo(bellMain,
+        { scale: 0.4, rotation: -25, opacity: 0 },
+        { scale: 1, rotation: 0, opacity: 1, duration: 0.35, ease: "back.out(2.2)" },
+        5.4
+      );
+
+      // Phase 5 (5.75s): VIOLENT shake on the bell — 0.5s
+      const shakeStart = 5.75;
+      const shakeKeys = [
+        { rotation:  16, x:  6, y: -4, t: 0.00 },
+        { rotation: -18, x: -6, y:  3, t: 0.06 },
+        { rotation:  14, x:  5, y: -3, t: 0.12 },
+        { rotation: -14, x: -5, y:  2, t: 0.18 },
+        { rotation:  10, x:  3, y: -2, t: 0.24 },
+        { rotation:  -8, x: -3, y:  1, t: 0.30 },
+        { rotation:   5, x:  1, y: -1, t: 0.36 },
+        { rotation:  -3, x: -1, y:  0, t: 0.42 },
+        { rotation:   0, x:  0, y:  0, t: 0.50 }
+      ];
+      shakeKeys.forEach(k => {
+        tl.to(bellMain, {
+          rotation: k.rotation, x: k.x, y: k.y,
+          duration: 0.06, ease: "power1.inOut"
+        }, shakeStart + k.t);
+      });
+
+      tl.to([ghost1, ghost2], { opacity: 0.22, duration: 0.1, ease: "power2.out" }, shakeStart + 0.05);
+      tl.to([ghost1, ghost2], { opacity: 0,   duration: 0.2, ease: "power2.in"  }, shakeStart + 0.4);
+
+      // Phase 6: Bell SFX arrives 0.25s AFTER shake peak — rings emit
+      const sfxT = shakeStart + 0.30 + 0.25;
+      rings.forEach((r, i) => {
+        tl.fromTo(r,
+          { scale: 0.3, opacity: 0.6 },
+          { scale: 1.8, opacity: 0, duration: 0.7, ease: "power2.out" },
+          sfxT + i * 0.08
+        );
+      });
+    })();
+  </script>
+</body>
+</html>

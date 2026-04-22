@@ -1,0 +1,931 @@
+<template id="act-1-cold-open-template">
+  <div
+    data-composition-id="act-1-cold-open"
+    data-width="1920"
+    data-height="1080"
+    data-start="0"
+    data-duration="12.0"
+  >
+    <div class="canvas"></div>
+    <div class="grain"></div>
+
+    <!-- Shared SVG definitions -->
+    <svg width="0" height="0" style="position:absolute;" aria-hidden="true">
+      <defs>
+        <linearGradient id="gem-grad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#4285f4"/>
+          <stop offset="0.35" stop-color="#9b72cb"/>
+          <stop offset="0.7" stop-color="#d96570"/>
+          <stop offset="1" stop-color="#f2a654"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <!-- MORPHING BOX: starts as dark-gray terminal-style CTA with typed npx command, morphs into Claude Code terminal -->
+    <div class="morph-box">
+      <div class="cta-content">
+        <span class="cta-prompt">$&nbsp;</span><span class="cta-cmd"></span><span class="cta-caret">|</span>
+      </div>
+
+      <div class="term-content term-claude">
+        <div class="term-chrome">
+          <span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span>
+          <img class="brand-logo" src="logos/claude.svg" alt="" width="20" height="20"/>
+          <span class="term-title">Claude Code · Opus 4.7</span>
+          <span class="chrome-spacer"></span>
+        </div>
+        <div class="term-body">
+          <div class="cc-input">
+            <div class="cc-input-line"><span class="prompt prompt-1" data-target="make a 30s promo for https://stripe.com"></span><span class="caret c1"></span></div>
+            <div class="cc-input-row">
+              <div class="cc-left">
+                <span class="cc-ic">+</span>
+                <span class="cc-ic">/</span>
+                <span class="cc-ic cc-circle"></span>
+              </div>
+              <div class="cc-right">
+                <span class="cc-lbl">
+                  <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="#8a8f98" stroke-width="1.5" aria-hidden="true">
+                    <path d="M3 8 L7 11 L13 5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Ask before edits
+                </span>
+                <button class="cc-send">
+                  <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="#ffffff" stroke-width="2" aria-hidden="true">
+                    <path d="M8 13 L8 3 M4 7 L8 3 L12 7" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cursor pointer (initial entry on CTA) -->
+    <svg class="mouse-cursor mc-main" width="28" height="40" viewBox="0 0 28 40" fill="none" aria-hidden="true">
+      <path d="M5 5 L5 30 L12 24 L16 32 L19 30 L15 22 L23 22 Z" fill="#0b0b0f" stroke="#f7f8f8" stroke-width="1.5" stroke-linejoin="round"/>
+    </svg>
+
+    <!-- Panel 2: CURSOR IDE -->
+    <div class="term term-cursor">
+      <div class="term-chrome">
+        <span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span>
+        <img class="brand-logo" src="logos/cursor.png" alt="" width="20" height="20"/>
+        <span class="term-title">Cursor · Agent</span>
+        <span class="chrome-spacer"></span>
+      </div>
+      <div class="term-body">
+        <div class="cu-chat-header">
+          <span>New Chat</span>
+          <span class="cu-tools">
+            <span class="cu-tool-plus">＋</span>
+            <span class="cu-tool-dots">···</span>
+          </span>
+        </div>
+        <div class="cu-input-card">
+          <div class="cu-hint">Plan, @ for context, / for commands</div>
+          <div class="cu-typed"><span class="prompt prompt-2" data-target="need a cinematic brand video from https://framer.com"></span><span class="caret c2"></span></div>
+          <div class="cu-footer-row">
+            <span class="cu-pill">
+              <svg viewBox="0 0 20 12" width="18" height="10" fill="none" stroke="#f0f0f0" stroke-width="1.5" aria-hidden="true">
+                <path d="M4 6 Q4 2 7 2 Q10 2 10 6 Q10 10 13 10 Q16 10 16 6 Q16 2 13 2 Q10 2 10 6 Q10 10 7 10 Q4 10 4 6 Z" stroke-linecap="round"/>
+              </svg>
+              Agent <span class="cu-chev">⌄</span>
+            </span>
+            <span class="cu-model">Opus 4.7 <span class="cu-chev">⌄</span></span>
+            <span class="cu-icon-set">
+              <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="#8a8f98" stroke-width="1.5" aria-hidden="true">
+                <circle cx="8" cy="8" r="5.5" stroke-dasharray="14 6"/>
+              </svg>
+              <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="#8a8f98" stroke-width="1.3" aria-hidden="true">
+                <rect x="2" y="3.5" width="12" height="9" rx="1"/>
+                <circle cx="6" cy="7" r="1.2" fill="#8a8f98" stroke="none"/>
+                <path d="M2.5 11 L5.5 8 L9 11 L11 9 L13.5 12"/>
+              </svg>
+              <span class="cu-mic">
+                <svg viewBox="0 0 16 16" width="12" height="12" fill="#f0f0f0" aria-hidden="true">
+                  <rect x="6" y="2" width="4" height="7" rx="2"/>
+                  <path d="M4 8 Q4 11 8 11 Q12 11 12 8" fill="none" stroke="#f0f0f0" stroke-width="1.3"/>
+                  <line x1="8" y1="11" x2="8" y2="14" stroke="#f0f0f0" stroke-width="1.3"/>
+                </svg>
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="cu-local">
+          <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#8a8f98" stroke-width="1.3" aria-hidden="true">
+            <rect x="2" y="3.5" width="12" height="7.5" rx="1"/>
+            <line x1="1" y1="13" x2="15" y2="13"/>
+          </svg>
+          Local <span class="cu-chev">⌄</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 3: CODEX IDE -->
+    <div class="term term-codex">
+      <div class="term-chrome">
+        <span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span>
+        <img class="brand-logo" src="logos/codex.svg" alt="" width="20" height="20"/>
+        <span class="term-title">Codex · GPT-5.4</span>
+        <span class="chrome-spacer"></span>
+      </div>
+      <div class="term-body">
+        <div class="co-top-row">
+          <span class="co-thread">New thread</span>
+          <span class="co-plus">✦ Get Plus</span>
+        </div>
+        <div class="co-center">
+          <img class="co-brand" src="logos/codex-large.svg" alt="" width="44" height="44"/>
+          <div class="co-title">Let's build</div>
+          <div class="co-sub">New project <span class="cu-chev">⌄</span></div>
+        </div>
+        <div class="co-input">
+          <span class="co-plus-sm">＋</span>
+          <span class="co-typed"><span class="prompt prompt-3" data-target="build me an instagram ad from https://vibecode.app"></span><span class="caret c3"></span></span>
+          <button class="co-send">
+            <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#f0f0f0" stroke-width="2" aria-hidden="true">
+              <path d="M8 13 L8 3 M4 7 L8 3 L12 7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <div class="co-foot-pills">
+          <span class="co-pill-sm">GPT-5.4 <span class="cu-chev">⌄</span></span>
+          <span class="co-pill-sm">High <span class="cu-chev">⌄</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 4: GEMINI CLI -->
+    <div class="term term-gemini">
+      <div class="term-chrome">
+        <span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span>
+        <img class="brand-logo" src="logos/gemini.png" alt="" width="20" height="20"/>
+        <span class="term-title">Gemini CLI · gemini-3-flash</span>
+        <span class="chrome-spacer"></span>
+      </div>
+      <div class="term-body">
+        <div class="ge-top-hint">
+          <span>Shift+Tab to accept edits</span>
+          <span class="ge-sk">12 skills</span>
+        </div>
+        <div class="ge-rule"></div>
+        <div class="ge-input-line">
+          <span class="ge-prompt">&gt;</span>
+          <span class="prompt prompt-4" data-target="launch video for https://heygen.com"></span><span class="caret c4"></span>
+          <span class="ge-placeholder">Type your message or @path/to/file</span>
+        </div>
+        <div class="ge-rule"></div>
+        <div class="ge-status">
+          <div><div class="ge-k">workspace</div><div class="ge-v">~/Desktop</div></div>
+          <div><div class="ge-k">sandbox</div><div class="ge-v ge-red">no-sandbox</div></div>
+          <div style="text-align:right"><div class="ge-k">/model</div><div class="ge-v">gemini-3-flash-preview</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phrase: "Now / any site becomes / video." -->
+    <div class="phrase-wrap">
+      <div class="phrase-line"><span class="phrase-word pw-1">Now</span></div>
+      <div class="phrase-line"><span class="phrase-word pw-2">any site becomes</span></div>
+      <div class="phrase-line"><span class="phrase-word pw-3">video.</span></div>
+    </div>
+
+    <!-- YEAHH -->
+    <div class="yeahh-wrap">
+      <div class="yeahh">YEAHH</div>
+      <div class="star s-1">✦</div><div class="star s-2">✦</div><div class="star s-3">✦</div><div class="star s-4">✦</div>
+    </div>
+
+    <!-- Two mini cursors on the two terminals that actually HAVE send buttons: Claude + Codex -->
+    <svg class="mouse-cursor mc-click mc-tl" width="26" height="38" viewBox="0 0 28 40" aria-hidden="true"><path d="M5 5 L5 30 L12 24 L16 32 L19 30 L15 22 L23 22 Z" fill="#0b0b0f" stroke="#f7f8f8" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    <svg class="mouse-cursor mc-click mc-bl" width="26" height="38" viewBox="0 0 28 40" aria-hidden="true"><path d="M5 5 L5 30 L12 24 L16 32 L19 30 L15 22 L23 22 Z" fill="#0b0b0f" stroke="#f7f8f8" stroke-width="1.5" stroke-linejoin="round"/></svg>
+
+    <!-- Click ripples for the 2 clicking terminals -->
+    <div class="click-ripple cr-tl"></div>
+    <div class="click-ripple cr-bl"></div>
+
+    <!-- Sent-message bubbles (land in chat area of each terminal) -->
+    <div class="sent-msg sm-claude">make a 30s promo for https://stripe.com</div>
+    <div class="sent-msg sm-cursor">need a cinematic brand video from https://framer.com</div>
+    <div class="sent-msg sm-codex">build me an instagram ad from https://vibecode.app</div>
+    <div class="sent-msg sm-gemini"><span class="sm-ge-prefix">✓</span> task accepted · website-to-hyperframes queued</div>
+
+    <div class="flash"></div>
+
+    <style>
+      @font-face { font-family: "Inter"; src: url("fonts/Inter-Variable.woff2") format("woff2-variations"); font-weight: 100 900; font-display: block; }
+      @font-face { font-family: "JetBrains Mono"; src: url("fonts/JetBrainsMono-Variable.woff2") format("woff2-variations"); font-weight: 100 800; font-display: block; }
+      @font-face { font-family: "Bungee Shade"; src: url("fonts/BungeeShade-Regular.woff2") format("woff2"); font-weight: 400; font-display: block; }
+
+      [data-composition-id="act-1-cold-open"] {
+        position: relative;
+        width: 1920px; height: 1080px;
+        overflow: hidden;
+        background: #f5f3ee;
+        font-family: "Inter", system-ui, sans-serif;
+      }
+      [data-composition-id="act-1-cold-open"] .canvas {
+        position: absolute; inset: 0;
+        background: radial-gradient(1400px 800px at 50% 50%, rgba(0,0,0,0.025), transparent 65%), #f5f3ee;
+      }
+      [data-composition-id="act-1-cold-open"] .grain {
+        position: absolute; inset: 0;
+        background-image:
+          radial-gradient(circle at 30% 40%, rgba(0,0,0,0.015) 1px, transparent 1px),
+          radial-gradient(circle at 70% 70%, rgba(0,0,0,0.015) 1px, transparent 1px);
+        background-size: 4px 4px, 6px 6px;
+        opacity: 0.5; pointer-events: none;
+      }
+
+      /* ── MORPHING BOX (CTA → Claude Code) ──────────── */
+      [data-composition-id="act-1-cold-open"] .morph-box {
+        position: absolute;
+        left: 50%; top: 50%;
+        width: 1720px; height: 180px;
+        transform: translate(-50%, -50%);
+        background: #1a1b1f;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow:
+          0 32px 70px rgba(11, 11, 15, 0.28),
+          0 12px 22px rgba(11, 11, 15, 0.14);
+      }
+      [data-composition-id="act-1-cold-open"] .cta-content {
+        position: absolute; inset: 0;
+        display: flex; align-items: center; justify-content: flex-start;
+        padding-left: 56px;
+        color: #f7f8f8;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 400;
+        font-size: 44px;
+        letter-spacing: -0.005em;
+        white-space: nowrap;
+      }
+      [data-composition-id="act-1-cold-open"] .cta-prompt { color: #c86d3f; margin-right: 4px; }
+      [data-composition-id="act-1-cold-open"] .cta-cmd { color: #f7f8f8; }
+      [data-composition-id="act-1-cold-open"] .cta-caret {
+        color: #f7f8f8;
+        margin-left: 2px;
+        opacity: 1;
+        display: inline-block;
+        width: 4px;
+      }
+      [data-composition-id="act-1-cold-open"] .term-content {
+        position: absolute; inset: 0;
+        opacity: 0;
+      }
+
+      /* Shared terminal chrome */
+      [data-composition-id="act-1-cold-open"] .term-chrome {
+        display: flex; align-items: center; gap: 14px;
+        padding: 16px 22px;
+        background: #15161a;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        height: 54px; box-sizing: border-box;
+      }
+      [data-composition-id="act-1-cold-open"] .brand-logo {
+        flex-shrink: 0;
+        width: 28px; height: 28px;
+        object-fit: contain;
+        border-radius: 5px;
+      }
+      [data-composition-id="act-1-cold-open"] .chrome-spacer { flex: 1; }
+      [data-composition-id="act-1-cold-open"] .dot { width: 13px; height: 13px; border-radius: 50%; }
+      [data-composition-id="act-1-cold-open"] .dr { background: #ff5f57; }
+      [data-composition-id="act-1-cold-open"] .dy { background: #febc2e; }
+      [data-composition-id="act-1-cold-open"] .dg { background: #28c840; }
+      [data-composition-id="act-1-cold-open"] .term-title {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 18px;
+        color: #8a8f98;
+        font-weight: 500;
+      }
+
+      [data-composition-id="act-1-cold-open"] .term-body {
+        padding: 32px 36px;
+        position: relative;
+        height: calc(100% - 54px);
+        color: #f0f0f0;
+        box-sizing: border-box;
+      }
+
+      [data-composition-id="act-1-cold-open"] .prompt {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 26px;
+        color: #f0f0f0;
+        white-space: nowrap;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      [data-composition-id="act-1-cold-open"] .caret {
+        display: inline-block;
+        width: 11px; height: 28px;
+        background: #f0f0f0;
+        vertical-align: middle;
+        margin-left: 2px;
+        opacity: 0;
+      }
+
+      /* ── Panel 1: Claude Code ─────────────────────── */
+      [data-composition-id="act-1-cold-open"] .term-claude .cc-input {
+        position: absolute;
+        left: 24px; right: 24px; bottom: 28px;
+        padding: 14px 16px 12px 16px;
+        background: rgba(11, 11, 15, 0.4);
+        border: 1px solid rgba(200, 109, 63, 0.55);
+        border-radius: 12px;
+      }
+      [data-composition-id="act-1-cold-open"] .term-claude .cc-input-line {
+        padding: 6px 6px 14px 6px;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        min-height: 26px;
+        overflow: hidden;
+      }
+      [data-composition-id="act-1-cold-open"] .term-claude .cc-input-row {
+        display: flex; justify-content: space-between; align-items: center;
+        padding-top: 10px;
+      }
+      [data-composition-id="act-1-cold-open"] .term-claude .cc-left { display: flex; gap: 8px; }
+      [data-composition-id="act-1-cold-open"] .term-claude .cc-right { display: flex; align-items: center; gap: 14px; }
+      [data-composition-id="act-1-cold-open"] .term-claude .cc-ic {
+        width: 26px; height: 26px;
+        border-radius: 6px;
+        background: rgba(255,255,255,0.05);
+        color: #8a8f98;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 14px;
+        display: flex; align-items: center; justify-content: center;
+      }
+      [data-composition-id="act-1-cold-open"] .term-claude .cc-circle {
+        border: 1.5px solid rgba(200, 109, 63, 0.7);
+        border-radius: 50%;
+        background: transparent;
+      }
+      [data-composition-id="act-1-cold-open"] .term-claude .cc-lbl {
+        display: inline-flex; align-items: center; gap: 6px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        color: #8a8f98;
+      }
+      [data-composition-id="act-1-cold-open"] .term-claude .cc-send {
+        width: 32px; height: 32px;
+        background: #c86d3f; color: #fff;
+        border: none; border-radius: 6px;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer;
+      }
+
+      /* ── Secondary terminals (Cursor/Codex/Gemini) ─── */
+      [data-composition-id="act-1-cold-open"] .term {
+        position: absolute;
+        left: 50%; top: 50%;
+        width: 1400px; height: 780px;
+        transform: translate(-50%, -50%);
+        background: #1a1b1f;
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow:
+          0 32px 70px rgba(11, 11, 15, 0.32),
+          0 12px 22px rgba(11, 11, 15, 0.16);
+        opacity: 0;
+        color: #f7f8f8;
+      }
+
+      /* ── Panel 2: CURSOR ─────────────────────────── */
+      [data-composition-id="act-1-cold-open"] .term-cursor .cu-chat-header {
+        display: flex; justify-content: space-between; align-items: center;
+        color: #c7c7c9; font-size: 14px;
+        margin-bottom: 18px;
+      }
+      [data-composition-id="act-1-cold-open"] .term-cursor .cu-tools {
+        color: #8a8f98; display: flex; gap: 14px; align-items: center;
+      }
+      [data-composition-id="act-1-cold-open"] .term-cursor .cu-tool-plus,
+      [data-composition-id="act-1-cold-open"] .term-cursor .cu-tool-dots {
+        font-size: 14px; opacity: 0.6;
+      }
+      [data-composition-id="act-1-cold-open"] .term-cursor .cu-input-card {
+        border: 1.5px solid rgba(120, 120, 140, 0.45);
+        border-radius: 14px;
+        padding: 18px 18px 14px 18px;
+        background: rgba(11, 11, 15, 0.22);
+        min-height: 180px;
+        position: relative;
+        margin-bottom: 12px;
+      }
+      [data-composition-id="act-1-cold-open"] .term-cursor .cu-hint {
+        position: absolute;
+        left: 22px; top: 20px;
+        color: #6e7077; font-size: 15px;
+        pointer-events: none;
+      }
+      [data-composition-id="act-1-cold-open"] .term-cursor .cu-typed {
+        position: absolute;
+        left: 22px; top: 20px;
+        overflow: hidden;
+      }
+      [data-composition-id="act-1-cold-open"] .term-cursor .cu-footer-row {
+        position: absolute;
+        left: 18px; right: 18px; bottom: 14px;
+        display: flex; align-items: center; gap: 14px;
+      }
+      [data-composition-id="act-1-cold-open"] .term-cursor .cu-pill {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 5px 12px 5px 10px;
+        border: 1px solid #3a3b3f;
+        border-radius: 999px;
+        font-size: 13px; color: #f0f0f0;
+      }
+      [data-composition-id="act-1-cold-open"] .term-cursor .cu-model {
+        font-size: 13px; color: #c7c7c9;
+        display: inline-flex; align-items: center; gap: 4px;
+      }
+      [data-composition-id="act-1-cold-open"] .term-cursor .cu-chev { opacity: 0.55; margin-left: 2px; font-size: 11px; }
+      [data-composition-id="act-1-cold-open"] .term-cursor .cu-icon-set {
+        margin-left: auto;
+        display: inline-flex; align-items: center; gap: 12px;
+      }
+      [data-composition-id="act-1-cold-open"] .term-cursor .cu-mic {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 26px; height: 26px;
+        background: #28292e; border-radius: 50%;
+      }
+      [data-composition-id="act-1-cold-open"] .term-cursor .cu-local {
+        display: inline-flex; align-items: center; gap: 6px;
+        color: #c7c7c9; font-size: 13px;
+        padding: 4px 10px 4px 8px;
+        border: 1px solid #3a3b3f; border-radius: 999px;
+      }
+
+      /* ── Panel 3: CODEX ────────────────────────── */
+      [data-composition-id="act-1-cold-open"] .term-codex .co-top-row {
+        display: flex; align-items: center; gap: 12px;
+        color: #f7f8f8; font-size: 14px;
+      }
+      [data-composition-id="act-1-cold-open"] .term-codex .co-thread { font-weight: 500; }
+      [data-composition-id="act-1-cold-open"] .term-codex .co-plus {
+        padding: 4px 12px;
+        background: #7a6aff; border-radius: 999px;
+        font-size: 11px; font-weight: 500; color: #f0f0f0;
+      }
+      [data-composition-id="act-1-cold-open"] .term-codex .co-center {
+        position: absolute;
+        left: 50%; top: 180px;
+        transform: translateX(-50%);
+        text-align: center;
+      }
+      [data-composition-id="act-1-cold-open"] .term-codex .co-brand { margin: 0 auto 14px auto; display: block; }
+      [data-composition-id="act-1-cold-open"] .term-codex .co-title { font-size: 28px; font-weight: 500; color: #f0f0f0; }
+      [data-composition-id="act-1-cold-open"] .term-codex .co-sub { font-size: 15px; color: #8a8f98; margin-top: 4px; }
+      [data-composition-id="act-1-cold-open"] .term-codex .co-input {
+        position: absolute;
+        left: 24px; right: 24px; bottom: 60px;
+        display: flex; align-items: center; gap: 14px;
+        padding: 12px 14px;
+        background: #15161a; border: 1px solid #2e2e32;
+        border-radius: 12px;
+        font-size: 14px;
+      }
+      [data-composition-id="act-1-cold-open"] .term-codex .co-plus-sm { color: #8a8f98; font-size: 18px; }
+      [data-composition-id="act-1-cold-open"] .term-codex .co-typed { flex: 1; overflow: hidden; }
+      [data-composition-id="act-1-cold-open"] .term-codex .co-send {
+        width: 26px; height: 26px;
+        background: #2e2e32; border: none; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer;
+      }
+      [data-composition-id="act-1-cold-open"] .term-codex .co-foot-pills {
+        position: absolute;
+        left: 24px; bottom: 22px;
+        display: flex; gap: 8px;
+      }
+      [data-composition-id="act-1-cold-open"] .term-codex .co-pill-sm {
+        padding: 4px 10px;
+        border: 1px solid #2e2e32;
+        border-radius: 999px;
+        font-size: 11px; color: #c7c7c9;
+      }
+
+      /* ── Panel 4: GEMINI CLI ───────────────────── */
+      [data-composition-id="act-1-cold-open"] .term-gemini .term-body {
+        font-family: "JetBrains Mono", monospace;
+        padding: 22px 28px;
+      }
+      [data-composition-id="act-1-cold-open"] .term-gemini .ge-top-hint {
+        display: flex; justify-content: space-between;
+        padding: 18px 0 14px 0;
+        font-size: 12px; color: #8a8f98;
+      }
+      [data-composition-id="act-1-cold-open"] .term-gemini .ge-sk { color: #8a8f98; }
+      [data-composition-id="act-1-cold-open"] .term-gemini .ge-rule { border-top: 1px dashed rgba(255,255,255,0.14); }
+      [data-composition-id="act-1-cold-open"] .term-gemini .ge-input-line {
+        position: relative;
+        display: flex; align-items: center; gap: 10px;
+        padding: 80px 0 80px 0;
+        font-size: 18px;
+        overflow: hidden;
+      }
+      [data-composition-id="act-1-cold-open"] .term-gemini .ge-prompt { color: #8a8f98; }
+      [data-composition-id="act-1-cold-open"] .term-gemini .ge-placeholder {
+        position: absolute; right: 0;
+        color: #6e7077; font-size: 13px;
+      }
+      [data-composition-id="act-1-cold-open"] .term-gemini .ge-status {
+        display: grid; grid-template-columns: 1fr 1fr 1fr;
+        gap: 30px;
+        padding-top: 18px;
+        font-size: 11px;
+      }
+      [data-composition-id="act-1-cold-open"] .term-gemini .ge-k { color: #8a8f98; }
+      [data-composition-id="act-1-cold-open"] .term-gemini .ge-v { color: #f0f0f0; font-weight: 500; }
+      [data-composition-id="act-1-cold-open"] .term-gemini .ge-red { color: #ff5577; }
+
+      /* ── Cursors ──────────────────────────────── */
+      [data-composition-id="act-1-cold-open"] .mc-main {
+        position: absolute;
+        left: 1120px; top: 560px;
+        opacity: 0;
+        z-index: 30;
+        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
+      }
+      [data-composition-id="act-1-cold-open"] .mc-click {
+        position: absolute;
+        opacity: 0;
+        z-index: 32;
+        filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.25));
+      }
+      /* Click-cursor positions — aim for the send-button of each scattered terminal */
+      [data-composition-id="act-1-cold-open"] .mc-tl { left: 812px; top: 450px; }
+      [data-composition-id="act-1-cold-open"] .mc-bl { left: 812px; top: 989px; }
+
+      /* Click ripples */
+      [data-composition-id="act-1-cold-open"] .click-ripple {
+        position: absolute;
+        width: 60px; height: 60px;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        opacity: 0;
+        z-index: 31;
+        pointer-events: none;
+        transform: translate(-50%, -50%) scale(0);
+      }
+      [data-composition-id="act-1-cold-open"] .cr-tl { left: 816px; top: 470px; }
+      [data-composition-id="act-1-cold-open"] .cr-bl { left: 816px; top: 1009px; }
+
+      /* ── Sent-message chat bubbles ─── */
+      [data-composition-id="act-1-cold-open"] .sent-msg {
+        position: absolute;
+        padding: 10px 16px;
+        border-radius: 14px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        opacity: 0;
+        z-index: 24;
+        max-width: 340px;
+        line-height: 1.3;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      /* Claude — amber-tinted bubble, right-aligned in its quadrant */
+      [data-composition-id="act-1-cold-open"] .sm-claude {
+        left: 350px; top: 160px;
+        background: rgba(200, 109, 63, 0.22);
+        border: 1px solid rgba(200, 109, 63, 0.45);
+        color: #f2e6d5;
+        border-bottom-right-radius: 4px;
+      }
+      /* Cursor — violet-tinted bubble */
+      [data-composition-id="act-1-cold-open"] .sm-cursor {
+        left: 1310px; top: 130px;
+        background: rgba(120, 110, 180, 0.22);
+        border: 1px solid rgba(150, 140, 220, 0.4);
+        color: #e8e6f2;
+        border-bottom-right-radius: 4px;
+      }
+      /* Codex — violet/blue gradient tint */
+      [data-composition-id="act-1-cold-open"] .sm-codex {
+        left: 350px; top: 700px;
+        background: rgba(110, 100, 180, 0.22);
+        border: 1px solid rgba(140, 130, 210, 0.4);
+        color: #e8e6f2;
+        border-bottom-right-radius: 4px;
+      }
+      /* Gemini — terminal-style log line (no bubble, just mono text) */
+      [data-composition-id="act-1-cold-open"] .sm-gemini {
+        left: 1150px; top: 780px;
+        background: transparent;
+        border: none;
+        color: #7aaa7a;
+        font-size: 12px;
+        border-radius: 0;
+        padding: 4px 0;
+      }
+      [data-composition-id="act-1-cold-open"] .sm-ge-prefix { color: #28c840; margin-right: 6px; }
+
+      /* ── Phrase ────────────────────────────────── */
+      [data-composition-id="act-1-cold-open"] .phrase-wrap {
+        position: absolute;
+        left: 50%; top: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        color: #0b0b0f;
+        pointer-events: none;
+        z-index: 18;
+      }
+      [data-composition-id="act-1-cold-open"] .phrase-line {
+        line-height: 1.05;
+        white-space: nowrap;
+      }
+      [data-composition-id="act-1-cold-open"] .phrase-word {
+        display: inline-block;
+        opacity: 0;
+        filter: blur(14px);
+      }
+      [data-composition-id="act-1-cold-open"] .pw-1 { font-size: 160px; color: #0b0b0f; }
+      [data-composition-id="act-1-cold-open"] .pw-2 { font-size: 160px; color: #533afd; }
+      [data-composition-id="act-1-cold-open"] .pw-3 { font-size: 160px; color: #00a7d9; font-style: italic; }
+
+      /* ── YEAHH ────────────────────────────────── */
+      [data-composition-id="act-1-cold-open"] .yeahh-wrap {
+        position: absolute;
+        left: 50%; top: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        opacity: 0; z-index: 20;
+      }
+      [data-composition-id="act-1-cold-open"] .yeahh {
+        font-family: "Bungee Shade", "Inter", sans-serif;
+        font-size: 240px;
+        color: #ffd60a;
+        transform: rotate(-3deg);
+        text-shadow: 3px 3px 0 #ff006e, 6px 6px 0 rgba(0, 0, 0, 0.4);
+        line-height: 1;
+      }
+      [data-composition-id="act-1-cold-open"] .star {
+        position: absolute;
+        font-size: 60px; color: #ff006e;
+        text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+        opacity: 0;
+      }
+      [data-composition-id="act-1-cold-open"] .s-1 { top: -80px; left: -120px; }
+      [data-composition-id="act-1-cold-open"] .s-2 { top: -60px; right: -100px; }
+      [data-composition-id="act-1-cold-open"] .s-3 { bottom: -60px; left: 60px; }
+      [data-composition-id="act-1-cold-open"] .s-4 { bottom: -80px; right: 80px; }
+
+      [data-composition-id="act-1-cold-open"] .flash {
+        position: absolute; inset: 0;
+        background: #ffffff;
+        opacity: 0; pointer-events: none;
+        z-index: 40;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        var COMP_ID = "act-1-cold-open";
+        var root = document.querySelector('[data-composition-id="' + COMP_ID + '"]');
+        var morphBox = root.querySelector(".morph-box");
+        var ctaContent = root.querySelector(".cta-content");
+        var termContent = root.querySelector(".term-content");
+        var mainCursor = root.querySelector(".mc-main");
+        var terms = [
+          morphBox,
+          root.querySelector(".term-cursor"),
+          root.querySelector(".term-codex"),
+          root.querySelector(".term-gemini"),
+        ];
+        var prompts = root.querySelectorAll(".prompt");
+        var carets = root.querySelectorAll(".caret");
+        var cuHint = root.querySelector(".cu-hint");
+        var gePlaceholder = root.querySelector(".ge-placeholder");
+        var phraseWords = root.querySelectorAll(".phrase-word");
+        var yeahh = root.querySelector(".yeahh-wrap");
+        var stars = root.querySelectorAll(".star");
+        var flash = root.querySelector(".flash");
+
+        // Only Claude (TL) and Codex (BL) have real send buttons to click
+        var clickCursors = [
+          root.querySelector(".mc-tl"),
+          root.querySelector(".mc-bl"),
+        ];
+        var ripples = [
+          root.querySelector(".cr-tl"),
+          root.querySelector(".cr-bl"),
+        ];
+        var sentBubbles = [
+          root.querySelector(".sm-claude"),
+          root.querySelector(".sm-cursor"),
+          root.querySelector(".sm-codex"),
+          root.querySelector(".sm-gemini"),
+        ];
+
+        // Hide prompts with clipPath (typed via steps() ease)
+        prompts.forEach(function (p) {
+          p.textContent = p.dataset.target || "";
+          gsap.set(p, { clipPath: "inset(0 100% 0 0)", webkitClipPath: "inset(0 100% 0 0)" });
+        });
+
+        // Hide all secondary terminals
+        gsap.set(terms[1], { opacity: 0, scale: 1.0, x: 0, y: 0, rotation: 0 });
+        gsap.set(terms[2], { opacity: 0, scale: 1.0, x: 0, y: 0, rotation: 0 });
+        gsap.set(terms[3], { opacity: 0, scale: 1.0, x: 0, y: 0, rotation: 0 });
+
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+
+        /* ════ PHASE 1: CTA — type the npx command character by character ══ */
+        var ctaCmd = root.querySelector(".cta-cmd");
+        var ctaCaret = root.querySelector(".cta-caret");
+        var ctaFullText = "npx skills add heygen-com/hyperframes";
+        // Set full text invisible via clipPath so characters appear via steps() easing (seek-safe)
+        ctaCmd.textContent = ctaFullText;
+        gsap.set(ctaCmd, { clipPath: "inset(0 100% 0 0)", webkitClipPath: "inset(0 100% 0 0)" });
+
+        // Caret blink (background blinking, paused during typing itself so it stays visible)
+        tl.to(ctaCaret, { opacity: 0, duration: 0.15 }, 0.20);
+        tl.to(ctaCaret, { opacity: 1, duration: 0.15 }, 0.40);
+
+        // 0.45–1.35s: TYPE the command (steps easing gives true char-by-char)
+        tl.to(ctaCmd, {
+          clipPath: "inset(0 0% 0 0)", webkitClipPath: "inset(0 0% 0 0)",
+          duration: 0.90,
+          ease: "steps(" + ctaFullText.length + ")",
+        }, 0.45);
+
+        // Brief pause (caret blinks once to indicate 'ready to submit')
+        tl.to(ctaCaret, { opacity: 0, duration: 0.15 }, 1.38);
+        tl.to(ctaCaret, { opacity: 1, duration: 0.15 }, 1.53);
+
+        // 1.65s: ENTER — CTA text flies UP & fades (like sending a terminal message)
+        tl.to(ctaContent, { y: -50, scale: 1.02, opacity: 0, duration: 0.28, ease: "power2.out" }, 1.65);
+        tl.to(morphBox, { scale: 0.98, duration: 0.12, ease: "power2.in" }, 1.65);
+        tl.to(morphBox, { scale: 1.0, duration: 0.10, ease: "power2.out" }, 1.77);
+
+        // Cursor enters from right, drifts toward button, clicks
+        tl.fromTo(mainCursor, { opacity: 0, x: 220, y: 140 }, { opacity: 1, x: 40, y: 30, duration: 0.55, ease: "power2.out" }, 0.80);
+        tl.to(mainCursor, { x: 0, y: 0, duration: 0.45, ease: "power2.inOut" }, 1.25);
+        tl.to(mainCursor, { scale: 0.9, duration: 0.08, ease: "power2.in" }, 1.65);
+        tl.to(mainCursor, { scale: 1, opacity: 0, duration: 0.12 }, 1.74);
+
+        /* ════ PHASE 2: MORPH — CTA (wide 1720×180) shrinks to terminal (1400×780) ══ */
+        tl.to(morphBox, { height: 780, width: 1400, duration: 0.45, ease: "power3.inOut" }, 1.75);
+        tl.to(termContent, { opacity: 1, duration: 0.30, ease: "power2.out" }, 1.98);
+
+        /* ════ PHASE 3: PANEL TYPING (stacking) ════ */
+        // Panel 1 Claude Code typing — compressed to 1.05s so it finishes before Panel 2 enters at 3.30
+        var p1 = prompts[0]; var n1 = p1.dataset.target.length;
+        tl.to(p1, { clipPath: "inset(0 0% 0 0)", webkitClipPath: "inset(0 0% 0 0)", duration: 1.05, ease: "steps(" + n1 + ")" }, 2.15);
+        tl.to(carets[0], { opacity: 1, duration: 0.12 }, 3.20);
+
+        // Panel 2 Cursor enters at 3.30 (sync with VO "Brand video?")
+        tl.fromTo(terms[1],
+          { opacity: 0, x: 400, y: -80, scale: 0.92, rotation: -8 },
+          { opacity: 1, x: -55, y: -28, scale: 0.98, rotation: -4, duration: 0.55, ease: "power3.out" },
+          3.30
+        );
+        tl.to(cuHint, { opacity: 0, duration: 0.2 }, 3.45);
+        var p2 = prompts[1]; var n2 = p2.dataset.target.length;
+        tl.set(p2, { clipPath: "inset(0 55% 0 0)", webkitClipPath: "inset(0 55% 0 0)" }, 3.30);
+        tl.to(p2, { clipPath: "inset(0 0% 0 0)", webkitClipPath: "inset(0 0% 0 0)", duration: 0.90, ease: "steps(" + Math.round(n2 * 0.45) + ")" }, 3.40);
+        tl.to(carets[1], { opacity: 1, duration: 0.12 }, 4.30);
+
+        // Panel 3 Codex enters at 4.80 (sync with VO "Social ad?")
+        tl.fromTo(terms[2],
+          { opacity: 0, x: -400, y: 90, scale: 0.92, rotation: 10 },
+          { opacity: 1, x: 50, y: 32, scale: 0.97, rotation: 5, duration: 0.55, ease: "power3.out" },
+          4.80
+        );
+        var p3 = prompts[2]; var n3 = p3.dataset.target.length;
+        tl.set(p3, { clipPath: "inset(0 60% 0 0)", webkitClipPath: "inset(0 60% 0 0)" }, 4.80);
+        tl.to(p3, { clipPath: "inset(0 0% 0 0)", webkitClipPath: "inset(0 0% 0 0)", duration: 0.80, ease: "steps(" + Math.round(n3 * 0.5) + ")" }, 4.90);
+        tl.to(carets[2], { opacity: 1, duration: 0.12 }, 5.70);
+
+        // Panel 4 Gemini enters at 6.40 (sync with VO "Launch clip?")
+        tl.fromTo(terms[3],
+          { opacity: 0, x: 60, y: -220, scale: 0.92, rotation: -7 },
+          { opacity: 1, x: -28, y: 48, scale: 0.96, rotation: -3, duration: 0.55, ease: "power3.out" },
+          6.40
+        );
+        var p4 = prompts[3]; var n4 = p4.dataset.target.length;
+        tl.set(p4, { clipPath: "inset(0 50% 0 0)", webkitClipPath: "inset(0 50% 0 0)" }, 6.40);
+        tl.to(gePlaceholder, { opacity: 0, duration: 0.18 }, 6.40);
+        tl.to(p4, { clipPath: "inset(0 0% 0 0)", webkitClipPath: "inset(0 0% 0 0)", duration: 0.80, ease: "steps(" + Math.round(n4 * 0.55) + ")" }, 6.50);
+        tl.to(carets[3], { opacity: 1, duration: 0.12 }, 7.30);
+
+        // Single blink per caret before scatter
+        [3.20, 4.30, 5.70, 7.30].forEach(function (t, i) {
+          tl.to(carets[i], { opacity: 0, duration: 0.2 }, t + 0.45);
+          tl.to(carets[i], { opacity: 1, duration: 0.2 }, t + 0.65);
+        });
+
+        /* ════ PHASE 4: CHARGE (shake only) @ 8.00s ════ */
+        tl.to([terms[0], terms[1], terms[2], terms[3]], {
+          x: "+=3", yoyo: true, repeat: 5, duration: 0.045, ease: "none",
+        }, 8.00);
+
+        /* ════ PHASE 5: SCATTER (8.15–8.69) ═════════ */
+        tl.to(terms[0], { x: -480, y: -270, rotation: 0, scale: 0.52, duration: 0.20, ease: "power3.out" }, 8.15);
+        tl.to(terms[1], { x:  480, y: -270, rotation: 0, scale: 0.52, duration: 0.20, ease: "power3.out" }, 8.15);
+        tl.to(terms[2], { x: -480, y:  270, rotation: 0, scale: 0.52, duration: 0.20, ease: "power3.out" }, 8.15);
+        tl.to(terms[3], { x:  480, y:  270, rotation: 0, scale: 0.52, duration: 0.20, ease: "power3.out" }, 8.15);
+        tl.to([terms[0], terms[1], terms[2], terms[3]], { scale: 0.55, duration: 0.14, ease: "power2.out" }, 8.35);
+        tl.to([terms[0], terms[1], terms[2], terms[3]], { scale: 0.52, duration: 0.20, ease: "elastic.out(1, 0.7)" }, 8.49);
+
+        /* ════ PHASE 6: PHRASE — synced to VO "Now — any site becomes video" @ 8.36 ═══ */
+        tl.to([terms[0], terms[1], terms[2], terms[3]], { opacity: 0.12, duration: 0.4, ease: "power2.out" }, 8.36);
+        tl.to(phraseWords[0], { opacity: 1, filter: "blur(0px)", duration: 0.32, ease: "power2.out" }, 8.45);  // "Now"
+        tl.to(phraseWords[1], { opacity: 1, filter: "blur(0px)", duration: 0.35, ease: "power2.out" }, 9.00);  // "any site becomes"
+        tl.to(phraseWords[2], { opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power2.out" }, 9.85);   // "video."
+
+        /* ════ PHASE 7: YEAHH (10.40–10.95) ═══ */
+        tl.to(phraseWords, { opacity: 0, y: -8, duration: 0.22, ease: "power2.in" }, 10.40);
+        tl.to([terms[0], terms[1], terms[2], terms[3]], { opacity: 1, duration: 0.18, ease: "power2.out" }, 10.40);
+        tl.fromTo(yeahh, { opacity: 0, scale: 0, rotation: -8 }, { opacity: 1, scale: 1.18, rotation: -3, duration: 0.18, ease: "back.out(2.5)" }, 10.55);
+        tl.to(yeahh, { scale: 1.0, duration: 0.1, ease: "power2.out" }, 10.73);
+        tl.fromTo(stars, { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.2, stagger: 0.04, ease: "back.out(1.8)" }, 10.55);
+        tl.to(yeahh, { opacity: 0, scale: 0.3, duration: 0.18, ease: "power2.in" }, 10.95);
+        tl.to(stars, { opacity: 0, duration: 0.14 }, 10.95);
+
+        /* ════ PHASE 8: SENDING ANIMATION ════════════ */
+        // Collect send-affordances per terminal (button or input area)
+        var inputAreas = [
+          root.querySelector(".term-claude .cc-input"),
+          root.querySelector(".term-cursor .cu-input-card"),
+          root.querySelector(".term-codex .co-input"),
+          root.querySelector(".term-gemini .ge-input-line"),
+        ];
+        var sendAffordances = [
+          root.querySelector(".cc-send"),
+          root.querySelector(".term-cursor .cu-pill"),
+          root.querySelector(".co-send"),
+          root.querySelector(".term-gemini .ge-prompt"),
+        ];
+
+        // 11.05–11.25: Claude + Codex cursors fade in near their send buttons
+        clickCursors.forEach(function (c, i) {
+          tl.to(c, { opacity: 1, duration: 0.18, ease: "power2.out" }, 11.05 + i * 0.03);
+        });
+
+        // 11.35: cursor click depress
+        clickCursors.forEach(function (c) {
+          tl.to(c, { scale: 0.92, duration: 0.08, ease: "power2.in" }, 11.35);
+          tl.to(c, { scale: 1, duration: 0.12, ease: "power2.out" }, 11.43);
+        });
+
+        // 11.35: SEND — typed prompt flies UP + fades
+        tl.to(prompts, { y: -40, scale: 1.03, opacity: 0, duration: 0.4, ease: "power2.out" }, 11.35);
+        tl.to(carets, { opacity: 0, duration: 0.1 }, 11.35);
+
+        // Input area pulse
+        inputAreas.forEach(function (el) {
+          if (!el) return;
+          tl.to(el, { boxShadow: "0 0 0 2px rgba(255, 255, 255, 0.15) inset", duration: 0.15, ease: "power2.out" }, 11.35);
+          tl.to(el, { boxShadow: "0 0 0 0px rgba(255, 255, 255, 0.0) inset", duration: 0.30, ease: "power2.in" }, 11.55);
+        });
+
+        // Send affordances punch
+        sendAffordances.forEach(function (el) {
+          if (!el) return;
+          tl.to(el, { scale: 1.2, duration: 0.10, ease: "power2.out" }, 11.35);
+          tl.to(el, { scale: 1.0, duration: 0.15, ease: "power2.in" }, 11.46);
+        });
+
+        // Ripples under the 2 cursor clicks only
+        ripples.forEach(function (r) {
+          gsap.set(r, { scale: 0, opacity: 0 });
+          tl.to(r, { scale: 1.3, opacity: 0.45, duration: 0.22, ease: "power2.out" }, 11.35);
+          tl.to(r, { scale: 2.0, opacity: 0, duration: 0.30, ease: "power2.out" }, 11.52);
+        });
+
+        // 11.55: MESSAGE LANDS IN CHAT — bubbles fade/slide in
+        sentBubbles.forEach(function (b, i) {
+          if (!b) return;
+          tl.fromTo(b,
+            { opacity: 0, y: 14, scale: 0.94 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.4)" },
+            11.55 + i * 0.03
+          );
+        });
+
+        // Cursors fade out after click
+        clickCursors.forEach(function (c) {
+          tl.to(c, { opacity: 0, duration: 0.18, ease: "power2.in" }, 11.70);
+        });
+        // Bubbles fade with the flash
+        tl.to(sentBubbles, { opacity: 0, duration: 0.15, ease: "power2.in" }, 11.90);
+
+        /* ════ PHASE 9: FLASH (11.92–12.00) ══════════════════════ */
+        tl.to(flash, { opacity: 1, duration: 0.05, ease: "none" }, 11.92);
+        tl.to(flash, { opacity: 0, duration: 0.18, ease: "power2.out" }, 11.98);
+
+        window.__timelines[COMP_ID] = tl;
+      })();
+    </script>
+  </div>
+</template>

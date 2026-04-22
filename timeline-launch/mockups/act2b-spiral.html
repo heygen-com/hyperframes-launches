@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Act 2b · Spiral (keyframe)</title>
+  <style>
+    html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden;
+      background: #F5F4ED; color: #3D3929;
+      font-family: ui-sans-serif, "Söhne", "Inter", system-ui, -apple-system, sans-serif;
+    }
+    .app { position: relative; width: 1920px; height: 1080px; display: flex; flex-direction: column; }
+
+    .topbar {
+      height: 64px; padding: 0 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid #EBE7DB; background: #FAF9F5;
+    }
+    .topbar-left, .topbar-right { display: flex; align-items: center; gap: 14px; }
+    .icon-btn {
+      width: 36px; height: 36px; color: #6B6757;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .project-name { font-size: 18px; color: #3D3929; font-weight: 500; }
+    .model-pill {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 15px; color: #6B6757;
+      padding: 8px 14px; border-radius: 999px;
+      background: #F0ECE0; border: 1px solid #E5E0D1;
+    }
+    .avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: #D97757; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 15px;
+    }
+
+    .viewport { flex: 1; position: relative; overflow: hidden; }
+    .fade-top, .fade-bottom {
+      position: absolute; left: 0; right: 0; height: 110px; z-index: 5; pointer-events: none;
+    }
+    .fade-top { top: 0; background: linear-gradient(#F5F4ED 25%, rgba(245,244,237,0)); }
+    .fade-bottom { bottom: 0; background: linear-gradient(rgba(245,244,237,0), #F5F4ED 75%); }
+
+    .thread {
+      position: absolute;
+      top: -180px; left: 0; right: 0;
+      display: flex; flex-direction: column; align-items: center; gap: 24px;
+    }
+    .exchange {
+      width: 900px; display: flex; flex-direction: column; gap: 12px;
+    }
+    .user-row { display: flex; justify-content: flex-end; }
+    .user-row .bubble {
+      max-width: 620px; padding: 14px 20px;
+      background: #F0ECE0; border: 1px solid #E5E0D1;
+      border-radius: 16px; font-size: 20px; line-height: 1.5; color: #3D3929;
+    }
+    .claude-row { display: flex; gap: 14px; align-items: flex-start; }
+    .claude-mark {
+      width: 32px; height: 32px; flex: 0 0 32px;
+      border-radius: 8px; background: #fff; border: 1px solid #E5E0D1;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .claude-reply { font-size: 20px; color: #2A2720; padding-top: 4px; }
+
+    .composer-wrap {
+      padding: 0 0 44px;
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      position: relative; z-index: 6;
+    }
+    .composer {
+      width: 900px; min-height: 88px;
+      background: #FFFFFF; border: 1px solid #E5E0D1;
+      border-radius: 20px; box-shadow: 0 2px 12px rgba(61, 57, 41, 0.04);
+      padding: 18px 20px 14px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .composer-text { font-size: 20px; color: #3D3929; min-height: 28px; }
+    .composer-actions { display: flex; justify-content: flex-end; align-items: center; gap: 10px; }
+    .attach { width: 36px; height: 36px; color: #8C8674;
+      display: flex; align-items: center; justify-content: center; }
+    .send { width: 36px; height: 36px; border-radius: 10px;
+      background: #D97757;
+      display: flex; align-items: center; justify-content: center; }
+    .composer-meta { font-size: 13px; color: #A19B87; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="icon-btn">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
+        </div>
+        <svg viewBox="0 0 32 32" width="26" height="26"><g fill="#D97757"><path d="M16 2 L17.4 12.6 L21.2 4.8 L18.7 13.3 L26.2 8.2 L19.5 14.8 L29.4 14 L19.6 16.6 L28 21.6 L18.8 17.8 L22.5 27.2 L16.8 18.4 L15.4 28.8 L14.7 18.2 L9.2 27.2 L13 17.8 L3.8 21.6 L12.3 16.6 L2.6 14 L12.4 14.8 L5.8 8.2 L13.3 13.3 L10.8 4.8 L14.6 12.6 Z"/></g></svg>
+        <div class="project-name">Timeline Editor Launch</div>
+      </div>
+      <div class="topbar-right">
+        <div class="model-pill">
+          Claude Opus 4.7
+          <svg viewBox="0 0 12 12" width="11" height="11"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        </div>
+        <div class="avatar">J</div>
+      </div>
+    </div>
+
+    <div class="viewport">
+      <div class="fade-top"></div>
+      <div class="thread">
+        <!-- Snapshot mid-spiral: ~5 exchanges visible -->
+        <div class="exchange">
+          <div class="user-row"><div class="bubble">actually 0.05s earlier</div></div>
+          <div class="claude-row">
+            <div class="claude-mark"><svg viewBox="0 0 32 32" width="20" height="20"><g fill="#D97757"><path d="M16 2 L17.4 12.6 L21.2 4.8 L18.7 13.3 L26.2 8.2 L19.5 14.8 L29.4 14 L19.6 16.6 L28 21.6 L18.8 17.8 L22.5 27.2 L16.8 18.4 L15.4 28.8 L14.7 18.2 L9.2 27.2 L13 17.8 L3.8 21.6 L12.3 16.6 L2.6 14 L12.4 14.8 L5.8 8.2 L13.3 13.3 L10.8 4.8 L14.6 12.6 Z"/></g></svg></div>
+            <div class="claude-reply">Done.</div>
+          </div>
+        </div>
+        <div class="exchange">
+          <div class="user-row"><div class="bubble">try 0.08</div></div>
+          <div class="claude-row">
+            <div class="claude-mark"><svg viewBox="0 0 32 32" width="20" height="20"><g fill="#D97757"><path d="M16 2 L17.4 12.6 L21.2 4.8 L18.7 13.3 L26.2 8.2 L19.5 14.8 L29.4 14 L19.6 16.6 L28 21.6 L18.8 17.8 L22.5 27.2 L16.8 18.4 L15.4 28.8 L14.7 18.2 L9.2 27.2 L13 17.8 L3.8 21.6 L12.3 16.6 L2.6 14 L12.4 14.8 L5.8 8.2 L13.3 13.3 L10.8 4.8 L14.6 12.6 Z"/></g></svg></div>
+            <div class="claude-reply">Done.</div>
+          </div>
+        </div>
+        <div class="exchange">
+          <div class="user-row"><div class="bubble">too much, +0.02</div></div>
+          <div class="claude-row">
+            <div class="claude-mark"><svg viewBox="0 0 32 32" width="20" height="20"><g fill="#D97757"><path d="M16 2 L17.4 12.6 L21.2 4.8 L18.7 13.3 L26.2 8.2 L19.5 14.8 L29.4 14 L19.6 16.6 L28 21.6 L18.8 17.8 L22.5 27.2 L16.8 18.4 L15.4 28.8 L14.7 18.2 L9.2 27.2 L13 17.8 L3.8 21.6 L12.3 16.6 L2.6 14 L12.4 14.8 L5.8 8.2 L13.3 13.3 L10.8 4.8 L14.6 12.6 Z"/></g></svg></div>
+            <div class="claude-reply">Done.</div>
+          </div>
+        </div>
+        <div class="exchange">
+          <div class="user-row"><div class="bubble">0.06?</div></div>
+          <div class="claude-row">
+            <div class="claude-mark"><svg viewBox="0 0 32 32" width="20" height="20"><g fill="#D97757"><path d="M16 2 L17.4 12.6 L21.2 4.8 L18.7 13.3 L26.2 8.2 L19.5 14.8 L29.4 14 L19.6 16.6 L28 21.6 L18.8 17.8 L22.5 27.2 L16.8 18.4 L15.4 28.8 L14.7 18.2 L9.2 27.2 L13 17.8 L3.8 21.6 L12.3 16.6 L2.6 14 L12.4 14.8 L5.8 8.2 L13.3 13.3 L10.8 4.8 L14.6 12.6 Z"/></g></svg></div>
+            <div class="claude-reply">Done.</div>
+          </div>
+        </div>
+        <div class="exchange">
+          <div class="user-row"><div class="bubble">split the difference</div></div>
+          <div class="claude-row">
+            <div class="claude-mark"><svg viewBox="0 0 32 32" width="20" height="20"><g fill="#D97757"><path d="M16 2 L17.4 12.6 L21.2 4.8 L18.7 13.3 L26.2 8.2 L19.5 14.8 L29.4 14 L19.6 16.6 L28 21.6 L18.8 17.8 L22.5 27.2 L16.8 18.4 L15.4 28.8 L14.7 18.2 L9.2 27.2 L13 17.8 L3.8 21.6 L12.3 16.6 L2.6 14 L12.4 14.8 L5.8 8.2 L13.3 13.3 L10.8 4.8 L14.6 12.6 Z"/></g></svg></div>
+            <div class="claude-reply">Done.</div>
+          </div>
+        </div>
+        <div class="exchange">
+          <div class="user-row"><div class="bubble">one more frame</div></div>
+          <div class="claude-row">
+            <div class="claude-mark"><svg viewBox="0 0 32 32" width="20" height="20"><g fill="#D97757"><path d="M16 2 L17.4 12.6 L21.2 4.8 L18.7 13.3 L26.2 8.2 L19.5 14.8 L29.4 14 L19.6 16.6 L28 21.6 L18.8 17.8 L22.5 27.2 L16.8 18.4 L15.4 28.8 L14.7 18.2 L9.2 27.2 L13 17.8 L3.8 21.6 L12.3 16.6 L2.6 14 L12.4 14.8 L5.8 8.2 L13.3 13.3 L10.8 4.8 L14.6 12.6 Z"/></g></svg></div>
+            <div class="claude-reply">Done.</div>
+          </div>
+        </div>
+      </div>
+      <div class="fade-bottom"></div>
+    </div>
+
+    <div class="composer-wrap">
+      <div class="composer">
+        <div class="composer-text">maybe +0.01…</div>
+        <div class="composer-actions">
+          <div class="attach">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M21 11.5l-8.5 8.5a5 5 0 1 1-7-7l8.5-8.5a3.5 3.5 0 1 1 5 5L11 17.5a2 2 0 1 1-3-3l7-7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <div class="send">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 5v14M5 12l7-7 7 7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="composer-meta">Claude can make mistakes. Please double-check responses.</div>
+    </div>
+  </div>
+</body>
+</html>

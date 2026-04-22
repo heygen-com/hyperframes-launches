@@ -1,0 +1,361 @@
+<template id="flex-css-template">
+  <div
+    data-composition-id="flex-css"
+    data-width="1920"
+    data-height="1080"
+    data-start="0"
+    data-duration="1.71"
+  >
+    <div class="css-bg"></div>
+
+    <!-- Whip-pan entry wrapper (matches proposition exit) -->
+    <div class="css-wrap">
+
+      <!-- 6x3 grid filling the full frame -->
+      <div class="grid" id="css-grid">
+        <!-- Row 1 -->
+        <div class="cell" data-anim="spinner"></div>
+        <div class="cell" data-anim="pulse"></div>
+        <div class="cell" data-anim="bars"></div>
+        <div class="cell" data-anim="morph"></div>
+        <div class="cell" data-anim="orbit"></div>
+        <div class="cell" data-anim="gradient"></div>
+
+        <!-- Row 2 -->
+        <div class="cell" data-anim="wave"></div>
+        <div class="cell" data-anim="flip"></div>
+        <div class="cell" data-anim="bounce"></div>
+        <div class="cell center-cell">
+          <div class="css-title">CSS</div>
+          <div class="css-sub">animations</div>
+        </div>
+        <div class="cell" data-anim="scale"></div>
+        <div class="cell" data-anim="spinner2"></div>
+
+        <!-- Row 3 -->
+        <div class="cell" data-anim="gradient2"></div>
+        <div class="cell" data-anim="orbit2"></div>
+        <div class="cell" data-anim="bars2"></div>
+        <div class="cell" data-anim="morph2"></div>
+        <div class="cell" data-anim="pulse2"></div>
+        <div class="cell" data-anim="wave2"></div>
+      </div>
+
+    </div><!-- /.css-wrap -->
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap");
+
+      [data-composition-id="flex-css"] {
+        width: 1920px; height: 1080px;
+        position: relative; overflow: hidden;
+        background: #fafaf2;
+      }
+      [data-composition-id="flex-css"] .css-bg {
+        position: absolute; inset: 0;
+        background: radial-gradient(ellipse at 50% 50%, #fafaf2 0%, #f0efe6 100%);
+      }
+      [data-composition-id="flex-css"] .css-wrap {
+        position: absolute; inset: 0;
+        will-change: transform, filter;
+      }
+
+      /* === FULL-FRAME GRID === */
+      [data-composition-id="flex-css"] .grid {
+        position: absolute;
+        inset: 12px;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        gap: 12px;
+      }
+      [data-composition-id="flex-css"] .cell {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        will-change: transform, opacity;
+        border: 1px solid rgba(0,0,0,0.04);
+        position: relative;
+      }
+
+      /* === CENTER CELL === */
+      [data-composition-id="flex-css"] .center-cell {
+        background: #1a1a1a;
+        flex-direction: column;
+        gap: 6px;
+      }
+      [data-composition-id="flex-css"] .css-title {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 80px;
+        letter-spacing: -0.04em;
+        color: #fafaf2;
+        line-height: 1;
+      }
+      [data-composition-id="flex-css"] .css-sub {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 500;
+        font-size: 20px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #777;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+        var root = document.querySelector('[data-composition-id="flex-css"]');
+        var cssWrap = root.querySelector(".css-wrap");
+        var cells = root.querySelectorAll(".cell");
+        var title = root.querySelector(".css-title");
+        var sub = root.querySelector(".css-sub");
+        var DUR = 1.71;
+
+        // --- Zoom-through entry: emerge from behind, scale up + fade in ---
+        gsap.set(cssWrap, { scale: 0.9, opacity: 0, filter: "blur(4px)" });
+        tl.to(cssWrap, {
+          scale: 1, opacity: 1, filter: "blur(0px)",
+          duration: 0.5, ease: "power2.out"
+        }, 0);
+
+        // --- Grid cells cascade in (spiral from corners) ---
+        var order = [0,1,2,3,4,5, 11,17,16,15,14,13, 12,6,7,8, 10,9];
+        gsap.set(cells, { scale: 0.7, opacity: 0, y: 20 });
+        order.forEach(function (idx, i) {
+          tl.to(cells[idx], {
+            scale: 1, opacity: 1, y: 0,
+            duration: 0.28, ease: "back.out(1.2)"
+          }, 0.02 + i * 0.02);
+        });
+
+        // Title fade
+        gsap.set(title, { opacity: 0, y: 14 });
+        gsap.set(sub, { opacity: 0 });
+        tl.to(title, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }, 0.38);
+        tl.to(sub, { opacity: 1, duration: 0.18, ease: "power2.out" }, 0.46);
+
+        // ==============================
+        // ANIMATION BUILDERS
+        // ==============================
+        // Color palettes for variety
+        var P = {
+          red: "#e63946", blue: "#457b9d", orange: "#f4a261",
+          teal: "#2a9d8f", navy: "#1d3557", rose: "#d4738a",
+          lime: "#84a98c", purple: "#6b4c9a"
+        };
+
+        function buildSpinner(cell, c1, c2, speed) {
+          var wrap = document.createElement("div");
+          wrap.style.cssText = "position:relative;width:80px;height:80px;";
+          var r1 = document.createElement("div");
+          r1.style.cssText = "position:absolute;inset:0;border:3px solid transparent;border-top-color:"+c1+";border-right-color:"+c1+";border-radius:50%;";
+          var r2 = document.createElement("div");
+          r2.style.cssText = "position:absolute;inset:14px;border:3px solid transparent;border-top-color:"+c2+";border-bottom-color:"+c2+";border-radius:50%;";
+          wrap.appendChild(r1); wrap.appendChild(r2);
+          cell.appendChild(wrap);
+          tl.to(r1, { rotation: 720 * speed, duration: DUR, ease: "none" }, 0);
+          tl.to(r2, { rotation: -540 * speed, duration: DUR, ease: "none" }, 0);
+        }
+
+        function buildPulse(cell, color) {
+          var wrap = document.createElement("div");
+          wrap.style.cssText = "position:relative;width:80px;height:80px;";
+          var dot = document.createElement("div");
+          dot.style.cssText = "position:absolute;top:50%;left:50%;width:20px;height:20px;margin:-10px;background:"+color+";border-radius:50%;";
+          wrap.appendChild(dot);
+          var rings = [];
+          for (var i = 0; i < 2; i++) {
+            var r = document.createElement("div");
+            r.style.cssText = "position:absolute;top:50%;left:50%;width:20px;height:20px;margin:-10px;border:2px solid "+color+";border-radius:50%;opacity:0;";
+            wrap.appendChild(r);
+            rings.push(r);
+          }
+          cell.appendChild(wrap);
+          for (var p = 0; p < 3; p++) {
+            var pt = 0.10 + p * 0.50;
+            tl.to(dot, { scale: 1.3, duration: 0.12, ease: "power2.out" }, pt);
+            tl.to(dot, { scale: 1, duration: 0.15, ease: "power2.in" }, pt + 0.12);
+            tl.fromTo(rings[0], { scale: 1, opacity: 0.7 }, { scale: 3.5, opacity: 0, duration: 0.40, ease: "power2.out" }, pt);
+            tl.fromTo(rings[1], { scale: 1, opacity: 0.4 }, { scale: 5, opacity: 0, duration: 0.50, ease: "power2.out" }, pt + 0.06);
+          }
+        }
+
+        function buildBars(cell, color, heights1, heights2) {
+          var wrap = document.createElement("div");
+          wrap.style.cssText = "display:flex;align-items:flex-end;gap:6px;height:90px;";
+          var bars = [];
+          for (var i = 0; i < 5; i++) {
+            var b = document.createElement("div");
+            b.style.cssText = "width:18px;border-radius:4px 4px 0 0;background:"+color+";height:"+heights1[i]+"px;";
+            wrap.appendChild(b);
+            bars.push(b);
+          }
+          cell.appendChild(wrap);
+          for (var cycle = 0; cycle < 3; cycle++) {
+            var bt = 0.10 + cycle * 0.50;
+            var h = cycle % 2 === 0 ? heights2 : heights1;
+            bars.forEach(function (bar, bi) {
+              tl.to(bar, { height: h[bi], duration: 0.18, ease: "power2.out" }, bt + bi * 0.03);
+              tl.to(bar, { height: heights1[bi], duration: 0.18, ease: "power2.in" }, bt + 0.22 + bi * 0.03);
+            });
+          }
+        }
+
+        function buildMorph(cell, colors) {
+          var el = document.createElement("div");
+          el.style.cssText = "width:80px;height:80px;background:"+colors[0]+";border-radius:8px;";
+          cell.appendChild(el);
+          tl.to(el, { borderRadius: "50%", background: colors[1], duration: 0.30, ease: "power2.inOut" }, 0.15);
+          tl.to(el, { borderRadius: "8px", rotation: 45, scale: 0.75, background: colors[2], duration: 0.30, ease: "power2.inOut" }, 0.50);
+          tl.to(el, { borderRadius: "30%", rotation: 0, scale: 1, background: colors[3], duration: 0.30, ease: "power2.inOut" }, 0.85);
+          tl.to(el, { borderRadius: "50%", background: colors[0], scale: 0.9, duration: 0.30, ease: "power2.inOut" }, 1.20);
+        }
+
+        function buildOrbit(cell, colors, dir) {
+          var wrap = document.createElement("div");
+          wrap.style.cssText = "position:relative;width:100px;height:100px;";
+          var dots = [];
+          var R = 36;
+          for (var i = 0; i < 3; i++) {
+            var d = document.createElement("div");
+            d.style.cssText = "position:absolute;width:16px;height:16px;border-radius:50%;top:50%;left:50%;margin:-8px;background:"+colors[i]+";";
+            wrap.appendChild(d);
+            dots.push(d);
+            var a0 = i * (2 * Math.PI / 3);
+            gsap.set(d, { x: Math.cos(a0) * R, y: Math.sin(a0) * R });
+          }
+          cell.appendChild(wrap);
+          var proxy = { angle: 0 };
+          tl.to(proxy, {
+            angle: dir * Math.PI * 2,
+            duration: DUR, ease: "none",
+            onUpdate: function () {
+              dots.forEach(function (d, di) {
+                var a = proxy.angle + di * (2 * Math.PI / 3);
+                gsap.set(d, { x: Math.cos(a) * R, y: Math.sin(a) * R });
+              });
+            }
+          }, 0);
+        }
+
+        function buildGradient(cell, grad) {
+          var el = document.createElement("div");
+          el.style.cssText = "width:110px;height:110px;border-radius:50%;background:"+grad+";";
+          cell.appendChild(el);
+          tl.to(el, { rotation: 360, duration: DUR, ease: "none" }, 0);
+          tl.to(el, { scale: 1.12, duration: 0.28, ease: "sine.inOut", yoyo: true, repeat: 2 }, 0.10);
+        }
+
+        function buildWave(cell, color) {
+          var wrap = document.createElement("div");
+          wrap.style.cssText = "display:flex;flex-direction:column;gap:10px;width:160px;";
+          var widths = ["100%", "65%", "85%"];
+          var lines = [];
+          for (var i = 0; i < 3; i++) {
+            var l = document.createElement("div");
+            l.style.cssText = "height:5px;border-radius:3px;background:"+color+";width:"+widths[i]+";";
+            wrap.appendChild(l);
+            lines.push(l);
+          }
+          cell.appendChild(wrap);
+          tl.to(lines[0], { width: "55%", duration: 0.38, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0.10);
+          tl.to(lines[1], { width: "100%", duration: 0.38, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0.15);
+          tl.to(lines[2], { width: "45%", duration: 0.38, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0.20);
+          tl.to(lines[0], { width: "90%", duration: 0.32, ease: "sine.inOut" }, 1.10);
+          tl.to(lines[1], { width: "50%", duration: 0.32, ease: "sine.inOut" }, 1.15);
+          tl.to(lines[2], { width: "100%", duration: 0.32, ease: "sine.inOut" }, 1.20);
+        }
+
+        function buildFlip(cell, c1, c2) {
+          var outer = document.createElement("div");
+          outer.style.cssText = "perspective:600px;width:100px;height:70px;";
+          var card = document.createElement("div");
+          card.style.cssText = "width:100%;height:100%;position:relative;transform-style:preserve-3d;";
+          var front = document.createElement("div");
+          front.style.cssText = "position:absolute;inset:0;border-radius:8px;backface-visibility:hidden;background:"+c1+";";
+          var back = document.createElement("div");
+          back.style.cssText = "position:absolute;inset:0;border-radius:8px;backface-visibility:hidden;background:"+c2+";transform:rotateY(180deg);";
+          card.appendChild(front); card.appendChild(back);
+          outer.appendChild(card);
+          cell.appendChild(outer);
+          tl.to(card, { rotateY: 180, duration: 0.38, ease: "power2.inOut" }, 0.28);
+          tl.to(card, { rotateY: 360, duration: 0.38, ease: "power2.inOut" }, 0.88);
+        }
+
+        function buildBounce(cell, color) {
+          var el = document.createElement("div");
+          el.style.cssText = "width:36px;height:36px;border-radius:50%;background:"+color+";";
+          cell.appendChild(el);
+          // Bounce up and down 4 times
+          for (var i = 0; i < 4; i++) {
+            var bt = 0.08 + i * 0.40;
+            tl.to(el, { y: -60, duration: 0.18, ease: "power2.out" }, bt);
+            tl.to(el, { y: 0, duration: 0.18, ease: "bounce.out" }, bt + 0.18);
+          }
+        }
+
+        function buildScale(cell, color) {
+          var els = [];
+          var wrap = document.createElement("div");
+          wrap.style.cssText = "display:grid;grid-template-columns:repeat(3,28px);gap:8px;";
+          for (var i = 0; i < 9; i++) {
+            var s = document.createElement("div");
+            s.style.cssText = "width:28px;height:28px;border-radius:6px;background:"+color+";opacity:0.3;";
+            wrap.appendChild(s);
+            els.push(s);
+          }
+          cell.appendChild(wrap);
+          // Staggered scale pulse — ripple from center
+          var rippleOrder = [4, 1,3,5,7, 0,2,6,8];
+          for (var c = 0; c < 3; c++) {
+            rippleOrder.forEach(function (idx, ri) {
+              var st = 0.08 + c * 0.55 + ri * 0.025;
+              tl.to(els[idx], { scale: 1.4, opacity: 1, duration: 0.10, ease: "power2.out" }, st);
+              tl.to(els[idx], { scale: 1, opacity: 0.3, duration: 0.15, ease: "power2.in" }, st + 0.10);
+            });
+          }
+        }
+
+        // ==============================
+        // BUILD ANIMATIONS PER CELL
+        // ==============================
+        cells.forEach(function (cell) {
+          var type = cell.getAttribute("data-anim");
+          if (!type) return; // center cell
+
+          switch (type) {
+            case "spinner":   buildSpinner(cell, P.red, P.blue, 1); break;
+            case "spinner2":  buildSpinner(cell, P.teal, P.orange, 0.8); break;
+            case "pulse":     buildPulse(cell, P.teal); break;
+            case "pulse2":    buildPulse(cell, P.rose); break;
+            case "bars":      buildBars(cell, P.orange, [30,50,70,40,60], [80,35,90,65,45]); break;
+            case "bars2":     buildBars(cell, P.blue, [50,30,60,80,40], [35,75,45,30,70]); break;
+            case "morph":     buildMorph(cell, [P.red, P.blue, P.orange, P.teal]); break;
+            case "morph2":    buildMorph(cell, [P.purple, P.lime, P.rose, P.navy]); break;
+            case "orbit":     buildOrbit(cell, [P.red, P.blue, P.orange], 1); break;
+            case "orbit2":    buildOrbit(cell, [P.teal, P.purple, P.lime], -1); break;
+            case "gradient":  buildGradient(cell, "conic-gradient("+P.red+","+P.orange+","+P.teal+","+P.blue+","+P.red+")"); break;
+            case "gradient2": buildGradient(cell, "conic-gradient("+P.purple+","+P.rose+","+P.lime+","+P.navy+","+P.purple+")"); break;
+            case "wave":      buildWave(cell, P.blue); break;
+            case "wave2":     buildWave(cell, P.teal); break;
+            case "flip":      buildFlip(cell, P.teal, P.red); break;
+            case "bounce":    buildBounce(cell, P.orange); break;
+            case "scale":     buildScale(cell, P.blue); break;
+          }
+        });
+
+        // Pad timeline to master slot duration
+        tl.to({}, { duration: DUR }, 0);
+
+        window.__timelines["flex-css"] = tl;
+      })();
+    </script>
+  </div>
+</template>

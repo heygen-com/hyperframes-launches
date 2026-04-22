@@ -1,0 +1,100 @@
+<template id="act6-logo-template">
+  <div data-composition-id="act6-logo" data-width="1920" data-height="1080" data-start="0" data-duration="2.7">
+
+    <div class="act6-bg"></div>
+
+    <div class="act6-stage">
+      <!-- Image A: full logo, clipped to show ONLY the "Hyperframes" wordmark
+           (top-left portion). Fades in on VO "Hyperframes". -->
+      <img class="logo-a" src="assets/hyperframes-logo.svg" alt="Hyperframes" />
+
+      <!-- Image B: full logo (HyperFrames + HeyGen mark + "heygen" wordmark).
+           Fades in on VO "HeyGen" — the HyperFrames portion overlaps Image A
+           pixel-identically, so visually only the new HeyGen bits appear. -->
+      <img class="logo-b" src="assets/hyperframes-logo.svg" alt="Hyperframes by HeyGen" />
+    </div>
+
+    <style>
+      [data-composition-id="act6-logo"] {
+        width: 1920px;
+        height: 1080px;
+        position: relative;
+        overflow: hidden;
+        background: #f5f5f7;
+      }
+      [data-composition-id="act6-logo"] .act6-bg {
+        position: absolute; inset: 0;
+        background: #f5f5f7;
+      }
+      [data-composition-id="act6-logo"] .act6-stage {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        will-change: transform, filter;
+      }
+      [data-composition-id="act6-logo"] .logo-a,
+      [data-composition-id="act6-logo"] .logo-b {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 1440px;           /* ~75% of 1920 */
+        height: auto;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        will-change: opacity;
+      }
+      /* Image A shows only the big HYPERFRAMES wordmark (bottom row of the
+         SVG lockup, y ≈42-78 of a 79-unit viewBox). Mask pulled down so no
+         top-row content (HeyGen X mark, small "Hyperframes by HeyGen" text)
+         leaks through while logo-a is the only visible copy. */
+      [data-composition-id="act6-logo"] .logo-a {
+        clip-path: inset(53% 0 0 0);
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      (function () {
+        const tl = gsap.timeline({ paused: true });
+
+        // =====================
+        // Cut-the-curve ENTRY (LEFT): stage slides in from the right + blur,
+        // decelerating into place. Matches act5's exit (x:-280 blur 10px).
+        // =====================
+        tl.fromTo(".act6-stage",
+          { x: 280, filter: "blur(22px)" },
+          { x: 0,   filter: "blur(0px)", duration: 0.19, ease: "expo.out" },
+          0
+        );
+
+        // VO "last3" structure:
+        //   0.00 – 0.67  "Hyperframes"
+        //   0.67 – 1.33  silence
+        //   1.33 – 1.91  "HeyGen"
+
+        // Hyperframes wordmark fades in right at VO start
+        tl.to(".logo-a", {
+          opacity: 1,
+          duration: 0.35,
+          ease: "power2.out"
+        }, 0.15);
+
+        // Full logo overlays at "HeyGen" cue → HeyGen mark + top text appear
+        // while the Hyperframes wordmark (already visible via logo-a) stays put.
+        tl.to(".logo-b", {
+          opacity: 1,
+          duration: 0.35,
+          ease: "power2.out"
+        }, 1.33);
+
+        // Hold to end of comp
+        tl.to({}, { duration: 2.7 }, 0);
+
+        window.__timelines["act6-logo"] = tl;
+      })();
+    </script>
+  </div>
+</template>

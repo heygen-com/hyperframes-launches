@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HyperFrames — Go Make Something (v3 intro)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=block" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      body, html {
+        margin: 0; padding: 0;
+        width: 1920px; height: 1080px;
+        background: #0a0a0a; overflow: hidden;
+      }
+      #master-root { width: 1920px; height: 1080px; position: relative; }
+      [data-composition-id="master"] > div[data-composition-id] {
+        position: absolute; inset: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      New intro version: figma-glass-frame (17.3s) replaces old intro + proposition (0-10.59s).
+      All beats from CSS animations onward shifted +6.71s (17.3 - 10.59).
+      VO starts at "CSS animations" (10.59s in file) aligned to 17.3s composition time.
+      Music starts at 0. Total duration: 58.31s.
+    -->
+    <div
+      id="master-root"
+      data-composition-id="master"
+      data-width="1920"
+      data-height="1080"
+      data-start="0"
+      data-duration="49.77"
+    >
+      <!-- GLASS INTRO (0.00-17.30) — figma-glass-frame sequence: per-word VO reveal,
+           3 sample clips in liquid glass player card, cursor-click → full-frame video,
+           cursor-drag wipe to "Ask your agent to add." typewriter -->
+      <div
+        id="c-glass-intro"
+        data-composition-id="glass-intro"
+        data-composition-src="compositions/glass-intro.html"
+        data-start="0"
+        data-duration="18.24"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <!-- BEAT 4A CSS animations (15.10-16.81) -->
+      <div
+        id="c-flex-css"
+        data-composition-id="flex-css"
+        data-composition-src="compositions/flex-css.html"
+        data-start="17.30"
+        data-duration="1.71"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <!-- BEAT 4B GSAP (16.81-17.48) -->
+      <div
+        id="c-flex-gsap"
+        data-composition-id="flex-gsap"
+        data-composition-src="compositions/flex-gsap.html"
+        data-start="19.01"
+        data-duration="0.67"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <!-- BEAT 4D Shaders (18.61-19.81) -->
+      <div
+        id="c-flex-shader"
+        data-composition-id="flex-shader"
+        data-composition-src="compositions/flex-shader.html"
+        data-start="20.81"
+        data-duration="1.20"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <!-- BEAT 4E Three.js (19.81-21.02) -->
+      <div
+        id="c-flex-threejs"
+        data-composition-id="flex-threejs"
+        data-composition-src="compositions/flex-threejs.html"
+        data-start="22.01"
+        data-duration="1.21"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <!-- BEAT 6 Thesis (follows Three.js directly) -->
+      <div
+        id="c-thesis"
+        data-composition-id="thesis"
+        data-composition-src="compositions/thesis.html"
+        data-start="23.22"
+        data-duration="3.82"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <!-- BEAT 7A drop in (33.38-33.74) -->
+      <div
+        id="c-flex-drop"
+        data-composition-id="flex-drop"
+        data-composition-src="compositions/flex-drop.html"
+        data-start="27.04"
+        data-duration="0.36"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <!-- BEAT 7B music (33.74-34.32) -->
+      <div
+        id="c-flex-music"
+        data-composition-id="flex-music"
+        data-composition-src="compositions/flex-music.html"
+        data-start="27.40"
+        data-duration="0.58"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <!-- BEAT 7C sound effects (34.32-35.25) — ends on "effects" word end -->
+      <div
+        id="c-flex-sfx"
+        data-composition-id="flex-sfx"
+        data-composition-src="compositions/flex-sfx.html"
+        data-start="27.98"
+        data-duration="0.93"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <!-- BEAT 7D footage (35.25-36.08) — covers VO silence + word "footage" -->
+      <div
+        id="c-flex-footage"
+        data-composition-id="flex-footage"
+        data-composition-src="compositions/flex-footage.html"
+        data-start="28.91"
+        data-duration="0.83"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <!-- BEAT 7E it (36.08-36.23) -->
+      <div
+        id="c-flex-it"
+        data-composition-id="flex-it"
+        data-composition-src="compositions/flex-it.html"
+        data-start="29.74"
+        data-duration="0.15"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <!-- BEAT 7F all (36.23-36.56) -->
+      <div
+        id="c-flex-all"
+        data-composition-id="flex-all"
+        data-composition-src="compositions/flex-all.html"
+        data-start="29.89"
+        data-duration="0.33"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <!-- BEAT 7G composes together (36.56-38.78) -->
+      <div
+        id="c-flex-compose"
+        data-composition-id="flex-compose"
+        data-composition-src="compositions/flex-compose.html"
+        data-start="30.22"
+        data-duration="2.22"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <!-- BEAT 8 Engine (38.78-47.82) -->
+      <div
+        id="c-engine"
+        data-composition-id="engine"
+        data-composition-src="compositions/engine.html"
+        data-start="32.44"
+        data-duration="9.04"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <!-- BEAT 9 CTA (47.82-52.36) -->
+      <div
+        id="c-cta"
+        data-composition-id="cta"
+        data-composition-src="compositions/cta.html"
+        data-start="41.48"
+        data-duration="4.54"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <!-- BEAT 10 Close (52.36-56.11) -->
+      <div
+        id="c-canvas-close"
+        data-composition-id="canvas-close"
+        data-composition-src="compositions/canvas-close.html"
+        data-start="46.02"
+        data-duration="3.75"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const masterTL = gsap.timeline({ paused: true });
+        window.__timelines["master"] = masterTL;
+      </script>
+    </div>
+
+    <!-- Captions: inline body-level overlays -->
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap");
+      .cap {
+        position: absolute;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 500;
+        font-size: 40px;
+        color: rgba(240, 235, 220, 0.92);
+        letter-spacing: -0.005em;
+        background: rgba(10, 8, 5, 0.55);
+        padding: 12px 28px;
+        border-radius: 10px;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 9999;
+        pointer-events: none;
+      }
+    </style>
+    <div class="cap clip" data-start="7.29" data-duration="1.86" data-track-index="30">HyperFrames by HeyGen.</div>
+    <div class="cap clip" data-start="9.10" data-duration="3.44" data-track-index="31">Agents can now write HTML and render MP4s.</div>
+    <div class="cap clip" data-start="12.73" data-duration="2.48" data-track-index="32">Claude Code made this launch video.</div>
+    <div class="cap clip" data-start="15.28" data-duration="1.30" data-track-index="33">Your agent can too.</div>
+    <div class="cap clip" data-start="18.20" data-duration="1.10" data-track-index="20">CSS animations</div>
+    <div class="cap clip" data-start="19.41" data-duration="0.93" data-track-index="21">GSAP</div>
+    <div class="cap clip" data-start="20.44" data-duration="0.90" data-track-index="22">Shaders</div>
+    <div class="cap clip" data-start="29.42" data-duration="1.18" data-track-index="23">composes together</div>
+    <div class="cap clip" data-start="32.74" data-duration="1.26" data-track-index="24">Your agent writes code to compose</div>
+    <div class="cap clip" data-start="34.14" data-duration="3.86" data-track-index="25">Hyperframes renders every frame to MP4.</div>
+    <div class="cap clip" data-start="38.16" data-duration="2.30" data-track-index="26">It's deterministic pixel-perfect every time</div>
+    <div class="cap clip" data-start="40.60" data-duration="1.71" data-track-index="27">Give your agent the skill.</div>
+    <div class="cap clip" data-start="42.31" data-duration="1.60" data-track-index="28">Tell it what to make,</div>
+    <div class="cap clip" data-start="43.91" data-duration="1.07" data-track-index="29">watch it build</div>
+
+    <!-- Voiceover -->
+    <audio
+      id="voiceover"
+      src="assets/voiceover.mp3"
+      data-start="0"
+      data-duration="49.77"
+      data-track-index="0"
+      data-volume="1"
+    ></audio>
+
+    <!-- Beat 7D footage videos (35.25s, dur 0.83s — aligned with flex-footage window) -->
+    <video id="footage-frame-1" src="assets/Frame 1.mp4" data-start="28.91" data-duration="0.83" data-track-index="7" muted playsinline></video>
+    <video id="footage-frame-2" src="assets/option2.mp4" data-start="28.91" data-duration="0.83" data-track-index="8" muted playsinline></video>
+    <video id="footage-frame-3" src="assets/Frame 3.mp4" data-start="28.91" data-duration="0.83" data-track-index="9" muted playsinline></video>
+
+    <!-- Beat 7G compose A-roll (36.56s, dur 2.22s) -->
+    <video id="compose-aroll" src="assets/pill.mp4" data-start="30.22" data-duration="2.22" data-track-index="10" muted playsinline></video>
+  </body>
+</html>

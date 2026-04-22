@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HyperFrames — website-to-hyperframes Launch</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "JetBrains Mono";
+        src: url("fonts/JetBrainsMono-Variable.woff2") format("woff2-variations");
+        font-weight: 100 800;
+        font-display: block;
+      }
+      body, html {
+        margin: 0; padding: 0;
+        width: 1920px; height: 1080px;
+        background: #0a0a0a; overflow: hidden;
+      }
+      #master-root { width: 1920px; height: 1080px; position: relative; }
+      [data-composition-id="master"] > div[data-composition-id] {
+        position: absolute; inset: 0;
+      }
+
+      video.a3-clip {
+        position: absolute; inset: 0;
+        width: 1920px; height: 1080px;
+        object-fit: cover;
+        z-index: 5;
+      }
+      .a3-cap {
+        position: absolute;
+        left: 56px;
+        top: 56px;
+        padding: 12px 18px 12px 22px;
+        border-left: 1px solid rgba(255, 255, 255, 0.65);
+        background: rgba(11, 11, 15, 0.28);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        color: rgba(255, 255, 255, 0.96);
+        font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+        font-weight: 300;
+        letter-spacing: -0.005em;
+        line-height: 1.15;
+        border-radius: 4px;
+        z-index: 20;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+      }
+      .a3-cap .a3-cap-num {
+        display: block;
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-weight: 400;
+        font-size: 17px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 8px;
+      }
+      .a3-cap .a3-cap-brand {
+        font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+        font-weight: 400;
+        font-size: 42px;
+        letter-spacing: -0.01em;
+      }
+      .a3-cap.a3-cap-light {
+        background: rgba(255, 255, 255, 0.78);
+        border-left-color: rgba(11, 11, 15, 0.55);
+        color: rgba(11, 11, 15, 0.96);
+        text-shadow: none;
+        box-shadow: 0 4px 14px rgba(11, 11, 15, 0.12);
+      }
+      .a3-cap.a3-cap-light .a3-cap-num {
+        color: rgba(11, 11, 15, 0.6);
+      }
+
+      /* ─── HYPERFRAMES CAPTIONS — bottom-centered, VO-synced ─── */
+      @font-face {
+        font-family: "Inter";
+        src: url("fonts/Inter-Variable.woff2") format("woff2-variations");
+        font-weight: 100 900;
+        font-display: block;
+      }
+      .cap {
+        position: absolute;
+        bottom: 88px;
+        left: 50%;
+        transform: translateX(-50%) scale(1);
+        font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+        font-weight: 800;
+        font-size: 60px;
+        letter-spacing: -0.025em;
+        color: #ffffff;
+        text-shadow:
+          0 2px 14px rgba(0, 0, 0, 0.55),
+          0 0 2px rgba(0, 0, 0, 0.35);
+        white-space: nowrap;
+        z-index: 30;
+        animation: cap-pop 0.26s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        padding: 10px 26px;
+        background: rgba(11, 11, 15, 0.42);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 14px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+      }
+      @keyframes cap-pop {
+        0%   { opacity: 0; transform: translateX(-50%) translateY(18px) scale(0.82); }
+        70%  { opacity: 1; transform: translateX(-50%) translateY(-2px) scale(1.04); }
+        100% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1.00); }
+      }
+      /* Accent variant — cyan text for punchy/announcement lines */
+      .cap.cap-accent {
+        color: #00C3FF;
+      }
+      /* Light variant — black text on light backdrop for bright clips */
+      .cap.cap-light {
+        color: #0b0b0f;
+        background: rgba(255, 255, 255, 0.82);
+        text-shadow: none;
+        box-shadow: 0 6px 18px rgba(11, 11, 15, 0.14);
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      website-to-hyperframes Launch Video — master timeline
+      Total duration: 41.8s (30 fps → 1254 frames)
+
+      STRUCTURE (Act 1 VO tightened, Act 1 shortened to 12s):
+        Act 1  (0.0  – 12.0)   Cold open: tight VO pacing → scatter → YEAHH
+        Act 3  (12.0 – 33.8)   DROP — Capability reel
+        Act 4  (33.8 – 41.8)   End card
+
+      Music trimmed 3s from start so its natural drop at file-time 15s
+      lands at timeline 12s (matches new Act 3 start).
+    -->
+    <div
+      id="master-root"
+      data-composition-id="master"
+      data-width="1920"
+      data-height="1080"
+      data-start="0"
+      data-duration="41.8"
+    >
+      <!-- Act 1 Cold Open (0.0 – 12.0) -->
+      <div
+        id="c-act-1"
+        data-composition-id="act-1-cold-open"
+        data-composition-src="compositions/act-1-cold-open.html"
+        data-start="0"
+        data-duration="12.0"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="1"
+      ></div>
+
+      <!-- Act 4 End Card (33.8 – 41.8) -->
+      <div
+        id="c-act-4"
+        data-composition-id="act-4-end-card"
+        data-composition-src="compositions/act-4-end-card.html"
+        data-start="33.8"
+        data-duration="8.0"
+        data-width="1920"
+        data-height="1080"
+        data-track-index="2"
+      ></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- ACT 3 — 11 videos at body level (12.0 – 33.8), all shifted -3s  -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+
+    <video id="a3-v01" class="a3-clip clip" src="compositions/act-3-clips/a3-01-stripe.mp4"           muted playsinline data-start="12.00" data-duration="1.5" data-track-index="10"></video>
+    <video id="a3-v02" class="a3-clip clip" src="compositions/act-3-clips/a3-02-tailwindcss.mp4"      muted playsinline data-start="13.50" data-duration="1.9" data-track-index="11"></video>
+    <video id="a3-v03" class="a3-clip clip" src="compositions/act-3-clips/a3-03-framer.mp4"           muted playsinline data-start="15.40" data-duration="2.0" data-track-index="12"></video>
+    <video id="a3-v04" class="a3-clip clip" src="compositions/act-3-clips/a3-04-spotify.mp4"          muted playsinline data-start="17.40" data-duration="1.8" data-track-index="13"></video>
+    <video id="a3-v05" class="a3-clip clip" src="compositions/act-3-clips/a3-05-heygen.mp4"           muted playsinline data-start="19.20" data-duration="2.0" data-track-index="14"></video>
+    <video id="a3-v06" class="a3-clip clip" src="compositions/act-3-clips/a3-06-vercel.mp4"           muted playsinline data-start="21.20" data-duration="2.0" data-track-index="15"></video>
+    <video id="a3-v07" class="a3-clip clip" src="compositions/act-3-clips/a3-07-vibecode.mp4"         muted playsinline data-start="23.20" data-duration="2.0" data-track-index="16"></video>
+    <video id="a3-v08" class="a3-clip clip" src="compositions/act-3-clips/a3-08-linear.mp4"           muted playsinline data-start="25.20" data-duration="2.0" data-track-index="17"></video>
+    <video id="a3-v09" class="a3-clip clip" src="compositions/act-3-clips/a3-09-dribbble.mp4"         muted playsinline data-start="27.20" data-duration="3.0" data-track-index="18"></video>
+    <video id="a3-v10" class="a3-clip clip" src="compositions/act-3-clips/a3-10-tailwindcss-logo.mp4" muted playsinline data-start="30.20" data-duration="1.6" data-track-index="19"></video>
+    <video id="a3-v11" class="a3-clip clip" src="compositions/act-3-clips/a3-11-github.mp4"           muted playsinline data-start="31.80" data-duration="2.0" data-track-index="20"></video>
+
+    <div class="a3-cap clip"              data-start="12.00" data-duration="1.50" data-track-index="21"><span class="a3-cap-num">01 · Product Launch</span><span class="a3-cap-brand">stripe.com</span></div>
+    <div class="a3-cap clip"              data-start="13.50" data-duration="1.90" data-track-index="22"><span class="a3-cap-num">02 · Feature Showcase</span><span class="a3-cap-brand">tailwindcss.com</span></div>
+    <div class="a3-cap clip"              data-start="15.40" data-duration="2.00" data-track-index="23"><span class="a3-cap-num">03 · Brand Reel</span><span class="a3-cap-brand">framer.com</span></div>
+    <div class="a3-cap clip"              data-start="17.40" data-duration="1.80" data-track-index="24"><span class="a3-cap-num">04 · Music &amp; Audio</span><span class="a3-cap-brand">spotify.com</span></div>
+    <div class="a3-cap a3-cap-light clip" data-start="19.20" data-duration="2.00" data-track-index="25"><span class="a3-cap-num">05 · 3D &amp; Motion</span><span class="a3-cap-brand">heygen.com</span></div>
+    <div class="a3-cap clip"              data-start="21.20" data-duration="2.00" data-track-index="26"><span class="a3-cap-num">06 · Infrastructure</span><span class="a3-cap-brand">vercel.com</span></div>
+    <div class="a3-cap clip"              data-start="23.20" data-duration="2.00" data-track-index="27"><span class="a3-cap-num">07 · Product Demo</span><span class="a3-cap-brand">vibecode.app</span></div>
+    <div class="a3-cap clip"              data-start="25.20" data-duration="2.00" data-track-index="28"><span class="a3-cap-num">08 · Brand Opener</span><span class="a3-cap-brand">linear.app</span></div>
+    <div class="a3-cap a3-cap-light clip" data-start="27.20" data-duration="3.00" data-track-index="29"><span class="a3-cap-num">09 · Logo Reveal</span><span class="a3-cap-brand">dribbble.com</span></div>
+    <div class="a3-cap clip"              data-start="30.20" data-duration="1.60" data-track-index="30"><span class="a3-cap-num">10 · Drawn-in SVG</span><span class="a3-cap-brand">tailwindcss.com</span></div>
+    <div class="a3-cap clip"              data-start="31.80" data-duration="2.00" data-track-index="31"><span class="a3-cap-num">11 · Logo Animation</span><span class="a3-cap-brand">github.com</span></div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- MUSIC — trimmed 3s from start; drop at file-time 15s lands at   -->
+    <!-- timeline 12.0 (Act 3 opening). Duration 41.8s, volume 0.16.     -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+
+    <audio id="music" class="clip"
+           src="audio/music-candidates/launch-music-trimmed.mp3"
+           data-start="0.0" data-duration="41.8" data-track-index="40" data-volume="0.11"></audio>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SFX                                                             -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+
+    <!-- Typing SFX aligned to each prompt's (new, faster) typing pass -->
+    <audio id="sfx-type-cta"    class="clip" src="audio/sfx/keyboard-typing.mp3" data-start="0.45" data-duration="0.90" data-track-index="41" data-volume="0.40"></audio>
+    <audio id="sfx-type-claude" class="clip" src="audio/sfx/keyboard-typing.mp3" data-start="2.15" data-duration="1.05" data-track-index="42" data-volume="0.40"></audio>
+    <audio id="sfx-type-cursor" class="clip" src="audio/sfx/keyboard-typing.mp3" data-start="3.40" data-duration="0.90" data-track-index="43" data-volume="0.40"></audio>
+    <audio id="sfx-type-codex"  class="clip" src="audio/sfx/keyboard-typing.mp3" data-start="4.90" data-duration="0.80" data-track-index="44" data-volume="0.40"></audio>
+    <audio id="sfx-type-gemini" class="clip" src="audio/sfx/keyboard-typing.mp3" data-start="6.50" data-duration="0.80" data-track-index="45" data-volume="0.40"></audio>
+
+    <!-- Cursor CLICK on CTA at ~1.66s (unchanged) -->
+    <audio id="sfx-click-cta"   class="clip" src="audio/sfx/mouse-click.mp3" data-start="1.60" data-duration="0.40" data-track-index="46" data-volume="0.55"></audio>
+    <!-- Send-button clicks on Claude + Codex (shifted to new scatter+click) -->
+    <audio id="sfx-click-send"  class="clip" src="audio/sfx/mouse-click.mp3" data-start="11.30" data-duration="0.40" data-track-index="47" data-volume="0.55"></audio>
+    <!-- Bass drop layered on the music drop -->
+    <audio id="sfx-bass-drop"   class="clip" src="audio/sfx/bass-drop-1.mp3" data-start="11.95" data-duration="2.00" data-track-index="48" data-volume="0.55"></audio>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- VO Act 1 — TIGHTENED spacing                                    -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+
+    <audio id="vo-a1-01" class="clip" src="audio/vo/01-promo-for-your-app.mp3" data-start="1.66"  data-duration="1.30" data-track-index="50" data-volume="1.0"></audio>
+    <audio id="vo-a1-02" class="clip" src="audio/vo/02-brand-video.mp3"        data-start="3.30"  data-duration="1.02" data-track-index="51" data-volume="1.0"></audio>
+    <audio id="vo-a1-03" class="clip" src="audio/vo/03-social-ad.mp3"          data-start="4.80"  data-duration="0.98" data-track-index="52" data-volume="1.0"></audio>
+    <audio id="vo-a1-04" class="clip" src="audio/vo/04-launch-clip.mp3"        data-start="6.40"  data-duration="1.02" data-track-index="53" data-volume="1.0"></audio>
+    <audio id="vo-a1-05" class="clip" src="audio/vo/05-announcement.mp3"       data-start="8.36"  data-duration="2.14" data-track-index="54" data-volume="1.0"></audio>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- VO Act 3 — 12.0+ baseline (shifted -3.0s)                       -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+
+    <audio id="vo-a3-01" class="clip" src="audio/vo/06-product-launches.mp3"  data-start="12.20" data-duration="1.25" data-track-index="60" data-volume="1.0"></audio>
+    <audio id="vo-a3-02" class="clip" src="audio/vo/07-feature-showcases.mp3" data-start="13.70" data-duration="1.35" data-track-index="61" data-volume="1.0"></audio>
+    <audio id="vo-a3-03" class="clip" src="audio/vo/08-brand-reels.mp3"       data-start="15.60" data-duration="1.02" data-track-index="62" data-volume="1.0"></audio>
+    <audio id="vo-a3-04" class="clip" src="audio/vo/17-music-apps.mp3"        data-start="17.60" data-duration="0.98" data-track-index="63" data-volume="1.0"></audio>
+    <audio id="vo-a3-05" class="clip" src="audio/vo/11-three-d-scenes.mp3"    data-start="19.40" data-duration="1.35" data-track-index="64" data-volume="1.0"></audio>
+    <audio id="vo-a3-06" class="clip" src="audio/vo/20-infrastructure.mp3"    data-start="21.40" data-duration="1.16" data-track-index="65" data-volume="1.0"></audio>
+    <audio id="vo-a3-07" class="clip" src="audio/vo/10-product-demos.mp3"     data-start="23.40" data-duration="1.21" data-track-index="66" data-volume="1.0"></audio>
+    <audio id="vo-a3-08" class="clip" src="audio/vo/21-brand-openers.mp3"     data-start="25.40" data-duration="1.16" data-track-index="67" data-volume="1.0"></audio>
+    <audio id="vo-a3-09" class="clip" src="audio/vo/22-logo-reveals.mp3"      data-start="27.40" data-duration="1.30" data-track-index="68" data-volume="1.0"></audio>
+    <audio id="vo-a3-10" class="clip" src="audio/vo/23-drawn-in-svg.mp3"      data-start="30.25" data-duration="1.50" data-track-index="69" data-volume="1.0"></audio>
+    <audio id="vo-a3-11" class="clip" src="audio/vo/13-typography.mp3"        data-start="31.80" data-duration="0.80" data-track-index="70" data-volume="1.0"></audio>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- VO Act 4 — 34.0+ baseline (shifted -3.0s)                       -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+
+    <audio id="vo-a4-01" class="clip" src="audio/vo/14-hyperframes.mp3"            data-start="34.00" data-duration="1.16" data-track-index="80" data-volume="1.0"></audio>
+    <audio id="vo-a4-02" class="clip" src="audio/vo/15-give-your-agent-a-url.mp3"  data-start="35.80" data-duration="2.83" data-track-index="81" data-volume="1.0"></audio>
+    <audio id="vo-a4-03" class="clip" src="audio/vo/16-go-make-something.mp3"      data-start="40.10" data-duration="1.21" data-track-index="82" data-volume="1.0"></audio>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- CAPTIONS — VO-synced bottom-center captions                     -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+
+    <!-- Act 1: four rapid-fire questions -->
+    <div class="cap clip" data-start="1.66" data-duration="1.30" data-track-index="90">Promo for your app?</div>
+    <div class="cap clip" data-start="3.30" data-duration="1.02" data-track-index="91">Brand video?</div>
+    <div class="cap clip" data-start="4.80" data-duration="0.98" data-track-index="92">Social ad?</div>
+    <div class="cap clip" data-start="6.40" data-duration="1.02" data-track-index="93">Launch clip?</div>
+    <!-- Act 1 "Now — any site becomes video." = GIANT on-screen phrase; skip caption to avoid duplication -->
+
+    <!-- Act 3: one caption per clip (category keyword) -->
+    <div class="cap clip"           data-start="12.20" data-duration="1.25" data-track-index="100">Product launches</div>
+    <div class="cap clip"           data-start="13.70" data-duration="1.35" data-track-index="101">Feature showcases</div>
+    <div class="cap clip"           data-start="15.60" data-duration="1.02" data-track-index="102">Brand reels</div>
+    <div class="cap clip"           data-start="17.60" data-duration="0.98" data-track-index="103">Music apps</div>
+    <div class="cap clip cap-light" data-start="19.40" data-duration="1.35" data-track-index="104">3D scenes</div>
+    <div class="cap clip"           data-start="21.40" data-duration="1.16" data-track-index="105">Infrastructure</div>
+    <div class="cap clip"           data-start="23.40" data-duration="1.21" data-track-index="106">Product demos</div>
+    <div class="cap clip"           data-start="25.40" data-duration="1.16" data-track-index="107">Brand openers</div>
+    <div class="cap clip cap-light" data-start="27.40" data-duration="1.30" data-track-index="108">Logo reveals</div>
+    <div class="cap clip"           data-start="30.25" data-duration="1.50" data-track-index="109">Drawn in SVG</div>
+    <div class="cap clip"           data-start="31.80" data-duration="0.80" data-track-index="110">Typography</div>
+
+    <!-- Act 4: "HyperFrames" is on-screen wordmark; skip. Others get captions -->
+    <div class="cap clip cap-accent" data-start="35.80" data-duration="2.83" data-track-index="120">Give your agent a URL</div>
+    <div class="cap clip cap-accent" data-start="40.10" data-duration="1.21" data-track-index="121">Go make something</div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["master"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

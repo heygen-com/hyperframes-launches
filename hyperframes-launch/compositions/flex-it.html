@@ -1,0 +1,51 @@
+<template id="flex-it-template">
+  <div
+    data-composition-id="flex-it"
+    data-width="1920"
+    data-height="1080"
+    data-start="0"
+    data-duration="0.15"
+  >
+    <!-- 0.15s = ~4 frames. Instant appear, micro scale punch. -->
+    <div class="it-text">it</div>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap");
+
+      [data-composition-id="flex-it"] {
+        width: 1920px; height: 1080px;
+        position: relative; overflow: hidden;
+        background: #000000;
+      }
+      [data-composition-id="flex-it"] .it-text {
+        position: absolute;
+        top: 50%; left: 50%;
+        font-family: "Inter", sans-serif;
+        font-weight: 900;
+        font-size: 320px;
+        color: #ffffff;
+        letter-spacing: -0.04em;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+        var root = document.querySelector('[data-composition-id="flex-it"]');
+        var text = root.querySelector(".it-text");
+
+        gsap.set(text, { xPercent: -50, yPercent: -50 });
+
+        // Instant appear with micro scale punch
+        tl.fromTo(text, { scale: 1.06 }, { scale: 1, duration: 0.12, ease: "power2.out" }, 0);
+
+        // Pad timeline to master slot duration (0.15s) to prevent black frames at beat tail
+        tl.to({}, { duration: 0.15 }, 0);
+
+        window.__timelines["flex-it"] = tl;
+      })();
+    </script>
+  </div>
+</template>
