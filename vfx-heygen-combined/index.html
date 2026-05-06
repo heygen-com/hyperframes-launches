@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>VFX + HeyGen Combined</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/DRACOLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<link rel="preload" as="image" href="captures/heygen-mobile/screen-strip.png">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: visible;
+    background: #050508;
+  }
+
+  #root {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: #050508;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  #vfx-intro {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2200px;
+    height: 1250px;
+    z-index: 12;
+    pointer-events: none;
+    transform-origin: 50% 50%;
+    will-change: transform, opacity, filter;
+  }
+
+  #theater {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  #bg-video {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  #finger-overlay {
+    position: absolute;
+    left: 1260px;
+    top: 1220px;
+    width: 820px;
+    height: auto;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 1;
+    transform: rotate(-75deg);
+    transform-origin: 174px 0;
+    filter: drop-shadow(0 28px 34px rgba(0, 0, 0, 0.26));
+  }
+
+  #prompt-scene {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    z-index: 3;
+    overflow: hidden;
+    background: #F5F4ED;
+    color: #3D3929;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    will-change: transform, opacity, filter;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  #prompt-app {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    transform-origin: 50% 92%;
+    will-change: transform;
+  }
+
+  .prompt-topbar {
+    height: 64px;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #EBE7DB;
+    background: #FAF9F5;
+  }
+
+  .prompt-topbar-left,
+  .prompt-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .prompt-icon-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: #6B6757;
+  }
+
+  .prompt-logo-mark {
+    display: flex;
+    align-items: center;
+    color: #D97757;
+  }
+
+  .prompt-project-name {
+    font-size: 18px;
+    color: #3D3929;
+    font-weight: 500;
+  }
+
+  .prompt-model-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    color: #6B6757;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #F0ECE0;
+    border: 1px solid #E5E0D1;
+  }
+
+  .prompt-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #D97757;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .prompt-thread {
+    flex: 1;
+  }
+
+  .prompt-composer-wrap {
+    padding: 0 0 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .prompt-composer {
+    width: 900px;
+    min-height: 240px;
+    background: #FFFFFF;
+    border: 1px solid #E5E0D1;
+    border-radius: 22px;
+    box-shadow: 0 18px 48px rgba(61, 57, 41, 0.12);
+    padding: 30px 30px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .prompt-composer-text {
+    font-size: 34px;
+    color: #3D3929;
+    min-height: 42px;
+    white-space: pre;
+  }
+
+  .prompt-caret {
+    display: inline-block;
+    width: 14px;
+    height: 38px;
+    margin-left: 4px;
+    transform: translateY(6px);
+    background: #D97757;
+    border-radius: 2px;
+  }
+
+  .prompt-composer-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .prompt-attach {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8C8674;
+    border-radius: 8px;
+  }
+
+  .prompt-send {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #D97757;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    transform-origin: 50% 50%;
+    will-change: transform, box-shadow;
+  }
+
+  .prompt-composer-meta {
+    font-size: 13px;
+    color: #3D3929;
+    opacity: 0;
+  }
+
+  #click-cursor {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 118px;
+    height: 118px;
+    margin-left: -20px;
+    margin-top: -12px;
+    z-index: 6;
+    opacity: 0;
+    filter: drop-shadow(0 18px 18px rgba(61, 57, 41, 0.22));
+    will-change: transform, opacity;
+  }
+
+  #game-change-copy {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    will-change: transform, opacity, filter;
+  }
+
+  .game-change-line {
+    color: #3D3929;
+    font-size: 136px;
+    font-weight: 780;
+    line-height: 0.94;
+    text-align: center;
+  }
+
+  #chromatic-split {
+    position: absolute;
+    inset: 0;
+    z-index: 7;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    background: #000000;
+    will-change: opacity;
+  }
+
+  #chromatic-canvas {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+  }
+
+  #chromatic-cap {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1920px;
+    height: 1080px;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  #chromatic-still-frame {
+    width: 1920px;
+    height: 1080px;
+    background: #F5F4ED;
+    color: #3D3929;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 136px;
+    font-weight: 800;
+    line-height: 0.94;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #chromatic-still-frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 62% 35%, rgba(217, 119, 87, 0.14), transparent 31%),
+      radial-gradient(circle at 36% 68%, rgba(61, 57, 41, 0.08), transparent 30%);
+  }
+
+  #chromatic-still-frame span {
+    position: relative;
+    max-width: 1160px;
+  }
+
+  #upgrade-cta {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 38px;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    color: #F5F4ED;
+    text-align: center;
+    will-change: transform, opacity, filter;
+  }
+
+  .upgrade-cta-main {
+    font-size: 178px;
+    font-weight: 840;
+    line-height: 0.88;
+    letter-spacing: 0;
+  }
+
+  .upgrade-cta-sub {
+    font-size: 92px;
+    font-weight: 720;
+    line-height: 0.92;
+    letter-spacing: 0;
+    color: rgba(245, 244, 237, 0.82);
+  }
+
+  #portal-logo-frame {
+    position: absolute;
+    inset: 0;
+    z-index: 9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 42px;
+    background: #FFFFFF;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  #portal-logo-frame img {
+    width: 650px;
+    height: auto;
+    display: block;
+  }
+
+  .portal-logo-subtext {
+    color: #111111;
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0;
+    opacity: 0.72;
+  }
+
+  #portal-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    width: 1920px;
+    height: 1080px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="vfx-heygen-combined" data-width="1920" data-height="1080" data-start="0" data-duration="26.26" data-root="true">
+  <div
+    id="vfx-intro"
+    data-composition-id="vfx-text-cursor"
+    data-composition-src="compositions/vfx-text-cursor.html"
+    data-start="0"
+    data-duration="6.48"
+    data-track-index="4"
+    data-width="1920"
+    data-height="1080"
+    data-layout-allow-overflow
+  ></div>
+  <video id="bg-video" src="assets/bg.mp4" data-start="5.58" data-duration="5" data-track-index="0" muted playsinline></video>
+  <canvas id="theater" width="1920" height="1080"></canvas>
+  <canvas id="phone-screen" width="390" height="844" style="display:none"></canvas>
+  <img id="heygen-capture-strip" src="captures/heygen-mobile/screen-strip.png" alt="" loading="eager" decoding="sync" fetchpriority="high" style="display:none">
+  <img id="finger-overlay" src="assets/pointing-finger-clean.png" alt="">
+  <div id="prompt-scene" data-layout-allow-overflow>
+    <div id="prompt-app" data-layout-allow-overflow>
+      <div class="prompt-topbar">
+        <div class="prompt-topbar-left">
+          <div class="prompt-icon-btn">
+            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
+          </div>
+          <div class="prompt-logo-mark">
+            <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
+              <path d="M16 2 L17.4 12.6 L21.2 4.8 L18.7 13.3 L26.2 8.2 L19.5 14.8 L29.4 14 L19.6 16.6 L28 21.6 L18.8 17.8 L22.5 27.2 L16.8 18.4 L15.4 28.8 L14.7 18.2 L9.2 27.2 L13 17.8 L3.8 21.6 L12.3 16.6 L2.6 14 L12.4 14.8 L5.8 8.2 L13.3 13.3 L10.8 4.8 L14.6 12.6 Z" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="prompt-project-name">HyperFrames Project</div>
+        </div>
+        <div class="prompt-topbar-right">
+          <div class="prompt-model-pill">
+            Claude Opus 4.7
+            <svg viewBox="0 0 12 12" width="11" height="11"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <div class="prompt-avatar">J</div>
+        </div>
+      </div>
+      <div class="prompt-thread"></div>
+      <div class="prompt-composer-wrap">
+        <div class="prompt-composer">
+          <div class="prompt-composer-text"><span id="prompt-command"></span><span id="prompt-caret" class="prompt-caret"></span></div>
+          <div class="prompt-composer-actions">
+            <div class="prompt-attach">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M21 11.5l-8.5 8.5a5 5 0 1 1-7-7l8.5-8.5a3.5 3.5 0 1 1 5 5L11 17.5a2 2 0 1 1-3-3l7-7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+            </div>
+            <div class="prompt-send">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 5v14M5 12l7-7 7 7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="prompt-composer-meta">Claude can make mistakes. Please double-check responses.</div>
+      </div>
+    </div>
+    <svg id="click-cursor" viewBox="0 0 96 96" aria-hidden="true">
+      <path d="M18 8 L73 61 L48 64 L61 90 L48 96 L35 69 L18 88 Z" fill="#FFFFFF" stroke="#2A2720" stroke-width="5" stroke-linejoin="round"/>
+    </svg>
+    <div id="game-change-copy">
+      <div class="game-change-line">You can make this too</div>
+    </div>
+    <div id="chromatic-split">
+      <canvas id="chromatic-cap" layoutsubtree width="1920" height="1080">
+        <section id="chromatic-still-frame"><span>You can make this too</span></section>
+      </canvas>
+      <canvas id="chromatic-canvas" width="1920" height="1080"></canvas>
+    </div>
+    <div id="upgrade-cta">
+      <div class="upgrade-cta-main">Full catalog</div>
+      <div class="upgrade-cta-sub">available now</div>
+    </div>
+    <div id="portal-logo-frame">
+      <img src="assets/hyperframes-dark.svg" alt="">
+      <div class="portal-logo-subtext">hyperframes.heygen.com/catalog</div>
+    </div>
+    <canvas id="portal-canvas" width="1920" height="1080"></canvas>
+  </div>
+</div>
+
+<script>
+var W = 1920;
+var H = 1080;
+var PI = Math.PI;
+var screenW = 390;
+var screenH = 844;
+
+var theaterCanvas = document.getElementById("theater");
+var renderer;
+var hasWebGL = true;
+var glContext = null;
+try {
+  glContext = theaterCanvas.getContext("webgl", { antialias: true, preserveDrawingBuffer: true })
+    || theaterCanvas.getContext("experimental-webgl", { antialias: true, preserveDrawingBuffer: true });
+  if (!glContext) throw new Error("WebGL unavailable");
+  renderer = new THREE.WebGLRenderer({
+    canvas: theaterCanvas,
+    context: glContext,
+    antialias: true,
+    preserveDrawingBuffer: true
+  });
+  renderer.setSize(W, H, false);
+  renderer.setPixelRatio(1);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.12;
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.setClearColor(0x050508, 0);
+} catch (e) {
+  hasWebGL = false;
+}
+
+var scene = new THREE.Scene();
+scene.background = null;
+var camera = new THREE.PerspectiveCamera(34, W / H, 0.1, 100);
+
+var envCanvas = document.createElement("canvas");
+envCanvas.width = 1024;
+envCanvas.height = 512;
+var envCtx = envCanvas.getContext("2d");
+var envGrad = envCtx.createLinearGradient(0, 0, 1024, 512);
+envGrad.addColorStop(0, "#020307");
+envGrad.addColorStop(0.22, "#1f2937");
+envGrad.addColorStop(0.36, "#ffffff");
+envGrad.addColorStop(0.52, "#15161a");
+envGrad.addColorStop(0.68, "#d7ff3f");
+envGrad.addColorStop(0.84, "#28406f");
+envGrad.addColorStop(1, "#020307");
+envCtx.fillStyle = envGrad;
+envCtx.fillRect(0, 0, 1024, 512);
+envCtx.globalCompositeOperation = "screen";
+envCtx.fillStyle = "rgba(255,255,255,0.18)";
+envCtx.fillRect(160, 98, 640, 4);
+envCtx.fillRect(0, 280, 760, 3);
+envCtx.fillStyle = "rgba(215,255,63,0.12)";
+envCtx.fillRect(310, 180, 520, 5);
+var envTex = new THREE.CanvasTexture(envCanvas);
+envTex.mapping = THREE.EquirectangularReflectionMapping;
+if (hasWebGL) {
+  var pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromEquirectangular(envTex).texture;
+  envTex.dispose();
+  pmrem.dispose();
+}
+
+scene.add(new THREE.AmbientLight(0x222233, 0.55));
+var key = new THREE.DirectionalLight(0xffffff, 2.3);
+key.position.set(-3.5, 4.5, 5.0);
+scene.add(key);
+var rim = new THREE.PointLight(0x7c9cff, 3.2, 15);
+rim.position.set(4.2, 2.4, 3.0);
+scene.add(rim);
+var lime = new THREE.PointLight(0xd7ff3f, 1.4, 12);
+lime.position.set(-2.8, -0.8, 3.8);
+scene.add(lime);
+
+var screenCanvas = document.getElementById("phone-screen");
+var screenCtx = screenCanvas.getContext("2d");
+var captureStripEl = document.getElementById("heygen-capture-strip");
+var screenTex = new THREE.CanvasTexture(screenCanvas);
+screenTex.minFilter = THREE.LinearFilter;
+screenTex.magFilter = THREE.LinearFilter;
+screenTex.generateMipmaps = false;
+
+function roundedRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function label(ctx, text, x, y, width, height, fill, color) {
+  roundedRect(ctx, x, y, width, height, height / 2);
+  ctx.fillStyle = fill;
+  ctx.fill();
+  ctx.fillStyle = color;
+  ctx.font = "700 12px Inter, system-ui, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(text, x + width / 2, y + height / 2);
+  ctx.textAlign = "left";
+}
+
+function drawFeature(ctx, x, y, w, h, color, title, body) {
+  roundedRect(ctx, x, y, w, h, 20);
+  ctx.fillStyle = "#ffffff";
+  ctx.fill();
+  ctx.strokeStyle = "rgba(17,17,17,0.08)";
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  roundedRect(ctx, x + 16, y + 16, 42, 42, 14);
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.fillStyle = "#111111";
+  ctx.font = "800 19px Inter, system-ui, sans-serif";
+  ctx.fillText(title, x + 16, y + 82);
+  ctx.fillStyle = "rgba(17,17,17,0.58)";
+  ctx.font = "500 13px Inter, system-ui, sans-serif";
+  var words = body.split(" ");
+  var line = "";
+  var lineY = y + 107;
+  for (var i = 0; i < words.length; i++) {
+    var testLine = line + words[i] + " ";
+    if (ctx.measureText(testLine).width > w - 32 && i > 0) {
+      ctx.fillText(line, x + 16, lineY);
+      line = words[i] + " ";
+      lineY += 17;
+    } else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line, x + 16, lineY);
+}
+
+function drawHeyGenPage(scrollProgress) {
+  var ctx = screenCtx;
+  ctx.clearRect(0, 0, screenW, screenH);
+
+  if (captureStripEl && captureStripEl.complete && captureStripEl.naturalHeight > screenH) {
+    var maxScroll = captureStripEl.naturalHeight - screenH;
+    var srcY = Math.max(0, Math.min(maxScroll, scrollProgress * maxScroll));
+    ctx.drawImage(captureStripEl, 0, srcY, screenW, screenH, 0, 0, screenW, screenH);
+    screenTex.needsUpdate = true;
+    return;
+  }
+
+  var scroll = scrollProgress * 980;
+  ctx.fillStyle = "#f7f4ee";
+  ctx.fillRect(0, 0, screenW, screenH);
+
+  var y = -scroll;
+  ctx.save();
+  ctx.translate(0, y);
+
+  ctx.fillStyle = "#f7f4ee";
+  ctx.fillRect(0, 0, screenW, 1800);
+
+  ctx.fillStyle = "#111111";
+  ctx.font = "900 22px Inter, system-ui, sans-serif";
+  ctx.fillText("HeyGen", 24, 46);
+  label(ctx, "Get Started", 264, 20, 102, 34, "#d7ff3f", "#111111");
+
+  ctx.font = "900 48px Inter, system-ui, sans-serif";
+  ctx.textBaseline = "alphabetic";
+  var headline = ["Turn your", "ideas into", "videos in", "minutes"];
+  for (var h = 0; h < headline.length; h++) {
+    ctx.fillText(headline[h], 24, 118 + h * 50);
+  }
+
+  ctx.fillStyle = "rgba(17,17,17,0.68)";
+  ctx.font = "500 16px Inter, system-ui, sans-serif";
+  var body = [
+    "Go from script, image, presentation,",
+    "or PDF to finished video. No cameras,",
+    "no crew, no editing skills required."
+  ];
+  for (var b = 0; b < body.length; b++) {
+    ctx.fillText(body[b], 24, 346 + b * 22);
+  }
+
+  label(ctx, "AI Video Generator", 24, 420, 154, 38, "#111111", "#f7f4ee");
+  label(ctx, "Free to start", 188, 420, 122, 38, "#d7ff3f", "#111111");
+
+  roundedRect(ctx, 24, 494, 342, 226, 28);
+  var heroGrad = ctx.createLinearGradient(24, 494, 366, 720);
+  heroGrad.addColorStop(0, "#10131c");
+  heroGrad.addColorStop(0.5, "#4d78ff");
+  heroGrad.addColorStop(1, "#d7ff3f");
+  ctx.fillStyle = heroGrad;
+  ctx.fill();
+  ctx.fillStyle = "rgba(255,255,255,0.92)";
+  ctx.font = "800 24px Inter, system-ui, sans-serif";
+  ctx.fillText("One-Shot Text-to-Video", 44, 556);
+  ctx.font = "600 15px Inter, system-ui, sans-serif";
+  ctx.fillText("Type your idea. Click generate.", 44, 590);
+  ctx.fillText("Get a share-ready video.", 44, 614);
+  roundedRect(ctx, 44, 642, 144, 44, 14);
+  ctx.fillStyle = "rgba(255,255,255,0.92)";
+  ctx.fill();
+  ctx.fillStyle = "#111111";
+  ctx.font = "800 14px Inter, system-ui, sans-serif";
+  ctx.fillText("Generate", 76, 669);
+
+  ctx.fillStyle = "#111111";
+  ctx.font = "850 28px Inter, system-ui, sans-serif";
+  ctx.fillText("128M+ videos generated", 24, 784);
+  ctx.font = "850 28px Inter, system-ui, sans-serif";
+  ctx.fillText("102M+ avatars generated", 24, 826);
+  ctx.fillText("17M+ videos translated", 24, 868);
+
+  ctx.fillStyle = "rgba(17,17,17,0.54)";
+  ctx.font = "700 13px Inter, system-ui, sans-serif";
+  ctx.fillText("Trusted by millions worldwide", 24, 930);
+  var logoNames = ["Miro", "Workday", "Coursera", "HubSpot", "Airtable", "Wondershare"];
+  for (var l = 0; l < logoNames.length; l++) {
+    var lx = 24 + (l % 2) * 174;
+    var ly = 958 + Math.floor(l / 2) * 58;
+    roundedRect(ctx, lx, ly, 156, 42, 14);
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.fillStyle = "rgba(17,17,17,0.62)";
+    ctx.font = "800 15px Inter, system-ui, sans-serif";
+    ctx.fillText(logoNames[l], lx + 18, ly + 27);
+  }
+
+  ctx.fillStyle = "#111111";
+  ctx.font = "900 31px Inter, system-ui, sans-serif";
+  ctx.fillText("AI video creation", 24, 1196);
+  ctx.fillText("just became your", 24, 1234);
+  ctx.fillText("superpower", 24, 1272);
+
+  drawFeature(ctx, 24, 1320, 342, 150, "#d7ff3f", "Text to Video", "Create complete AI videos from a script with voiceovers, visuals, and avatars.");
+  drawFeature(ctx, 24, 1490, 342, 150, "#4d78ff", "Photo to Video", "Upload an image and script to create lifelike motion and natural lip-sync.");
+  drawFeature(ctx, 24, 1660, 342, 150, "#ff7a59", "Translate Video", "Dub content into 175+ languages with voice cloning and subtitles.");
+
+  ctx.restore();
+
+  var topFade = ctx.createLinearGradient(0, 0, 0, 92);
+  topFade.addColorStop(0, "rgba(247,244,238,1)");
+  topFade.addColorStop(0.55, "rgba(247,244,238,0.92)");
+  topFade.addColorStop(1, "rgba(247,244,238,0)");
+  ctx.fillStyle = topFade;
+  ctx.fillRect(0, 0, screenW, 92);
+
+  screenTex.needsUpdate = true;
+}
+
+function drawCanvasFallback() {
+  var ctx = theaterCanvas.getContext("2d");
+  if (!ctx) return;
+
+  ctx.clearRect(0, 0, W, H);
+  var bg = ctx.createRadialGradient(1160, 460, 60, 960, 540, 980);
+  bg.addColorStop(0, "#16213f");
+  bg.addColorStop(0.55, "#080910");
+  bg.addColorStop(1, "#050508");
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.save();
+  ctx.translate(960 + S.phX * 120, 540 + S.phY * 100);
+  var tilt = Math.sin(S.drift * 0.8) * 0.045 + S.phRZ;
+  ctx.rotate(tilt);
+  ctx.scale(1.02 + Math.sin(S.drift * 0.35) * 0.012, 1.02);
+
+  roundedRect(ctx, -195, -422, 390, 844, 58);
+  ctx.fillStyle = "#07080c";
+  ctx.fill();
+  ctx.strokeStyle = "rgba(255,255,255,0.20)";
+  ctx.lineWidth = 5;
+  ctx.stroke();
+
+  roundedRect(ctx, -178, -398, 356, 792, 44);
+  ctx.save();
+  ctx.clip();
+  ctx.drawImage(screenCanvas, -178, -398, 356, 792);
+  ctx.restore();
+
+  roundedRect(ctx, -58, -398, 116, 30, 15);
+  ctx.fillStyle = "#07080c";
+  ctx.fill();
+  ctx.restore();
+}
+
+var phoneGrp = new THREE.Group();
+scene.add(phoneGrp);
+var phoneLoaded = false;
+
+var draco = new THREE.DRACOLoader();
+draco.setDecoderPath("https://www.gstatic.com/draco/versioned/decoders/1.5.6/");
+var loader = new THREE.GLTFLoader();
+loader.setDRACOLoader(draco);
+
+loader.load("models/iphone.glb", function(gltf) {
+  var model = gltf.scene;
+  var box = new THREE.Box3().setFromObject(model);
+  var size = box.getSize(new THREE.Vector3());
+  var scale = 3.2 / size.y;
+  model.scale.setScalar(scale);
+  box.setFromObject(model);
+  model.position.sub(box.getCenter(new THREE.Vector3()));
+
+  var screenApplied = false;
+  model.traverse(function(child) {
+    if (!child.isMesh) return;
+    var name = (child.name || "").toLowerCase();
+    var matName = child.material && child.material.name ? child.material.name.toLowerCase() : "";
+    if ((child.material && child.material.emissiveMap) || name.indexOf("screen") >= 0 || matName.indexOf("screen") >= 0 || matName.indexOf("display") >= 0) {
+      child.material = new THREE.MeshBasicMaterial({ map: screenTex });
+      screenApplied = true;
+    }
+  });
+
+  if (!screenApplied) {
+    model.traverse(function(child) {
+      if (!child.isMesh || screenApplied) return;
+      if (child.material && child.material.emissive) {
+        child.material = new THREE.MeshBasicMaterial({ map: screenTex });
+        screenApplied = true;
+      }
+    });
+  }
+
+  phoneGrp.add(model);
+  phoneLoaded = true;
+  render();
+});
+
+var S = {
+  phX: 0,
+  phY: -3.45,
+  phZ: 0.45,
+  phRX: 0.01,
+  phRY: PI + 0.04,
+  phRZ: -0.015,
+  cX: 0,
+  cY: 0.16,
+  cZ: 6.6,
+  clX: 0,
+  clY: 0.04,
+  clZ: 0,
+  drift: 0,
+  scroll: 0
+};
+
+function cbz(p1x, p1y, p2x, p2y) {
+  var ax = 3 * p1x - 3 * p2x + 1;
+  var bx = 3 * p2x - 6 * p1x;
+  var cx = 3 * p1x;
+  var ay = 3 * p1y - 3 * p2y + 1;
+  var by = 3 * p2y - 6 * p1y;
+  var cy = 3 * p1y;
+  return function(t) {
+    var s = t;
+    for (var i = 0; i < 12; i++) {
+      var x = ((ax * s + bx) * s + cx) * s - t;
+      var dx = (3 * ax * s + 2 * bx) * s + cx;
+      if (Math.abs(dx) < 1e-10) break;
+      s -= x / dx;
+    }
+    s = Math.max(0, Math.min(1, s));
+    return ((ay * s + by) * s + cy) * s;
+  };
+}
+
+var breatheEase = cbz(0.37, 0.0, 0.63, 1.0);
+var driftEase = cbz(0.45, 0.0, 0.15, 1.0);
+var spinEase = cbz(0.76, 0.0, 0.18, 1.0);
+var snapEase = cbz(0.22, 1.15, 0.36, 1.0);
+
+function render() {
+  drawHeyGenPage(S.scroll);
+
+  var d = S.drift;
+  if (hasWebGL) {
+    phoneGrp.position.set(
+      S.phX + Math.sin(d * 0.56) * 0.015,
+      S.phY + Math.sin(d * 0.72) * 0.009,
+      S.phZ + Math.cos(d * 0.44) * 0.008
+    );
+    phoneGrp.rotation.set(S.phRX, S.phRY, S.phRZ);
+
+    camera.position.set(S.cX, S.cY, S.cZ);
+    camera.lookAt(S.clX, S.clY, S.clZ);
+    renderer.render(scene, camera);
+  } else {
+    drawCanvasFallback();
+  }
+
+}
+
+var chromaticCapCanvas = document.getElementById("chromatic-cap");
+var chromaticCapCtx = chromaticCapCanvas.getContext("2d");
+var chromaticCanvas = document.getElementById("chromatic-canvas");
+var chromaticRenderer = null;
+var chromaticComposer = null;
+var chromaticBloomPass = null;
+var redPlane = null;
+var greenPlane = null;
+var bluePlane = null;
+var redUniforms = null;
+var greenUniforms = null;
+var blueUniforms = null;
+var chromaticReady = false;
+var portalCanvas = document.getElementById("portal-canvas");
+var portalRenderer = null;
+var portalScene = null;
+var portalCamera = null;
+var portalUniforms = null;
+var portalFrontQuad = null;
+var portalFrontTexture = null;
+var portalReady = false;
+var chromaticState = {
+  zSplit: 0,
+  xSplit: 0,
+  redRotY: 0,
+  greenRotY: 0,
+  blueRotY: 0,
+  depthX: 0,
+  depthZ: 0,
+  planeScale: 1,
+  camX: 0,
+  camY: 0,
+  camZ: 5,
+  lookX: 0,
+  lookY: 0,
+  bloomStrength: 0.5,
+  sceneAlpha: 1
+};
+var portalState = {
+  portalRadius: 0,
+  energyIntensity: 0,
+  chromaticStrength: 0,
+  distortionStrength: 0,
+  edgeWidth: 0.06,
+  time: 0
+};
+
+function drawChromaticStillTexture() {
+  var ctx = chromaticCapCtx;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = "#08060e";
+  ctx.fillRect(0, 0, W, H);
+
+  var warm = ctx.createRadialGradient(1190, 380, 80, 1190, 380, 650);
+  warm.addColorStop(0, "rgba(255,49,93,0.26)");
+  warm.addColorStop(1, "rgba(217,119,87,0)");
+  ctx.fillStyle = warm;
+  ctx.fillRect(0, 0, W, H);
+
+  var blue = ctx.createRadialGradient(690, 735, 80, 690, 735, 620);
+  blue.addColorStop(0, "rgba(37,200,255,0.24)");
+  blue.addColorStop(1, "rgba(37,200,255,0)");
+  ctx.fillStyle = blue;
+  ctx.fillRect(0, 0, W, H);
+
+  var green = ctx.createRadialGradient(960, 555, 40, 960, 555, 520);
+  green.addColorStop(0, "rgba(49,255,131,0.13)");
+  green.addColorStop(1, "rgba(49,255,131,0)");
+  ctx.fillStyle = green;
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.font = "800 136px Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.shadowColor = "rgba(245,244,237,0.42)";
+  ctx.shadowBlur = 34;
+  ctx.fillStyle = "#F5F4ED";
+  ctx.fillText("You can make this too", W / 2, H / 2);
+  ctx.shadowBlur = 0;
+}
+
+function makeChannelMaterial(fragmentShader, uniforms) {
+  return new THREE.ShaderMaterial({
+    uniforms: uniforms,
+    vertexShader: [
+      "varying vec2 vUv;",
+      "void main() {",
+      "  vUv = uv;",
+      "  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);",
+      "}"
+    ].join("\n"),
+    fragmentShader: fragmentShader,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    side: THREE.DoubleSide
+  });
+}
+
+function setupChromaticRenderer() {
+  if (!hasWebGL) return;
+  drawChromaticStillTexture();
+
+  chromaticRenderer = new THREE.WebGLRenderer({
+    canvas: chromaticCanvas,
+    antialias: true,
+    alpha: false,
+    powerPreference: "high-performance",
+    preserveDrawingBuffer: true
+  });
+  chromaticRenderer.setSize(W, H, false);
+  chromaticRenderer.setPixelRatio(1);
+  chromaticRenderer.toneMapping = THREE.NoToneMapping;
+  chromaticRenderer.setClearColor(0x000000, 1);
+
+  var chromaticScene = new THREE.Scene();
+  var chromaticCamera = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
+  chromaticCamera.position.set(0, 0, 5);
+
+  var chromaticTexture = new THREE.CanvasTexture(chromaticCapCanvas);
+  chromaticTexture.minFilter = THREE.LinearFilter;
+  chromaticTexture.magFilter = THREE.LinearFilter;
+  chromaticTexture.generateMipmaps = false;
+
+  var redFragShader = [
+    "uniform sampler2D uTexture;",
+    "uniform float uAlpha;",
+    "varying vec2 vUv;",
+    "void main() {",
+    "  vec4 c = texture2D(uTexture, vUv);",
+    "  float lum = c.r * 0.6 + max(c.g, c.b) * 0.4;",
+    "  gl_FragColor = vec4(c.r, 0.0, 0.0, lum * uAlpha);",
+    "}"
+  ].join("\n");
+  var greenFragShader = [
+    "uniform sampler2D uTexture;",
+    "uniform float uAlpha;",
+    "varying vec2 vUv;",
+    "void main() {",
+    "  vec4 c = texture2D(uTexture, vUv);",
+    "  float lum = c.g * 0.6 + max(c.r, c.b) * 0.4;",
+    "  gl_FragColor = vec4(0.0, c.g, 0.0, lum * uAlpha);",
+    "}"
+  ].join("\n");
+  var blueFragShader = [
+    "uniform sampler2D uTexture;",
+    "uniform float uAlpha;",
+    "varying vec2 vUv;",
+    "void main() {",
+    "  vec4 c = texture2D(uTexture, vUv);",
+    "  float lum = c.b * 0.6 + max(c.r, c.g) * 0.4;",
+    "  gl_FragColor = vec4(0.0, 0.0, c.b, lum * uAlpha);",
+    "}"
+  ].join("\n");
+
+  var planeH = 3.0;
+  var planeW = planeH * (W / H);
+  var planeGeom = new THREE.PlaneGeometry(planeW, planeH);
+  redUniforms = { uTexture: { value: chromaticTexture }, uAlpha: { value: 1 } };
+  greenUniforms = { uTexture: { value: chromaticTexture }, uAlpha: { value: 1 } };
+  blueUniforms = { uTexture: { value: chromaticTexture }, uAlpha: { value: 1 } };
+  redPlane = new THREE.Mesh(planeGeom, makeChannelMaterial(redFragShader, redUniforms));
+  greenPlane = new THREE.Mesh(planeGeom, makeChannelMaterial(greenFragShader, greenUniforms));
+  bluePlane = new THREE.Mesh(planeGeom, makeChannelMaterial(blueFragShader, blueUniforms));
+  chromaticScene.add(redPlane);
+  chromaticScene.add(greenPlane);
+  chromaticScene.add(bluePlane);
+
+  chromaticScene.add(new THREE.AmbientLight(0x111122, 0.3));
+
+  if (THREE.EffectComposer && THREE.UnrealBloomPass) {
+    chromaticComposer = new THREE.EffectComposer(chromaticRenderer);
+    chromaticComposer.addPass(new THREE.RenderPass(chromaticScene, chromaticCamera));
+    chromaticBloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(W, H), 0.5, 0.6, 0.15);
+    chromaticComposer.addPass(chromaticBloomPass);
+  }
+
+  window.renderChromaticSplit = function(time) {
+    redPlane.position.set(chromaticState.depthX - chromaticState.xSplit, 0, chromaticState.depthZ + chromaticState.zSplit);
+    greenPlane.position.set(chromaticState.depthX, 0, chromaticState.depthZ);
+    bluePlane.position.set(chromaticState.depthX + chromaticState.xSplit, 0, chromaticState.depthZ - chromaticState.zSplit);
+    redPlane.rotation.y = chromaticState.redRotY;
+    greenPlane.rotation.y = chromaticState.greenRotY;
+    bluePlane.rotation.y = chromaticState.blueRotY;
+    redPlane.scale.setScalar(chromaticState.planeScale);
+    greenPlane.scale.setScalar(chromaticState.planeScale);
+    bluePlane.scale.setScalar(chromaticState.planeScale);
+    redUniforms.uAlpha.value = chromaticState.sceneAlpha;
+    greenUniforms.uAlpha.value = chromaticState.sceneAlpha;
+    blueUniforms.uAlpha.value = chromaticState.sceneAlpha;
+    if (chromaticBloomPass) chromaticBloomPass.strength = chromaticState.bloomStrength;
+    chromaticCamera.position.set(chromaticState.camX, chromaticState.camY, chromaticState.camZ);
+    chromaticCamera.lookAt(chromaticState.lookX, chromaticState.lookY, 0);
+
+    if (chromaticComposer) {
+      chromaticComposer.render();
+    } else {
+      chromaticRenderer.render(chromaticScene, chromaticCamera);
+    }
+  };
+
+  chromaticReady = true;
+  window.renderChromaticSplit(0);
+}
+
+function setupPortalRenderer() {
+  if (!hasWebGL) return;
+
+  var portalFrontCanvas = document.createElement("canvas");
+  portalFrontCanvas.width = W;
+  portalFrontCanvas.height = H;
+  var portalFrontCtx = portalFrontCanvas.getContext("2d");
+  portalFrontCtx.fillStyle = "#000000";
+  portalFrontCtx.fillRect(0, 0, W, H);
+  portalFrontCtx.textAlign = "center";
+  portalFrontCtx.textBaseline = "middle";
+  portalFrontCtx.fillStyle = "#F5F4ED";
+  portalFrontCtx.font = "840 178px Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+  portalFrontCtx.fillText("Full catalog", W / 2, H / 2 - 58);
+  portalFrontCtx.fillStyle = "rgba(245,244,237,0.82)";
+  portalFrontCtx.font = "720 92px Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+  portalFrontCtx.fillText("available now", W / 2, H / 2 + 116);
+  portalFrontTexture = new THREE.CanvasTexture(portalFrontCanvas);
+  portalFrontTexture.minFilter = THREE.LinearFilter;
+  portalFrontTexture.magFilter = THREE.LinearFilter;
+  portalFrontTexture.generateMipmaps = false;
+
+  portalRenderer = new THREE.WebGLRenderer({
+    canvas: portalCanvas,
+    antialias: false,
+    alpha: true,
+    powerPreference: "high-performance",
+    preserveDrawingBuffer: true
+  });
+  portalRenderer.setSize(W, H, false);
+  portalRenderer.setPixelRatio(1);
+  portalRenderer.setClearColor(0x000000, 0);
+
+  portalScene = new THREE.Scene();
+  portalCamera = new THREE.PerspectiveCamera(50, W / H, 0.1, 100);
+  portalCamera.position.set(0, 0, 2.8);
+  portalCamera.lookAt(0, 0, 0);
+
+  var vFov = portalCamera.fov * Math.PI / 180;
+  var quadH = 2 * Math.tan(vFov / 2) * portalCamera.position.z;
+  var quadW = quadH * (W / H);
+
+  portalUniforms = {
+    tFront: { value: portalFrontTexture },
+    portalRadius: { value: 0 },
+    portalCenter: { value: new THREE.Vector2(0.5, 0.5) },
+    edgeWidth: { value: 0.06 },
+    glowColor: { value: new THREE.Vector3(0.486, 0.227, 0.929) },
+    glowColor2: { value: new THREE.Vector3(0.290, 0.565, 1.0) },
+    chromaticStrength: { value: 0 },
+    distortionStrength: { value: 0 },
+    time: { value: 0 },
+    energyIntensity: { value: 0 }
+  };
+
+  var portalVertShader = [
+    "varying vec2 vUv;",
+    "void main() {",
+    "  vUv = uv;",
+    "  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);",
+    "}"
+  ].join("\n");
+
+  var portalFragShader = [
+    "uniform sampler2D tFront;",
+    "uniform float portalRadius;",
+    "uniform vec2 portalCenter;",
+    "uniform float edgeWidth;",
+    "uniform vec3 glowColor;",
+    "uniform vec3 glowColor2;",
+    "uniform float chromaticStrength;",
+    "uniform float distortionStrength;",
+    "uniform float time;",
+    "uniform float energyIntensity;",
+    "varying vec2 vUv;",
+    "float hash(vec2 p) {",
+    "  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);",
+    "}",
+    "float noise(vec2 p) {",
+    "  vec2 i = floor(p);",
+    "  vec2 f = fract(p);",
+    "  f = f * f * (3.0 - 2.0 * f);",
+    "  float a = hash(i);",
+    "  float b = hash(i + vec2(1.0, 0.0));",
+    "  float c = hash(i + vec2(0.0, 1.0));",
+    "  float d = hash(i + vec2(1.0, 1.0));",
+    "  return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);",
+    "}",
+    "void main() {",
+    "  vec2 uv = vUv;",
+    "  vec2 aspect = vec2(" + (W / H).toFixed(4) + ", 1.0);",
+    "  vec2 centered = (uv - portalCenter) * aspect;",
+    "  float dist = length(centered);",
+    "  float angle = atan(centered.y, centered.x);",
+    "  float edgeNoise = noise(vec2(angle * 3.0, time * 2.0)) * 0.03 * energyIntensity;",
+    "  float portalEdge = portalRadius + edgeNoise;",
+    "  float edgeDist = abs(dist - portalEdge);",
+    "  float distortMask = smoothstep(edgeWidth * 1.5, 0.0, edgeDist) * distortionStrength;",
+    "  vec2 distortDir = normalize(centered + 0.0001);",
+    "  vec2 distortedUv = uv + distortDir * distortMask * sin(angle * 8.0 + time * 5.0);",
+    "  float chromaMask = smoothstep(edgeWidth * 2.0, 0.0, edgeDist) * chromaticStrength;",
+    "  vec2 chromaOffset = distortDir * chromaMask;",
+    "  float r = texture2D(tFront, distortedUv + chromaOffset).r;",
+    "  float g = texture2D(tFront, distortedUv).g;",
+    "  float b = texture2D(tFront, distortedUv - chromaOffset).b;",
+    "  vec3 frontColor = vec3(r, g, b);",
+    "  float mask = smoothstep(portalEdge - 0.008, portalEdge + 0.008, dist);",
+    "  float glowInner = smoothstep(edgeWidth, 0.0, edgeDist);",
+    "  float glowOuter = smoothstep(edgeWidth * 2.5, edgeWidth * 0.5, edgeDist);",
+    "  float glow = glowInner * glowOuter * energyIntensity;",
+    "  float colorPhase = fract(angle / 6.2832 + time * 0.4);",
+    "  vec3 ringColor = mix(glowColor, glowColor2, sin(colorPhase * 6.2832) * 0.5 + 0.5);",
+    "  float sparks = noise(vec2(angle * 12.0, time * 8.0));",
+    "  sparks = pow(sparks, 4.0) * glowInner * energyIntensity * 2.0;",
+    "  vec3 finalColor = frontColor * mask;",
+    "  finalColor += ringColor * glow * 2.5;",
+    "  finalColor += vec3(1.0, 0.9, 1.0) * sparks;",
+    "  float alpha = mask + glow * 0.5 + sparks * 0.3;",
+    "  alpha = clamp(alpha, 0.0, 1.0);",
+    "  gl_FragColor = vec4(finalColor, alpha);",
+    "}"
+  ].join("\n");
+
+  var portalMat = new THREE.ShaderMaterial({
+    uniforms: portalUniforms,
+    vertexShader: portalVertShader,
+    fragmentShader: portalFragShader,
+    transparent: true,
+    depthWrite: false,
+    side: THREE.FrontSide
+  });
+  portalFrontQuad = new THREE.Mesh(new THREE.PlaneGeometry(quadW, quadH), portalMat);
+  portalScene.add(portalFrontQuad);
+
+  window.renderPortalReveal = function(time) {
+    portalUniforms.portalRadius.value = portalState.portalRadius;
+    portalUniforms.edgeWidth.value = portalState.edgeWidth;
+    portalUniforms.chromaticStrength.value = portalState.chromaticStrength;
+    portalUniforms.distortionStrength.value = portalState.distortionStrength;
+    portalUniforms.time.value = time;
+    portalUniforms.energyIntensity.value = portalState.energyIntensity;
+    portalRenderer.render(portalScene, portalCamera);
+  };
+
+  portalReady = true;
+  window.renderPortalReveal(0);
+}
+
+setupChromaticRenderer();
+setupPortalRenderer();
+
+var HEYGEN_START = 5.58;
+var VFX_TRANSITION_START = 5.85;
+var PROMPT_PAN_EXTRA = 0.18;
+var RGB_CUT_DELTA = 0.5;
+var CHROMATIC_START = 7.74 + PROMPT_PAN_EXTRA;
+var RGB_ROTATE_START = 9.145 + PROMPT_PAN_EXTRA;
+var RGB_BLOOM_SETTLE_START = 9.97 + PROMPT_PAN_EXTRA;
+var RGB_EXIT_START = 10.27 + PROMPT_PAN_EXTRA;
+var PORTAL_START = 11.76 - RGB_CUT_DELTA + PROMPT_PAN_EXTRA;
+var HEYGEN_DURATION = 21 - RGB_CUT_DELTA + PROMPT_PAN_EXTRA;
+var COMBINED_DURATION = HEYGEN_START + HEYGEN_DURATION;
+
+var tl = gsap.timeline({ paused: true });
+tl.to(S, { drift: 5, duration: 5, ease: "none", onUpdate: render }, 0);
+gsap.set("#bg-video", { opacity: 0 });
+gsap.set("#theater", { y: 340, opacity: 0, filter: "blur(18px)" });
+gsap.set("#prompt-scene", { x: 620, autoAlpha: 0, filter: "blur(18px)" });
+gsap.set("#prompt-app", { scale: 3.15, x: 560, y: -120 });
+gsap.set("#prompt-command", { textContent: "" });
+gsap.set("#prompt-caret", { opacity: 0 });
+gsap.set(".prompt-send", { x: 0, y: 0, scale: 1, boxShadow: "0 0 0 rgba(217, 119, 87, 0)" });
+gsap.set("#click-cursor", { x: 500, y: 620, scale: 0.95, opacity: 0, rotation: -6 });
+gsap.set("#game-change-copy", { y: 220, autoAlpha: 0, filter: "blur(8px)" });
+gsap.set("#chromatic-split", { autoAlpha: 0 });
+gsap.set("#upgrade-cta", { y: 240, autoAlpha: 0, filter: "blur(12px)" });
+gsap.set("#portal-logo-frame", { autoAlpha: 0 });
+gsap.set("#portal-canvas", { autoAlpha: 0 });
+
+tl.to("#bg-video", { opacity: 1, duration: 0.42, ease: "power1.out" }, 0);
+tl.to("#theater", { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.74, ease: "expo.out", overwrite: "auto" }, 0.04);
+tl.to(S, { phY: 0.02, duration: 0.95, ease: "expo.out" }, 0.08);
+tl.to(S, { phRY: PI - 0.035, phRX: -0.012, cZ: 6.35, duration: 0.78, ease: breatheEase }, 0.18);
+tl.to("#finger-overlay", { left: 805, top: 532, rotation: -75, duration: 0.82, ease: "power3.out" }, 0.92);
+tl.to(S, { scroll: 0.9, duration: 2.45, ease: "power1.out" }, 2.05);
+tl.to("#finger-overlay", { top: -1900, rotation: -75, duration: 0.68, ease: "power3.inOut" }, 1.85);
+tl.set("#finger-overlay", { opacity: 0 }, 2.55);
+tl.to(S, {
+  phRY: PI * 5 - 0.035,
+  phRX: -0.012,
+  phRZ: 0.006,
+  cZ: 6.35,
+  cY: 0.16,
+  duration: 1.73,
+  ease: "none"
+}, 2.2);
+tl.to(S, { phRX: -0.012, phRZ: PI / 2, cZ: 3.85, cY: 0.12, duration: 0.85, ease: "power3.inOut" }, 3.43);
+
+tl.addLabel("phoneExit", 4.04);
+tl.addLabel("promptTransition", 4.08);
+tl.to("#theater", {
+  x: -1220,
+  filter: "blur(22px)",
+  duration: 0.53,
+  ease: "expo.out"
+}, "phoneExit");
+tl.to("#theater", {
+  opacity: 0,
+  duration: 0.18,
+  ease: "power2.out"
+}, "phoneExit");
+tl.set("#prompt-scene", {
+  visibility: "visible"
+}, "promptTransition");
+tl.to("#prompt-scene", {
+  x: 0,
+  filter: "blur(0px)",
+  duration: 0.27,
+  ease: "power2.out"
+}, "promptTransition");
+tl.to("#prompt-scene", {
+  opacity: 1,
+  duration: 0.48,
+  ease: "power2.out"
+}, "promptTransition");
+tl.to(".prompt-composer-meta", {
+  opacity: 1,
+  duration: 0.18,
+  ease: "power1.out"
+}, 4.9);
+
+var updateCommand = "npx hyperframes add iphone-canvas";
+var promptType = { i: 0 };
+tl.set("#prompt-caret", { opacity: 1 }, 4.13);
+tl.to(promptType, {
+  i: updateCommand.length,
+  duration: 0.9,
+  ease: "none",
+  snap: { i: 1 },
+  onUpdate: function () {
+    document.getElementById("prompt-command").textContent = updateCommand.slice(0, promptType.i);
+  }
+}, 4.13);
+tl.to("#prompt-app", {
+  x: -1260,
+  duration: 1.78,
+  ease: "power1.in"
+}, 4.13);
+tl.to([".prompt-topbar", ".prompt-composer-text", ".prompt-attach", ".prompt-composer-meta"], {
+  opacity: 0,
+  filter: "blur(16px)",
+  scale: 0.86,
+  duration: 0.2,
+  ease: "power3.inOut"
+}, 5.59);
+tl.to(".prompt-composer", {
+  backgroundColor: "rgba(255,255,255,0)",
+  borderColor: "rgba(229,224,209,0)",
+  boxShadow: "0 0 0 rgba(61, 57, 41, 0)",
+  duration: 0.2,
+  ease: "power3.inOut"
+}, 5.59);
+tl.to(".prompt-send", {
+  x: 0,
+  y: -95,
+  duration: 0.22,
+  ease: "power2.out"
+}, 5.69);
+tl.to(".prompt-send", {
+  scale: 3,
+  boxShadow: "0 12px 34px rgba(217, 119, 87, 0.42)",
+  duration: 0.22,
+  ease: "power3.out"
+}, 5.69);
+tl.to("#click-cursor", {
+  x: 280,
+  y: 210,
+  opacity: 1,
+  duration: 0.28,
+  ease: "power3.out"
+}, 5.8);
+tl.to("#click-cursor", {
+  x: 26,
+  y: 38,
+  duration: 0.46,
+  ease: "power3.inOut"
+}, 6.1);
+tl.to(".prompt-send", {
+  scale: 2.62,
+  duration: 0.08,
+  ease: "power2.in"
+}, 6.5);
+tl.to("#click-cursor", {
+  scale: 0.82,
+  duration: 0.08,
+  ease: "power2.in"
+}, 6.5);
+tl.to(".prompt-send", {
+  scale: 3.12,
+  duration: 0.16,
+  ease: "back.out(2.2)"
+}, 6.59);
+tl.to("#click-cursor", {
+  scale: 0.95,
+  duration: 0.16,
+  ease: "back.out(2.2)"
+}, 6.59);
+tl.to(".prompt-send", {
+  y: -260,
+  filter: "blur(8px)",
+  opacity: 0,
+  duration: 0.28,
+  ease: "power2.in",
+  overwrite: "auto"
+}, 6.68);
+tl.to("#click-cursor", {
+  y: -165,
+  filter: "blur(8px)",
+  opacity: 0,
+  duration: 0.28,
+  ease: "power2.in",
+  overwrite: "auto"
+}, 6.68);
+tl.to("#game-change-copy", {
+  y: 0,
+  filter: "blur(0px)",
+  duration: 0.46,
+  ease: "expo.out"
+}, 6.96);
+tl.to("#game-change-copy", {
+  autoAlpha: 1,
+  duration: 0.24,
+  ease: "power1.out"
+}, 6.96);
+tl.set("#game-change-copy", { autoAlpha: 0 }, CHROMATIC_START);
+tl.set("#chromatic-split", { autoAlpha: 1 }, CHROMATIC_START);
+tl.set(chromaticState, {
+  zSplit: 0,
+  xSplit: 0,
+  redRotY: 0,
+  greenRotY: 0,
+  blueRotY: 0,
+  depthX: 0,
+  depthZ: 0,
+  planeScale: 1,
+  camX: 0,
+  camY: 0,
+  camZ: 5,
+  lookX: 0,
+  lookY: 0,
+  bloomStrength: 0.5,
+  sceneAlpha: 1
+}, CHROMATIC_START);
+tl.to(chromaticState, {
+  zSplit: 0.42,
+  redRotY: -0.08,
+  blueRotY: 0.08,
+  camZ: 5.55,
+  camY: 0.16,
+  bloomStrength: 1.35,
+  duration: 0.44,
+  ease: "power2.out"
+}, CHROMATIC_START);
+tl.to(chromaticState, {
+  camX: 3.2,
+  camY: 0.3,
+  camZ: 4.0,
+  lookX: -0.3,
+  duration: 1.0,
+  ease: "power2.inOut"
+}, 8.34);
+tl.to(chromaticState, {
+  zSplit: 0.56,
+  duration: 0.425,
+  ease: "power2.inOut"
+}, 8.425);
+tl.to(chromaticState, {
+  zSplit: 0.36,
+  duration: 0.45,
+  ease: "power2.inOut"
+}, 8.875);
+tl.to(chromaticState, {
+  bloomStrength: 1.05,
+  duration: 0.6,
+  ease: "power2.inOut"
+}, 8.75);
+tl.to(chromaticState, {
+  camX: 4.7,
+  camY: 0.55,
+  camZ: 2.55,
+  lookX: -0.1,
+  lookY: 0.05,
+  duration: RGB_EXIT_START - RGB_ROTATE_START,
+  ease: "power2.inOut"
+}, RGB_ROTATE_START);
+tl.to(chromaticState, {
+  zSplit: 1.05,
+  xSplit: 0.46,
+  duration: RGB_EXIT_START - RGB_ROTATE_START,
+  ease: "power2.inOut"
+}, RGB_ROTATE_START);
+tl.to(chromaticState, {
+  redRotY: -1.42,
+  greenRotY: -1.22,
+  blueRotY: -1.02,
+  duration: RGB_EXIT_START - RGB_ROTATE_START,
+  ease: "power2.inOut"
+}, RGB_ROTATE_START);
+tl.to(chromaticState, {
+  bloomStrength: 1.55,
+  duration: 0.675,
+  ease: "power2.out"
+}, 9.475);
+tl.to(chromaticState, {
+  bloomStrength: 1.18,
+  duration: RGB_EXIT_START - RGB_BLOOM_SETTLE_START,
+  ease: "power1.inOut"
+}, RGB_BLOOM_SETTLE_START);
+tl.to(chromaticState, {
+  depthX: -2.2,
+  depthZ: -2.65,
+  xSplit: 0.48,
+  zSplit: 0.48,
+  planeScale: 0.3,
+  bloomStrength: 0.58,
+  sceneAlpha: 0.76,
+  duration: 0.31,
+  ease: "power3.in"
+}, RGB_EXIT_START);
+tl.to(chromaticState, {
+  camZ: 4.35,
+  lookX: -0.16,
+  duration: 0.31,
+  ease: "power2.in"
+}, RGB_EXIT_START);
+tl.to(chromaticState, {
+  bloomStrength: 0,
+  sceneAlpha: 0,
+  duration: 0.11,
+  ease: "power1.in"
+}, RGB_EXIT_START + 0.31);
+tl.to("#upgrade-cta", {
+  y: 0,
+  filter: "blur(0px)",
+  duration: 0.38,
+  ease: "expo.out"
+}, RGB_EXIT_START + 0.31);
+tl.to("#upgrade-cta", {
+  autoAlpha: 1,
+  duration: 0.2,
+  ease: "power1.out"
+}, RGB_EXIT_START + 0.31);
+tl.set("#upgrade-cta", { autoAlpha: 0 }, PORTAL_START);
+tl.set("#portal-logo-frame", { autoAlpha: 1 }, PORTAL_START);
+tl.set("#portal-canvas", { autoAlpha: 1 }, PORTAL_START);
+tl.set(portalState, {
+  portalRadius: 0,
+  energyIntensity: 0,
+  chromaticStrength: 0,
+  distortionStrength: 0,
+  edgeWidth: 0.06
+}, PORTAL_START);
+tl.to(portalState, {
+  energyIntensity: 1.0,
+  chromaticStrength: 0.04,
+  distortionStrength: 0.06,
+  edgeWidth: 0.08,
+  duration: 0.28,
+  ease: "power3.out"
+}, PORTAL_START);
+tl.to(portalState, {
+  portalRadius: 0.72,
+  duration: 7.59,
+  ease: "power1.inOut"
+}, PORTAL_START + 0.05);
+tl.to(portalState, {
+  portalRadius: 1.8,
+  duration: 1.45,
+  ease: "power3.in"
+}, 19.4 - RGB_CUT_DELTA);
+tl.to(portalState, {
+  energyIntensity: 0,
+  chromaticStrength: 0,
+  distortionStrength: 0,
+  duration: 0.55,
+  ease: "power2.out"
+}, 20.35 - RGB_CUT_DELTA);
+tl.set("#portal-canvas", { autoAlpha: 0 }, 20.85 - RGB_CUT_DELTA);
+tl.to("#prompt-caret", {
+  opacity: 0,
+  duration: 0.12,
+  repeat: 3,
+  yoyo: true,
+  ease: "steps(1)"
+}, 6.25);
+tl.to({}, { duration: HEYGEN_DURATION }, 0);
+tl.shiftChildren(HEYGEN_START, true, 0);
+tl.set("#vfx-intro", { opacity: 1, y: 0, filter: "blur(0px)" }, 0);
+tl.to("#vfx-intro", {
+  opacity: 0,
+  duration: 0.16,
+  ease: "power1.in"
+}, VFX_TRANSITION_START + 0.58);
+tl.to({}, { duration: COMBINED_DURATION }, 0);
+tl.eventCallback("onUpdate", function() {
+  if (chromaticReady && tl.time() >= HEYGEN_START + CHROMATIC_START) {
+    window.renderChromaticSplit(tl.time() - (HEYGEN_START + CHROMATIC_START));
+  }
+  if (portalReady && tl.time() >= HEYGEN_START + PORTAL_START) {
+    window.renderPortalReveal(tl.time() - (HEYGEN_START + PORTAL_START));
+  }
+});
+
+drawHeyGenPage(0);
+render();
+window.__timelines = window.__timelines || {};
+window.__timelines["vfx-heygen-combined"] = tl;
+</script>
+</body>
+</html>

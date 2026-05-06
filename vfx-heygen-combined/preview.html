@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preview - HeyGen iPhone Canvas Test</title>
+<style>
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #050508;
+  }
+
+  iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1920px;
+    height: 1080px;
+    border: 0;
+    transform: translate(-50%, -50%) scale(var(--scale));
+    transform-origin: center;
+  }
+
+  .controls {
+    position: fixed;
+    left: 20px;
+    right: 20px;
+    bottom: 18px;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 42px 62px 1fr 62px;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    background: rgba(5, 5, 8, 0.82);
+    color: rgba(247, 244, 238, 0.9);
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    box-shadow: 0 18px 46px rgba(0, 0, 0, 0.36);
+  }
+
+  button {
+    width: 42px;
+    height: 34px;
+    border: 0;
+    border-radius: 6px;
+    background: #f7f4ee;
+    color: #050508;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .time {
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    accent-color: #00c3ff;
+  }
+</style>
+</head>
+<body>
+<iframe id="composition" src="index.html" title="HeyGen iPhone Canvas Test"></iframe>
+<div class="controls">
+  <button id="toggle" type="button" aria-label="Play or pause">▶</button>
+  <div id="current" class="time">0.00</div>
+  <input id="scrubber" type="range" min="0" max="4.8" step="0.01" value="0" aria-label="Timeline scrubber">
+  <div class="time">4.80</div>
+</div>
+<script>
+  var duration = 4.8;
+  var playing = false;
+  var currentTime = 0;
+  var lastNow = 0;
+  var isScrubbing = false;
+  function fit() {
+    document.documentElement.style.setProperty(
+      "--scale",
+      Math.min(window.innerWidth / 1920, (window.innerHeight - 76) / 1080)
+    );
+  }
+  window.addEventListener("resize", fit);
+  fit();
+
+  var iframe = document.getElementById("composition");
+  var toggle = document.getElementById("toggle");
+  var scrubber = document.getElementById("scrubber");
+  var current = document.getElementById("current");
+
+  function timeline() {
+    var win = iframe.contentWindow;
+    return win && win.__timelines && win.__timelines["heygen-iphone-canvas-test"];
+  }
+
+  function seek(time) {
+    currentTime = Math.max(0, Math.min(duration, time));
+    var tl = timeline();
+    if (tl) tl.time(currentTime, false);
+    scrubber.value = currentTime.toFixed(2);
+    current.textContent = currentTime.toFixed(2);
+  }
+
+  function tick(now) {
+    if (!lastNow) lastNow = now;
+    var delta = (now - lastNow) / 1000;
+    lastNow = now;
+
+    if (playing && !isScrubbing) {
+      var next = currentTime + delta;
+      if (next >= duration) {
+        next = duration;
+        playing = false;
+        toggle.textContent = "▶";
+      }
+      seek(next);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  toggle.addEventListener("click", function () {
+    if (currentTime >= duration) seek(0);
+    playing = !playing;
+    toggle.textContent = playing ? "❚❚" : "▶";
+  });
+
+  scrubber.addEventListener("input", function () {
+    isScrubbing = true;
+    seek(Number(scrubber.value));
+  });
+
+  scrubber.addEventListener("change", function () {
+    isScrubbing = false;
+  });
+
+  iframe.addEventListener("load", function () {
+    seek(0);
+  });
+  requestAnimationFrame(tick);
+</script>
+</body>
+</html>

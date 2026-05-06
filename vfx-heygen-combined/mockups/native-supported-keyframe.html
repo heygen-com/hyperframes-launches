@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920" />
+  <title>Native Support Keyframe Mockup</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #000000;
+      font-family: Inter, "Arial Black", Arial, sans-serif;
+    }
+
+    .frame {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #000000;
+    }
+
+    .background {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      object-fit: cover;
+      filter: saturate(1.08) contrast(1.04);
+    }
+
+    .glass-card {
+      position: absolute;
+      left: 120px;
+      top: 67.5px;
+      width: 1680px;
+      height: 945px;
+      padding: 96px 126px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 56px;
+      overflow: hidden;
+      background: linear-gradient(
+        160deg,
+        rgba(255, 255, 255, 0.11) 0%,
+        rgba(255, 255, 255, 0.045) 42%,
+        rgba(255, 255, 255, 0.018) 70%,
+        rgba(255, 255, 255, 0.075) 100%
+      );
+      border: 1px solid rgba(255, 255, 255, 0.17);
+      box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(14px) saturate(1.12);
+      -webkit-backdrop-filter: blur(14px) saturate(1.12);
+    }
+
+    .glass-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 18% 78%, rgba(73, 242, 255, 0.14), transparent 38%),
+        radial-gradient(circle at 82% 22%, rgba(255, 79, 216, 0.11), transparent 34%);
+      pointer-events: none;
+    }
+
+    .glass-card::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: 55px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+      pointer-events: none;
+    }
+
+    .card-text {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      margin: 0;
+      color: #ffffff;
+      font-size: 154px;
+      line-height: 0.96;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-align: center;
+      text-shadow:
+        -5px 0 18px rgba(73, 242, 255, 0.38),
+        5px 0 18px rgba(255, 79, 216, 0.28),
+        0 24px 80px rgba(0, 0, 0, 0.58);
+    }
+
+    .card-text span {
+      display: block;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <main class="frame" aria-label="Static mockup for the native HyperFrames support keyframe">
+    <video class="background" src="../assets/bg-2.mp4" muted playsinline autoplay loop></video>
+    <section class="glass-card" aria-label="Glass text card">
+      <h1 class="card-text">
+        <span>Now natively</span>
+        <span>supported by</span>
+        <span>HyperFrames</span>
+      </h1>
+    </section>
+  </main>
+</body>
+</html>

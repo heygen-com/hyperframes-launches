@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Now Natively Supported - Contact Sheet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      color-scheme: dark;
+      --ink: #f5f5f7;
+      --muted: #a8a8b2;
+      --cyan: #00c4ff;
+      --violet: #6c5ce7;
+      --orange: #d97757;
+      --lime: #efff6e;
+      --green: #4fdb5e;
+      --card-left: 6.25%;
+      --card-top: 6.25%;
+      --card-width: 87.5%;
+      --card-height: 87.5%;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow-x: hidden;
+      background: #07070a;
+      color: var(--ink);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      padding: clamp(18px, 2.4vw, 40px);
+    }
+
+    header {
+      width: min(100%, 1920px);
+      margin: 0 auto clamp(18px, 2.4vw, 36px);
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      border-bottom: 1px solid rgba(245, 245, 247, 0.1);
+      padding-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(24px, 2vw, 36px);
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .sub {
+      margin: 0;
+      max-width: 860px;
+      color: var(--muted);
+      font-size: clamp(13px, 1.1vw, 16px);
+      line-height: 1.5;
+    }
+
+    .spec {
+      flex: 0 0 auto;
+      font: 500 clamp(11px, 0.9vw, 13px)/1.5 "JetBrains Mono", monospace;
+      color: #70707a;
+      text-align: right;
+    }
+
+    .spec b { color: var(--cyan); font-weight: 700; }
+
+    .grid {
+      width: min(100%, 1920px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 640px), 1fr));
+      gap: clamp(16px, 2vw, 30px);
+    }
+
+    .option {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid rgba(245, 245, 247, 0.1);
+      border-radius: 12px;
+      background: #0d0d12;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.26);
+    }
+
+    .option-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 18px;
+      padding: 13px 16px;
+      border-bottom: 1px solid rgba(245, 245, 247, 0.1);
+      background: #0a0a0d;
+    }
+
+    .tag {
+      font: 700 11px/1 "JetBrains Mono", monospace;
+      color: var(--cyan);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .note {
+      color: #878792;
+      font-size: 12px;
+      line-height: 1.25;
+      text-align: right;
+    }
+
+    .preview {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: #050508;
+      container-type: inline-size;
+    }
+
+    .bg {
+      position: absolute;
+      inset: -3%;
+      width: 106%;
+      height: 106%;
+      object-fit: cover;
+      filter: saturate(1.18) contrast(1.08) brightness(0.78);
+    }
+
+    .aurora {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(48cqw 34cqw at 20% 78%, rgba(0, 196, 255, 0.2), transparent 64%),
+        radial-gradient(46cqw 32cqw at 82% 24%, rgba(217, 119, 87, 0.16), transparent 62%),
+        radial-gradient(36cqw 30cqw at 54% 52%, rgba(108, 92, 231, 0.12), transparent 65%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.36));
+      pointer-events: none;
+    }
+
+    .grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.045;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      background-image: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.7) 0 1px, transparent 1px 3px);
+    }
+
+    .frame-mark {
+      position: absolute;
+      inset: 5.5%;
+      border: 1px solid rgba(245, 245, 247, 0.08);
+      pointer-events: none;
+    }
+
+    .tick {
+      position: absolute;
+      width: 1.6cqw;
+      height: 1.6cqw;
+      border-color: rgba(245, 245, 247, 0.42);
+      border-style: solid;
+      border-width: 0;
+      pointer-events: none;
+    }
+    .tick.tl { top: 4.7%; left: 4.7%; border-top-width: 2px; border-left-width: 2px; }
+    .tick.tr { top: 4.7%; right: 4.7%; border-top-width: 2px; border-right-width: 2px; }
+    .tick.bl { bottom: 4.7%; left: 4.7%; border-bottom-width: 2px; border-left-width: 2px; }
+    .tick.br { bottom: 4.7%; right: 4.7%; border-bottom-width: 2px; border-right-width: 2px; }
+
+    .ghost {
+      position: absolute;
+      left: -5%;
+      top: -10%;
+      font-size: 27cqw;
+      line-height: 0.82;
+      font-weight: 900;
+      letter-spacing: 0;
+      color: rgba(245, 245, 247, 0.045);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .rule {
+      position: absolute;
+      left: 6%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(0, 196, 255, 0.24);
+      pointer-events: none;
+    }
+
+    .rule::before,
+    .rule::after {
+      content: "";
+      position: absolute;
+      left: -0.7cqw;
+      width: 1.4cqw;
+      height: 1px;
+      background: rgba(0, 196, 255, 0.42);
+    }
+    .rule::before { top: 28%; }
+    .rule::after { bottom: 28%; }
+
+    .glass-card {
+      position: absolute;
+      left: var(--card-left);
+      top: var(--card-top);
+      width: var(--card-width);
+      height: var(--card-height);
+      padding: 8.9% 7.5%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 2.92cqw;
+      background: linear-gradient(
+        160deg,
+        rgba(255, 255, 255, 0.11) 0%,
+        rgba(255, 255, 255, 0.045) 42%,
+        rgba(255, 255, 255, 0.018) 70%,
+        rgba(255, 255, 255, 0.075) 100%
+      );
+      border: 1px solid rgba(255, 255, 255, 0.17);
+      box-shadow:
+        0 1.6cqw 4.8cqw rgba(0, 0, 0, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(14px) saturate(1.12);
+      -webkit-backdrop-filter: blur(14px) saturate(1.12);
+    }
+
+    .glass-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 18% 78%, rgba(73, 242, 255, 0.14), transparent 38%),
+        radial-gradient(circle at 82% 22%, rgba(255, 79, 216, 0.11), transparent 34%);
+      pointer-events: none;
+    }
+
+    .glass-card::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: calc(2.92cqw - 1px);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+      pointer-events: none;
+    }
+
+    .copy {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      margin: 0;
+      color: #fff;
+      letter-spacing: 0;
+      text-shadow:
+        -0.28cqw 0 0.9cqw rgba(73, 242, 255, 0.36),
+        0.28cqw 0 0.9cqw rgba(255, 79, 216, 0.25),
+        0 1.25cqw 4cqw rgba(0, 0, 0, 0.58);
+    }
+
+    .copy span {
+      display: block;
+      white-space: nowrap;
+      letter-spacing: 0;
+    }
+
+    .mono { font-family: "JetBrains Mono", monospace; }
+    .serif { font-family: "DM Serif Display", serif; font-weight: 400; font-style: italic; }
+    .muted { color: rgba(245, 245, 247, 0.72); }
+    .cyan { color: #5fdcff; }
+    .lime { color: var(--lime); }
+    .green { color: var(--green); }
+    .orange { color: #ff9b5f; }
+    .gradient {
+      background: linear-gradient(100deg, #5fdcff 0%, #6c5ce7 48%, #ff8a5c 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    .v1 { text-align: left; }
+    .v1 .l1 { font-size: 6.2cqw; line-height: 0.92; font-weight: 800; color: rgba(245, 245, 247, 0.78); }
+    .v1 .l2 { font-size: 13.6cqw; line-height: 0.86; font-weight: 900; }
+    .v1 .l3 { font-size: 12.9cqw; line-height: 0.86; font-weight: 900; }
+
+    .v2 { text-align: center; }
+    .v2 .l1 { font-size: 4.5cqw; line-height: 1; font-weight: 700; margin-bottom: 1cqw; }
+    .v2 .l2 { font-size: 12.4cqw; line-height: 0.86; font-weight: 900; }
+    .v2 .l3 { font-size: 12.2cqw; line-height: 0.86; font-weight: 900; }
+
+    .v3 { text-align: left; align-self: flex-end; padding-bottom: 2.2cqw; }
+    .v3 .l1 { font-size: 4.6cqw; line-height: 1; font-weight: 500; color: rgba(245, 245, 247, 0.72); margin-bottom: 1.2cqw; }
+    .v3 .l2 { font-size: 11.4cqw; line-height: 0.9; font-weight: 800; }
+    .v3 .l3 { font-size: 14.2cqw; line-height: 0.86; font-weight: 900; }
+
+    .v4 { text-align: center; }
+    .v4 .l1 { font-size: 3.4cqw; line-height: 1; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan); margin-bottom: 1.5cqw; }
+    .v4 .l2 { font-size: 5.1cqw; line-height: 1.05; font-weight: 500; color: rgba(245, 245, 247, 0.78); }
+    .v4 .l3 { font-size: 12.8cqw; line-height: 0.86; font-weight: 900; }
+
+    .v5 { text-align: right; align-self: flex-end; padding-bottom: 2cqw; }
+    .v5 .l1 { font-size: 5.2cqw; line-height: 0.96; font-weight: 800; }
+    .v5 .l2 { font-size: 15.1cqw; line-height: 0.82; font-weight: 900; }
+    .v5 .l3 { font-size: 4.6cqw; line-height: 1; font-weight: 700; color: rgba(245, 245, 247, 0.78); margin-top: 0.8cqw; }
+
+    .v6 {
+      position: relative;
+      height: 100%;
+      text-align: left;
+    }
+    .v6 .l1,
+    .v6 .l2,
+    .v6 .l3 {
+      position: absolute;
+    }
+    .v6 .l1 {
+      left: 0;
+      top: 0;
+      font-size: 8.4cqw;
+      line-height: 0.88;
+      font-weight: 800;
+      color: #fff;
+    }
+    .v6 .l2 {
+      left: 4.2cqw;
+      top: 9.1cqw;
+      font-size: 15.2cqw;
+      line-height: 0.78;
+      font-weight: 900;
+    }
+    .v6 .l3 {
+      right: 0;
+      bottom: 0;
+      width: 49cqw;
+      display: flex;
+      justify-content: flex-end;
+      align-items: baseline;
+      font-size: 8.4cqw;
+      line-height: 0.88;
+      font-weight: 800;
+    }
+    .v6 .period {
+      margin-left: 0.25cqw;
+    }
+
+    .v7 { text-align: center; }
+    .v7 .l1 { font-size: 6cqw; line-height: 1; font-weight: 800; }
+    .v7 .l2 { font-size: 15.6cqw; line-height: 0.8; font-weight: 900; }
+    .v7 .l3 { font-size: 5.1cqw; line-height: 1; font-weight: 600; color: rgba(245, 245, 247, 0.76); margin-top: 0.8cqw; }
+
+    .v8 { text-align: left; padding-left: 2.2cqw; }
+    .v8 .l1 { font-size: 3.6cqw; line-height: 1; font-weight: 700; color: var(--cyan); letter-spacing: 0.05em; text-transform: uppercase; }
+    .v8 .l2 { font-size: 12.2cqw; line-height: 0.86; font-weight: 900; }
+    .v8 .l3 { font-size: 11.3cqw; line-height: 0.86; font-weight: 900; }
+
+    @media (max-width: 760px) {
+      body { padding: 12px; }
+      header { display: block; }
+      .spec { margin-top: 14px; text-align: left; }
+      .option-head { align-items: flex-start; }
+      .note { max-width: 52%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Now Natively Supported</h1>
+      <p class="sub">Eight static keyframe directions for replacing the VFX card payoff. Each preview uses the production glass-card proportions: 120 / 67.5 / 1680 / 945 inside a 1920 by 1080 frame.</p>
+    </div>
+    <div class="spec">copy: <b>Now natively supported</b><br>reference: playground launch</div>
+  </header>
+
+  <main class="grid" aria-label="Contact sheet of eight native support card options">
+    <article class="option">
+      <div class="option-head"><div class="tag">01 / Launch Stack</div><div class="note">Inter, low-left editorial weight</div></div>
+      <section class="preview" aria-label="Option 1">
+        <video class="bg" src="../assets/bg-2.mp4" muted playsinline autoplay loop></video>
+        <div class="aurora"></div><div class="grain"></div><div class="frame-mark"></div>
+        <div class="tick tl"></div><div class="tick tr"></div><div class="tick bl"></div><div class="tick br"></div>
+        <div class="glass-card"><h2 class="copy v1"><span class="l1">Now</span><span class="l2 gradient">natively</span><span class="l3">supported.</span></h2></div>
+      </section>
+    </article>
+
+    <article class="option">
+      <div class="option-head"><div class="tag">02 / Command Accent</div><div class="note">Mono prompt cue, centered</div></div>
+      <section class="preview" aria-label="Option 2">
+        <video class="bg" src="../assets/bg-2.mp4" muted playsinline autoplay loop></video>
+        <div class="aurora"></div><div class="rule"></div><div class="grain"></div>
+        <div class="glass-card"><h2 class="copy v2"><span class="l1 mono cyan">$ native: true</span><span class="l2">Now natively</span><span class="l3 gradient">supported</span></h2></div>
+      </section>
+    </article>
+
+    <article class="option">
+      <div class="option-head"><div class="tag">03 / Playground Payoff</div><div class="note">Big gradient noun, bottom anchored</div></div>
+      <section class="preview" aria-label="Option 3">
+        <video class="bg" src="../assets/bg-2.mp4" muted playsinline autoplay loop></video>
+        <div class="aurora"></div><div class="ghost">NATIVE</div><div class="grain"></div>
+        <div class="glass-card"><h2 class="copy v3"><span class="l1">Now</span><span class="l2">natively</span><span class="l3 gradient">supported.</span></h2></div>
+      </section>
+    </article>
+
+    <article class="option">
+      <div class="option-head"><div class="tag">04 / Product Lockup</div><div class="note">Tiny label plus one clean phrase</div></div>
+      <section class="preview" aria-label="Option 4">
+        <video class="bg" src="../assets/bg-2.mp4" muted playsinline autoplay loop></video>
+        <div class="aurora"></div><div class="grain"></div><div class="frame-mark"></div>
+        <div class="glass-card"><h2 class="copy v4"><span class="l1 mono">HyperFrames</span><span class="l2">Now natively</span><span class="l3 lime">supported</span></h2></div>
+      </section>
+    </article>
+
+    <article class="option">
+      <div class="option-head"><div class="tag">05 / Slam Word</div><div class="note">Single hero word, compact support line</div></div>
+      <section class="preview" aria-label="Option 5">
+        <video class="bg" src="../assets/bg-2.mp4" muted playsinline autoplay loop></video>
+        <div class="aurora"></div><div class="grain"></div><div class="ghost">SUPPORTED</div>
+        <div class="glass-card"><h2 class="copy v5"><span class="l1">Now natively</span><span class="l2 orange">supported</span><span class="l3 mono">in HyperFrames</span></h2></div>
+      </section>
+    </article>
+
+    <article class="option">
+      <div class="option-head"><div class="tag">06 / Serif Contrast</div><div class="note">Playground poster warmth</div></div>
+      <section class="preview" aria-label="Option 6">
+        <video class="bg" src="../assets/bg-2.mp4" muted playsinline autoplay loop></video>
+        <div class="aurora"></div><div class="grain"></div><div class="frame-mark"></div>
+        <div class="glass-card"><h2 class="copy v6"><span class="l1">Now</span><span class="l2 serif lime">natively</span><span class="l3">supported<span class="period">.</span></span></h2></div>
+      </section>
+    </article>
+
+    <article class="option">
+      <div class="option-head"><div class="tag">07 / Badge Energy</div><div class="note">Lime native cue, social-card simple</div></div>
+      <section class="preview" aria-label="Option 7">
+        <video class="bg" src="../assets/bg-2.mp4" muted playsinline autoplay loop></video>
+        <div class="aurora"></div><div class="grain"></div>
+        <div class="glass-card"><h2 class="copy v7"><span class="l1">Now</span><span class="l2 green">native</span><span class="l3">support built in</span></h2></div>
+      </section>
+    </article>
+
+    <article class="option">
+      <div class="option-head"><div class="tag">08 / Terminal Poster</div><div class="note">Mono label, high-contrast final word</div></div>
+      <section class="preview" aria-label="Option 8">
+        <video class="bg" src="../assets/bg-2.mp4" muted playsinline autoplay loop></video>
+        <div class="aurora"></div><div class="rule"></div><div class="grain"></div>
+        <div class="glass-card"><h2 class="copy v8"><span class="l1 mono">runtime update</span><span class="l2">Now natively</span><span class="l3 gradient">supported</span></h2></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

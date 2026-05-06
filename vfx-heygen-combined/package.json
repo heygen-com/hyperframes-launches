@@ -1,0 +1,10 @@
+{
+  "name": "vfx-heygen-combined",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes preview",
+    "check": "npx --yes hyperframes lint && npx --yes hyperframes validate && npx --yes hyperframes inspect",
+    "render": "npx --yes hyperframes render --workers 1"
+  }
+}
