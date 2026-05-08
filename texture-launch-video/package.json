@@ -1,0 +1,10 @@
+{
+  "name": "texture-launch-video",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate": "npx hyperframes validate .",
+    "preview": "npx hyperframes preview .",
+    "render": "npx hyperframes render . --output renders/texture-launch-video.mp4"
+  }
+}

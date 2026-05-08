@@ -1,0 +1,2167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Texture Launch Rip</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@500;700;800;900&display=block");
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #f6f5f1;
+        font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+
+      #texture-launch-rip {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #f6f5f1;
+        color: #000000;
+        perspective: 1800px;
+      }
+
+      .scene {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+
+      .intro {
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 110px 120px;
+        background: #f6f5f1;
+      }
+
+      .intro-stack {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .intro-line {
+        display: inline-flex;
+        align-items: baseline;
+        width: max-content;
+        max-width: 100%;
+        margin: 0;
+        color: #0a0a0a;
+        font-size: 78px;
+        font-weight: 900;
+        line-height: 0.96;
+        letter-spacing: 0;
+        white-space: nowrap;
+      }
+
+      .intro-hey,
+      .intro-rest {
+        display: inline-block;
+      }
+
+      .intro-rest {
+        display: inline-flex;
+        gap: 0.22em;
+        margin-left: 0.22em;
+      }
+
+      .intro-word {
+        display: inline-block;
+      }
+
+      .outro-word {
+        display: inline-block;
+      }
+
+      .outro {
+        z-index: -1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 110px 120px;
+        background: #f6f5f1;
+      }
+
+      .outro-stack {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .outro-copy {
+        display: inline-flex;
+        gap: 0.22em;
+      }
+
+      .final-text-scene {
+        z-index: -1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 110px 120px;
+        background: #f6f5f1;
+      }
+
+      .final-text-stack {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .final-text-copy {
+        display: inline-flex;
+        gap: 0.22em;
+      }
+
+      .final-text-word {
+        display: inline-block;
+      }
+
+      .feel-scene {
+        z-index: -1;
+        background: #f0e0a0;
+      }
+
+      .end-white-scene {
+        z-index: -1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 110px 120px;
+        background: #f6f5f1;
+      }
+
+      .end-white-stack {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .like-word {
+        display: inline-block;
+      }
+
+      .metal-word {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
+        margin: 0;
+        color: transparent;
+        opacity: 0;
+        background-color: transparent;
+        background-image:
+          linear-gradient(115deg, #cfd6e3 0%, #ffffff 24%, #9da8ba 58%, #d9dee8 100%),
+          url("assets/texture-mask-text/masks/diamond-plate-009.png");
+        background-blend-mode: multiply;
+        background-size: 130% 100%, 150% 150%;
+        background-position: center, 48% 50%;
+        background-repeat: repeat;
+        -webkit-background-clip: text;
+        background-clip: text;
+        font-family:
+          "Georgia",
+          "Times New Roman",
+          Inter,
+          serif;
+        font-size: 430px;
+        font-weight: 700;
+        font-style: italic;
+        line-height: 0.74;
+        letter-spacing: 0;
+        text-align: center;
+        text-transform: uppercase;
+        transform: translateY(-50%);
+        filter: drop-shadow(0 16px 34px rgba(0, 0, 0, 0.18));
+        -webkit-text-stroke: 1px rgba(130, 140, 160, 0.28);
+      }
+
+      .also-use-copy {
+        position: absolute;
+        display: inline-flex;
+        gap: 0.22em;
+      }
+
+      .also-use-word {
+        display: inline-block;
+      }
+
+      .bunch-copy {
+        position: absolute;
+        display: inline-flex;
+        gap: 0.22em;
+      }
+
+      .bunch-word {
+        display: inline-block;
+      }
+
+      .paving-word {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
+        margin: 0;
+        color: transparent;
+        opacity: 0;
+        background-color: transparent;
+        background-image:
+          linear-gradient(#693f26, #693f26),
+          url("assets/texture-mask-text/masks/paving-stones-150.png");
+        background-blend-mode: multiply;
+        background-size: 125% 100%, 150% 150%;
+        background-position: center, 52% 50%;
+        background-repeat: repeat;
+        -webkit-background-clip: text;
+        background-clip: text;
+        font-family:
+          "Georgia",
+          "Times New Roman",
+          Inter,
+          serif;
+        font-size: 375px;
+        font-weight: 700;
+        font-style: italic;
+        line-height: 0.84;
+        letter-spacing: 0;
+        text-align: center;
+        text-transform: uppercase;
+        transform: translateY(-50%);
+        filter: drop-shadow(0 18px 34px rgba(105, 63, 38, 0.28));
+        -webkit-text-stroke: 1px rgba(105, 63, 38, 0.24);
+      }
+
+      .shader-scene {
+        z-index: -1;
+        background: #050508;
+      }
+
+      .shader-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        filter: saturate(1.08) contrast(1.04);
+      }
+
+      .shader-glass-card {
+        position: absolute;
+        left: 120px;
+        top: 67.5px;
+        width: 1680px;
+        height: 945px;
+        padding: 96px 126px;
+        box-sizing: border-box;
+        border-radius: 56px;
+        overflow: hidden;
+        opacity: 0;
+        background: linear-gradient(
+          160deg,
+          rgba(255, 255, 255, 0.13) 0%,
+          rgba(255, 255, 255, 0.052) 42%,
+          rgba(255, 255, 255, 0.02) 70%,
+          rgba(255, 255, 255, 0.08) 100%
+        );
+        backdrop-filter: blur(14px) saturate(1.12);
+        -webkit-backdrop-filter: blur(14px) saturate(1.12);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow:
+          0 30px 90px rgba(0, 0, 0, 0.42),
+          inset 0 1px 0 rgba(255, 255, 255, 0.22);
+        transform-origin: 50% 50%;
+      }
+
+      .shader-glass-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 18% 78%, rgba(73, 242, 255, 0.14), transparent 38%),
+          radial-gradient(circle at 82% 22%, rgba(255, 79, 216, 0.11), transparent 34%);
+        pointer-events: none;
+      }
+
+      .shader-glass-card::after {
+        content: "";
+        position: absolute;
+        inset: 1px;
+        border-radius: 55px;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+        pointer-events: none;
+      }
+
+      .shader-card-copy {
+        position: absolute;
+        z-index: 1;
+        inset: 96px 126px;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-size: 260px;
+        line-height: 0.88;
+        font-weight: 900;
+        letter-spacing: 0;
+        text-align: center;
+        text-shadow:
+          -5px 0 18px rgba(73, 242, 255, 0.38),
+          5px 0 18px rgba(255, 79, 216, 0.28),
+          0 24px 80px rgba(0, 0, 0, 0.58);
+      }
+
+      .shader-title {
+        text-transform: uppercase;
+      }
+
+      .shader-use-copy {
+        gap: 0.22em;
+        flex-wrap: wrap;
+        align-content: center;
+        font-size: 128px;
+        line-height: 0.94;
+      }
+
+      .shader-use-word {
+        display: inline-block;
+      }
+
+      .transitions-text-scene {
+        z-index: -1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 110px 120px;
+        background: #f6f5f1;
+      }
+
+      .transitions-text-stack {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .transitions-copy {
+        display: inline-flex;
+        gap: 0.22em;
+      }
+
+      .transitions-word {
+        display: inline-block;
+      }
+
+      .find-text-scene {
+        z-index: -1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 110px 120px;
+        background: #f6f5f1;
+        opacity: 0;
+      }
+
+      .find-text-stack {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .find-text-copy {
+        display: inline-flex;
+        gap: 0.22em;
+      }
+
+      .find-word {
+        display: inline-block;
+      }
+
+      .find-link-copy,
+      .end-zoom-copy {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        font-size: 72px;
+        font-weight: 700;
+        transform: translate(-50%, -50%);
+      }
+
+      .end-zoom-copy {
+        font-size: 76px;
+        font-weight: 900;
+      }
+
+      .end-zoom-one,
+      .end-zoom-two {
+        font-weight: 700;
+      }
+
+      .terminal-command-copy {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
+        margin: 0;
+        color: #0a0a0a;
+        font-family:
+          "IBM Plex Mono",
+          "SF Mono",
+          Menlo,
+          monospace;
+        font-size: 58px;
+        font-weight: 700;
+        letter-spacing: 0;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        transform: translateY(-50%);
+      }
+
+      .terminal-command-inner {
+        display: inline-block;
+      }
+
+      .terminal-char {
+        display: inline-block;
+      }
+
+      .domain-warp-canvas {
+        position: absolute;
+        z-index: 40;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        display: none;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .domain-warp-capture-scene {
+        position: absolute;
+        z-index: -20;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 110px 120px;
+        background: #f6f5f1;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .domain-warp-capture-line {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.22em;
+        width: max-content;
+        max-width: 100%;
+        margin: 0;
+        color: #0a0a0a;
+        font-size: 78px;
+        font-weight: 900;
+        line-height: 0.96;
+        letter-spacing: 0;
+        white-space: nowrap;
+      }
+
+      .domain-warp-capture-line span {
+        display: inline-block;
+      }
+
+      .feel-look {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        opacity: 0;
+        background: var(--feel-bg);
+        color: var(--feel-ink);
+      }
+
+      .feel-look::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+        background-size: 72px 72px;
+        opacity: 0.08;
+        mix-blend-mode: soft-light;
+      }
+
+      .feel-photo {
+        position: absolute;
+        z-index: 2;
+        right: 170px;
+        top: 112px;
+        width: 590px;
+        height: 650px;
+        border-radius: 16px;
+        background-image: var(--ref-image);
+        background-size: cover;
+        background-position: center;
+        box-shadow: 0 26px 72px rgba(0, 0, 0, 0.18);
+      }
+
+      .feel-paper {
+        position: absolute;
+        z-index: 3;
+        border-radius: 16px;
+        background: var(--fill);
+        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+      }
+
+      .feel-paper-a {
+        left: 170px;
+        bottom: 170px;
+        width: 420px;
+        height: 170px;
+      }
+
+      .feel-paper-b {
+        left: 690px;
+        bottom: 180px;
+        width: 290px;
+        height: 170px;
+      }
+
+      .feel-line {
+        position: absolute;
+        z-index: 4;
+        left: 180px;
+        top: 740px;
+        width: 1000px;
+        height: 5px;
+        border-radius: 999px;
+        background: var(--line-fill);
+      }
+
+      .feel-word-wrap {
+        position: absolute;
+        z-index: 8;
+        left: 150px;
+        top: 150px;
+        width: 1080px;
+        height: 470px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.2));
+      }
+
+      .feel-word {
+        color: transparent;
+        background-color: transparent;
+        background-image: var(--solid-fill), var(--texture-url);
+        background-blend-mode: multiply;
+        background-size: 100% 100%, 125% 125%;
+        background-position: center, var(--mask-position, 40% 50%);
+        background-repeat: repeat;
+        -webkit-background-clip: text;
+        background-clip: text;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 315px;
+        font-weight: 500;
+        font-style: italic;
+        line-height: 0.85;
+        letter-spacing: 0;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .feel-fine {
+        position: absolute;
+        z-index: 9;
+        left: 180px;
+        top: 795px;
+        max-width: 360px;
+        color: color-mix(in srgb, var(--feel-ink) 76%, transparent);
+        font-family:
+          "IBM Plex Mono",
+          "SF Mono",
+          monospace;
+        font-size: 18px;
+        line-height: 1.25;
+        text-transform: uppercase;
+      }
+
+      .feel-caption {
+        position: absolute;
+        right: 70px;
+        bottom: 42px;
+        z-index: 9;
+        color: color-mix(in srgb, var(--feel-ink) 82%, transparent);
+        font-family:
+          "IBM Plex Mono",
+          "SF Mono",
+          monospace;
+        font-size: 34px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .mask-scene {
+        z-index: -1;
+        background: #c080ff;
+      }
+
+      .mask-look {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        opacity: 0;
+        background: var(--mask-bg);
+        color: var(--mask-ink);
+      }
+
+      .mask-look::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+        background-size: 72px 72px;
+        opacity: 0.18;
+        mix-blend-mode: soft-light;
+      }
+
+      .mask-look::after {
+        content: "";
+        position: absolute;
+        inset: 44px;
+        border: 5px solid rgba(255, 255, 255, 0.22);
+        border-radius: 4px;
+      }
+
+      .mask-label {
+        position: absolute;
+        left: 70px;
+        top: 36px;
+        z-index: 9;
+        padding: 13px 26px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.58);
+        color: rgba(255, 255, 255, 0.92);
+        font-family:
+          "IBM Plex Mono",
+          "SF Mono",
+          monospace;
+        font-size: 38px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .mask-label::before {
+        content: attr(data-label);
+      }
+
+      .mask-card {
+        position: absolute;
+        z-index: 2;
+        border-radius: 16px;
+        background: var(--fill);
+        box-shadow: 0 24px 62px rgba(0, 0, 0, 0.14);
+        overflow: hidden;
+      }
+
+      .mask-photo {
+        left: 235px;
+        top: 160px;
+        width: 500px;
+        height: 420px;
+        background-image: var(--ref-image);
+        background-size: cover;
+        background-position: center;
+      }
+
+      .mask-card-a {
+        right: 170px;
+        top: 112px;
+        width: 490px;
+        height: 255px;
+      }
+
+      .mask-card-b {
+        right: 285px;
+        bottom: 155px;
+        width: 780px;
+        height: 310px;
+      }
+
+      .mask-card-c {
+        left: 300px;
+        bottom: 92px;
+        width: 420px;
+        height: 255px;
+      }
+
+      .mask-scribble {
+        position: absolute;
+        z-index: 3;
+        right: 305px;
+        bottom: 260px;
+        width: 330px;
+        height: 140px;
+        border: 16px solid color-mix(in srgb, var(--mask-ink) 78%, transparent);
+        border-left-color: transparent;
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        transform: rotate(-20deg);
+        opacity: 0.78;
+      }
+
+      .mask-selection {
+        position: absolute;
+        z-index: 7;
+        left: 138px;
+        top: 145px;
+        width: 1645px;
+        height: 785px;
+        border: 3px solid rgba(217, 164, 255, 0.72);
+      }
+
+      .mask-handle {
+        position: absolute;
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: 0 0 0 8px #b16dff;
+      }
+
+      .mask-handle.h1 {
+        left: 120px;
+        top: 160px;
+      }
+
+      .mask-handle.h2 {
+        right: 500px;
+        top: 160px;
+      }
+
+      .mask-handle.h3 {
+        left: 270px;
+        bottom: 205px;
+      }
+
+      .mask-handle.h4 {
+        right: 500px;
+        bottom: 205px;
+      }
+
+      .mask-caption {
+        position: absolute;
+        right: 70px;
+        bottom: 42px;
+        z-index: 9;
+        color: color-mix(in srgb, var(--mask-ink) 82%, transparent);
+        font-family:
+          "IBM Plex Mono",
+          "SF Mono",
+          monospace;
+        font-size: 34px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .mask-word-wrap {
+        position: absolute;
+        z-index: 8;
+        left: 120px;
+        top: 260px;
+        width: 1680px;
+        height: 410px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.28));
+      }
+
+      .mask-word {
+        width: 100%;
+        color: transparent;
+        background-color: transparent;
+        background-image: var(--solid-fill), var(--texture-url);
+        background-blend-mode: multiply;
+        background-size: 100% 100%, var(--mask-size, 150% 150%);
+        background-position: center, var(--mask-position, center);
+        background-repeat: repeat;
+        -webkit-background-clip: text;
+        background-clip: text;
+        font-family:
+          Impact,
+          "Arial Black",
+          Inter,
+          sans-serif;
+        font-size: 470px;
+        font-weight: 900;
+        line-height: 0.74;
+        letter-spacing: 0;
+        text-align: center;
+        text-transform: uppercase;
+        white-space: nowrap;
+        transform: scaleX(0.78);
+        transform-origin: center;
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.22);
+      }
+
+      .texture-scene {
+        z-index: 1;
+        background: #ff4050;
+        color: #101127;
+        perspective: 1800px;
+      }
+
+      .texture-card {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        transform-origin: 50% 50%;
+        will-change: transform, filter, opacity;
+      }
+
+      .texture-stage {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 70% 34%, color-mix(in srgb, var(--accent-a, #f020f0) 64%, transparent), transparent 0 13%, transparent 28%),
+          radial-gradient(circle at 22% 72%, color-mix(in srgb, var(--accent-b, #e6ff59) 46%, transparent), transparent 0 11%, transparent 28%),
+          var(--stage-bg, #c080ff);
+      }
+
+      .texture-stage::before {
+        content: "";
+        position: absolute;
+        inset: 44px;
+        border: 3px solid rgba(255, 255, 255, 0.45);
+        border-radius: 6px;
+      }
+
+      .texture-stage::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(rgba(255, 255, 255, 0.11) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+        background-size: 72px 72px;
+        opacity: 0.34;
+        mix-blend-mode: soft-light;
+      }
+
+      .collage-card {
+        position: absolute;
+        border-radius: 16px;
+        background: var(--fill);
+        box-shadow: 0 26px 72px rgba(0, 0, 0, 0.18);
+      }
+
+      .collage-card.ref {
+        background-image: var(--ref-image, url("canva-trend-references/prompt-playground.png"));
+        background-size: cover;
+        background-position: center;
+      }
+
+      .card-a {
+        left: 175px;
+        top: 212px;
+        width: 410px;
+        height: 515px;
+      }
+
+      .card-b {
+        right: 185px;
+        top: 165px;
+        width: 420px;
+        height: 315px;
+        --fill: var(--accent-c, #1020e0);
+      }
+
+      .card-c {
+        right: 285px;
+        bottom: 160px;
+        width: 470px;
+        height: 320px;
+        --fill: var(--accent-a, #90c0c0);
+      }
+
+      .card-d {
+        left: 310px;
+        bottom: 150px;
+        width: 350px;
+        height: 220px;
+        --fill: var(--accent-b, #e6ff59);
+      }
+
+      .selection-box {
+        position: absolute;
+        z-index: 5;
+        left: 138px;
+        top: 145px;
+        width: 1645px;
+        height: 785px;
+        border: 3px solid var(--frame-color, #d9a4ff);
+      }
+
+      .handle {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: 0 0 0 4px #b16dff;
+      }
+
+      .h1 {
+        left: -14px;
+        top: -14px;
+      }
+
+      .h2 {
+        right: -14px;
+        top: -14px;
+      }
+
+      .h3 {
+        left: -14px;
+        bottom: -14px;
+      }
+
+      .h4 {
+        right: -14px;
+        bottom: -14px;
+      }
+
+      .texture-wrap {
+        position: absolute;
+        z-index: 6;
+        left: 70px;
+        top: 320px;
+        width: 1780px;
+        height: 330px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        filter: drop-shadow(0 22px 34px rgba(0, 0, 0, 0.28));
+      }
+
+      .rip-word {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: transparent;
+        opacity: 0;
+        background-color: transparent;
+        background-image: var(--solid-fill), var(--texture-url);
+        background-blend-mode: multiply;
+        background-size: 100% 100%, var(--mask-size, 165% 165%);
+        background-position: center, var(--mask-position, center);
+        background-repeat: repeat;
+        -webkit-background-clip: text;
+        background-clip: text;
+        font-family:
+          Impact,
+          "Arial Black",
+          Inter,
+          sans-serif;
+        font-size: 340px;
+        font-weight: 900;
+        line-height: 0.75;
+        letter-spacing: 0;
+        text-align: center;
+        text-transform: uppercase;
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+      }
+
+      .texture-meta {
+        position: absolute;
+        z-index: 7;
+        left: 154px;
+        bottom: 104px;
+        display: none;
+        align-items: center;
+        gap: 16px;
+        color: #101127;
+        font-family:
+          "IBM Plex Mono",
+          "SF Mono",
+          monospace;
+        font-size: 22px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .meta-pill {
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: #ffffff;
+      }
+
+      .frame-transition {
+        position: absolute;
+        z-index: 10;
+        left: 50%;
+        top: 50%;
+        width: 1645px;
+        height: 785px;
+        border: 4px solid rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.02);
+        filter: blur(0px);
+        box-shadow:
+          0 34px 90px rgba(0, 0, 0, 0.18),
+          inset 0 0 0 1px rgba(177, 109, 255, 0.4);
+        backdrop-filter: blur(4px);
+        transform-style: preserve-3d;
+      }
+
+      .frame-transition .handle {
+        width: 26px;
+        height: 26px;
+        box-shadow:
+          0 0 0 5px #b16dff,
+          0 10px 28px rgba(0, 0, 0, 0.18);
+      }
+
+      .frame-transition::before,
+      .frame-transition::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border: 2px solid rgba(177, 109, 255, 0.3);
+        transform: translateZ(-60px) scale(0.94);
+      }
+
+      .frame-transition::after {
+        transform: translateZ(-120px) scale(0.88);
+        opacity: 0.5;
+      }
+
+      .white-flash {
+        position: absolute;
+        z-index: 9;
+        inset: 0;
+        background: #ffffff;
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="texture-launch-rip"
+      data-composition-id="texture-launch-rip"
+        data-start="0"
+        data-width="1920"
+        data-height="1080"
+        data-duration="21.96"
+    >
+      <section class="scene texture-scene">
+        <div class="texture-card">
+          <div class="texture-stage">
+            <div class="collage-card ref card-a"></div>
+            <div class="collage-card card-b"></div>
+            <div class="collage-card card-c"></div>
+            <div class="collage-card card-d"></div>
+            <div class="selection-box">
+              <span class="handle h1"></span>
+              <span class="handle h2"></span>
+              <span class="handle h3"></span>
+              <span class="handle h4"></span>
+            </div>
+            <div class="texture-wrap" id="texture-wrap"></div>
+            <div class="texture-meta">
+              <span class="meta-pill">7 texture looks</span>
+              <span class="meta-pill">0.095s each</span>
+              <span class="meta-pill">texture-mask-text</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene intro">
+        <div class="intro-stack">
+          <p class="intro-line intro-question">
+            <span class="intro-hey">Hey</span><span class="intro-rest"><span class="intro-word">did</span><span class="intro-word">you</span><span class="intro-word">know</span><span class="intro-word">we</span><span class="intro-word">added</span></span>
+          </p>
+        </div>
+      </section>
+
+      <section class="scene outro">
+        <div class="outro-stack">
+          <p class="intro-line outro-copy">
+            <span class="outro-word">these</span><span class="outro-word">are</span><span class="outro-word">a</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="scene mask-scene">
+        <div id="mask-wrap"></div>
+      </section>
+
+      <section class="scene final-text-scene">
+        <div class="final-text-stack">
+          <p class="intro-line final-text-copy">
+            <span class="final-text-word">that</span><span class="final-text-word">give</span><span class="final-text-word">your</span><span class="final-text-word">video</span><span class="final-text-word">a</span><span class="final-text-word">different</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="scene feel-scene">
+        <div id="feel-wrap"></div>
+      </section>
+
+      <section class="scene end-white-scene">
+        <div class="end-white-stack">
+          <p class="intro-line like-word">like</p>
+          <p class="metal-word">Metal</p>
+          <p class="intro-line also-use-copy">
+            <span class="also-use-word">or</span><span class="also-use-word">our</span><span class="also-use-word">favorite</span>
+          </p>
+          <p class="paving-word">Paving Stones</p>
+          <p class="intro-line bunch-copy">
+            <span class="bunch-word">We've</span><span class="bunch-word">also</span><span class="bunch-word">added</span><span class="bunch-word">a</span><span class="bunch-word">bunch</span><span class="bunch-word">of</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="scene shader-scene">
+        <video
+          id="shader-bg-video"
+          class="shader-bg"
+          src="assets/vfx/shadertoy-frostbyte-dof.mp4"
+          data-start="10.5"
+          data-duration="6"
+          data-track-index="0"
+          preload="auto"
+          loop
+          muted
+          playsinline
+        ></video>
+        <div class="shader-glass-card">
+          <h2 class="shader-card-copy shader-title">shaders</h2>
+          <p class="shader-card-copy shader-use-copy">
+            <span class="shader-use-word">we</span><span class="shader-use-word">use</span><span class="shader-use-word">them</span><span class="shader-use-word">for</span><span class="shader-use-word">backgrounds</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="scene transitions-text-scene" id="transitions-text-scene">
+        <div class="transitions-text-stack">
+          <p class="intro-line transitions-copy">
+            <span class="transitions-word">or</span><span class="transitions-word">we</span><span class="transitions-word">use</span><span class="transitions-word">them</span><span class="transitions-word">for</span><span class="transitions-word">transitions</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="scene find-text-scene" id="find-text-scene">
+        <div class="find-text-stack">
+          <p class="intro-line find-text-copy">
+            <span class="find-word">You</span><span class="find-word">can</span><span class="find-word">find</span><span class="find-word">them</span><span class="find-word">at</span>
+          </p>
+          <p class="intro-line find-link-copy">hyperframes.heygen.com/catalog</p>
+          <p class="intro-line end-zoom-copy end-zoom-one">Once you've found one you like</p>
+          <p class="intro-line end-zoom-copy end-zoom-two">just simply type to your agent</p>
+          <p class="terminal-command-copy" aria-label="npx hyperframes add &lt;name&gt;">
+            <span class="terminal-command-inner"></span>
+          </p>
+        </div>
+      </section>
+
+      <canvas class="domain-warp-canvas" id="domain-warp-canvas" width="1920" height="1080"></canvas>
+
+      <section class="domain-warp-capture-scene" id="domain-warp-from" aria-hidden="true">
+        <p class="domain-warp-capture-line">
+          <span>or</span><span>we</span><span>use</span><span>them</span><span>for</span><span>transitions</span>
+        </p>
+      </section>
+
+      <section class="domain-warp-capture-scene" id="domain-warp-to" aria-hidden="true">
+        <p class="domain-warp-capture-line">
+          <span>You</span><span>can</span><span>find</span><span>them</span><span>at</span>
+        </p>
+      </section>
+
+      <div class="white-flash"></div>
+    </div>
+
+    <script src="assets/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+
+      const terminalCommand = document.querySelector(".terminal-command-inner");
+      const terminalText = "npx hyperframes add <name>";
+      const terminalType = { count: 0 };
+
+      const styleFrames = [
+        {
+          slug: "tiles-138",
+          fill: "#f020f0",
+          bg: "#ff4050",
+          accentA: "#7fb99f",
+          accentB: "#ffad62",
+          accentC: "#514fe8",
+          frame: "#ffd0d6",
+          ref: "reality-warp.png",
+          x: -8,
+          y: 0,
+          scale: 1,
+          maskSize: "166% 166%",
+          maskPosition: "42% 50%",
+        },
+        {
+          slug: "rock-058",
+          fill: "#00d6b0",
+          bg: "#ff4050",
+          accentA: "#00d6b0",
+          accentB: "#f6e668",
+          accentC: "#2f4dff",
+          frame: "#ffb6be",
+          ref: "reality-warp.png",
+          x: 10,
+          y: -7,
+          scale: 1.01,
+          maskSize: "182% 182%",
+          maskPosition: "60% 48%",
+        },
+        {
+          slug: "metal-048-a",
+          fill: "#7aa83f",
+          bg: "#d0a070",
+          accentA: "#f08010",
+          accentB: "#a0c040",
+          accentC: "#644432",
+          frame: "#f4c18d",
+          ref: "texture-check.png",
+          x: -4,
+          y: 8,
+          scale: 0.99,
+          maskSize: "155% 155%",
+          maskPosition: "50% 52%",
+        },
+        {
+          slug: "painted-plaster-017",
+          fill: "#e0e080",
+          bg: "#1050e0",
+          accentA: "#ff4b2b",
+          accentB: "#e0e080",
+          accentC: "#8bb7ff",
+          frame: "#d7e6ff",
+          ref: "notes-app-chic.png",
+          x: 12,
+          y: 4,
+          scale: 1.015,
+          maskSize: "174% 174%",
+          maskPosition: "36% 50%",
+        },
+        {
+          slug: "bricks-075-a",
+          fill: "#f02040",
+          bg: "#ff9000",
+          accentA: "#f02040",
+          accentB: "#a0d0f0",
+          accentC: "#7d236e",
+          frame: "#ffd097",
+          ref: "drama-club.png",
+          x: -12,
+          y: -3,
+          scale: 1.005,
+          maskSize: "160% 160%",
+          maskPosition: "58% 48%",
+        },
+        {
+          slug: "fabric-083",
+          fill: "#207060",
+          bg: "#ff70b0",
+          accentA: "#f0a030",
+          accentB: "#207060",
+          accentC: "#ffbde0",
+          frame: "#ffc4df",
+          ref: "granny-wave.png",
+          x: 5,
+          y: -10,
+          scale: 0.995,
+          maskSize: "190% 190%",
+          maskPosition: "44% 54%",
+        },
+        {
+          slug: "paving-stones-150",
+          fill: "#e08040",
+          bg: "#f0d020",
+          accentA: "#e08040",
+          accentB: "#90b0c0",
+          accentC: "#204060",
+          frame: "#fff0a0",
+          ref: "block-party.png",
+          x: -2,
+          y: 6,
+          scale: 1.012,
+          maskSize: "170% 170%",
+          maskPosition: "52% 50%",
+        },
+      ];
+
+      const wrap = document.getElementById("texture-wrap");
+      const maskWrap = document.getElementById("mask-wrap");
+      const feelWrap = document.getElementById("feel-wrap");
+      const stage = document.querySelector(".texture-stage");
+      const words = styleFrames.map((frame, index) => {
+        const word = document.createElement("div");
+        word.className = "rip-word";
+        word.textContent = "TEXTURE";
+        word.dataset.slug = frame.slug;
+        word.style.setProperty(
+          "--texture-url",
+          `url("assets/texture-mask-text/masks/${frame.slug}.png")`,
+        );
+        word.style.setProperty(
+          "--solid-fill",
+          `linear-gradient(${frame.fill}, ${frame.fill})`,
+        );
+        word.style.setProperty("--mask-position", frame.maskPosition);
+        word.style.setProperty("--mask-size", frame.maskSize);
+        wrap.appendChild(word);
+        return word;
+      });
+
+      const maskFrames = [
+        {
+          slug: "road-009-c",
+          bg: "#c080ff",
+          ink: "#101127",
+          fill: "#f020f0",
+          colors: ["#1020e0", "#f020f0", "#90c0c0", "#e6ff59"],
+          ref: "prompt-playground.png",
+          caption: "ROAD 009 C / #C080FF",
+          maskPosition: "62% 50%",
+        },
+        {
+          slug: "rock-058",
+          bg: "#ff4050",
+          ink: "#071614",
+          fill: "#00d6b0",
+          colors: ["#0080a0", "#00d6b0", "#202030", "#ffffff"],
+          ref: "reality-warp.png",
+          caption: "ROCK 058 / #FF4050",
+          maskPosition: "58% 50%",
+        },
+        {
+          slug: "travertine-009",
+          bg: "#f0e0a0",
+          ink: "#28313a",
+          fill: "#8090a0",
+          colors: ["#8090a0", "#d08050", "#ffffff", "#a0b0b0"],
+          ref: "explorecore.png",
+          caption: "TRAVERTINE 009 / #F0E0A0",
+          maskPosition: "50% 50%",
+        },
+        {
+          slug: "metal-048-a",
+          bg: "#d0a070",
+          ink: "#2d2116",
+          fill: "#a0c040",
+          colors: ["#f08010", "#ff3000", "#a0c040", "#d0c0a0"],
+          ref: "texture-check.png",
+          caption: "METAL 048 A / #D0A070",
+          maskPosition: "46% 50%",
+        },
+        {
+          slug: "fabric-080",
+          bg: "#1050e0",
+          ink: "#0a1020",
+          fill: "#e0e080",
+          colors: ["#e0e080", "#ff4b2b", "#e0e0d0", "#102010"],
+          ref: "notes-app-chic.png",
+          caption: "FABRIC 080 / #1050E0",
+          maskPosition: "54% 50%",
+        },
+        {
+          slug: "bricks-075-a",
+          bg: "#ff9000",
+          ink: "#120607",
+          fill: "#f02040",
+          colors: ["#000000", "#f02040", "#a0d0f0", "#ffffff"],
+          ref: "drama-club.png",
+          caption: "BRICKS 075 A / #FF9000",
+          maskPosition: "60% 50%",
+        },
+        {
+          slug: "tiles-138",
+          bg: "#ff70b0",
+          ink: "#2f1040",
+          fill: "#f0a030",
+          colors: ["#5000ff", "#f0a030", "#207060", "#904070"],
+          ref: "granny-wave.png",
+          caption: "TILES 138 / #FF70B0",
+          maskPosition: "50% 50%",
+        },
+        {
+          slug: "asphalt-031",
+          bg: "#a02030",
+          ink: "#0d0a0a",
+          fill: "#208060",
+          colors: ["#000000", "#208060", "#ff7a45", "#304050"],
+          ref: "zinegeist.png",
+          caption: "ASPHALT 031 / #A02030",
+          maskPosition: "58% 50%",
+        },
+        {
+          slug: "paving-stones-150",
+          bg: "#f0d020",
+          ink: "#221c0a",
+          fill: "#e08040",
+          colors: ["#e08040", "#90b0c0", "#708050", "#302020"],
+          ref: "block-party.png",
+          caption: "PAVING STONES 150 / #F0D020",
+          maskPosition: "52% 50%",
+        },
+      ];
+
+      const maskLooks = maskFrames.map((frame) => {
+        const look = document.createElement("div");
+        look.className = "mask-look";
+        look.style.setProperty("--mask-bg", frame.bg);
+        look.style.setProperty("--mask-ink", frame.ink);
+        look.style.setProperty("--ref-image", `url("canva-trend-references/${frame.ref}")`);
+
+        const photo = document.createElement("div");
+        photo.className = "mask-card mask-photo";
+
+        const cardA = document.createElement("div");
+        cardA.className = "mask-card mask-card-a";
+        cardA.style.setProperty("--fill", frame.colors[1]);
+
+        const cardB = document.createElement("div");
+        cardB.className = "mask-card mask-card-b";
+        cardB.style.setProperty("--fill", frame.colors[2]);
+
+        const cardC = document.createElement("div");
+        cardC.className = "mask-card mask-card-c";
+        cardC.style.setProperty("--fill", frame.colors[3]);
+
+        const scribble = document.createElement("div");
+        scribble.className = "mask-scribble";
+
+        const selection = document.createElement("div");
+        selection.className = "mask-selection";
+
+        ["h1", "h2", "h3", "h4"].forEach((name) => {
+          const handle = document.createElement("span");
+          handle.className = `mask-handle ${name}`;
+          selection.appendChild(handle);
+        });
+
+        const wordWrap = document.createElement("div");
+        wordWrap.className = "mask-word-wrap";
+
+        const word = document.createElement("div");
+        word.className = "mask-word";
+        word.textContent = "MASK";
+        word.style.setProperty(
+          "--texture-url",
+          `url("assets/texture-mask-text/masks/${frame.slug}.png")`,
+        );
+        word.style.setProperty("--solid-fill", `linear-gradient(${frame.fill}, ${frame.fill})`);
+        word.style.setProperty("--mask-position", frame.maskPosition);
+        word.style.setProperty("--mask-size", "150% 150%");
+
+        wordWrap.appendChild(word);
+        const caption = document.createElement("div");
+        caption.className = "mask-caption";
+        caption.textContent = frame.caption;
+
+        look.append(photo, cardA, cardB, cardC, scribble, selection, wordWrap, caption);
+        maskWrap.appendChild(look);
+        return look;
+      });
+
+      const feelFrames = [
+        {
+          slug: "diamond-plate-009",
+          bg: "#c080ff",
+          ink: "#101127",
+          fill: "#90c0c0",
+          colors: ["#1020e0", "#f020f0", "#e6ff59"],
+          ref: "prompt-playground.png",
+          caption: "DIAMOND PLATE 009 / #C080FF",
+          note: "pixel notes / retro compute / soft surreal motion",
+          maskPosition: "40% 50%",
+        },
+        {
+          slug: "snow-015",
+          bg: "#ff4050",
+          ink: "#071614",
+          fill: "#00d6b0",
+          colors: ["#0080a0", "#202030", "#ffffff"],
+          ref: "reality-warp.png",
+          caption: "SNOW 015 / #FF4050",
+          note: "warped surface / uncanny insert / hot field",
+          maskPosition: "46% 50%",
+        },
+        {
+          slug: "grass-005",
+          bg: "#f0e0a0",
+          ink: "#28313a",
+          fill: "#8090a0",
+          colors: ["#d08050", "#ffffff", "#a0b0b0"],
+          ref: "explorecore.png",
+          caption: "GRASS 005 / #F0E0A0",
+          note: "slow scroll / field notes / open air",
+          maskPosition: "42% 50%",
+        },
+        {
+          slug: "marble-016",
+          bg: "#d0a070",
+          ink: "#2d2116",
+          fill: "#a0c040",
+          colors: ["#f08010", "#ff3000", "#d0c0a0"],
+          ref: "texture-check.png",
+          caption: "MARBLE 016 / #D0A070",
+          note: "surface first / gloss / tactile type",
+          maskPosition: "50% 50%",
+        },
+        {
+          slug: "concrete-047-a",
+          bg: "#1050e0",
+          ink: "#0a1020",
+          fill: "#e0e080",
+          colors: ["#ff4b2b", "#e0e0d0", "#102010"],
+          ref: "notes-app-chic.png",
+          caption: "CONCRETE 047 A / #1050E0",
+          note: "camera roll / scrapbook / fast marks",
+          maskPosition: "44% 50%",
+        },
+        {
+          slug: "bricks-075-a",
+          bg: "#ff9000",
+          ink: "#120607",
+          fill: "#a0d0f0",
+          colors: ["#000000", "#f02040", "#ffffff"],
+          ref: "drama-club.png",
+          caption: "BRICKS 075 A / #FF9000",
+          note: "stage light / cinema interruption / timecode",
+          maskPosition: "48% 50%",
+        },
+        {
+          slug: "metal-041-a",
+          bg: "#ff70b0",
+          ink: "#2f1040",
+          fill: "#f0a030",
+          colors: ["#5000ff", "#207060", "#904070"],
+          ref: "granny-wave.png",
+          caption: "METAL 041 A / #FF70B0",
+          note: "ornament / pattern panels / festival color",
+          maskPosition: "38% 50%",
+        },
+        {
+          slug: "metal-038",
+          bg: "#a02030",
+          ink: "#0d0a0a",
+          fill: "#208060",
+          colors: ["#000000", "#ff7a45", "#304050"],
+          ref: "zinegeist.png",
+          caption: "METAL 038 / #A02030",
+          note: "xerox grit / poster fragments / analog bite",
+          maskPosition: "52% 50%",
+        },
+        {
+          slug: "ground-080",
+          bg: "#f0d020",
+          ink: "#221c0a",
+          fill: "#e08040",
+          colors: ["#90b0c0", "#708050", "#302020"],
+          ref: "block-party.png",
+          caption: "GROUND 080 / #F0D020",
+          note: "market wall / tile rhythm / warm collage",
+          maskPosition: "46% 50%",
+        },
+      ];
+
+      const feelLooks = feelFrames.map((frame) => {
+        const look = document.createElement("div");
+        look.className = "feel-look";
+        look.style.setProperty("--feel-bg", frame.bg);
+        look.style.setProperty("--feel-ink", frame.ink);
+        look.style.setProperty("--ref-image", `url("canva-trend-references/${frame.ref}")`);
+
+        const photo = document.createElement("div");
+        photo.className = "feel-photo";
+
+        const paperA = document.createElement("div");
+        paperA.className = "feel-paper feel-paper-a";
+        paperA.style.setProperty("--fill", frame.colors[0]);
+
+        const paperB = document.createElement("div");
+        paperB.className = "feel-paper feel-paper-b";
+        paperB.style.setProperty("--fill", frame.colors[1]);
+
+        const line = document.createElement("div");
+        line.className = "feel-line";
+        line.style.setProperty("--line-fill", frame.colors[2]);
+
+        const wordWrap = document.createElement("div");
+        wordWrap.className = "feel-word-wrap";
+
+        const word = document.createElement("div");
+        word.className = "feel-word";
+        word.textContent = "feel";
+        word.style.setProperty(
+          "--texture-url",
+          `url("assets/texture-mask-text/masks/${frame.slug}.png")`,
+        );
+        word.style.setProperty("--solid-fill", `linear-gradient(${frame.fill}, ${frame.fill})`);
+        word.style.setProperty("--mask-position", frame.maskPosition);
+
+        const fine = document.createElement("div");
+        fine.className = "feel-fine";
+        fine.textContent = frame.note;
+
+        const caption = document.createElement("div");
+        caption.className = "feel-caption";
+        caption.textContent = frame.caption;
+
+        wordWrap.appendChild(word);
+        look.append(photo, paperA, paperB, line, wordWrap, fine, caption);
+        feelWrap.appendChild(look);
+        return look;
+      });
+
+      function setStyleFrame(frame) {
+        stage.style.setProperty("--stage-bg", frame.bg);
+        stage.style.setProperty("--accent-a", frame.accentA);
+        stage.style.setProperty("--accent-b", frame.accentB);
+        stage.style.setProperty("--accent-c", frame.accentC);
+        stage.style.setProperty("--frame-color", frame.frame);
+        stage.style.setProperty("--ref-image", `url("canva-trend-references/${frame.ref}")`);
+      }
+
+      setStyleFrame(styleFrames[0]);
+
+      const tl = gsap.timeline({
+        paused: true,
+        defaults: { ease: "power3.out" },
+      });
+
+      gsap.set(".texture-scene", { opacity: 0 });
+      gsap.set(".texture-card", {
+        scale: 1.45,
+        filter: "blur(14px)",
+        opacity: 0,
+      });
+      gsap.set(words, { opacity: 0 });
+      gsap.set(words[0], {
+        opacity: 1,
+        x: styleFrames[0].x,
+        y: styleFrames[0].y,
+        scale: styleFrames[0].scale,
+      });
+      gsap.set(".intro-word", { x: 140, opacity: 0, filter: "blur(8px)" });
+      gsap.set(".intro-hey", { x: 260, opacity: 0, filter: "blur(6px)" });
+      gsap.set(".outro", { zIndex: -1 });
+      gsap.set(".outro-copy", { x: 0, opacity: 1, filter: "blur(0px)" });
+      gsap.set(".outro-word", { x: 0, opacity: 1, filter: "blur(0px)" });
+      gsap.set(".mask-scene", { zIndex: -1, opacity: 0 });
+      gsap.set(maskLooks, { opacity: 0, x: 0, filter: "blur(0px)" });
+      gsap.set(maskLooks[0], { opacity: 1 });
+      gsap.set(".final-text-scene", { zIndex: -1 });
+      gsap.set(".final-text-copy", { x: 0, opacity: 1, filter: "blur(0px)" });
+      gsap.set(".final-text-word", { x: 0, opacity: 1, filter: "blur(0px)" });
+      gsap.set(".feel-scene", { zIndex: -1, opacity: 0 });
+      gsap.set(feelLooks, { opacity: 0, x: 0, filter: "blur(0px)" });
+      gsap.set(feelLooks[0], { opacity: 1 });
+      gsap.set(".end-white-scene", { zIndex: -1, opacity: 0 });
+      gsap.set(".like-word", { x: 2400, opacity: 1, scale: 1, filter: "blur(0px)" });
+      gsap.set(".metal-word", { opacity: 0, scale: 0.75, filter: "blur(20px)" });
+      gsap.set(".also-use-copy", { opacity: 0, scale: 0.75, filter: "blur(20px)" });
+      gsap.set(".paving-word", { opacity: 0, scale: 0.75, filter: "blur(20px)" });
+      gsap.set(".bunch-word", { x: 2400, opacity: 1, filter: "blur(0px)" });
+      gsap.set(".shader-scene", { zIndex: -1, opacity: 0 });
+      gsap.set(".shader-bg", { opacity: 0 });
+      gsap.set(".shader-glass-card", { opacity: 0, scale: 1.45, filter: "blur(14px)" });
+      gsap.set(".shader-title", { opacity: 1, x: 0, filter: "blur(0px)" });
+      gsap.set(".shader-use-word", { opacity: 0, x: 2400, filter: "blur(8px)" });
+      gsap.set(".transitions-text-scene", { zIndex: -1 });
+      gsap.set(".transitions-word", { x: 2400, opacity: 1, filter: "blur(0px)" });
+      gsap.set(".find-text-scene", { zIndex: -1, opacity: 0 });
+      gsap.set(".find-word", { x: 0, opacity: 1, filter: "blur(0px)" });
+      gsap.set(".find-link-copy", { opacity: 0, scale: 0.75, filter: "blur(20px)" });
+      gsap.set(".end-zoom-copy", { opacity: 0, scale: 0.75, filter: "blur(20px)" });
+      gsap.set(".terminal-command-copy", { x: 2400, opacity: 1, filter: "blur(8px)" });
+      gsap.set("#domain-warp-canvas", { display: "none", opacity: 0 });
+
+      const domainWarp = (() => {
+        const canvas = document.getElementById("domain-warp-canvas");
+        const gl = canvas?.getContext("webgl", { preserveDrawingBuffer: true });
+        const width = 1920;
+        const height = 1080;
+        let ready = false;
+        let progPass;
+        let progTrans;
+        let quadBuf;
+        const textures = {};
+
+        function captureScene(sceneId) {
+          const scene = document.getElementById(sceneId);
+          const previous = {
+            opacity: scene.style.opacity,
+            zIndex: scene.style.zIndex,
+            display: scene.style.display,
+          };
+          scene.style.opacity = "1";
+          scene.style.zIndex = "999";
+          scene.style.display = "flex";
+          scene.offsetHeight;
+
+          const c = document.createElement("canvas");
+          c.width = width;
+          c.height = height;
+          const ctx = c.getContext("2d");
+          ctx.fillStyle = window.getComputedStyle(scene).backgroundColor;
+          ctx.fillRect(0, 0, width, height);
+
+          const sceneRect = scene.getBoundingClientRect();
+          scene.querySelectorAll("*").forEach((el) => {
+            const computed = window.getComputedStyle(el);
+            if (computed.display === "none" || computed.visibility === "hidden") return;
+            if (el.querySelector("*")) return;
+
+            const text = Array.from(el.childNodes)
+              .filter((node) => node.nodeType === 3)
+              .map((node) => node.textContent)
+              .join("")
+              .trim();
+            if (!text) return;
+
+            const rect = el.getBoundingClientRect();
+            if (rect.width < 1 || rect.height < 1) return;
+            ctx.save();
+            ctx.globalAlpha = parseFloat(computed.opacity) || 1;
+            ctx.font = `${computed.fontWeight} ${computed.fontSize} ${computed.fontFamily}`;
+            ctx.fillStyle = computed.color;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(
+              text,
+              rect.left - sceneRect.left + rect.width / 2,
+              rect.top - sceneRect.top + rect.height / 2,
+            );
+            ctx.restore();
+          });
+
+          scene.style.opacity = previous.opacity;
+          scene.style.zIndex = previous.zIndex;
+          scene.style.display = previous.display;
+          return c;
+        }
+
+        function makeTexture(source) {
+          const texture = gl.createTexture();
+          gl.bindTexture(gl.TEXTURE_2D, texture);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
+          return texture;
+        }
+
+        function compileShader(source, type) {
+          const shader = gl.createShader(type);
+          gl.shaderSource(shader, source);
+          gl.compileShader(shader);
+          if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            console.error("Domain warp shader:", gl.getShaderInfoLog(shader));
+          }
+          return shader;
+        }
+
+        function makeProgram(fragmentSource) {
+          const vertexSource =
+            "attribute vec2 a_pos; varying vec2 v_uv; void main(){" +
+            "v_uv=a_pos*0.5+0.5; v_uv.y=1.0-v_uv.y; gl_Position=vec4(a_pos,0,1);}";
+          const program = gl.createProgram();
+          gl.attachShader(program, compileShader(vertexSource, gl.VERTEX_SHADER));
+          gl.attachShader(program, compileShader(fragmentSource, gl.FRAGMENT_SHADER));
+          gl.linkProgram(program);
+          if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+            console.error("Domain warp link:", gl.getProgramInfoLog(program));
+          }
+          return program;
+        }
+
+        function ensureReady() {
+          if (ready) return true;
+          if (!gl) return false;
+
+          gl.viewport(0, 0, width, height);
+          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+          quadBuf = gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+          gl.bufferData(
+            gl.ARRAY_BUFFER,
+            new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
+            gl.STATIC_DRAW,
+          );
+
+          const header =
+            "precision mediump float;" +
+            "varying vec2 v_uv;" +
+            "uniform sampler2D u_from, u_to;" +
+            "uniform float u_progress;" +
+            "uniform vec2 u_resolution;\n";
+          const noise =
+            "float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}" +
+            "float vnoise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*f*(f*(f*6.-15.)+10.);" +
+            "return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);}" +
+            "float fbm(vec2 p){float v=0.,a=.5;mat2 R=mat2(.8,.6,-.6,.8);" +
+            "for(int i=0;i<5;i++){v+=a*vnoise(p);p=R*p*2.02;a*=.5;}return v;}";
+          const palette =
+            "vec3 palette(float t,vec3 a,vec3 b,vec3 c,vec3 d){return a+b*cos(6.2832*(c*t+d));}";
+          progPass = makeProgram(header + "void main(){gl_FragColor=texture2D(u_from,v_uv);}");
+          progTrans = makeProgram(
+            header +
+              noise +
+              palette +
+              "void main(){vec2 q=vec2(fbm(v_uv*3.),fbm(v_uv*3.+vec2(5.2,1.3)));vec2 r=vec2(fbm(v_uv*3.+q*4.+vec2(1.7,9.2)),fbm(v_uv*3.+q*4.+vec2(8.3,2.8)));float n=fbm(v_uv*3.+r*2.);vec2 warpDir=(q-.5)*.72;vec4 A=texture2D(u_from,clamp(v_uv+warpDir*u_progress,0.,1.));vec4 B=texture2D(u_to,clamp(v_uv-warpDir*(1.-u_progress),0.,1.));float e=smoothstep(u_progress-.16,u_progress+.16,n);float ed=abs(n-u_progress);float mid=sin(3.14159*u_progress);float em=smoothstep(.28,0.,ed)*(1.-step(1.,u_progress))*mid;vec3 ec=palette(n*2.+u_progress*1.4,vec3(.48),vec3(.52),vec3(1.),vec3(0.,.33,.67));vec3 base=mix(B,A,e).rgb;base*=1.-em*.32;vec3 pushed=mix(base,ec,em*.72);gl_FragColor=vec4(pushed+ec*em*1.35,1.);}",
+          );
+          textures.from = makeTexture(captureScene("domain-warp-from"));
+          textures.to = makeTexture(captureScene("domain-warp-to"));
+          ready = true;
+          return true;
+        }
+
+        function draw(program, fromTexture, toTexture, progress) {
+          gl.useProgram(program);
+          gl.activeTexture(gl.TEXTURE0);
+          gl.bindTexture(gl.TEXTURE_2D, fromTexture);
+          gl.uniform1i(gl.getUniformLocation(program, "u_from"), 0);
+          gl.activeTexture(gl.TEXTURE1);
+          gl.bindTexture(gl.TEXTURE_2D, toTexture);
+          gl.uniform1i(gl.getUniformLocation(program, "u_to"), 1);
+          gl.uniform1f(gl.getUniformLocation(program, "u_progress"), progress);
+          gl.uniform2f(gl.getUniformLocation(program, "u_resolution"), width, height);
+          const pos = gl.getAttribLocation(program, "a_pos");
+          gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+          gl.enableVertexAttribArray(pos);
+          gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+          gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        }
+
+        return {
+          render(progress) {
+            if (!ensureReady()) return false;
+            const clamped = gsap.utils.clamp(0, 1, progress);
+            draw(progTrans, textures.from, textures.to, clamped);
+            return true;
+          },
+          renderTo() {
+            if (!ensureReady()) return false;
+            draw(progPass, textures.to, textures.to, 1);
+            return true;
+          },
+        };
+      })();
+
+      tl.to(".intro-hey", { x: 0, opacity: 1, filter: "blur(0px)", duration: 0.46, ease: "expo.out" }, 0.18)
+        .to(".intro-word", { x: 0, opacity: 1, filter: "blur(0px)", duration: 0.42, stagger: 0.05, ease: "expo.out" }, 0.58)
+        .to(".intro-stack", { opacity: 0, filter: "blur(10px)", duration: 0.16, ease: "power2.in" }, 1.2)
+        .set(".texture-scene", { opacity: 1 }, 1.25)
+        .set(".intro", { zIndex: -1, x: -2400 }, 1.25)
+        .set(".intro-stack", { opacity: 1, filter: "blur(0px)" }, 1.25)
+        .set([".intro-hey", ".intro-word"], { opacity: 1, filter: "blur(0px)" }, 1.25)
+        .set(".intro-hey", { backgroundColor: "#f6f5f1" }, 1.25)
+        .set(".texture-card", { opacity: 1, scale: 1.18, filter: "blur(8px)" }, 1.25)
+        .to(
+          ".texture-card",
+          {
+            scale: 1,
+            filter: "blur(0px)",
+            opacity: 1,
+            duration: 0.22,
+            ease: "expo.out",
+          },
+          1.25,
+        );
+
+      const textureLandAt = 1.47;
+      const flashFrameStep = 0.105;
+      const flashFinalHold = 0.35;
+      const frameStep = flashFrameStep;
+      styleFrames.slice(1).forEach((frame, sequenceIndex) => {
+        const index = sequenceIndex + 1;
+        const at = textureLandAt + sequenceIndex * frameStep;
+        tl.set(words[index - 1], { opacity: 0 }, at);
+        tl.call(setStyleFrame, [frame], at);
+        tl.set(words[index], { opacity: 1 }, at);
+        tl.set(words[index], {
+          x: frame.x,
+          y: frame.y,
+          scale: frame.scale,
+        }, at);
+      });
+
+      const lastWordAt = textureLandAt + (styleFrames.length - 2) * frameStep;
+      const cutCurveStart = lastWordAt + flashFinalHold;
+      const cutPoint = cutCurveStart + 0.11;
+
+      tl.to(".texture-card", { x: -220, filter: "blur(8px)", duration: 0.11, ease: "power3.in" }, cutCurveStart)
+        .set(".texture-scene", { opacity: 0 }, cutPoint)
+        .set(".outro", { zIndex: 3 }, cutPoint)
+        .set(".outro-word", { x: 0, filter: "blur(0px)" }, cutPoint)
+        .set(".outro-copy", { x: 140, filter: "blur(8px)", opacity: 1 }, cutPoint)
+        .to(".outro-copy", { x: 0, filter: "blur(0px)", duration: 0.16, ease: "expo.out" }, cutPoint);
+
+      const outroSettled = cutPoint + 0.16;
+      const maskCutStart = outroSettled + 0.6;
+      const maskCutPoint = maskCutStart + 0.2;
+      const maskRipStart = maskCutPoint + 0.03;
+      const maskFrameStep = flashFrameStep;
+
+      tl.to(".outro-copy", { x: -220, filter: "blur(8px)", duration: 0.2, ease: "power3.in" }, maskCutStart)
+        .set(".outro", { zIndex: -1 }, maskCutPoint)
+        .set(".outro-word", { x: -2400, filter: "blur(0px)" }, maskCutPoint)
+        .set(".mask-scene", { zIndex: 4, opacity: 1 }, maskCutPoint)
+        .set(maskLooks[0], { x: 140, filter: "blur(8px)", opacity: 1 }, maskCutPoint)
+        .to(maskLooks[0], { x: 0, filter: "blur(0px)", duration: 0.16, ease: "expo.out" }, maskCutPoint);
+
+      maskLooks.forEach((look, index) => {
+        const at = maskRipStart + index * maskFrameStep;
+        if (index > 0) {
+          tl.set(maskLooks[index - 1], { opacity: 0 }, at);
+        }
+        tl.set(look, { opacity: 1, x: 0, filter: "blur(0px)" }, at);
+      });
+
+      const lastMaskAt = maskRipStart + (maskLooks.length - 1) * maskFrameStep;
+      const finalCutStart = lastMaskAt + flashFinalHold;
+      const finalCutPoint = finalCutStart + 0.11;
+
+      tl.to(".mask-scene", { x: -220, filter: "blur(8px)", duration: 0.11, ease: "power3.in" }, finalCutStart)
+        .set(".mask-scene", { zIndex: -1, opacity: 0 }, finalCutPoint)
+        .set(".final-text-scene", { zIndex: 5 }, finalCutPoint)
+        .set(".final-text-word", { x: 0, filter: "blur(0px)" }, finalCutPoint)
+        .set(".final-text-copy", { x: 140, filter: "blur(8px)", opacity: 1 }, finalCutPoint)
+        .to(".final-text-copy", { x: 0, filter: "blur(0px)", duration: 0.16, ease: "expo.out" }, finalCutPoint);
+
+      const finalTextSettled = finalCutPoint + 0.16;
+      const feelCutStart = finalTextSettled + 0.5;
+      const feelCutPoint = feelCutStart + 0.22;
+      const feelRipStart = feelCutPoint + 0.03;
+      const feelFrameStep = flashFrameStep;
+
+      tl.to(".final-text-copy", { x: -220, filter: "blur(8px)", duration: 0.22, ease: "power3.in" }, feelCutStart)
+        .set(".final-text-scene", { zIndex: -1 }, feelCutPoint)
+        .set(".final-text-word", { x: -2400, filter: "blur(0px)" }, feelCutPoint)
+        .set(".feel-scene", { zIndex: 6, opacity: 1 }, feelCutPoint)
+        .set(feelLooks[0], { x: 140, filter: "blur(8px)", opacity: 1 }, feelCutPoint)
+        .to(feelLooks[0], { x: 0, filter: "blur(0px)", duration: 0.16, ease: "expo.out" }, feelCutPoint);
+
+      feelLooks.forEach((look, index) => {
+        const at = feelRipStart + index * feelFrameStep;
+        if (index > 0) {
+          tl.set(feelLooks[index - 1], { opacity: 0 }, at);
+        }
+        tl.set(look, { opacity: 1, x: 0, filter: "blur(0px)" }, at);
+      });
+
+      const lastFeelAt = feelRipStart + (feelLooks.length - 1) * feelFrameStep;
+      const endWhiteCutStart = lastFeelAt + flashFinalHold;
+      const endWhiteCutPoint = endWhiteCutStart + 0.11;
+
+      tl.to(".feel-scene", { x: -220, filter: "blur(8px)", duration: 0.11, ease: "power3.in" }, endWhiteCutStart)
+        .set(".feel-scene", { zIndex: -1, opacity: 0 }, endWhiteCutPoint)
+        .set(".end-white-scene", { zIndex: 7, opacity: 1 }, endWhiteCutPoint)
+        .set(".like-word", { x: 140, opacity: 1, scale: 1, filter: "blur(8px)" }, endWhiteCutPoint)
+        .to(".like-word", { x: 0, filter: "blur(0px)", duration: 0.21, ease: "expo.out" }, endWhiteCutPoint);
+
+      const likeLanded = endWhiteCutPoint + 0.21;
+      const zoomExitStart = likeLanded + 0.08;
+      const zoomCutPoint = zoomExitStart + 0.2;
+
+      tl.to(".like-word", { scale: 1.2, filter: "blur(20px)", duration: 0.2, ease: "power3.in" }, zoomExitStart)
+        .to(".like-word", { opacity: 0.15, duration: 0.2, ease: "none" }, zoomExitStart)
+        .set(".like-word", { opacity: 0 }, zoomCutPoint)
+        .set(".metal-word", { opacity: 0.15, scale: 0.75, filter: "blur(20px)" }, zoomCutPoint)
+        .to(".metal-word", { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, zoomCutPoint)
+        .to(".metal-word", { opacity: 1, duration: 0.2, ease: "none" }, zoomCutPoint + 0.5);
+
+      const metalLanded = zoomCutPoint + 0.5;
+      const alsoUseZoomStart = metalLanded + 0.2;
+      const alsoUseCutPoint = alsoUseZoomStart + 0.2;
+
+      tl.to(".metal-word", { scale: 1.2, filter: "blur(20px)", duration: 0.2, ease: "power3.in" }, alsoUseZoomStart)
+        .to(".metal-word", { opacity: 0.15, duration: 0.2, ease: "none" }, alsoUseZoomStart)
+        .set(".metal-word", { opacity: 0 }, alsoUseCutPoint)
+        .set(".also-use-copy", { opacity: 0.15, scale: 0.75, filter: "blur(20px)" }, alsoUseCutPoint)
+        .to(".also-use-copy", { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, alsoUseCutPoint)
+        .to(".also-use-copy", { opacity: 1, duration: 0.2, ease: "none" }, alsoUseCutPoint + 0.5);
+
+      const favoriteLanded = alsoUseCutPoint + 0.5;
+      const pavingZoomStart = favoriteLanded + 0.2;
+      const pavingCutPoint = pavingZoomStart + 0.2;
+
+      tl.to(".also-use-copy", { scale: 1.2, filter: "blur(20px)", duration: 0.2, ease: "power3.in" }, pavingZoomStart)
+        .to(".also-use-copy", { opacity: 0.15, duration: 0.2, ease: "none" }, pavingZoomStart)
+        .set(".also-use-copy", { opacity: 0 }, pavingCutPoint)
+        .set(".paving-word", { opacity: 0.15, scale: 0.75, filter: "blur(20px)" }, pavingCutPoint)
+        .to(".paving-word", { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, pavingCutPoint)
+        .to(".paving-word", { opacity: 1, duration: 0.2, ease: "none" }, pavingCutPoint + 0.5);
+
+      const pavingLanded = pavingCutPoint + 0.5;
+      const bunchCutStart = pavingLanded + 0.3;
+      const bunchCutPoint = bunchCutStart + 0.11;
+
+      tl.to(".paving-word", { x: -220, filter: "blur(8px)", duration: 0.11, ease: "power3.in" }, bunchCutStart)
+        .set(".paving-word", { opacity: 0 }, bunchCutPoint)
+        .set(".bunch-word", { x: 2400, filter: "blur(8px)", opacity: 1 }, bunchCutPoint)
+        .set(".bunch-word:nth-child(-n+2)", { x: 140, filter: "blur(8px)", opacity: 1 }, bunchCutPoint)
+        .to(".bunch-word", { x: 0, filter: "blur(0px)", duration: 0.21, stagger: 0.025, ease: "expo.out" }, bunchCutPoint)
+        .to(".bunch-copy", { opacity: 1, duration: 0.4, ease: "none" }, bunchCutPoint + 0.335);
+
+      const bunchLanded = bunchCutPoint + 0.335;
+      const shaderSceneStart = bunchLanded + 0.8;
+      const shaderSceneCutPoint = shaderSceneStart + 0.11;
+      const shaderCardLanded = shaderSceneCutPoint + 0.62;
+      const shaderSwapStart = shaderCardLanded + 0.35;
+      const shaderSwapCutPoint = shaderSwapStart + 0.11;
+      const shaderUseLanded = shaderSwapCutPoint + 0.31;
+      const transitionsCutStart = shaderUseLanded + 0.8;
+      const transitionsCutPoint = transitionsCutStart + 0.11;
+      const transitionsLanded = transitionsCutPoint + 0.335;
+      const domainWarpStart = transitionsLanded + 0.5;
+      const domainWarpDuration = 1.4;
+      const findTextStart = domainWarpStart + domainWarpDuration;
+      const linkZoomStart = findTextStart + 0.4;
+      const linkCutPoint = linkZoomStart + 0.2;
+      const linkLanded = linkCutPoint + 0.5;
+      const endOneZoomStart = linkLanded + 0.5;
+      const endOneCutPoint = endOneZoomStart + 0.2;
+      const endOneLanded = endOneCutPoint + 0.5;
+      const endTwoZoomStart = endOneLanded + 0.5;
+      const endTwoCutPoint = endTwoZoomStart + 0.2;
+      const endTwoLanded = endTwoCutPoint + 0.5;
+      const terminalCutStart = endTwoLanded + 0.5;
+      const terminalCutPoint = terminalCutStart + 0.11;
+      const terminalLanded = terminalCutPoint + 0.21;
+      const terminalTypeStart = terminalLanded;
+      const terminalTyped = terminalTypeStart + 0.91;
+      const domainWarpProgress = { p: 0 };
+
+      tl.to(".bunch-copy", { x: -220, filter: "blur(8px)", duration: 0.11, ease: "power3.in" }, shaderSceneStart)
+        .set(".end-white-scene", { zIndex: -1 }, shaderSceneCutPoint)
+        .set(".shader-scene", { zIndex: 8, opacity: 1 }, shaderSceneCutPoint)
+        .set(".shader-bg", { opacity: 1 }, shaderSceneCutPoint)
+        .set(".shader-glass-card", { opacity: 1, scale: 1.45, filter: "blur(14px)" }, shaderSceneCutPoint)
+        .to(".shader-glass-card", { scale: 0.88, filter: "blur(0px)", duration: 0.62, ease: "expo.out" }, shaderSceneCutPoint)
+        .to(".shader-title", { x: -220, filter: "blur(8px)", duration: 0.11, ease: "power3.in" }, shaderSwapStart)
+        .set(".shader-title", { opacity: 0 }, shaderSwapCutPoint)
+        .set(".shader-use-word", { x: 2400, filter: "blur(8px)", opacity: 1 }, shaderSwapCutPoint)
+        .to(".shader-use-word", { x: 0, filter: "blur(0px)", duration: 0.21, stagger: 0.025, ease: "expo.out" }, shaderSwapCutPoint)
+        .to(".shader-use-copy", { opacity: 1, duration: 0.4, ease: "none" }, shaderUseLanded)
+        .to(".shader-scene", { x: -220, filter: "blur(8px)", duration: 0.11, ease: "power3.in" }, transitionsCutStart)
+        .set(".shader-scene", { zIndex: -1, opacity: 0 }, transitionsCutPoint)
+        .set(".transitions-text-scene", { zIndex: 9 }, transitionsCutPoint)
+        .set(".transitions-word", { x: 2400, filter: "blur(8px)", opacity: 1 }, transitionsCutPoint)
+        .set(".transitions-word:first-child", { x: 140, filter: "blur(8px)", opacity: 1 }, transitionsCutPoint)
+        .to(".transitions-word", { x: 0, filter: "blur(0px)", duration: 0.21, stagger: 0.025, ease: "expo.out" }, transitionsCutPoint)
+        .to(".transitions-copy", { opacity: 1, duration: 0.5, ease: "none" }, transitionsLanded)
+        .call(() => domainWarp.render(0), null, domainWarpStart)
+        .set("#domain-warp-canvas", { display: "block", opacity: 1 }, domainWarpStart)
+        .set(".find-text-scene", { zIndex: 10, opacity: 1 }, domainWarpStart)
+        .to(
+          domainWarpProgress,
+          {
+            p: 1,
+            duration: domainWarpDuration,
+            ease: "power2.inOut",
+            onStart: () => domainWarp.render(0),
+            onUpdate: () => domainWarp.render(domainWarpProgress.p),
+          },
+          domainWarpStart,
+        )
+        .call(() => domainWarp.renderTo(), null, findTextStart)
+        .set(".transitions-text-scene", { zIndex: -1, opacity: 0 }, findTextStart)
+        .set("#domain-warp-canvas", { display: "none", opacity: 0 }, findTextStart)
+        .to(".find-text-copy", { opacity: 1, duration: 0.4, ease: "none" }, findTextStart)
+        .to(".find-text-copy", { scale: 1.2, filter: "blur(20px)", duration: 0.2, ease: "power3.in" }, linkZoomStart)
+        .to(".find-text-copy", { opacity: 0.15, duration: 0.2, ease: "none" }, linkZoomStart)
+        .set(".find-text-copy", { opacity: 0 }, linkCutPoint)
+        .set(".find-link-copy", { opacity: 0.15, scale: 0.75, filter: "blur(20px)" }, linkCutPoint)
+        .to(".find-link-copy", { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, linkCutPoint)
+        .to(".find-link-copy", { opacity: 1, duration: 0.5, ease: "none" }, linkLanded)
+        .to(".find-link-copy", { scale: 1.2, filter: "blur(20px)", duration: 0.2, ease: "power3.in" }, endOneZoomStart)
+        .to(".find-link-copy", { opacity: 0.15, duration: 0.2, ease: "none" }, endOneZoomStart)
+        .set(".find-link-copy", { opacity: 0 }, endOneCutPoint)
+        .set(".end-zoom-one", { opacity: 0.15, scale: 0.75, filter: "blur(20px)" }, endOneCutPoint)
+        .to(".end-zoom-one", { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, endOneCutPoint)
+        .to(".end-zoom-one", { opacity: 1, duration: 0.5, ease: "none" }, endOneLanded)
+        .to(".end-zoom-one", { scale: 1.2, filter: "blur(20px)", duration: 0.2, ease: "power3.in" }, endTwoZoomStart)
+        .to(".end-zoom-one", { opacity: 0.15, duration: 0.2, ease: "none" }, endTwoZoomStart)
+        .set(".end-zoom-one", { opacity: 0 }, endTwoCutPoint)
+        .set(".end-zoom-two", { opacity: 0.15, scale: 0.75, filter: "blur(20px)" }, endTwoCutPoint)
+        .to(".end-zoom-two", { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, endTwoCutPoint)
+        .to(".end-zoom-two", { opacity: 1, duration: 0.5, ease: "none" }, endTwoLanded)
+        .to(".end-zoom-two", { x: -220, filter: "blur(8px)", duration: 0.11, ease: "power3.in" }, terminalCutStart)
+        .set(".end-zoom-two", { opacity: 0 }, terminalCutPoint)
+        .set(".terminal-command-copy", { x: 140, filter: "blur(8px)", opacity: 1 }, terminalCutPoint)
+        .call(() => {
+          terminalType.count = 0;
+          terminalCommand.textContent = "";
+        }, null, terminalCutPoint)
+        .to(".terminal-command-copy", { x: 0, filter: "blur(0px)", duration: 0.21, ease: "expo.out" }, terminalCutPoint)
+        .to(
+          terminalType,
+          {
+            count: terminalText.length,
+            duration: 0.91,
+            ease: "none",
+            snap: { count: 1 },
+            onUpdate: () => {
+              terminalCommand.textContent = terminalText.slice(0, terminalType.count);
+            },
+          },
+          terminalTypeStart,
+        )
+        .call(() => {
+          terminalCommand.textContent = terminalText;
+        }, null, terminalTyped)
+        .to(".terminal-command-copy", { opacity: 1, duration: 0.76, ease: "none" }, terminalTyped);
+
+      window.__timelines["texture-launch-rip"] = tl;
+
+      const params = new URLSearchParams(window.location.search);
+      if (params.has("t")) {
+        tl.time(Number(params.get("t")) || 0).pause();
+      } else if (!window.__hyperframes) {
+        tl.play(0);
+      }
+    </script>
+  </body>
+</html>
