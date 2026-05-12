@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Inspector Background Study</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      :root {
+        --page: #ece3d2;
+        --ink: #171410;
+        --muted: #736b5e;
+        --rule: rgba(23, 20, 16, 0.14);
+      }
+
+      body {
+        margin: 0;
+        min-width: 1500px;
+        background: var(--page);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      main {
+        width: 2200px;
+        padding: 64px 72px 88px;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 620px;
+        align-items: end;
+        gap: 72px;
+        margin-bottom: 36px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .eyebrow,
+      .note,
+      .label {
+        font-family: "IBM Plex Mono", "SF Mono", ui-monospace, monospace;
+      }
+
+      .eyebrow {
+        margin-bottom: 18px;
+        color: var(--muted);
+        font-size: 18px;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        max-width: 1100px;
+        font-family: Fraunces, Georgia, ui-serif, serif;
+        font-size: 90px;
+        font-weight: 900;
+        line-height: 0.94;
+        letter-spacing: 0;
+      }
+
+      .note {
+        color: var(--muted);
+        font-size: 20px;
+        line-height: 1.4;
+      }
+
+      .note strong {
+        color: var(--ink);
+      }
+
+      .hero {
+        position: relative;
+        height: 760px;
+        margin-bottom: 28px;
+        overflow: hidden;
+        border: 1px solid var(--rule);
+        border-radius: 28px;
+        background: #16130f;
+        box-shadow: 0 34px 90px rgba(58, 42, 22, 0.22);
+      }
+
+      .study-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .card {
+        position: relative;
+        height: 420px;
+        overflow: hidden;
+        border: 1px solid var(--rule);
+        border-radius: 22px;
+        background: #171410;
+        box-shadow: 0 24px 58px rgba(58, 42, 22, 0.16);
+      }
+
+      canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .center-type {
+        position: absolute;
+        left: 50%;
+        top: 52%;
+        transform: translate(-50%, -50%);
+        color: #fff8e9;
+        font-size: 150px;
+        font-weight: 950;
+        line-height: 0.8;
+        letter-spacing: -0.06em;
+        text-shadow:
+          1px 0 rgba(25, 183, 213, 0.42),
+          -1px 0 rgba(223, 118, 90, 0.38),
+          0 18px 42px rgba(0, 0, 0, 0.42);
+        pointer-events: none;
+      }
+
+      .hero .center-type {
+        font-size: 210px;
+      }
+
+      .label {
+        position: absolute;
+        left: 24px;
+        top: 22px;
+        z-index: 2;
+        padding: 8px 12px;
+        border: 1px solid rgba(255, 248, 233, 0.2);
+        border-radius: 999px;
+        background: rgba(20, 17, 13, 0.52);
+        color: rgba(255, 248, 233, 0.78);
+        font-size: 14px;
+        text-transform: uppercase;
+        backdrop-filter: blur(10px);
+      }
+
+      .card.light .label,
+      .hero.light .label {
+        border-color: rgba(23, 20, 16, 0.14);
+        background: rgba(255, 250, 241, 0.54);
+        color: rgba(23, 20, 16, 0.68);
+      }
+
+      .card.light .center-type,
+      .hero.light .center-type {
+        color: #211b14;
+        text-shadow:
+          1px 0 rgba(25, 183, 213, 0.24),
+          -1px 0 rgba(223, 118, 90, 0.2),
+          0 16px 36px rgba(82, 55, 24, 0.14);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <div class="eyebrow">HyperFrames Inspector / background study</div>
+          <h1>Dense halftone canvas</h1>
+        </div>
+        <div class="note">
+          <strong>Read of the reference:</strong> thousands of fixed-grid micro dots,
+          channel-shift color noise, horizontal density bands, and a dark center mass.
+          The trick is not “dot decoration”; it is a raster field that behaves like
+          a video texture.
+        </div>
+      </header>
+
+      <section class="hero" data-study="reference-dark">
+        <canvas></canvas>
+        <div class="label">closest to reference / dark amber field</div>
+        <div class="center-type">video</div>
+      </section>
+
+      <section class="study-grid">
+        <article class="card light" data-study="warm-paper">
+          <canvas></canvas>
+          <div class="label">warm paper adaptation</div>
+          <div class="center-type">AI</div>
+        </article>
+
+        <article class="card" data-study="inspector-green">
+          <canvas></canvas>
+          <div class="label">HyperFrames green/cyan</div>
+          <div class="center-type">px</div>
+        </article>
+
+        <article class="card" data-study="caption-gold">
+          <canvas></canvas>
+          <div class="label">caption / amber emphasis</div>
+          <div class="center-type">20%</div>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      const PALETTES = {
+        "reference-dark": {
+          base: [16, 15, 12],
+          light: [238, 231, 205],
+          dark: [5, 9, 8],
+          colors: [
+            [241, 194, 85],
+            [232, 102, 71],
+            [60, 192, 210],
+            [232, 223, 184],
+            [65, 167, 91]
+          ],
+          spacing: 7,
+          radius: 1.55,
+          contrast: 1.15,
+          darkCenter: 0.78
+        },
+        "warm-paper": {
+          base: [243, 234, 216],
+          light: [255, 250, 241],
+          dark: [58, 43, 24],
+          colors: [
+            [25, 23, 19],
+            [223, 118, 90],
+            [241, 182, 74],
+            [25, 183, 213],
+            [69, 216, 110]
+          ],
+          spacing: 7,
+          radius: 1.45,
+          contrast: 0.78,
+          darkCenter: 0.28
+        },
+        "inspector-green": {
+          base: [18, 21, 17],
+          light: [244, 239, 226],
+          dark: [5, 12, 10],
+          colors: [
+            [69, 216, 110],
+            [25, 183, 213],
+            [255, 248, 233],
+            [241, 182, 74],
+            [92, 132, 99]
+          ],
+          spacing: 7,
+          radius: 1.5,
+          contrast: 1.0,
+          darkCenter: 0.72
+        },
+        "caption-gold": {
+          base: [26, 18, 11],
+          light: [255, 239, 196],
+          dark: [8, 9, 8],
+          colors: [
+            [246, 199, 94],
+            [223, 118, 90],
+            [255, 248, 233],
+            [69, 216, 110],
+            [25, 183, 213]
+          ],
+          spacing: 7,
+          radius: 1.55,
+          contrast: 1.08,
+          darkCenter: 0.66
+        }
+      };
+
+      function mulberry32(seed) {
+        return function () {
+          let t = (seed += 0x6d2b79f5);
+          t = Math.imul(t ^ (t >>> 15), t | 1);
+          t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+
+      function lerp(a, b, t) {
+        return a + (b - a) * t;
+      }
+
+      function mix(a, b, t) {
+        return [
+          lerp(a[0], b[0], t),
+          lerp(a[1], b[1], t),
+          lerp(a[2], b[2], t)
+        ];
+      }
+
+      function clamp(v, min, max) {
+        return Math.max(min, Math.min(max, v));
+      }
+
+      function drawStudy(el, seed) {
+        const canvas = el.querySelector("canvas");
+        const ctx = canvas.getContext("2d");
+        const rect = el.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const w = Math.round(rect.width * dpr);
+        const h = Math.round(rect.height * dpr);
+        canvas.width = w;
+        canvas.height = h;
+
+        const study = PALETTES[el.dataset.study];
+        const spacing = study.spacing * dpr;
+        const radius = study.radius * dpr;
+        const random = mulberry32(seed);
+
+        const bg = ctx.createLinearGradient(0, 0, w, h);
+        const base = study.base;
+        bg.addColorStop(0, `rgb(${base[0] + 12}, ${base[1] + 10}, ${base[2] + 6})`);
+        bg.addColorStop(0.5, `rgb(${base[0]}, ${base[1]}, ${base[2]})`);
+        bg.addColorStop(1, `rgb(${Math.max(base[0] - 14, 0)}, ${Math.max(base[1] - 12, 0)}, ${Math.max(base[2] - 10, 0)})`);
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const cx = w * 0.5;
+        const cy = h * 0.53;
+        const maxD = Math.hypot(w * 0.5, h * 0.5);
+
+        for (let y = -spacing; y < h + spacing; y += spacing) {
+          const row = y / h;
+          for (let x = -spacing; x < w + spacing; x += spacing) {
+            const col = x / w;
+            const dx = (x - cx) / w;
+            const dy = (y - cy) / h;
+            const dist = Math.hypot(x - cx, y - cy) / maxD;
+
+            const bandA = Math.sin(row * Math.PI * 5.4 + col * 2.5);
+            const bandB = Math.sin((row + col * 0.22) * Math.PI * 9.5);
+            const rightWarm = clamp((col - 0.56) / 0.42, 0, 1);
+            const topLight = clamp(1 - row * 1.6, 0, 1);
+            const centerDark = clamp(1 - dist * 2.35, 0, 1) * study.darkCenter;
+            const horizontalPlate = clamp(1 - Math.abs(row - 0.43) * 4.8, 0, 1);
+            const noise = random();
+
+            let energy =
+              0.22 +
+              topLight * 0.32 +
+              horizontalPlate * 0.22 +
+              Math.max(bandA, 0) * 0.16 +
+              Math.max(bandB, 0) * 0.08 -
+              centerDark * 0.42;
+
+            energy *= study.contrast;
+            energy = clamp(energy + (noise - 0.5) * 0.18, 0.03, 0.96);
+
+            const colorIndex = Math.floor((noise * study.colors.length + rightWarm * 1.6 + row * 1.2) % study.colors.length);
+            let color = study.colors[colorIndex];
+            const tonal = mix(study.dark, study.light, energy);
+            color = mix(tonal, color, 0.42 + noise * 0.36);
+
+            const alpha = clamp(0.2 + energy * 0.72 + rightWarm * 0.08, 0.12, 0.96);
+            const size =
+              radius *
+              clamp(0.55 + energy * 1.25 + (noise - 0.5) * 0.4, 0.35, 1.82);
+
+            ctx.fillStyle = `rgba(${color[0] | 0}, ${color[1] | 0}, ${color[2] | 0}, ${alpha.toFixed(3)})`;
+            ctx.beginPath();
+            ctx.arc(x + (noise - 0.5) * 0.38 * dpr, y, size, 0, Math.PI * 2);
+            ctx.fill();
+
+            if ((x / spacing + y / spacing) % 11 < 1.2 && energy > 0.42) {
+              const crossAlpha = 0.08 + energy * 0.16;
+              ctx.strokeStyle = `rgba(${color[0] | 0}, ${color[1] | 0}, ${color[2] | 0}, ${crossAlpha.toFixed(3)})`;
+              ctx.lineWidth = 0.55 * dpr;
+              ctx.beginPath();
+              ctx.moveTo(x - spacing * 0.34, y);
+              ctx.lineTo(x + spacing * 0.34, y);
+              ctx.moveTo(x, y - spacing * 0.34);
+              ctx.lineTo(x, y + spacing * 0.34);
+              ctx.stroke();
+            }
+          }
+        }
+
+        const vignette = ctx.createRadialGradient(cx, cy, h * 0.05, cx, cy, maxD * 0.92);
+        vignette.addColorStop(0, "rgba(0,0,0,0.10)");
+        vignette.addColorStop(0.45, "rgba(0,0,0,0.04)");
+        vignette.addColorStop(1, "rgba(0,0,0,0.42)");
+        ctx.fillStyle = vignette;
+        ctx.fillRect(0, 0, w, h);
+      }
+
+      function render() {
+        document.querySelectorAll("[data-study]").forEach((el, index) => drawStudy(el, 1200 + index * 41));
+      }
+
+      window.addEventListener("resize", render);
+      render();
+    </script>
+  </body>
+</html>

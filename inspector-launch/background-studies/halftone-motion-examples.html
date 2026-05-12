@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Inspector Halftone Motion System</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      :root {
+        --page: #f0e4cf;
+        --ink: #191713;
+        --muted: #716a5c;
+        --rule: rgba(25, 23, 19, 0.16);
+        --deep: #07100c;
+        --paper: #fff8e9;
+        --green: #45d86e;
+        --cyan: #19b7d5;
+        --amber: #f1b64a;
+        --coral: #d97757;
+      }
+
+      body {
+        margin: 0;
+        min-width: 1600px;
+        background: var(--page);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      main {
+        width: 2240px;
+        padding: 60px 70px 84px;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 680px;
+        gap: 72px;
+        align-items: end;
+        margin-bottom: 30px;
+        padding-bottom: 28px;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .eyebrow,
+      .note,
+      .axis,
+      .ticker,
+      .caption p {
+        font-family: "IBM Plex Mono", "SF Mono", ui-monospace, monospace;
+      }
+
+      .eyebrow {
+        margin-bottom: 16px;
+        color: var(--muted);
+        font-size: 17px;
+        font-weight: 760;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        max-width: 1180px;
+        font-family: Fraunces, Georgia, ui-serif, serif;
+        font-size: 86px;
+        font-weight: 900;
+        line-height: 0.94;
+        letter-spacing: 0;
+      }
+
+      .note {
+        color: var(--muted);
+        font-size: 19px;
+        line-height: 1.42;
+      }
+
+      .note strong {
+        color: var(--ink);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .study {
+        overflow: hidden;
+        border: 1px solid var(--rule);
+        border-radius: 18px;
+        background: rgba(255, 248, 233, 0.62);
+        box-shadow: 0 26px 68px rgba(54, 39, 18, 0.16);
+      }
+
+      .stage {
+        position: relative;
+        height: 460px;
+        overflow: hidden;
+        background: var(--deep);
+      }
+
+      canvas {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 1380px;
+        height: 860px;
+        display: block;
+        transform-origin: 50% 50%;
+        will-change: transform, filter;
+      }
+
+      .shape {
+        position: absolute;
+        inset: -16%;
+        pointer-events: none;
+        mix-blend-mode: screen;
+        opacity: 0.36;
+        filter: blur(46px);
+        background:
+          radial-gradient(ellipse at 10% 56%, rgba(69, 216, 110, 0.3), transparent 42%),
+          radial-gradient(ellipse at 76% 48%, rgba(25, 183, 213, 0.22), transparent 46%),
+          radial-gradient(ellipse at 44% 34%, rgba(241, 182, 74, 0.12), transparent 38%);
+        will-change: transform, opacity;
+      }
+
+      .plate-frame {
+        position: absolute;
+        inset: 48px;
+        border: 1px solid rgba(255, 248, 233, 0.18);
+        border-radius: 20px;
+        pointer-events: none;
+      }
+
+      .title,
+      .scene-a,
+      .scene-b {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 78%;
+        color: var(--paper);
+        font-size: 54px;
+        font-weight: 950;
+        line-height: 0.92;
+        letter-spacing: -0.04em;
+        text-align: center;
+        text-shadow:
+          1px 0 rgba(25, 183, 213, 0.42),
+          -1px 0 rgba(217, 119, 87, 0.28),
+          0 20px 52px rgba(0, 0, 0, 0.46);
+        transform: translate(-50%, -50%);
+        will-change: transform, filter, opacity;
+      }
+
+      .scene-a,
+      .scene-b {
+        width: 46%;
+      }
+
+      .scene-a {
+        left: 28%;
+      }
+
+      .scene-b {
+        left: 72%;
+      }
+
+      .accent {
+        color: transparent;
+        background: linear-gradient(90deg, var(--green), var(--cyan), var(--amber));
+        -webkit-background-clip: text;
+        background-clip: text;
+        text-shadow: none;
+      }
+
+      .claude-card,
+      .proof-card {
+        position: absolute;
+        left: 50%;
+        top: 52%;
+        width: 470px;
+        min-height: 190px;
+        transform: translate(-50%, -50%);
+        border: 1px solid rgba(255, 248, 233, 0.18);
+        border-radius: 24px;
+        background: rgba(255, 248, 233, 0.12);
+        box-shadow: 0 32px 86px rgba(0, 0, 0, 0.32);
+        backdrop-filter: blur(8px);
+        will-change: transform, filter, opacity;
+      }
+
+      .claude-card {
+        background: #f5f4ed;
+        border-color: #e5e0d1;
+      }
+
+      .claude-bar {
+        height: 42px;
+        border-bottom: 1px solid #e5e0d1;
+        background: #faf9f5;
+      }
+
+      .claude-line {
+        height: 24px;
+        margin: 24px 34px;
+        border-radius: 999px;
+        background: #f0ece0;
+      }
+
+      .claude-line:nth-child(3) {
+        width: 62%;
+        margin-left: auto;
+      }
+
+      .proof-card::before,
+      .proof-card::after {
+        content: "";
+        position: absolute;
+        left: 34px;
+        right: 34px;
+        height: 18px;
+        border-radius: 999px;
+        background: rgba(255, 248, 233, 0.22);
+      }
+
+      .proof-card::before {
+        top: 50px;
+      }
+
+      .proof-card::after {
+        top: 92px;
+        width: 64%;
+      }
+
+      .axis {
+        position: absolute;
+        left: 32px;
+        right: 32px;
+        top: 30px;
+        z-index: 3;
+        display: flex;
+        justify-content: space-between;
+        color: rgba(255, 248, 233, 0.62);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      .ticker {
+        position: absolute;
+        right: 28px;
+        bottom: 24px;
+        color: rgba(255, 248, 233, 0.62);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      .caption {
+        min-height: 176px;
+        padding: 22px 24px 26px;
+      }
+
+      .caption h2 {
+        margin: 0 0 12px;
+        color: var(--ink);
+        font-size: 26px;
+        line-height: 1.04;
+        letter-spacing: -0.02em;
+      }
+
+      .caption p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.42;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <div class="eyebrow">HyperFrames Inspector / transition system</div>
+          <h1>Flowing halftone transitions, not random motion</h1>
+        </div>
+        <div class="note">
+          <strong>Hermes reference translation:</strong> use the live WebGL shader beat's
+          domain-warp grammar, slowed down. Large warped color fields move through the
+          halftone; dots scale and blend because they are sampling that field.
+        </div>
+      </header>
+
+      <section class="grid">
+        <article class="study" data-mode="current">
+          <div class="stage">
+            <canvas></canvas>
+            <div class="shape"></div>
+            <div class="plate-frame"></div>
+            <div class="axis"><span>section flow</span><span>side-to-side current</span></div>
+            <div class="title">Creating <span class="accent">video</span> should be easy.</div>
+            <div class="ticker">slow lateral drift</div>
+          </div>
+          <div class="caption">
+            <h2>Slow Domain Warp</h2>
+            <p>The default background borrows the Hermes shader idea: one continuous warped field sliding sideways. The dots are only the surface texture, not independent particles.</p>
+          </div>
+        </article>
+
+        <article class="study" data-mode="softCut">
+          <div class="stage">
+            <canvas></canvas>
+            <div class="shape"></div>
+            <div class="plate-frame"></div>
+            <div class="axis"><span>soft seam</span><span>within same section</span></div>
+            <div class="scene-a">Close isn't final.</div>
+            <div class="scene-b">AI gets you moving.</div>
+            <div class="ticker">matched left flow</div>
+          </div>
+          <div class="caption">
+            <h2>Soft Cut-The-Curve</h2>
+            <p>For related text beats, the same shader field keeps moving under the cut. We cut when the field is already flowing through the frame, so the seam feels like a continuation.</p>
+          </div>
+        </article>
+
+        <article class="study" data-mode="claude">
+          <div class="stage">
+            <canvas></canvas>
+            <div class="shape"></div>
+            <div class="plate-frame"></div>
+            <div class="axis"><span>artifact section</span><span>calmer field</span></div>
+            <div class="claude-card">
+              <div class="claude-bar"></div>
+              <div class="claude-line"></div>
+              <div class="claude-line"></div>
+            </div>
+            <div class="ticker">same modal world</div>
+          </div>
+          <div class="caption">
+            <h2>Claude Continuity</h2>
+            <p>During Scene 04 to 05, the background keeps a restrained sideways drift. The modal carries continuity; background does not announce a new world.</p>
+          </div>
+        </article>
+
+        <article class="study" data-mode="bloom">
+          <div class="stage">
+            <canvas></canvas>
+            <div class="shape"></div>
+            <div class="plate-frame"></div>
+            <div class="axis"><span>big break</span><span>dot-scale bloom</span></div>
+            <div class="title">Prompt less.<br />Shape more.</div>
+            <div class="ticker">radius + blend</div>
+          </div>
+          <div class="caption">
+            <h2>Dot Bloom Transition</h2>
+            <p>For chapter breaks, the field gets brighter and the dot radius swells until the raster briefly blends into a soft shader wash, then resolves back down.</p>
+          </div>
+        </article>
+
+        <article class="study" data-mode="proof">
+          <div class="stage">
+            <canvas></canvas>
+            <div class="shape"></div>
+            <div class="plate-frame"></div>
+            <div class="axis"><span>proof beats</span><span>measured slides</span></div>
+            <div class="proof-card"></div>
+            <div class="ticker">controlled lateral moves</div>
+          </div>
+          <div class="caption">
+            <h2>Proof Beat Family</h2>
+            <p>Move, curve, caption, and Inspector map should share practical lateral motion: less theatrical than titles, more precise and measured.</p>
+          </div>
+        </article>
+
+        <article class="study" data-mode="cutCurveA">
+          <div class="stage">
+            <canvas></canvas>
+            <div class="shape"></div>
+            <div class="plate-frame"></div>
+            <div class="axis"><span>cut-the-curve v2</span><span>bg matches fg curve · 60% bloom</span></div>
+            <div class="scene-a">Move this left 20px.</div>
+            <div class="scene-b">Slow the curve.</div>
+            <div class="ticker">power3.in → bloom → expo.out</div>
+          </div>
+          <div class="caption">
+            <h2>Cut-the-Curve V2 · 60% bloom</h2>
+            <p>Bg accelerates leftward with the foreground, peaks blur + color bloom at the cut frame (radius swells, ribbon brightens), then decelerates into the next scene. Same vector both sides.</p>
+          </div>
+        </article>
+
+        <article class="study" data-mode="cutCurveB">
+          <div class="stage">
+            <canvas></canvas>
+            <div class="shape"></div>
+            <div class="plate-frame"></div>
+            <div class="axis"><span>cut-the-curve v2</span><span>bg matches fg curve · 45% bloom</span></div>
+            <div class="scene-a">Close isn't final.</div>
+            <div class="scene-b">AI gets you moving.</div>
+            <div class="ticker">restrained color bloom</div>
+          </div>
+          <div class="caption">
+            <h2>Cut-the-Curve V2 · 45% bloom</h2>
+            <p>Same motion shape, dialed back: smaller radius swell, less saturation kick. Use for every scene-to-scene cut so chapter breaks (full bloom) still feel bigger.</p>
+          </div>
+        </article>
+
+        <article class="study" data-mode="wipe">
+          <div class="stage">
+            <canvas></canvas>
+            <div class="shape"></div>
+            <div class="plate-frame"></div>
+            <div class="axis"><span>section reset</span><span>field wipe</span></div>
+            <div class="scene-a">Edit the video directly.</div>
+            <div class="scene-b">Change what you SEE.</div>
+            <div class="ticker">scale through + recover</div>
+          </div>
+          <div class="caption">
+            <h2>Field Wipe</h2>
+            <p>A stronger transition where dots scale up, blur together, then contract as the next section lands. Useful for real turns in the story.</p>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        const studies = Array.from(document.querySelectorAll(".study"));
+
+        function clamp(value, min, max) {
+          return Math.max(min, Math.min(max, value));
+        }
+
+        function mix(a, b, t) {
+          return [
+            a[0] + (b[0] - a[0]) * t,
+            a[1] + (b[1] - a[1]) * t,
+            a[2] + (b[2] - a[2]) * t
+          ];
+        }
+
+        function rand(seed) {
+          let t = seed + 0x6d2b79f5;
+          return function () {
+            t += 0x6d2b79f5;
+            let r = Math.imul(t ^ (t >>> 15), 1 | t);
+            r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+            return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+          };
+        }
+
+        function easeIn(t) {
+          return t * t * t;
+        }
+
+        function easeOut(t) {
+          return 1 - Math.pow(1 - t, 4);
+        }
+
+        function pulse(t, start, end) {
+          const p = clamp((t - start) / (end - start), 0, 1);
+          return Math.sin(p * Math.PI);
+        }
+
+        function smoothstep(edge0, edge1, value) {
+          const t = clamp((value - edge0) / (edge1 - edge0), 0, 1);
+          return t * t * (3 - 2 * t);
+        }
+
+        function gradientMass(x, y, cx, cy, rx, ry) {
+          const dx = (x - cx) / rx;
+          const dy = (y - cy) / ry;
+          return Math.exp(-(dx * dx + dy * dy));
+        }
+
+        function hash2(ix, iy) {
+          let n = ix * 374761393 + iy * 668265263;
+          n = (n ^ (n >>> 13)) * 1274126177;
+          return ((n ^ (n >>> 16)) >>> 0) / 4294967295;
+        }
+
+        function valueNoise(x, y) {
+          const ix = Math.floor(x);
+          const iy = Math.floor(y);
+          const fx = smoothstep(0, 1, x - ix);
+          const fy = smoothstep(0, 1, y - iy);
+          const n00 = hash2(ix, iy);
+          const n10 = hash2(ix + 1, iy);
+          const n01 = hash2(ix, iy + 1);
+          const n11 = hash2(ix + 1, iy + 1);
+          const nx0 = n00 * (1 - fx) + n10 * fx;
+          const nx1 = n01 * (1 - fx) + n11 * fx;
+          return nx0 * (1 - fy) + nx1 * fy;
+        }
+
+        function fbm(x, y) {
+          let value = 0;
+          let amp = 0.56;
+          let total = 0;
+          let px = x;
+          let py = y;
+          for (let i = 0; i < 4; i += 1) {
+            value += valueNoise(px, py) * amp;
+            total += amp;
+            const rx = px * 1.62 + py * 0.42;
+            const ry = py * 1.48 - px * 0.36;
+            px = rx + 13.7;
+            py = ry - 8.9;
+            amp *= 0.52;
+          }
+          return value / total;
+        }
+
+        function shaderField(x, y, state) {
+          const t = state.phase;
+          const warpA = (fbm(x * 2.3 + t * 0.24, y * 1.8 - t * 0.16) - 0.5) * state.warp;
+          const warpB = (fbm(x * 1.7 - t * 0.12 + 4.6, y * 2.15 + t * 0.2) - 0.5) * state.warp;
+          const ux = x + warpA + Math.sin(y * Math.PI * 2.1 + t * 0.9) * 0.035;
+          const uy = y + warpB + Math.cos(x * Math.PI * 1.55 - t * 0.75) * 0.03;
+          const massA = gradientMass(ux, uy, state.massAX, state.massAY, 0.36, 0.48);
+          const massB = gradientMass(ux, uy, state.massBX, state.massBY, 0.3, 0.46);
+          const massC = gradientMass(ux, uy, state.massCX, state.massCY, 0.54, 0.22);
+          const ribbon = smoothstep(0.18, 0.88, Math.sin((ux * 1.12 - uy * 0.22 + state.ribbon) * Math.PI * 2));
+          const nested = fbm(ux * 2.2 + massA * 0.7 + t * 0.12, uy * 2.0 + massB * 0.7 - t * 0.1);
+          const shape = clamp(massA * 0.5 + massB * 0.38 + massC * 0.24 + ribbon * 0.18 + nested * 0.22, 0, 1);
+          const hue = clamp(shape * 0.65 + ribbon * 0.2 + nested * 0.28 + state.palette * 0.3, 0, 1);
+          return { shape, hue, ribbon, nested };
+        }
+
+        function paintShaderWash(ctx, w, h, state) {
+          const green = [69, 216, 110];
+          const cyan = [25, 183, 213];
+          const amber = [241, 182, 74];
+
+          function rgba(color, alpha) {
+            return `rgba(${color[0] | 0}, ${color[1] | 0}, ${color[2] | 0}, ${alpha.toFixed(3)})`;
+          }
+
+          function softEllipse(cx, cy, rx, ry, color, alpha) {
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.scale(rx, ry);
+            const grad = ctx.createRadialGradient(0, 0, 0.08, 0, 0, 1);
+            grad.addColorStop(0, rgba(color, alpha));
+            grad.addColorStop(0.52, rgba(color, alpha * 0.42));
+            grad.addColorStop(1, rgba(color, 0));
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(0, 0, 1, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          }
+
+          ctx.save();
+          ctx.globalCompositeOperation = "screen";
+          ctx.filter = `blur(${28 + state.blend * 18}px)`;
+
+          softEllipse(
+            state.massAX * w,
+            state.massAY * h,
+            w * (0.32 + state.blend * 0.08),
+            h * 0.42,
+            green,
+            0.17 + state.blend * 0.08
+          );
+          softEllipse(
+            state.massBX * w,
+            state.massBY * h,
+            w * 0.3,
+            h * (0.4 + state.blend * 0.06),
+            cyan,
+            0.14 + state.blend * 0.07
+          );
+          softEllipse(
+            state.massCX * w,
+            state.massCY * h,
+            w * 0.46,
+            h * 0.2,
+            amber,
+            0.08 + state.blend * 0.04
+          );
+
+          const ribbonY = h * (0.5 + Math.sin(state.phase * 0.72) * 0.16);
+          const ribbon = ctx.createLinearGradient(0, 0, w, 0);
+          ribbon.addColorStop(0, rgba(green, 0));
+          ribbon.addColorStop(0.28, rgba(green, 0.11 + state.blend * 0.04));
+          ribbon.addColorStop(0.58, rgba(cyan, 0.12 + state.blend * 0.05));
+          ribbon.addColorStop(0.86, rgba(amber, 0.06 + state.blend * 0.03));
+          ribbon.addColorStop(1, rgba(cyan, 0));
+          ctx.strokeStyle = ribbon;
+          ctx.lineWidth = h * (0.18 + state.blend * 0.08);
+          ctx.lineCap = "round";
+          ctx.beginPath();
+          ctx.moveTo(-w * 0.14, ribbonY + Math.sin(state.phase * 0.9) * h * 0.08);
+          ctx.bezierCurveTo(
+            w * 0.2,
+            ribbonY - h * 0.24,
+            w * 0.62,
+            ribbonY + h * 0.26,
+            w * 1.14,
+            ribbonY - Math.cos(state.phase * 0.7) * h * 0.1
+          );
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        function drawHalftone(ctx, w, h, state, seed) {
+          const random = rand(seed);
+          const colors = [
+            [69, 216, 110],
+            [25, 183, 213],
+            [255, 248, 233],
+            [241, 182, 74],
+            [92, 132, 99]
+          ];
+          const dark = [5, 12, 10];
+          const light = [244, 239, 226];
+          const spacing = 5.15 / state.density;
+          const radius = 1.02 * state.radius;
+
+          const bg = ctx.createLinearGradient(0, 0, w, h);
+          bg.addColorStop(0, "#142017");
+          bg.addColorStop(0.52, "#0d1510");
+          bg.addColorStop(1, "#060b09");
+          ctx.fillStyle = bg;
+          ctx.fillRect(0, 0, w, h);
+          paintShaderWash(ctx, w, h, state);
+
+          const cx = w * state.centerX;
+          const cy = h * state.centerY;
+          const maxD = Math.hypot(w * 0.5, h * 0.5);
+
+          for (let y = -spacing; y < h + spacing; y += spacing) {
+            const row = y / h;
+            for (let x = -spacing; x < w + spacing; x += spacing) {
+              const col = x / w;
+              const dist = Math.hypot(x - cx, y - cy) / maxD;
+              const field = shaderField(col, row, state);
+              const shape = field.shape;
+              const centerDark = clamp(1 - dist * 2.25, 0, 1) * 0.68;
+              const topLight = clamp(1 - row * 1.6, 0, 1);
+              const noise = random();
+              let energy = 0.14 + topLight * 0.18 + shape * (0.52 + state.blend * 0.24) + state.lift - centerDark * 0.4;
+              energy = clamp(energy + (noise - 0.5) * 0.025, 0.03, 0.98);
+
+              const colorSeed = field.hue * 3.2 + state.palette * 1.4 + row * 0.42;
+              const colorIndex = ((Math.floor(colorSeed) % colors.length) + colors.length) % colors.length;
+              const tonal = mix(dark, light, energy);
+              const fieldColor = mix(colors[colorIndex], colors[(colorIndex + 1) % colors.length], smoothstep(0.24, 0.78, field.ribbon));
+              const color = mix(tonal, fieldColor, 0.34 + shape * 0.32 + state.wash * 0.22);
+              const alpha = clamp(0.16 + energy * 0.72 + state.blend * 0.12, 0.12, 0.98);
+              const sizeBase = 0.36 + energy * 1.04 + shape * state.shapeScale + field.ribbon * state.ribbonScale;
+              const size = radius * clamp(sizeBase + (noise - 0.5) * 0.045, 0.3, 4.2);
+
+              ctx.fillStyle = `rgba(${color[0] | 0}, ${color[1] | 0}, ${color[2] | 0}, ${alpha.toFixed(3)})`;
+              ctx.beginPath();
+              ctx.arc(x + (noise - 0.5) * 0.12, y, size, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+
+          if (state.blend > 0.01) {
+            ctx.fillStyle = `rgba(69, 216, 110, ${(0.08 * state.blend).toFixed(3)})`;
+            ctx.fillRect(0, 0, w, h);
+            ctx.fillStyle = `rgba(25, 183, 213, ${(0.07 * state.blend).toFixed(3)})`;
+            ctx.fillRect(w * 0.18, 0, w * 0.82, h);
+          }
+
+          const vignette = ctx.createRadialGradient(cx, cy, h * 0.04, cx, cy, maxD * 0.92);
+          vignette.addColorStop(0, "rgba(0,0,0,0.08)");
+          vignette.addColorStop(0.5, "rgba(0,0,0,0.03)");
+          vignette.addColorStop(1, "rgba(0,0,0,0.44)");
+          ctx.fillStyle = vignette;
+          ctx.fillRect(0, 0, w, h);
+        }
+
+        function render(timeMs) {
+          const time = timeMs / 1000;
+          studies.forEach((study, index) => {
+            const mode = study.dataset.mode;
+            const canvas = study.querySelector("canvas");
+            const ctx = canvas.getContext("2d");
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            const cssW = 1380;
+            const cssH = 860;
+            const w = Math.floor(cssW * dpr);
+            const h = Math.floor(cssH * dpr);
+            if (canvas.width !== w || canvas.height !== h) {
+              canvas.width = w;
+              canvas.height = h;
+            }
+            ctx.save();
+            ctx.scale(dpr, dpr);
+
+            const slow = time * 0.074 + index * 0.45;
+            const cycle = (time % 5.2) / 5.2;
+            const breakCycle = (time % 4.8) / 4.8;
+            let swell = 0;
+            let blend = 0;
+            const drift = Math.sin(slow * Math.PI * 2);
+            let plateX = drift * 54;
+            let plateY = Math.cos(slow * Math.PI * 2 + 0.8) * 14;
+            let plateScale = 1.04;
+            let hue = 0;
+            let sat = 1.12;
+            let fgBlur = 0;
+            let cutDrag = 0;     // bg displacement to inject into field coordinates
+            let cutBoost = 0;    // bloom-window intensity for warp/shape
+
+            if (mode === "softCut") {
+              const exit = easeIn(clamp((cycle - 0.32) / 0.12, 0, 1));
+              const entry = easeOut(clamp((cycle - 0.44) / 0.26, 0, 1));
+              swell = pulse(cycle, 0.26, 0.58) * 0.35;
+              blend = pulse(cycle, 0.32, 0.56) * 0.2;
+              plateX += -96 * pulse(cycle, 0.22, 0.7);
+              plateScale += 0.08 * swell;
+              const a = study.querySelector(".scene-a");
+              const b = study.querySelector(".scene-b");
+              a.style.transform = `translate(-50%, -50%) translateX(${-230 * exit}px)`;
+              a.style.opacity = String(clamp(1 - exit * 0.9, 0, 1));
+              a.style.filter = `blur(${8 * exit}px)`;
+              b.style.transform = `translate(-50%, -50%) translateX(${230 * (1 - entry)}px)`;
+              b.style.opacity = String(entry);
+              b.style.filter = `blur(${8 * (1 - entry)}px)`;
+            }
+
+            if (mode === "claude") {
+              plateX = Math.sin(slow * Math.PI * 2) * 28;
+              plateY = Math.cos(slow * Math.PI * 2) * 10;
+              sat = 1.04;
+              const card = study.querySelector(".claude-card");
+              card.style.transform = `translate(-50%, -50%) translateX(${Math.sin(time * 0.42) * 10}px)`;
+              card.style.filter = "blur(0px)";
+            }
+
+            if (mode === "bloom") {
+              swell = pulse(breakCycle, 0.22, 0.66) * 1.35;
+              blend = pulse(breakCycle, 0.28, 0.7) * 0.85;
+              plateX += -118 * pulse(breakCycle, 0.16, 0.82);
+              plateScale += 0.18 * swell;
+              hue = 14 * swell;
+              sat += 0.42 * swell;
+              const title = study.querySelector(".title");
+              title.style.transform = `translate(-50%, -50%) scale(${1 + swell * 0.035})`;
+              title.style.filter = `blur(${swell * 3}px)`;
+            }
+
+            if (mode === "proof") {
+              plateX = Math.sin(slow * Math.PI * 2) * 34;
+              plateY = Math.cos(slow * Math.PI * 2) * 8;
+              swell = 0.15 + Math.sin(time * 0.9 + index) * 0.06;
+              const card = study.querySelector(".proof-card");
+              card.style.transform = `translate(-50%, -50%) translateX(${Math.sin(time * 0.55) * 22}px)`;
+              card.style.filter = "blur(0px)";
+            }
+
+            if (mode === "cutCurveA" || mode === "cutCurveB") {
+              // 0.60 vs 0.45 of dot-bloom intensity
+              const intensity = mode === "cutCurveA" ? 0.6 : 0.45;
+
+              // Continuous leftward travel: rest-A (0) -> peak at cut -> rest-B (well past the cut).
+              // Exit covers ~42% of the distance with power3.in (steep accel).
+              // Entry covers the remaining ~58% with expo.out (decel along same vector).
+              const exitT = clamp((cycle - 0.30) / 0.14, 0, 1);
+              const entryT = clamp((cycle - 0.44) / 0.30, 0, 1);
+              const exitEase = easeIn(exitT); // power3.in
+              const entryEase = entryT === 1 ? 1 : 1 - Math.pow(2, -10 * entryT); // expo.out
+
+              const exitDist = -210;   // bg distance traveled during exit
+              const entryDist = -260;  // additional distance during entry (continues leftward)
+              const bgX = entryT > 0
+                ? exitDist + entryDist * entryEase           // continues leftward, decelerating
+                : exitDist * exitEase;                       // accelerates leftward from rest-A
+
+              plateX = bgX;
+              plateY = Math.cos(slow * Math.PI * 2 + 0.8) * 10;
+
+              // Bloom + color pulse, narrow window centered on the cut frame.
+              const cutPulse = pulse(cycle, 0.30, 0.58);
+              swell = cutPulse * (1.35 * intensity);
+              blend = cutPulse * (0.85 * intensity);
+              plateScale = 1.04 + 0.20 * swell;
+              hue = 14 * intensity * swell;
+              sat = 1.04 + 0.42 * intensity * swell;
+
+              // Motion blur on the bg through the cut window — sells the force.
+              fgBlur = cutPulse * (6 * intensity);
+
+              // Drag the field internals along the cut vector: color masses, ribbon, center
+              // physically slide across the frame in field-space, not just the plate translating.
+              cutDrag = bgX;
+              cutBoost = cutPulse * intensity;
+
+              // Foreground cut-the-curve (matches skill): both texts move leftward, same direction.
+              const a = study.querySelector(".scene-a");
+              const b = study.querySelector(".scene-b");
+              const sceneBlur = 8;
+              const sceneTravel = 230;
+              a.style.transform = `translate(-50%, -50%) translateX(${-sceneTravel * exitEase}px)`;
+              a.style.opacity = String(clamp(1 - exitEase * 0.95, 0, 1));
+              a.style.filter = `blur(${sceneBlur * exitEase}px)`;
+              b.style.transform = `translate(-50%, -50%) translateX(${sceneTravel * (1 - entryEase)}px)`;
+              b.style.opacity = String(entryEase);
+              b.style.filter = `blur(${sceneBlur * (1 - entryEase)}px)`;
+            }
+
+            if (mode === "wipe") {
+              const out = easeIn(clamp((breakCycle - 0.22) / 0.16, 0, 1));
+              const enter = easeOut(clamp((breakCycle - 0.44) / 0.34, 0, 1));
+              swell = pulse(breakCycle, 0.22, 0.72) * 1.65;
+              blend = pulse(breakCycle, 0.28, 0.72) * 0.98;
+              plateX += -170 * pulse(breakCycle, 0.14, 0.86);
+              plateScale += 0.28 * swell;
+              hue = -18 * swell;
+              sat += 0.5 * swell;
+              const a = study.querySelector(".scene-a");
+              const b = study.querySelector(".scene-b");
+              a.style.transform = `translate(-50%, -50%) scale(${1 + out * 0.18})`;
+              a.style.opacity = String(clamp(1 - out * 0.95, 0, 1));
+              a.style.filter = `blur(${14 * out}px)`;
+              b.style.transform = `translate(-50%, -50%) translateX(${260 * (1 - enter)}px)`;
+              b.style.opacity = String(enter);
+              b.style.filter = `blur(${14 * (1 - enter)}px)`;
+            }
+
+            if (mode === "current") {
+              const title = study.querySelector(".title");
+              title.style.transform = `translate(-50%, -50%) translateX(${Math.sin(time * 0.22) * 8}px)`;
+              title.style.filter = "blur(0px)";
+            }
+
+            const state = {
+              phase: slow * 2.4 + plateX / 820,
+              flow: slow + plateX / 620,
+              density: 1.02 + swell * 0.2,
+              radius: 1.0 + swell * 0.72,
+              lift: 0.03 + blend * 0.1,
+              centerX: 0.5 + Math.sin(slow * Math.PI * 2 + index) * 0.045 + plateX / 4200,
+              centerY: 0.52 + Math.cos(slow * Math.PI * 2 + index) * 0.025 + plateY / 2600,
+              palette: 0.44 + Math.sin(slow * 1.6) * 0.12 + blend * 0.4,
+              wash: 0.14 + blend * 0.42,
+              warp: 0.22 + swell * 0.08,
+              shapeScale: 0.24 + swell * 0.82,
+              ribbonScale: 0.06 + swell * 0.18,
+              blend,
+              ribbon: slow * 0.82 + plateX / 900,
+              massAX: -0.28 + ((slow * 0.46 + index * 0.08) % 1.56),
+              massAY: 0.42 + Math.sin(slow * Math.PI * 0.9) * 0.16,
+              massBX: 1.24 - ((slow * 0.34 + 0.28 + index * 0.05) % 1.54),
+              massBY: 0.6 + Math.cos(slow * Math.PI * 0.82) * 0.16,
+              massCX: 0.44 + Math.sin(slow * Math.PI * 0.62 + 1.4) * 0.34,
+              massCY: 0.32 + Math.cos(slow * Math.PI * 0.54 + 0.8) * 0.12
+            };
+
+            // Resting baseline for cutCurve modes: more shape + warmth so the landed scene
+            // doesn't read near-black between cuts. Tuned to stay below dot-bloom levels.
+            if (mode === "cutCurveA" || mode === "cutCurveB") {
+              state.lift += 0.09;
+              state.wash += 0.12;
+              state.palette = clamp(state.palette + 0.16, 0, 1);
+              state.shapeScale += 0.14;
+              state.ribbonScale += 0.05;
+              state.radius += 0.08;
+              state.density += 0.04;
+            }
+
+            // Cut-the-curve drag: shift mass positions / ribbon / center in field-space so the
+            // shapes themselves slide across the frame at the same velocity as the plate.
+            if (cutDrag !== 0 || cutBoost !== 0) {
+              const lateral = cutDrag / 320;   // ~-1.5 field-units at peak — strong cross-frame slide
+              state.massAX += lateral * 1.10;
+              state.massBX += lateral * 1.25;
+              state.massCX += lateral * 0.85;
+              state.centerX += cutDrag / 1100;
+              state.ribbon += cutDrag / 260;
+              state.phase += cutDrag / 220;
+              state.flow += cutDrag / 280;
+              state.warp += cutBoost * 0.20;
+              state.shapeScale += cutBoost * 0.32;
+              state.ribbonScale += cutBoost * 0.14;
+            }
+
+            canvas.style.transform = `translate(calc(-50% + ${plateX}px), calc(-50% + ${plateY}px)) scale(${plateScale})`;
+            canvas.style.filter = `hue-rotate(${hue}deg) saturate(${sat}) blur(${fgBlur}px)`;
+            const shape = study.querySelector(".shape");
+            shape.style.transform = `translateX(${plateX * 0.78 + Math.sin(time * 0.16 + index) * 90}px) scale(${1.04 + swell * 0.2})`;
+            shape.style.opacity = String(0.28 + blend * 0.42);
+
+            drawHalftone(ctx, cssW, cssH, state, 9400 + index * 311);
+            ctx.restore();
+          });
+
+          requestAnimationFrame(render);
+        }
+
+        requestAnimationFrame(render);
+      })();
+    </script>
+  </body>
+</html>

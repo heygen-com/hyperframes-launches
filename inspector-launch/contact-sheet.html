@@ -1,0 +1,1310 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HyperFrames Inspector Launch Contact Sheet</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      :root {
+        --page: #f2e6d2;
+        --paper: #fff8e9;
+        --claude: #f5f4ed;
+        --claude-top: #faf9f5;
+        --claude-line: #e5e0d1;
+        --claude-bubble: #f0ece0;
+        --ink: #191713;
+        --muted: #716a5c;
+        --rule: rgba(25, 23, 19, 0.16);
+        --deep: #07100c;
+        --green: #45d86e;
+        --green-deep: #12833c;
+        --cyan: #19b7d5;
+        --amber: #f1b64a;
+        --coral: #d97757;
+        --shadow: rgba(54, 39, 18, 0.18);
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-width: 1600px;
+        background: var(--page);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      body {
+        padding: 56px 64px 80px;
+      }
+
+      .sheet {
+        width: 2360px;
+        margin: 0 auto;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 720px;
+        gap: 72px;
+        align-items: end;
+        margin-bottom: 32px;
+        padding-bottom: 34px;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .eyebrow,
+      .meta,
+      .scene-head,
+      .motion-note,
+      .mono,
+      .tag {
+        font-family: "IBM Plex Mono", "SF Mono", ui-monospace, monospace;
+      }
+
+      .eyebrow {
+        margin-bottom: 18px;
+        color: var(--muted);
+        font-size: 18px;
+        font-weight: 760;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        max-width: 1220px;
+        font-family: Fraunces, Georgia, ui-serif, serif;
+        font-size: 92px;
+        font-weight: 900;
+        line-height: 0.94;
+        letter-spacing: 0;
+      }
+
+      .meta {
+        color: var(--muted);
+        font-size: 20px;
+        line-height: 1.42;
+      }
+
+      .meta strong {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--ink);
+        font-size: 22px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+      }
+
+      .scene {
+        min-height: 456px;
+        overflow: hidden;
+        border: 1px solid var(--rule);
+        border-radius: 12px;
+        background: rgba(255, 248, 233, 0.68);
+        box-shadow: 0 24px 62px var(--shadow);
+      }
+
+      .scene.wide {
+        grid-column: span 2;
+      }
+
+      .scene-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        min-height: 56px;
+        padding: 16px 18px 0;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 760;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .tag {
+        flex: 0 0 auto;
+        padding: 8px 11px;
+        border: 1px solid var(--rule);
+        border-radius: 999px;
+        background: var(--paper);
+        color: var(--ink);
+        font-size: 13px;
+      }
+
+      .tag.new {
+        background: var(--green);
+        border-color: rgba(18, 131, 60, 0.34);
+      }
+
+      .tag.chat {
+        background: #f2cdbd;
+        border-color: rgba(217, 119, 87, 0.36);
+      }
+
+      .tag.proof {
+        background: #c8f3fa;
+        border-color: rgba(25, 183, 213, 0.34);
+      }
+
+      .frame {
+        position: relative;
+        height: 318px;
+        margin: 14px 18px 0;
+        overflow: hidden;
+        border: 1px solid rgba(255, 248, 233, 0.18);
+        border-radius: 10px;
+        background: var(--deep);
+        color: var(--paper);
+      }
+
+      .scene.wide .frame {
+        height: 332px;
+      }
+
+      .halftone {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .vignette {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background:
+          radial-gradient(circle at 50% 54%, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.46) 78%),
+          linear-gradient(90deg, rgba(69, 216, 110, 0.08), rgba(25, 183, 213, 0.08));
+        pointer-events: none;
+      }
+
+      .frame > :not(.halftone):not(.vignette) {
+        position: relative;
+        z-index: 2;
+      }
+
+      .title-center {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 36px;
+        text-align: center;
+      }
+
+      .h1-line {
+        color: var(--paper);
+        font-size: 48px;
+        font-weight: 950;
+        line-height: 0.92;
+        letter-spacing: -0.035em;
+        text-shadow:
+          1px 0 rgba(25, 183, 213, 0.42),
+          -1px 0 rgba(217, 119, 87, 0.3),
+          0 18px 42px rgba(0, 0, 0, 0.42);
+      }
+
+      .scene.wide .h1-line {
+        font-size: 72px;
+        white-space: nowrap;
+      }
+
+      .video-word,
+      .accent-word {
+        color: transparent;
+        background: linear-gradient(90deg, var(--green), var(--cyan), var(--amber));
+        -webkit-background-clip: text;
+        background-clip: text;
+        text-shadow: none;
+      }
+
+      .dark-prompt {
+        position: absolute;
+        left: 50%;
+        top: 53%;
+        width: 720px;
+        min-height: 132px;
+        transform: translate(-50%, -50%);
+        border: 1px solid rgba(255, 248, 233, 0.16);
+        border-radius: 28px;
+        background:
+          linear-gradient(180deg, rgba(20, 24, 19, 0.98), rgba(9, 15, 12, 0.98)),
+          #10140f;
+        box-shadow:
+          0 42px 120px rgba(0, 0, 0, 0.48),
+          inset 0 1px 0 rgba(255, 248, 233, 0.08);
+        padding: 24px 24px 18px;
+      }
+
+      .dark-prompt .prompt-text {
+        min-height: 44px;
+        padding: 2px 70px 0 6px;
+        color: var(--paper);
+        font-size: 28px;
+        font-weight: 650;
+        line-height: 1.22;
+        letter-spacing: -0.01em;
+      }
+
+      .dark-prompt .prompt-actions,
+      .composer-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .attach {
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        color: rgba(255, 248, 233, 0.54);
+        border-radius: 9px;
+      }
+
+      .send {
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        border-radius: 10px;
+        background: var(--coral);
+      }
+
+      .send svg {
+        display: block;
+      }
+
+      .caret {
+        display: inline-block;
+        width: 7px;
+        height: 28px;
+        margin-left: 6px;
+        vertical-align: -5px;
+        background: var(--coral);
+      }
+
+      .word-cues {
+        position: absolute;
+        left: 96px;
+        right: 96px;
+        bottom: 42px;
+        display: grid;
+        grid-template-columns: 0.86fr 0.72fr 1.6fr;
+        gap: 12px;
+      }
+
+      .word-cues span {
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(255, 248, 233, 0.2);
+      }
+
+      .word-cues span:nth-child(1) { background: var(--paper); }
+      .word-cues span:nth-child(2) { background: var(--green); }
+      .word-cues span:nth-child(3) { background: var(--cyan); }
+
+      .video-card,
+      .caption-card,
+      .placeholder,
+      .inspector-map,
+      .curve-card,
+      .move-study {
+        position: absolute;
+        left: 50%;
+        top: 52%;
+        transform: translate(-50%, -50%);
+        border: 1px solid rgba(255, 248, 233, 0.18);
+        border-radius: 24px;
+        background: rgba(255, 248, 233, 0.08);
+        box-shadow: 0 32px 86px rgba(0, 0, 0, 0.32);
+      }
+
+      .video-card {
+        width: 520px;
+        height: 220px;
+        background:
+          linear-gradient(90deg, rgba(255,255,255,.14) 0 1px, transparent 1px) 0 0 / 32px 32px,
+          linear-gradient(0deg, rgba(255,255,255,.1) 0 1px, transparent 1px) 0 0 / 32px 32px,
+          linear-gradient(135deg, rgba(69, 216, 110, 0.24), rgba(25, 183, 213, 0.18), rgba(241, 182, 74, 0.16));
+      }
+
+      .playhead {
+        position: absolute;
+        top: 34px;
+        bottom: 34px;
+        left: 50%;
+        width: 2px;
+        background: linear-gradient(180deg, transparent, rgba(255, 248, 233, 0.92), transparent);
+      }
+
+      .canvas-caption {
+        position: absolute;
+        left: 50%;
+        bottom: 38px;
+        transform: translateX(-50%);
+        font-size: 34px;
+        font-weight: 950;
+        white-space: nowrap;
+      }
+
+      .claude-app {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 560px;
+        height: 286px;
+        overflow: hidden;
+        border: 1px solid var(--claude-line);
+        border-radius: 20px;
+        background: var(--claude);
+        color: #3d3929;
+        box-shadow: 0 34px 92px rgba(0, 0, 0, 0.38);
+        transform: translate(-50%, -50%);
+      }
+
+      .claude-topbar {
+        height: 48px;
+        padding: 0 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #ebe7db;
+        background: var(--claude-top);
+      }
+
+      .topbar-left,
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .icon-btn {
+        width: 26px;
+        height: 26px;
+        display: grid;
+        place-items: center;
+        color: #6b6757;
+      }
+
+      .logo-mark {
+        width: 26px;
+        height: 26px;
+        display: grid;
+        place-items: center;
+      }
+
+      .project-name {
+        color: #3d3929;
+        font-size: 13px;
+        font-weight: 560;
+      }
+
+      .model-pill {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border: 1px solid var(--claude-line);
+        border-radius: 999px;
+        background: var(--claude-bubble);
+        color: #6b6757;
+        font-size: 11px;
+      }
+
+      .avatar {
+        width: 26px;
+        height: 26px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--coral);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .claude-thread {
+        position: absolute;
+        left: 42px;
+        right: 42px;
+        top: 72px;
+        bottom: 86px;
+        overflow: hidden;
+      }
+
+      .bubble {
+        max-width: 330px;
+        padding: 12px 16px;
+        border: 1px solid var(--claude-line);
+        border-radius: 16px;
+        background: var(--claude-bubble);
+        color: #3d3929;
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.25;
+        box-shadow: 0 12px 26px rgba(61, 57, 41, 0.08);
+      }
+
+      .bubble.user {
+        margin-left: auto;
+      }
+
+      .reply-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-top: 18px;
+        color: #2a2720;
+        font-size: 13px;
+        line-height: 1.38;
+      }
+
+      .reply-mark {
+        width: 28px;
+        height: 28px;
+        flex: 0 0 28px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--claude-line);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .composer {
+        position: absolute;
+        left: 42px;
+        right: 42px;
+        bottom: 22px;
+        min-height: 58px;
+        padding: 13px 14px 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid var(--claude-line);
+        border-radius: 15px;
+        background: #fff;
+        box-shadow: 0 12px 34px rgba(61, 57, 41, 0.09);
+      }
+
+      .composer-text {
+        min-height: 20px;
+        padding-right: 50px;
+        color: #3d3929;
+        font-size: 13px;
+        font-weight: 650;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      .composer .send,
+      .composer .attach {
+        width: 28px;
+        height: 28px;
+      }
+
+      .composer .attach {
+        color: #8c8674;
+      }
+
+      .composer .send {
+        border-radius: 8px;
+      }
+
+      .composer-actions {
+        position: absolute;
+        right: 12px;
+        bottom: 10px;
+      }
+
+      .firehose .claude-thread {
+        top: 62px;
+        bottom: 82px;
+      }
+
+      .prompt-shot {
+        position: absolute;
+        right: var(--r);
+        top: var(--t);
+        max-width: 248px;
+        padding: 8px 11px;
+        border: 1px solid var(--claude-line);
+        border-radius: 12px;
+        background: var(--claude-bubble);
+        color: #3d3929;
+        font-size: var(--fs);
+        font-weight: 760;
+        line-height: 1.15;
+        opacity: var(--op);
+        box-shadow: 0 12px 26px rgba(61, 57, 41, 0.1);
+      }
+
+      .prompt-shot.alt {
+        right: auto;
+        left: var(--l);
+        background: #fff;
+      }
+
+      .prompt-shot.blur {
+        filter: blur(1.4px);
+      }
+
+      .launch-origin {
+        position: absolute;
+        left: 50%;
+        bottom: 78px;
+        width: 380px;
+        height: 140px;
+        border-top: 1px solid rgba(217, 119, 87, 0.32);
+        border-left: 1px solid rgba(217, 119, 87, 0.1);
+        border-right: 1px solid rgba(217, 119, 87, 0.1);
+        border-radius: 380px 380px 0 0;
+        transform: translateX(-50%);
+      }
+
+      .ask-ribbon {
+        position: absolute;
+        left: 50%;
+        top: 38px;
+        transform: translateX(-50%);
+        padding: 10px 16px;
+        border: 1px solid var(--claude-line);
+        border-radius: 999px;
+        background: #fff;
+        color: #3d3929;
+        font-size: 17px;
+        font-weight: 850;
+        white-space: nowrap;
+        box-shadow: 0 16px 42px rgba(0, 0, 0, 0.24);
+      }
+
+      .move-study {
+        width: 430px;
+        height: 170px;
+      }
+
+      .move-object,
+      .move-ghost {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        padding: 16px 22px;
+        border-radius: 12px;
+        font-size: 34px;
+        font-weight: 950;
+        white-space: nowrap;
+        transform: translate(-50%, -50%);
+      }
+
+      .move-ghost {
+        border: 2px dashed rgba(255, 248, 233, 0.32);
+        color: rgba(255, 248, 233, 0.24);
+      }
+
+      .move-object {
+        left: calc(50% - 34px);
+        border: 3px solid var(--green);
+        background: rgba(255, 248, 233, 0.08);
+      }
+
+      .measure {
+        position: absolute;
+        left: calc(50% - 34px);
+        top: 76%;
+        width: 34px;
+        height: 2px;
+        background: var(--green);
+      }
+
+      .measure::before,
+      .measure::after {
+        content: "";
+        position: absolute;
+        top: -8px;
+        width: 2px;
+        height: 18px;
+        background: var(--green);
+      }
+
+      .measure::before { left: 0; }
+      .measure::after { right: 0; }
+
+      .measure-label {
+        position: absolute;
+        left: calc(50% - 17px);
+        top: calc(76% + 12px);
+        transform: translateX(-50%);
+        color: var(--green);
+        font-size: 15px;
+        font-weight: 850;
+      }
+
+      .curve-card {
+        width: 440px;
+        height: 188px;
+        background: rgba(255, 248, 233, 0.1);
+      }
+
+      .curve-card svg {
+        position: absolute;
+        left: 34px;
+        right: 34px;
+        bottom: 24px;
+        width: calc(100% - 68px);
+        height: 118px;
+        overflow: visible;
+      }
+
+      .curve-percent {
+        position: absolute;
+        right: 32px;
+        top: 24px;
+        color: var(--green);
+        font-size: 34px;
+        font-weight: 950;
+      }
+
+      .caption-card {
+        width: 470px;
+        height: 200px;
+        background:
+          linear-gradient(90deg, rgba(255,255,255,.14) 0 1px, transparent 1px) 0 0 / 34px 34px,
+          linear-gradient(135deg, #211d18, #6b5540 58%, #eac889);
+      }
+
+      .caption-line {
+        position: absolute;
+        left: 50%;
+        top: 56%;
+        transform: translate(-50%, -50%);
+        color: var(--paper);
+        font-size: 36px;
+        font-weight: 950;
+        white-space: nowrap;
+      }
+
+      .selection {
+        padding: 0 5px;
+        color: var(--deep);
+        background: rgba(69, 216, 110, 0.85);
+      }
+
+      .placeholder {
+        width: 470px;
+        height: 210px;
+        display: grid;
+        place-items: center;
+        border: 2px dashed rgba(255, 248, 233, 0.34);
+        color: rgba(255, 248, 233, 0.7);
+        text-align: center;
+        backdrop-filter: blur(8px);
+      }
+
+      .placeholder strong {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--paper);
+        font-size: 30px;
+      }
+
+      .inspector-map {
+        width: 500px;
+        height: 218px;
+        background: rgba(255, 248, 233, 0.09);
+      }
+
+      .mini-video {
+        position: absolute;
+        left: 24px;
+        top: 24px;
+        width: 270px;
+        height: 150px;
+        border-radius: 16px;
+        background:
+          linear-gradient(90deg, rgba(255,255,255,.15) 0 1px, transparent 1px) 0 0 / 24px 24px,
+          linear-gradient(135deg, #241f1a, #756049 64%, #f4d39c);
+      }
+
+      .mini-selected {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        padding: 8px 12px;
+        border: 3px solid var(--green);
+        border-radius: 8px;
+        color: var(--paper);
+        font-size: 18px;
+        font-weight: 950;
+        transform: translate(-50%, -50%);
+      }
+
+      .mini-panel {
+        position: absolute;
+        right: 24px;
+        top: 24px;
+        width: 140px;
+        height: 150px;
+        padding: 16px;
+        border: 1px solid rgba(255, 248, 233, 0.18);
+        border-radius: 14px;
+        background: rgba(255, 248, 233, 0.12);
+      }
+
+      .mini-row {
+        height: 14px;
+        margin-bottom: 12px;
+        border-radius: 999px;
+        background: rgba(255, 248, 233, 0.24);
+      }
+
+      .mini-row:nth-child(2) { width: 72%; background: var(--green); }
+      .mini-row:nth-child(3) { width: 86%; background: var(--cyan); }
+      .mini-row:nth-child(4) { width: 58%; background: var(--amber); }
+
+      .mini-timeline {
+        position: absolute;
+        left: 24px;
+        right: 188px;
+        bottom: 24px;
+        height: 22px;
+        display: flex;
+        gap: 6px;
+      }
+
+      .mini-clip {
+        flex: 1;
+        border-radius: 6px;
+        background: var(--green);
+      }
+
+      .mini-clip:nth-child(2) { flex: .7; background: var(--cyan); }
+      .mini-clip:nth-child(3) { flex: 1.15; background: var(--amber); }
+
+      .lockup {
+        text-align: center;
+      }
+
+      .lockup .small {
+        margin-bottom: 12px;
+        color: rgba(255, 248, 233, 0.62);
+        font-size: 19px;
+        font-weight: 760;
+      }
+
+      .lockup .big {
+        font-size: 52px;
+        font-weight: 950;
+        line-height: 0.94;
+        letter-spacing: -0.04em;
+      }
+
+      .shader-panel {
+        position: absolute;
+        inset: 0;
+        padding: 38px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
+        align-items: end;
+      }
+
+      .shader-card {
+        min-height: 118px;
+        padding: 20px;
+        border: 1px solid rgba(255, 248, 233, 0.2);
+        border-radius: 14px;
+        background: rgba(7, 16, 12, 0.64);
+        backdrop-filter: blur(8px);
+      }
+
+      .shader-card strong {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--paper);
+        font-size: 22px;
+      }
+
+      .shader-card p {
+        margin: 0;
+        color: rgba(255, 248, 233, 0.66);
+        font-size: 15px;
+        line-height: 1.35;
+      }
+
+      .wave {
+        position: absolute;
+        left: -10%;
+        right: -10%;
+        top: 44%;
+        height: 86px;
+        background: linear-gradient(90deg, transparent, rgba(25, 183, 213, 0.28), rgba(69, 216, 110, 0.22), transparent);
+        filter: blur(18px);
+        transform: rotate(-7deg);
+      }
+
+      .motion-note {
+        min-height: 88px;
+        padding: 12px 18px 16px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.38;
+      }
+
+      .motion-note strong {
+        color: var(--ink);
+      }
+
+      .motion-note .row {
+        display: grid;
+        grid-template-columns: 82px minmax(0, 1fr);
+        gap: 10px;
+        margin-top: 3px;
+      }
+
+      .motion-note .row:first-child {
+        margin-top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="sheet">
+      <header>
+        <div>
+          <div class="eyebrow">HyperFrames Inspector / contact sheet repair</div>
+          <h1>Full storyboard, with the requested changes in context.</h1>
+        </div>
+        <div class="meta">
+          <strong>Read this as the storyboard again</strong>
+          The original beat sheet stays intact. The new work is Scene 00, the revised one-line
+          Scene 01, the Scene 04 to 05 handoff, the composer-origin firehose, and the global
+          halftone behavior. The frame notes say what moves, but the panels are not abstract
+          diagrams.
+        </div>
+      </header>
+
+      <section class="grid">
+        <article class="scene wide">
+          <div class="scene-head"><span>00 / new intro</span><span class="tag new">dark prompt box</span></div>
+          <div class="frame" data-density="1.12" data-scale="1.04" data-wave="0.22">
+            <canvas class="halftone"></canvas>
+            <div class="vignette"></div>
+            <div class="dark-prompt">
+              <div class="prompt-text">we created HyperFrames because we believe<span class="caret"></span></div>
+              <div class="prompt-actions">
+                <div class="attach">
+                  <svg viewBox="0 0 24 24" width="18" height="18"><path d="M21 11.5l-8.5 8.5a5 5 0 1 1-7-7l8.5-8.5a3.5 3.5 0 1 1 5 5L11 17.5a2 2 0 1 1-3-3l7-7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+                </div>
+                <div class="send">
+                  <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 5v14M5 12l7-7 7 7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="motion-note">
+            <div class="row"><strong>Direction</strong><span>Hold centered, then the prompt box accelerates left into Scene 01.</span></div>
+            <div class="row"><strong>First move</strong><span>Halftone breath starts immediately; text types into a dark Claude-style composer.</span></div>
+            <div class="row"><strong>BG</strong><span>Same global halftone, darker center mass, subtle wave alive during the hold.</span></div>
+          </div>
+        </article>
+
+        <article class="scene wide">
+          <div class="scene-head"><span>01 / opener revision</span><span class="tag new">one line</span></div>
+          <div class="frame" data-density="1.34" data-scale="1.06" data-wave="0.32">
+            <canvas class="halftone"></canvas>
+            <div class="vignette"></div>
+            <div class="title-center">
+              <div class="h1-line">Creating <span class="video-word">video</span> should be easy.</div>
+            </div>
+            <div class="word-cues"><span></span><span></span><span></span></div>
+          </div>
+          <div class="motion-note">
+            <div class="row"><strong>Direction</strong><span>Leftward cut-the-curve: Scene 00 exits x:-220/blur 8, this enters from x:+220/blur 8.</span></div>
+            <div class="row"><strong>First move</strong><span>Creating, then video, then should be easy. No underline, no stacked word pills.</span></div>
+            <div class="row"><strong>BG</strong><span>Background shifts 0.1s before foreground and keeps breathing through the hold.</span></div>
+          </div>
+        </article>
+
+        <article class="scene">
+          <div class="scene-head"><span>02 / transform</span><span class="tag proof">video canvas</span></div>
+          <div class="frame" data-density="0.92" data-scale="1.26" data-wave="0.34">
+            <canvas class="halftone"></canvas>
+            <div class="vignette"></div>
+            <div class="video-card">
+              <div class="playhead"></div>
+              <div class="canvas-caption">AI gets you moving.</div>
+            </div>
+          </div>
+          <div class="motion-note">
+            <div class="row"><strong>Move</strong><span>The word video expands into this canvas.</span></div>
+            <div class="row"><strong>Keep</strong><span>Original beat retained.</span></div>
+          </div>
+        </article>
+
+        <article class="scene">
+          <div class="scene-head"><span>03 / gap</span><span class="tag">title</span></div>
+          <div class="frame" data-density="1.16" data-scale="1.0" data-wave="0.2">
+            <canvas class="halftone"></canvas>
+            <div class="vignette"></div>
+            <div class="title-center"><div class="h1-line">Close isn't final.</div></div>
+          </div>
+          <div class="motion-note">
+            <div class="row"><strong>Move</strong><span>Zoom-through title emphasis.</span></div>
+            <div class="row"><strong>Keep</strong><span>Original beat retained.</span></div>
+          </div>
+        </article>
+
+        <article class="scene wide">
+          <div class="scene-head"><span>04 / Claude setup</span><span class="tag chat">faithful shell</span></div>
+          <div class="frame" data-density="1.04" data-scale="0.96" data-wave="0.12">
+            <canvas class="halftone"></canvas>
+            <div class="vignette"></div>
+            <div class="claude-app">
+              <div class="claude-topbar">
+                <div class="topbar-left">
+                  <div class="icon-btn"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg></div>
+                  <div class="logo-mark"><svg viewBox="0 0 32 32" width="24" height="24"><g fill="#D97757"><path d="M16 2 L17.4 12.6 L21.2 4.8 L18.7 13.3 L26.2 8.2 L19.5 14.8 L29.4 14 L19.6 16.6 L28 21.6 L18.8 17.8 L22.5 27.2 L16.8 18.4 L15.4 28.8 L14.7 18.2 L9.2 27.2 L13 17.8 L3.8 21.6 L12.3 16.6 L2.6 14 L12.4 14.8 L5.8 8.2 L13.3 13.3 L10.8 4.8 L14.6 12.6 Z"/></g></svg></div>
+                  <div class="project-name">HyperFrames Launch</div>
+                </div>
+                <div class="topbar-right"><div class="model-pill">Claude Opus 4.7 <svg viewBox="0 0 12 12" width="10" height="10"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div class="avatar">J</div></div>
+              </div>
+              <div class="claude-thread">
+                <div class="bubble user">Can we try a different font?</div>
+                <div class="reply-row"><div class="reply-mark"><svg viewBox="0 0 32 32" width="18" height="18"><g fill="#D97757"><path d="M16 2 L17.4 12.6 L21.2 4.8 L18.7 13.3 L26.2 8.2 L19.5 14.8 L29.4 14 L19.6 16.6 L28 21.6 L18.8 17.8 L22.5 27.2 L16.8 18.4 L15.4 28.8 L14.7 18.2 L9.2 27.2 L13 17.8 L3.8 21.6 L12.3 16.6 L2.6 14 L12.4 14.8 L5.8 8.2 L13.3 13.3 L10.8 4.8 L14.6 12.6 Z"/></g></svg></div><div>I'll update the title treatment and re-render the preview.</div></div>
+              </div>
+              <div class="composer">
+                <div class="composer-text">Can we try a different font?</div>
+                <div class="composer-actions"><div class="attach"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M21 11.5l-8.5 8.5a5 5 0 1 1-7-7l8.5-8.5a3.5 3.5 0 1 1 5 5L11 17.5a2 2 0 1 1-3-3l7-7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div class="send"><svg viewBox="0 0 24 24" width="13" height="13"><path d="M12 5v14M5 12l7-7 7 7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="motion-note">
+            <div class="row"><strong>Direction</strong><span>Claude enters, then stays as the same object into Scene 05.</span></div>
+            <div class="row"><strong>First move</strong><span>Composer types; send pulses; user bubble and response land.</span></div>
+            <div class="row"><strong>BG</strong><span>Quiet phase drift behind the modal, not a layout reset.</span></div>
+          </div>
+        </article>
+
+        <article class="scene wide">
+          <div class="scene-head"><span>05 / prompt firehose retry</span><span class="tag chat">composer origin</span></div>
+          <div class="frame" data-density="1.32" data-scale="1.16" data-wave="0.5">
+            <canvas class="halftone"></canvas>
+            <div class="vignette"></div>
+            <div class="claude-app firehose">
+              <div class="claude-topbar">
+                <div class="topbar-left">
+                  <div class="icon-btn"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg></div>
+                  <div class="logo-mark"><svg viewBox="0 0 32 32" width="24" height="24"><g fill="#D97757"><path d="M16 2 L17.4 12.6 L21.2 4.8 L18.7 13.3 L26.2 8.2 L19.5 14.8 L29.4 14 L19.6 16.6 L28 21.6 L18.8 17.8 L22.5 27.2 L16.8 18.4 L15.4 28.8 L14.7 18.2 L9.2 27.2 L13 17.8 L3.8 21.6 L12.3 16.6 L2.6 14 L12.4 14.8 L5.8 8.2 L13.3 13.3 L10.8 4.8 L14.6 12.6 Z"/></g></svg></div>
+                  <div class="project-name">HyperFrames Launch</div>
+                </div>
+                <div class="topbar-right"><div class="model-pill">Claude Opus 4.7 <svg viewBox="0 0 12 12" width="10" height="10"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div class="avatar">J</div></div>
+              </div>
+              <div class="launch-origin"></div>
+              <div class="claude-thread">
+                <div class="prompt-shot" style="--r: 22px; --t: 2px; --fs: 11px; --op: 1">Make this faster.</div>
+                <div class="prompt-shot alt" style="--l: 16px; --t: 29px; --fs: 10px; --op: .96">Try warmer color.</div>
+                <div class="prompt-shot" style="--r: 76px; --t: 56px; --fs: 10px; --op: .94">Move left 20px.</div>
+                <div class="prompt-shot alt" style="--l: 54px; --t: 83px; --fs: 9px; --op: .86">Less bounce.</div>
+                <div class="prompt-shot" style="--r: 34px; --t: 108px; --fs: 9px; --op: .8">Slow curve 20%.</div>
+                <div class="prompt-shot alt blur" style="--l: 18px; --t: 132px; --fs: 8px; --op: .62">Try another font.</div>
+                <div class="prompt-shot blur" style="--r: 96px; --t: 154px; --fs: 8px; --op: .48">One frame later.</div>
+                <div class="prompt-shot alt blur" style="--l: 94px; --t: 176px; --fs: 8px; --op: .36">Actually left.</div>
+              </div>
+              <div class="composer">
+                <div class="composer-text">keep nudging until it feels right...</div>
+                <div class="composer-actions"><div class="attach"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M21 11.5l-8.5 8.5a5 5 0 1 1-7-7l8.5-8.5a3.5 3.5 0 1 1 5 5L11 17.5a2 2 0 1 1-3-3l7-7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><div class="send"><svg viewBox="0 0 24 24" width="13" height="13"><path d="M12 5v14M5 12l7-7 7 7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="motion-note">
+            <div class="row"><strong>Direction</strong><span>Same modal. Composer flashes text, send pulses, exchanges launch upward and push the thread.</span></div>
+            <div class="row"><strong>First move</strong><span>Borrow Timeline V5 pacing: 3 legible, 6 accelerating, about 20 blurred fast prompts.</span></div>
+            <div class="row"><strong>BG</strong><span>Halftone gets more saturated as the prompt pace ramps, but the modal does not reset.</span></div>
+          </div>
+        </article>
+
+        <article class="scene">
+          <div class="scene-head"><span>06 / move</span><span class="tag new">20px</span></div>
+          <div class="frame" data-density="1.08" data-scale="0.92" data-wave="0.18">
+            <canvas class="halftone"></canvas>
+            <div class="vignette"></div>
+            <div class="ask-ribbon">Move this left 20px.</div>
+            <div class="move-study">
+              <div class="move-ghost">Launch title</div>
+              <div class="move-object">Launch title</div>
+              <div class="measure"></div>
+              <div class="measure-label">20px</div>
+            </div>
+          </div>
+          <div class="motion-note">
+            <div class="row"><strong>Move</strong><span>Direct edit proof beat.</span></div>
+            <div class="row"><strong>Keep</strong><span>No cursor for this pass.</span></div>
+          </div>
+        </article>
+
+        <article class="scene">
+          <div class="scene-head"><span>07 / curve</span><span class="tag new">20%</span></div>
+          <div class="frame" data-density="1.18" data-scale="0.9" data-wave="0.22">
+            <canvas class="halftone"></canvas>
+            <div class="vignette"></div>
+            <div class="ask-ribbon">Slow the curve by 20%.</div>
+            <div class="curve-card">
+              <div class="curve-percent">-20%</div>
+              <svg viewBox="0 0 430 150" aria-hidden="true">
+                <line x1="18" y1="118" x2="398" y2="118" stroke="rgba(255,248,233,.18)" stroke-width="2" />
+                <line x1="18" y1="118" x2="18" y2="24" stroke="rgba(255,248,233,.18)" stroke-width="2" />
+                <path d="M 22 118 C 96 116, 128 82, 172 62 S 270 34, 398 28" fill="none" stroke="rgba(255,248,233,.22)" stroke-width="8" stroke-linecap="round" />
+                <path d="M 22 118 C 138 118, 174 98, 220 72 S 302 34, 398 28" fill="none" stroke="#45d86e" stroke-width="6" stroke-linecap="round" />
+                <circle cx="220" cy="72" r="9" fill="#45d86e" stroke="#07100c" stroke-width="3" />
+              </svg>
+            </div>
+          </div>
+          <div class="motion-note">
+            <div class="row"><strong>Move</strong><span>Curve draw plus percent pop.</span></div>
+            <div class="row"><strong>Keep</strong><span>Original proof beat retained.</span></div>
+          </div>
+        </article>
+
+        <article class="scene">
+          <div class="scene-head"><span>08 / caption</span><span class="tag new">rewrite</span></div>
+          <div class="frame" data-density="1.0" data-scale="1.08" data-wave="0.3">
+            <canvas class="halftone"></canvas>
+            <div class="vignette"></div>
+            <div class="ask-ribbon">Change the caption to "Ship it."</div>
+            <div class="caption-card">
+              <div class="caption-line">Change <span class="selection">this caption</span></div>
+            </div>
+          </div>
+          <div class="motion-note">
+            <div class="row"><strong>Move</strong><span>Selection becomes new caption.</span></div>
+            <div class="row"><strong>Keep</strong><span>Video-frame context, not document text.</span></div>
+          </div>
+        </article>
+
+        <article class="scene">
+          <div class="scene-head"><span>09 / capture</span><span class="tag proof">placeholder</span></div>
+          <div class="frame" data-density="0.96" data-scale="0.92" data-wave="0.16">
+            <canvas class="halftone"></canvas>
+            <div class="vignette"></div>
+            <div class="placeholder"><div><strong>Screen Studio capture</strong><span class="mono">Real Inspector footage drops here.</span></div></div>
+          </div>
+          <div class="motion-note">
+            <div class="row"><strong>Move</strong><span>Placeholder only.</span></div>
+            <div class="row"><strong>Do not</strong><span>Fake full Inspector UI.</span></div>
+          </div>
+        </article>
+
+        <article class="scene">
+          <div class="scene-head"><span>10 / direct</span><span class="tag">title</span></div>
+          <div class="frame" data-density="1.4" data-scale="1.0" data-wave="0.24">
+            <canvas class="halftone"></canvas>
+            <div class="vignette"></div>
+            <div class="title-center"><div class="h1-line">Edit the video <span class="accent-word">directly.</span></div></div>
+          </div>
+          <div class="motion-note">
+            <div class="row"><strong>Move</strong><span>Zoom-through title emphasis.</span></div>
+            <div class="row"><strong>Keep</strong><span>Original thesis beat retained.</span></div>
+          </div>
+        </article>
+
+        <article class="scene">
+          <div class="scene-head"><span>11 / surface</span><span class="tag proof">inspect</span></div>
+          <div class="frame" data-density="1.1" data-scale="0.94" data-wave="0.18">
+            <canvas class="halftone"></canvas>
+            <div class="vignette"></div>
+            <div class="inspector-map">
+              <div class="mini-video"><div class="mini-selected">Title</div></div>
+              <div class="mini-panel"><div class="mini-row"></div><div class="mini-row"></div><div class="mini-row"></div><div class="mini-row"></div></div>
+              <div class="mini-timeline"><div class="mini-clip"></div><div class="mini-clip"></div><div class="mini-clip"></div></div>
+            </div>
+          </div>
+          <div class="motion-note">
+            <div class="row"><strong>Move</strong><span>Selected object, controls, timeline.</span></div>
+            <div class="row"><strong>Keep</strong><span>Map, not fake footage.</span></div>
+          </div>
+        </article>
+
+        <article class="scene">
+          <div class="scene-head"><span>12 / see</span><span class="tag new">line</span></div>
+          <div class="frame" data-density="1.32" data-scale="1.04" data-wave="0.24">
+            <canvas class="halftone"></canvas>
+            <div class="vignette"></div>
+            <div class="title-center"><div class="h1-line">Change what you SEE.</div></div>
+          </div>
+          <div class="motion-note">
+            <div class="row"><strong>Move</strong><span>SEE treatment still open.</span></div>
+            <div class="row"><strong>Keep</strong><span>Original line retained.</span></div>
+          </div>
+        </article>
+
+        <article class="scene">
+          <div class="scene-head"><span>13 / thesis</span><span class="tag">title</span></div>
+          <div class="frame" data-density="1.55" data-scale="0.92" data-wave="0.34">
+            <canvas class="halftone"></canvas>
+            <div class="vignette"></div>
+            <div class="title-center"><div class="h1-line">Prompt less.<br />Shape more.</div></div>
+          </div>
+          <div class="motion-note">
+            <div class="row"><strong>Move</strong><span>Dense dot field, short title.</span></div>
+            <div class="row"><strong>Keep</strong><span>Original thesis retained.</span></div>
+          </div>
+        </article>
+
+        <article class="scene">
+          <div class="scene-head"><span>14 / close</span><span class="tag">TBD</span></div>
+          <div class="frame" data-density="1.05" data-scale="1.0" data-wave="0.22">
+            <canvas class="halftone"></canvas>
+            <div class="vignette"></div>
+            <div class="title-center">
+              <div class="lockup">
+                <div class="small">launch lockup placeholder</div>
+                <div class="big">HyperFrames<br />Inspector</div>
+              </div>
+            </div>
+          </div>
+          <div class="motion-note">
+            <div class="row"><strong>Move</strong><span>Final lockup still provisional.</span></div>
+            <div class="row"><strong>Keep</strong><span>Do not solve in this pass.</span></div>
+          </div>
+        </article>
+
+        <article class="scene wide">
+          <div class="scene-head"><span>global background</span><span class="tag proof">shader-like</span></div>
+          <div class="frame" data-density="1.52" data-scale="1.22" data-wave="0.72">
+            <canvas class="halftone"></canvas>
+            <div class="wave"></div>
+            <div class="vignette"></div>
+            <div class="shader-panel">
+              <div class="shader-card"><strong>Always alive</strong><p>Center drift, dot-radius breathing, and a soft color wave continue during holds.</p></div>
+              <div class="shader-card"><strong>Leads edits</strong><p>Before each transition, the oversized plate shifts first by about 0.1s, then foreground follows.</p></div>
+            </div>
+          </div>
+          <div class="motion-note">
+            <div class="row"><strong>Direction</strong><span>Background x/y/scale follows the same vector as each cut-the-curve transition.</span></div>
+            <div class="row"><strong>First move</strong><span>The halftone cues the edit before the scene content accelerates.</span></div>
+            <div class="row"><strong>Do not</strong><span>Let large background moves reveal blank frame edges.</span></div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        function rand(seed) {
+          let t = seed + 0x6d2b79f5;
+          return function () {
+            t += 0x6d2b79f5;
+            let r = Math.imul(t ^ (t >>> 15), 1 | t);
+            r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+            return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+          };
+        }
+
+        function clamp(value, min, max) {
+          return Math.max(min, Math.min(max, value));
+        }
+
+        function mix(a, b, t) {
+          return [
+            a[0] + (b[0] - a[0]) * t,
+            a[1] + (b[1] - a[1]) * t,
+            a[2] + (b[2] - a[2]) * t
+          ];
+        }
+
+        function draw(canvas, index) {
+          const frame = canvas.closest(".frame");
+          const rect = frame.getBoundingClientRect();
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          const w = Math.max(1, Math.floor(rect.width * dpr));
+          const h = Math.max(1, Math.floor(rect.height * dpr));
+          canvas.width = w;
+          canvas.height = h;
+
+          const ctx = canvas.getContext("2d");
+          const density = Number(frame.dataset.density || 1);
+          const scale = Number(frame.dataset.scale || 1);
+          const wave = Number(frame.dataset.wave || 0);
+          const random = rand(7300 + index * 91);
+          const colors = [
+            [69, 216, 110],
+            [25, 183, 213],
+            [255, 248, 233],
+            [241, 182, 74],
+            [92, 132, 99]
+          ];
+          const dark = [5, 12, 10];
+          const light = [244, 239, 226];
+          const spacing = (5.2 / density) * dpr;
+          const radius = 1.05 * scale * dpr;
+
+          const bg = ctx.createLinearGradient(0, 0, w, h);
+          bg.addColorStop(0, "#142017");
+          bg.addColorStop(0.52, "#0d1510");
+          bg.addColorStop(1, "#060b09");
+          ctx.fillStyle = bg;
+          ctx.fillRect(0, 0, w, h);
+
+          const cx = w * (0.48 + Math.sin(index * 1.7) * 0.08);
+          const cy = h * (0.54 + Math.cos(index * 1.3) * 0.08);
+          const maxD = Math.hypot(w * 0.5, h * 0.5);
+
+          for (let y = -spacing; y < h + spacing; y += spacing) {
+            const row = y / h;
+            for (let x = -spacing; x < w + spacing; x += spacing) {
+              const col = x / w;
+              const dist = Math.hypot(x - cx, y - cy) / maxD;
+              const bandA = Math.sin(row * Math.PI * (5.2 + wave * 2.4) + col * 2.8 + index * 0.7);
+              const bandB = Math.sin((row + col * 0.2) * Math.PI * (8.8 + wave * 3.2) - index * 0.5);
+              const rightGlow = clamp((col - 0.55) / 0.42, 0, 1);
+              const topLight = clamp(1 - row * 1.65, 0, 1);
+              const centerDark = clamp(1 - dist * 2.3, 0, 1) * 0.72;
+              const horizontalPlate = clamp(1 - Math.abs(row - (0.44 + wave * 0.05)) * 4.8, 0, 1);
+              const noise = random();
+              let energy = 0.2 + topLight * 0.3 + horizontalPlate * 0.24 + Math.max(bandA, 0) * 0.18 + Math.max(bandB, 0) * 0.1 - centerDark * 0.43 + wave * 0.08;
+              energy = clamp(energy + (noise - 0.5) * 0.18, 0.03, 0.96);
+
+              const colorSeed = noise * colors.length + rightGlow * 1.6 + row * 1.2 + wave * 2.5;
+              const colorIndex = ((Math.floor(colorSeed) % colors.length) + colors.length) % colors.length;
+              const tonal = mix(dark, light, energy);
+              const color = mix(tonal, colors[colorIndex], 0.42 + noise * 0.34 + wave * 0.12);
+              const alpha = clamp(0.18 + energy * 0.72 + rightGlow * 0.08, 0.12, 0.96);
+              const size = radius * clamp(0.55 + energy * 1.24 + (noise - 0.5) * 0.4, 0.35, 1.82);
+
+              ctx.fillStyle = `rgba(${color[0] | 0}, ${color[1] | 0}, ${color[2] | 0}, ${alpha.toFixed(3)})`;
+              ctx.beginPath();
+              ctx.arc(x + (noise - 0.5) * 0.36, y, size, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+
+          const vignette = ctx.createRadialGradient(cx, cy, h * 0.04, cx, cy, maxD * 0.92);
+          vignette.addColorStop(0, "rgba(0,0,0,0.06)");
+          vignette.addColorStop(0.5, "rgba(0,0,0,0.03)");
+          vignette.addColorStop(1, "rgba(0,0,0,0.45)");
+          ctx.fillStyle = vignette;
+          ctx.fillRect(0, 0, w, h);
+        }
+
+        function drawAll() {
+          document.querySelectorAll(".halftone").forEach(draw);
+        }
+
+        drawAll();
+        window.addEventListener("resize", drawAll);
+      })();
+    </script>
+  </body>
+</html>
