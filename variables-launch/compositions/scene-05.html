@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=block');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1920px; height: 1080px; overflow: hidden; background: #fff; font-family: 'Inter', sans-serif; }
+
+  #scene-05 {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+  }
+
+  .headline {
+    position: absolute;
+    font-size: 94px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #0a0a0a;
+    white-space: nowrap;
+  }
+
+  .code-block {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+  }
+
+  .code-wrap {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 48px;
+    line-height: 2.0;
+    color: rgba(0,0,0,0.35);
+    text-align: left;
+    padding: 0 60px;
+  }
+
+  .code-wrap .attr { color: #0a0a0a; font-weight: 600; }
+  .code-wrap .str { color: #16a34a; }
+  .code-wrap .punct { color: rgba(0,0,0,0.25); }
+
+  .cursor {
+    display: inline-block;
+    width: 2.5px;
+    height: 1.1em;
+    background: #0a0a0a;
+    vertical-align: text-bottom;
+    margin-left: 1px;
+    opacity: 0;
+  }
+
+  .tagline {
+    font-family: 'Inter', sans-serif;
+    font-size: 85px;
+    font-weight: 600;
+    color: #0a0a0a;
+    letter-spacing: -0.02em;
+    opacity: 0.45;
+    margin-top: 56px;
+    opacity: 0;
+  }
+
+  .code-char {
+    display: none;
+  }
+</style>
+</head>
+<body>
+<div id="scene-05" data-composition-id="scene-05" data-width="1920" data-height="1080" data-duration="6">
+
+  <div class="headline" id="h1"><span style="color:#09B2E5">Any</span> composition.</div>
+  <div class="headline" id="h2">Now a <span style="color:#F3A6FF">template.</span></div>
+
+  <div class="code-block" id="code-block">
+    <div class="code-wrap" id="code-wrap"></div>
+    <div class="tagline" id="tagline">Infinite variations.</div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+window.__timelines = window.__timelines || {};
+var tl = gsap.timeline({ paused: true });
+
+// ── Beat 1a: "Any composition." ──
+// Cut-the-curve entry from right (matching scene-04 leftward exit)
+gsap.set("#h1", { x: 200, filter: "blur(8px)", opacity: 0 });
+gsap.set("#h2", { x: 200, filter: "blur(8px)", opacity: 0 });
+
+tl.to("#h1", {
+  x: 0, filter: "blur(0px)", opacity: 1,
+  duration: 0.42, ease: "expo.out"
+}, 0);
+
+// Hold 0.3s, then cut-the-curve exit left
+tl.to("#h1", {
+  x: -200, filter: "blur(8px)", opacity: 0,
+  duration: 0.33, ease: "power2.in"
+}, 0.72);
+
+// ── Beat 1b: "Now a template." ──
+tl.to("#h2", {
+  x: 0, filter: "blur(0px)", opacity: 1,
+  duration: 0.42, ease: "expo.out"
+}, 1.05);
+
+// Hold 0.3s, then zoom-through exit
+tl.to("#h2", {
+  scale: 1.2, filter: "blur(20px)", opacity: 0.15,
+  duration: 0.2, ease: "power3.in"
+}, 1.77);
+
+// ── Beat 2: Code type-on ──
+var codeSegs = [
+  { cls: "attr", text: "data-composition-variables" },
+  { cls: "punct", text: "='[" },
+  { cls: "br" },
+  { cls: "punct", text: "  { " },
+  { cls: "attr", text: "id" },
+  { cls: "punct", text: ": " },
+  { cls: "str", text: '"hookText"' },
+  { cls: "punct", text: ", " },
+  { cls: "attr", text: "type" },
+  { cls: "punct", text: ": " },
+  { cls: "str", text: '"string"' },
+  { cls: "punct", text: " }," },
+  { cls: "br" },
+  { cls: "punct", text: "  { " },
+  { cls: "attr", text: "id" },
+  { cls: "punct", text: ": " },
+  { cls: "str", text: '"accentColor"' },
+  { cls: "punct", text: ", " },
+  { cls: "attr", text: "type" },
+  { cls: "punct", text: ": " },
+  { cls: "str", text: '"color"' },
+  { cls: "punct", text: " }," },
+  { cls: "br" },
+  { cls: "punct", text: "  { " },
+  { cls: "attr", text: "id" },
+  { cls: "punct", text: ": " },
+  { cls: "str", text: '"creatorClip"' },
+  { cls: "punct", text: ", " },
+  { cls: "attr", text: "type" },
+  { cls: "punct", text: ": " },
+  { cls: "str", text: '"string"' },
+  { cls: "punct", text: " }" },
+  { cls: "br" },
+  { cls: "punct", text: "]'" }
+];
+
+var wrap = document.getElementById("code-wrap");
+var charEls = [];
+
+for (var i = 0; i < codeSegs.length; i++) {
+  var seg = codeSegs[i];
+  if (seg.cls === "br") {
+    var br = document.createElement("br");
+    br.style.display = "none";
+    wrap.appendChild(br);
+    charEls.push(br);
+    continue;
+  }
+  for (var c = 0; c < seg.text.length; c++) {
+    var span = document.createElement("span");
+    span.className = "code-char " + seg.cls;
+    span.textContent = seg.text[c];
+    wrap.appendChild(span);
+    charEls.push(span);
+  }
+}
+
+var cursorEl = document.createElement("span");
+cursorEl.className = "cursor";
+cursorEl.id = "cursor";
+cursorEl.innerHTML = "&nbsp;";
+wrap.appendChild(cursorEl);
+
+// Code block zoom-through entry (from h2 zoom exit)
+gsap.set("#code-block", { scale: 0.75, filter: "blur(20px)", opacity: 0 });
+tl.to("#code-block", {
+  scale: 1, filter: "blur(0px)", opacity: 1,
+  duration: 0.5, ease: "expo.out"
+}, 1.97);
+
+// Cursor blink on
+tl.to("#cursor", { opacity: 1, duration: 0.01 }, 2.1);
+
+// Cursor blink loop
+var blinkStart = 2.1;
+var blinkEnd = 5.8;
+var blinkInterval = 0.5;
+for (var b = blinkStart; b < blinkEnd; b += blinkInterval) {
+  tl.to("#cursor", { opacity: 0, duration: 0.01 }, b + blinkInterval * 0.5);
+  tl.to("#cursor", { opacity: 1, duration: 0.01 }, b + blinkInterval);
+}
+
+// Type characters at ~50 chars/sec
+var typeStart = 2.15;
+var charRate = 0.02;
+
+for (var j = 0; j < charEls.length; j++) {
+  tl.set(charEls[j], { display: "inline" }, typeStart + j * charRate);
+}
+
+var typeEnd = typeStart + charEls.length * charRate;
+
+// Tagline fades in after typing
+tl.to("#tagline", { opacity: 1, duration: 0.3, ease: "power2.out" }, typeEnd + 0.2);
+
+// Zoom-through exit into Scene 06
+tl.to("#code-block", {
+  scale: 1.2, filter: "blur(20px)", opacity: 0.15,
+  duration: 0.2, ease: "power3.in"
+}, 5.8);
+
+window.__timelines["scene-05"] = tl;
+</script>
+</body>
+</html>

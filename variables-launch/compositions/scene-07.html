@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=block');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1920px; height: 1080px; overflow: hidden; background: #fff; font-family: 'Inter', sans-serif; }
+
+  #scene-07 {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    background: #fff;
+  }
+
+  .word-mask {
+    display: inline-block;
+    height: 130px;
+    clip-path: inset(0);
+  }
+
+  .word {
+    font-size: 104px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #0a0a0a;
+    line-height: 130px;
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  .cloud-emoji {
+    position: absolute;
+    font-size: 170px;
+    opacity: 0;
+  }
+</style>
+</head>
+<body>
+<div id="scene-07" data-composition-id="scene-07" data-width="1920" data-height="1080" data-duration="3.8">
+
+  <div class="word-mask"><span class="word" id="w0">Render</span></div>
+  <div class="word-mask"><span class="word" id="w1">on</span></div>
+  <div class="word-mask" id="cloud-mask"><span class="word" id="w2" style="color:#09B2E5">AWS</span></div>
+  <div class="word-mask"><span class="word" id="w3">at</span></div>
+  <div class="word-mask"><span class="word" id="w4">scale</span></div>
+  <span class="cloud-emoji" id="cloud-emoji" style="--hf-studio-offset-x: 0px; --hf-studio-offset-y: -23px; translate: var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)" data-hf-studio-path-offset="true" data-hf-studio-original-translate="" data-hf-studio-original-inline-translate="none">☁️</span>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+window.__timelines = window.__timelines || {};
+var tl = gsap.timeline({ paused: true });
+
+gsap.set(".word", { y: 150 });
+
+var words = ["#w0", "#w1", "#w2", "#w3", "#w4"];
+var stagger = 0.08;
+
+for (var i = 0; i < words.length; i++) {
+  tl.to(words[i], {
+    y: 0, duration: 0.45, ease: "power3.out"
+  }, 0.15 + i * stagger);
+}
+
+// Position emoji relative to "AWS"
+var cloudMask = document.getElementById("cloud-mask");
+var sceneEl = document.getElementById("scene-07");
+var maskRect = cloudMask.getBoundingClientRect();
+var sceneRect = sceneEl.getBoundingClientRect();
+var emojiLeft = maskRect.left - sceneRect.left + maskRect.width / 2 + 5;
+var emojiTop = maskRect.top - sceneRect.top + maskRect.height / 2 + 20;
+
+gsap.set("#cloud-emoji", { left: emojiLeft, top: emojiTop, xPercent: -50, yPercent: -50, y: 150 });
+
+// 1s after reveal completes, AWS slides up, emoji slides up into place
+var revealEnd = 0.15 + 4 * stagger + 0.45;
+var swapStart = revealEnd + 1.0;
+
+tl.to("#w2", {
+  y: -150, duration: 0.33, ease: "power2.in"
+}, swapStart);
+
+tl.to("#cloud-emoji", {
+  opacity: 1, y: 0, duration: 0.4, ease: "power3.out"
+}, swapStart + 0.1);
+
+// Upward cut-the-curve exit
+tl.to("#scene-07", {
+  y: -200, filter: "blur(8px)", opacity: 0,
+  duration: 0.33, ease: "power2.in"
+}, 3.8 - 0.33);
+
+tl.to({}, { duration: 3.8 }, 0);
+window.__timelines["scene-07"] = tl;
+</script>
+</body>
+</html>

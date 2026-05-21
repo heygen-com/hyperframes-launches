@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=block');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1920px; height: 1080px; overflow: hidden; background: #fff; font-family: 'Inter', sans-serif; }
+
+  #scene-01 {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+  }
+
+  .intro-wrap {
+    position: absolute;
+    display: flex;
+    gap: 18px;
+    white-space: nowrap;
+  }
+
+  .intro-line {
+    font-size: 94px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #0a0a0a;
+    white-space: nowrap;
+  }
+
+  .dial-line {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    font-size: 104px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #0a0a0a;
+    white-space: nowrap;
+  }
+
+  .dial-slot {
+    position: relative;
+    display: inline-block;
+    height: 127px;
+    overflow: visible;
+    vertical-align: middle;
+    margin: 0 0.2em;
+    perspective: 600px;
+  }
+
+  .dial-word {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    text-align: center;
+    font-size: 104px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #0a0a0a;
+    line-height: 127px;
+    white-space: nowrap;
+    opacity: 0;
+    will-change: transform;
+  }
+
+  .siri-gradient {
+    background: linear-gradient(90deg, #FF6B6B, #FF9500, #E879F9, #818CF8, #22D3EE, #FF6B6B);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+</style>
+</head>
+<body>
+<div id="scene-01" data-composition-id="scene-01" data-width="1920" data-height="1080" data-duration="5.5">
+
+  <div class="intro-wrap">
+    <span class="intro-line" id="iw0">You</span>
+    <span class="intro-line" id="iw1">used</span>
+    <span class="intro-line" id="iw2">HyperFrames</span>
+    <span class="intro-line" id="iw3">to</span>
+    <span class="intro-line" id="iw4">make</span>
+  </div>
+
+  <div class="dial-line" id="dial-line">
+    <span id="perfect-word">the perfect</span>
+    <span class="dial-slot" id="dial-slot">
+      <span class="dial-word" id="w0">launch</span>
+      <span class="dial-word" id="w1">explainer</span>
+      <span class="dial-word" id="w2">training</span>
+      <span class="dial-word" id="w3">product demo</span>
+      <span class="dial-word" id="w4">UGC ad</span>
+    </span>
+    <span id="video-word">video</span>
+  </div>
+
+  <audio src="../assets/click.mp3" data-start="2.55" data-duration="0.5" data-track-index="1" data-volume="1" preload="auto"></audio>
+  <audio src="../assets/click.mp3" data-start="3.25" data-duration="0.5" data-track-index="2" data-volume="1" preload="auto"></audio>
+  <audio src="../assets/click.mp3" data-start="3.95" data-duration="0.5" data-track-index="3" data-volume="1" preload="auto"></audio>
+  <audio src="../assets/click.mp3" data-start="4.65" data-duration="0.5" data-track-index="4" data-volume="1" preload="auto"></audio>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+window.__timelines = window.__timelines || {};
+var tl = gsap.timeline({ paused: true });
+var words = ["w0", "w1", "w2", "w3", "w4"];
+var flipDur = 0.35;
+var holdDur = 0.35;
+var lineH = 127;
+var dialGap = lineH + 8;
+
+var widths = [];
+var maxWidth = 0;
+for (var w = 0; w < words.length; w++) {
+  var el = document.getElementById(words[w]);
+  el.style.opacity = "1";
+  el.style.position = "relative";
+  el.style.left = "auto";
+  el.style.right = "auto";
+  el.style.textAlign = "left";
+  var ww = el.getBoundingClientRect().width;
+  widths.push(ww);
+  if (ww > maxWidth) maxWidth = ww;
+  el.style.opacity = "0";
+  el.style.position = "absolute";
+  el.style.left = "0";
+  el.style.right = "0";
+  el.style.textAlign = "center";
+}
+
+var introWords = ["iw0", "iw1", "iw2", "iw3", "iw4"];
+var entryDelays = [0, 0.2, 0.1, 0.05, 0.025];
+var exitDelays = [0, 0.025, 0.05, 0.1, 0.2];
+var slideDur = 0.3;
+
+var introOffsets = [];
+for (var iw = 0; iw < introWords.length; iw++) {
+  var iwEl = document.getElementById(introWords[iw]);
+  var rect = iwEl.getBoundingClientRect();
+  introOffsets.push(1920 - rect.left + 20);
+  gsap.set("#" + introWords[iw], { x: introOffsets[iw], opacity: 0 });
+}
+gsap.set("#dial-line", { x: 1920, opacity: 1 });
+gsap.set("#dial-slot", { width: maxWidth });
+gsap.set("#perfect-word", { x: (maxWidth - widths[0]) / 2 });
+gsap.set("#video-word", { x: -(maxWidth - widths[0]) / 2 });
+gsap.set("#w0", { opacity: 1, rotateX: 0, y: 0 });
+
+// Waterfall entry — accelerating stagger
+var entryT = 0;
+for (var ei = 0; ei < introWords.length; ei++) {
+  entryT += entryDelays[ei];
+  tl.to("#" + introWords[ei], { x: 0, opacity: 1, duration: slideDur, ease: "power3.out" }, entryT);
+}
+
+// Waterfall exit — decelerating stagger (inverse)
+var exitStart = entryT + slideDur + 0.5;
+var exitT = exitStart;
+for (var xi = 0; xi < introWords.length; xi++) {
+  exitT += exitDelays[xi];
+  var iwElX = document.getElementById(introWords[xi]);
+  var exitDist = iwElX.getBoundingClientRect().right + 20;
+  tl.to("#" + introWords[xi], { x: -exitDist, opacity: 0, duration: slideDur, ease: "power3.in" }, exitT);
+}
+
+// Dial slides in after intro clears
+var dialInTime = exitT + slideDur * 0.5;
+tl.to("#dial-line", { x: 0, duration: 0.35, ease: "power3.out" }, dialInTime);
+
+// First flip starts after dial lands + brief hold
+var firstFlip = dialInTime + 0.35 + 0.5;
+
+// Snap explainer into waiting position right as first flip starts
+tl.set("#w1", { opacity: 0.7, y: dialGap, rotateX: -55, transformOrigin: "center top" }, firstFlip);
+
+// First dial flip
+var t = firstFlip;
+for (var i = 0; i < words.length - 1; i++) {
+  var outId = "#" + words[i];
+  var inId = "#" + words[i + 1];
+  var prevId = i > 0 ? "#" + words[i - 1] : null;
+  var nextId = i + 2 < words.length ? "#" + words[i + 2] : null;
+
+  if (prevId) {
+    tl.to(prevId, { opacity: 0, duration: 0.15 }, t);
+  }
+
+  // Outgoing: slides up, bottom of letters closer to viewer, hinged at bottom edge
+  tl.to(outId, {
+    opacity: 0.7, rotateX: 55, y: -dialGap,
+    transformOrigin: "center bottom",
+    duration: flipDur, ease: "power1.inOut"
+  }, t);
+
+  // Incoming: rises into position, top of letters closer to viewer
+  tl.to(inId, {
+    opacity: 1, rotateX: 0, y: 0,
+    transformOrigin: "center bottom",
+    duration: flipDur, ease: "power1.inOut"
+  }, t);
+
+  // Queue up the next-next word below
+  if (nextId) {
+    tl.fromTo(nextId, {
+      opacity: 0, y: dialGap, rotateX: -90,
+      transformOrigin: "center top"
+    }, {
+      opacity: 0.7, y: dialGap, rotateX: -55,
+      duration: flipDur * 0.8, ease: "power2.out"
+    }, t + flipDur * 0.3);
+  }
+
+  tl.to("#perfect-word", { x: (maxWidth - widths[i + 1]) / 2, duration: flipDur * 0.8, ease: "power2.inOut" }, t);
+  tl.to("#video-word", { x: -(maxWidth - widths[i + 1]) / 2, duration: flipDur * 0.8, ease: "power2.inOut" }, t);
+
+  t += flipDur + holdDur;
+}
+
+// Fade out the last outgoing word above
+tl.to("#" + words[words.length - 2], { opacity: 0, duration: 0.25 }, t - holdDur + 0.1);
+
+// Siri gradient on "video" — seamless swap then animate
+var videoEl = document.getElementById("video-word");
+var siriStart = t - holdDur;
+tl.call(function() { videoEl.classList.add("siri-gradient"); }, null, siriStart);
+tl.fromTo("#video-word", { backgroundPosition: "0% 50%" }, { backgroundPosition: "200% 50%", duration: 2, ease: "none" }, siriStart);
+
+window.__timelines["scene-01"] = tl;
+</script>
+</body>
+</html>

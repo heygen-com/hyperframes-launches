@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=block');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1920px; height: 1080px; overflow: hidden; background: #fff; }
+
+  #scene-08 {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 80px;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .render-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 900px;
+  }
+
+  .render-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: 52px;
+    opacity: 0;
+  }
+
+  .render-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 500;
+    color: rgba(0,0,0,0.5);
+    width: 220px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 36px;
+    background: rgba(0,0,0,0.04);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 8px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0%;
+  }
+
+  .progress-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(0,0,0,0.35);
+    width: 60px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .fill-pink { background: linear-gradient(90deg, #F3A6FF, #ff7eb3); }
+  .fill-green { background: linear-gradient(90deg, #35C838, #6ddb70); }
+  .fill-blue { background: linear-gradient(90deg, #00C3FF, #47d4ff); }
+</style>
+</head>
+<body>
+<div id="scene-08" data-composition-id="scene-08" data-width="1920" data-height="1080" data-duration="3.5">
+
+  <div class="render-list" id="render-list"></div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+window.__timelines = window.__timelines || {};
+var tl = gsap.timeline({ paused: true });
+
+var list = document.getElementById("render-list");
+var fills = ["fill-blue", "fill-pink", "fill-green"];
+var totalRows = 50;
+
+for (var i = 0; i < totalRows; i++) {
+  var row = document.createElement("div");
+  row.className = "render-row";
+  row.id = "row-" + i;
+
+  var num = String(i + 1).padStart(3, "0");
+
+  var name = document.createElement("span");
+  name.className = "render-name";
+  name.textContent = "variant-" + num + ".mp4";
+
+  var track = document.createElement("div");
+  track.className = "progress-track";
+
+  var fill = document.createElement("div");
+  fill.className = "progress-fill " + fills[i % 3];
+  fill.id = "fill-" + i;
+
+  var pct = document.createElement("span");
+  pct.className = "progress-pct";
+  pct.id = "pct-" + i;
+  pct.textContent = "0%";
+
+  track.appendChild(fill);
+  row.appendChild(name);
+  row.appendChild(track);
+  row.appendChild(pct);
+  list.appendChild(row);
+}
+
+// Zoom to 1.3x and upward cut-the-curve entry
+gsap.set("#scene-08", { scale: 1.3, y: 200, filter: "blur(8px)", opacity: 0 });
+tl.to("#scene-08", {
+  y: 0, filter: "blur(0px)", opacity: 1,
+  duration: 0.42, ease: "expo.out"
+}, 0);
+
+// All rows visible immediately — already in motion on entry
+for (var r = 0; r < totalRows; r++) {
+  gsap.set("#row-" + r, { opacity: 1 });
+}
+
+// Fill progress bars — staggered starts, cascade all the way down
+for (var f = 0; f < totalRows; f++) {
+  var delay = f * 0.04;
+  var speed = 1.5 + (f * 0.03);
+  var targetPct = 100 - (f / (totalRows - 1)) * 85;
+
+  (function(idx, target) {
+    tl.to("#fill-" + idx, {
+      width: target + "%",
+      duration: speed,
+      ease: "power1.out"
+    }, delay);
+
+    var pctEl = document.getElementById("pct-" + idx);
+    tl.to({ val: 0 }, {
+      val: target,
+      duration: speed,
+      ease: "power1.out",
+      onUpdate: function() { pctEl.textContent = Math.round(this.targets()[0].val) + "%"; }
+    }, delay);
+  })(f, targetPct);
+}
+
+// Scroll already in motion from the start — fast scroll through many rows
+tl.to("#render-list", {
+  y: -1200,
+  duration: 3.2,
+  ease: "power1.in"
+}, 0);
+
+// Upward cut-the-curve exit
+tl.to("#render-list", {
+  y: "-=400", filter: "blur(8px)", opacity: 0,
+  duration: 0.33, ease: "power2.in"
+}, 3.5 - 0.33);
+
+tl.to({}, { duration: 3.5 }, 0);
+window.__timelines["scene-08"] = tl;
+</script>
+</body>
+</html>
