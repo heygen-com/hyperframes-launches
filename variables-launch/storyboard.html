@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=block');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1920px; height: 1080px; overflow: hidden; background: #fff; font-family: 'Inter', sans-serif; }
+
+  .scene {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 80px;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .render-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 900px;
+  }
+
+  .render-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: 52px;
+  }
+
+  .render-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 500;
+    color: rgba(0,0,0,0.5);
+    width: 220px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 36px;
+    background: rgba(0,0,0,0.04);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 8px;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .progress-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(0,0,0,0.35);
+    width: 60px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .fill-pink { background: linear-gradient(90deg, #F3A6FF, #ff7eb3); }
+  .fill-green { background: linear-gradient(90deg, #35C838, #6ddb70); }
+  .fill-blue { background: linear-gradient(90deg, #00C3FF, #47d4ff); }
+</style>
+</head>
+<body>
+<div class="scene">
+  <div class="render-list">
+    <div class="render-row">
+      <span class="render-name">variant-001.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-blue" style="width:100%"></div></div>
+      <span class="progress-pct">100%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-002.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-pink" style="width:100%"></div></div>
+      <span class="progress-pct">100%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-003.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-green" style="width:92%"></div></div>
+      <span class="progress-pct">92%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-004.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-blue" style="width:85%"></div></div>
+      <span class="progress-pct">85%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-005.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-pink" style="width:71%"></div></div>
+      <span class="progress-pct">71%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-006.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-green" style="width:58%"></div></div>
+      <span class="progress-pct">58%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-007.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-blue" style="width:43%"></div></div>
+      <span class="progress-pct">43%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-008.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-pink" style="width:30%"></div></div>
+      <span class="progress-pct">30%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-009.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-green" style="width:15%"></div></div>
+      <span class="progress-pct">15%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-010.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-blue" style="width:5%"></div></div>
+      <span class="progress-pct">5%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-011.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-pink" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-012.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-green" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-013.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-blue" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-014.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-pink" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-015.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-green" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-016.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-blue" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-017.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-pink" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-018.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-green" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-019.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-blue" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-020.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-pink" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-021.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-green" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-022.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-blue" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-023.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-pink" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-024.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-green" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-025.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-blue" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-026.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-pink" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-027.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-green" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-028.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-blue" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-029.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-pink" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="render-row">
+      <span class="render-name">variant-030.mp4</span>
+      <div class="progress-track"><div class="progress-fill fill-green" style="width:0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

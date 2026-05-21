@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Variables Launch — Storyboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg: #fafafa;
+  --panel: #fff;
+  --ink: #0a0a0a;
+  --muted: #888;
+  --line: #e4e4e4;
+  --blue: #2563eb;
+  --red: #ef4444;
+  --green: #22c55e;
+  --orange: #f97316;
+  --purple: #8b5cf6;
+  --font: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --mono: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+}
+
+/* ── HEADER ── */
+header {
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 72ch;
+}
+
+.meta-row {
+  display: flex;
+  gap: 32px;
+  margin-top: 20px;
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.meta-row span { color: var(--ink); font-weight: 600; }
+
+/* ── RULES ── */
+.rules {
+  display: flex;
+  gap: 1px;
+  margin-bottom: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--line);
+}
+
+.rules div {
+  flex: 1;
+  padding: 14px 18px;
+  background: #fffef8;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #666;
+}
+
+.rules b {
+  display: block;
+  font-size: 10px;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+/* ── SUMMARY ── */
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  margin-bottom: 40px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--line);
+}
+
+.summary div {
+  padding: 20px;
+  background: var(--panel);
+}
+
+.summary strong {
+  display: block;
+  font-size: 11px;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.summary span {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ── GRID ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* ── SCENE CARD ── */
+.card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--panel);
+}
+
+.card.wide { grid-column: span 2; }
+.card.full { grid-column: span 3; }
+
+/* ── FRAME ── */
+.frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #fafaf8;
+}
+
+.frame.dark {
+  background: #0a0a0a;
+  color: #f5f5f5;
+}
+
+/* Scene label badge */
+.scene-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 20;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.06);
+  color: var(--muted);
+}
+
+.dark .scene-badge {
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5);
+}
+
+/* ── CENTER TEXT ── */
+.center-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  text-align: center;
+}
+
+.headline {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* ── SCENE 1: DIAL ── */
+.dial-line {
+  display: flex;
+  align-items: center;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  white-space: nowrap;
+  word-spacing: 0.08em;
+}
+
+.dial-slot {
+  position: relative;
+  height: 34px;
+  overflow: visible;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0.28em;
+}
+
+.dial-word {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.dial-word.above {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 2px;
+  opacity: 0.7;
+  transform: perspective(600px) rotateX(-65deg);
+  transform-origin: bottom center;
+  font-size: 28px;
+  color: var(--ink);
+}
+
+.dial-word.below {
+  position: absolute;
+  top: 100%;
+  margin-top: 2px;
+  opacity: 0.7;
+  transform: perspective(600px) rotateX(65deg);
+  transform-origin: top center;
+  font-size: 28px;
+  color: var(--ink);
+}
+
+/* ── LIQUID GLASS VIDEO CARD ── */
+.glass-card {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  border-radius: 14px;
+  overflow: hidden;
+  background: linear-gradient(165deg,
+    rgba(0,0,0,0.04) 0%,
+    rgba(0,0,0,0.02) 40%,
+    rgba(0,0,0,0.01) 100%
+  );
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.06),
+    0 2px 8px rgba(0,0,0,0.04),
+    inset 0 1px 0 rgba(255,255,255,0.8),
+    inset 0 -1px 0 rgba(0,0,0,0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass-card .vid-label {
+  font-family: var(--mono);
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(0,0,0,0.25);
+}
+
+.glass-card .glass-shine {
+  position: absolute;
+  top: -30%;
+  left: -20%;
+  width: 140%;
+  height: 50%;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.5) 0%,
+    rgba(255,255,255,0) 100%
+  );
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+
+/* ── CODE CARD ── */
+.code-card {
+  background: #0a0a0a;
+  border: 1px solid #222;
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.8;
+  color: #666;
+  text-align: left;
+}
+
+.code-card .key { color: #555; }
+.code-card .val { color: #ccc; font-weight: 600; }
+.code-card .val.hot { color: var(--red); background: rgba(239,68,68,0.08); padding: 1px 5px; border-radius: 3px; }
+.code-card .val.blue { color: var(--blue); background: rgba(37,99,235,0.08); padding: 1px 5px; border-radius: 3px; }
+.code-card .val.green { color: var(--green); background: rgba(34,197,94,0.08); padding: 1px 5px; border-radius: 3px; }
+
+/* ── 9-UP GRID ── */
+.nine-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 8px;
+  padding: 16px;
+}
+
+.nine-grid .glass-card {
+  aspect-ratio: 9 / 16;
+  border-radius: 8px;
+}
+
+.nine-grid {
+  align-items: center;
+  justify-items: center;
+}
+
+/* Render progress */
+.render-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  border-radius: 0 1px 0 0;
+}
+
+/* ── SCENE INFO ── */
+.info {
+  padding: 16px 18px;
+  border-top: 1px solid var(--line);
+}
+
+.info .scene-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.info .scene-title .time {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.info .description {
+  font-size: 13px;
+  line-height: 1.55;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.info .motion {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.info .motion b { color: #666; }
+
+.info .tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.tag.type-text { background: #f0f0f0; color: #666; }
+.tag.type-motion { background: #eff6ff; color: var(--blue); }
+.tag.type-code { background: #f0fdf4; color: #16a34a; }
+.tag.type-transition { background: #fef3c7; color: #d97706; }
+.tag.type-cta { background: #fae8ff; color: var(--purple); }
+.tag.type-glass { background: #f0f9ff; color: #0ea5e9; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <h1>Variables Launch</h1>
+  <div class="subtitle">~35s launch video for HyperFrames variables + batch rendering. Apple-minimal aesthetic: white/black, center-frame typography, no audio narration. Text carries the full story. Every beat is an explicit scene for parallel composition work.</div>
+  <div class="meta-row">
+    <div>Format <span>1920 x 1080</span></div>
+    <div>Duration <span>~35s</span></div>
+    <div>Scenes <span>7</span></div>
+    <div>Audio <span>Music only</span></div>
+    <div>Style <span>Apple minimal</span></div>
+  </div>
+</header>
+
+<div class="rules">
+  <div><b>Single-line rule</b> All on-screen text is one horizontal line only. Multi-line messages are split into sequential single-line animations.</div>
+  <div><b>Read time</b> 0.3s hold without motion is enough to read any single line. Minimum hold, not target.</div>
+  <div><b>Video orientation</b> All video cards are vertical (9:16). Liquid glass treatment on every card.</div>
+  <div><b>Scene isolation</b> Every beat is an explicit scene for parallel composition work. Player shows Scene 1, Scene 2, etc.</div>
+</div>
+
+<div class="summary">
+  <div><strong>Concept</strong> <span>Make one video, get dozens</span></div>
+  <div><strong>Aesthetic</strong> <span>White/black, Inter, no narration</span></div>
+  <div><strong>Key features</strong> <span>Variables, batch rendering</span></div>
+  <div><strong>Proof asset</strong> <span>UGC ad from ad-workflow-analysis</span></div>
+</div>
+
+<div class="grid">
+
+<!-- ═══════════════════════════════════════════════════════
+     SCENE 1: THE DIAL — "the perfect _____ video"
+     ═══════════════════════════════════════════════════════ -->
+<div class="card wide">
+  <div class="frame" style="aspect-ratio:32/11">
+    <div class="scene-badge">Scene 1</div>
+    <div class="center-text">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:28px">
+
+        <!-- Keyframe A: line with dial mid-cycle -->
+        <div style="position:relative">
+          <div style="font-size:9px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;text-align:left">Keyframe A — mid-cycle</div>
+          <div class="dial-line">
+            <span>You use HyperFrames to make the perfect</span>
+            <span class="dial-slot">
+              <span class="dial-word above">launch</span>
+              <span class="dial-word">explainer</span>
+              <span class="dial-word below">training</span>
+            </span>
+            <span>video.</span>
+          </div>
+        </div>
+
+        <!-- Keyframe B: landed on UGC ad -->
+        <div style="position:relative">
+          <div style="font-size:9px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;text-align:left">Keyframe B — landed</div>
+          <div class="dial-line">
+            <span>You use HyperFrames to make the perfect</span>
+            <span class="dial-slot">
+              <span class="dial-word above" style="opacity:0.35">explainer</span>
+              <span class="dial-word" style="font-weight:900">UGC ad</span>
+            </span>
+            <span>video.</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="info">
+    <div class="scene-title"><span>01 — The Dial</span><span class="time">0:00 – 6:00</span></div>
+    <div class="description">White screen. Single horizontal line of black text: "You use HyperFrames to make the perfect _____ video." The blank word is a split-flap dial that cycles through video types — launch, explainer, training, product demo — and lands on <strong>"UGC ad"</strong>. All text is the same black Inter 800. No pill, no badge, no color on the dial word — it's inline with the sentence. The rotating words are the same typeface as the rest of the line.</div>
+    <div class="motion">
+      <b>Dial mechanic:</b> Incoming word rotates in from below on the Z-axis, perspective-bent toward the viewer (rotateX ~65deg on the leading edge). The outgoing word flips up and backward to the same bend. Words at 0.7 opacity when they're in the bent/waiting position, full opacity when flat in the line. Each flip takes ~0.5s. Cycle through 4-5 words before landing.<br>
+      <b>Landing:</b> When "UGC ad" snaps into place, the last outgoing word ("explainer" or similar) remains visible above at ~0.35 opacity, tilted back, then fades to 0. Brief hold (~0.8s) with the full line reading cleanly before transitioning to Scene 2.<br>
+      <b>Typography:</b> Inter 800 for everything. All black (#0a0a0a). Single horizontal line, vertically centered on white.
+    </div>
+    <div class="tags">
+      <span class="tag type-text">Single-line</span>
+      <span class="tag type-motion">Split-flap</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCENE 2: THE PROOF — transition into real UGC ad
+     ═══════════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="frame">
+    <div class="scene-badge">Scene 2</div>
+    <div class="center-text" style="padding:16px">
+      <div class="glass-card" style="width:42%;aspect-ratio:9/16">
+        <div class="glass-shine"></div>
+        <div class="vid-label">UGC Ad</div>
+      </div>
+    </div>
+  </div>
+  <div class="info">
+    <div class="scene-title"><span>02 — The Proof</span><span class="time">6:00 – 13:00</span></div>
+    <div class="description">The text from Scene 1 slides apart left/right. The word "UGC ad" expands and reveals the actual ad video emerging from behind the text. Text clears. The ad plays in a vertical 9:16 liquid glass card, centered on white. Plays for ~5s — long enough to register as a real, polished video.</div>
+    <div class="motion">
+      <b>Transition in:</b> Text splits — everything left of the dial word slides left, everything right slides right, revealing the video growing from the dial word's position. ~0.8s.<br>
+      <b>Glass card:</b> 9:16 vertical. Liquid glass border treatment — translucent edge highlights, subtle inner glow, soft outer shadow. Video fills the card interior.<br>
+      <b>During:</b> Ad plays at full quality inside the glass card. White background throughout.<br>
+      <b>Asset:</b> Rendered clip from <code>ad-workflow-analysis/test-avatar-shot</code>.
+    </div>
+    <div class="tags">
+      <span class="tag type-transition">Text-reveal</span>
+      <span class="tag type-glass">Liquid glass</span>
+      <span class="tag type-motion">Video playback</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCENE 3: THE QUESTION — single-line text beats
+     ═══════════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="frame">
+    <div class="scene-badge">Scene 3</div>
+    <div class="center-text" style="flex-direction:column;gap:32px">
+      <!-- Two keyframes showing the sequential single lines -->
+      <div>
+        <div style="font-size:9px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;text-align:left">Line A</div>
+        <div class="headline" style="font-size:22px">What if you could test variations</div>
+      </div>
+      <div>
+        <div style="font-size:9px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;text-align:left">Line B (replaces A)</div>
+        <div class="headline" style="font-size:22px">without starting from scratch?</div>
+      </div>
+    </div>
+  </div>
+  <div class="info">
+    <div class="scene-title"><span>03 — The Question</span><span class="time">13:00 – 16:00</span></div>
+    <div class="description">Clean white frame. Two sequential single-line text beats. Line A slides in: "What if you could test variations" — holds 0.3s+. Line A slides out, Line B slides in: "without starting from scratch?" — holds, then out. Each is one horizontal line of black text, centered.</div>
+    <div class="motion">
+      <b>Line A:</b> Slides in from right (or fades up), holds ~0.5s, slides out left.<br>
+      <b>Line B:</b> Immediately follows, same motion. Holds ~0.8s before transitioning to Scene 4.<br>
+      <b>Typography:</b> Inter 800, ~48px at 1080p. All black. Single line each. Centered vertically and horizontally.
+    </div>
+    <div class="tags">
+      <span class="tag type-text">Single-line</span>
+      <span class="tag type-motion">Slide sequence</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCENE 4: CODE CARDS — variables splitting out
+     ═══════════════════════════════════════════════════════ -->
+<div class="card full">
+  <div class="frame" style="aspect-ratio:48/16">
+    <div class="scene-badge">Scene 4</div>
+
+    <!-- Two keyframes stacked -->
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;gap:0">
+
+      <!-- Keyframe A: Code on the cards -->
+      <div style="flex:1;position:relative;border-bottom:1px dashed var(--line)">
+        <div style="position:absolute;top:6px;right:10px;font-size:9px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:0.12em">Keyframe A — code visible</div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:14px;padding:12px 32px">
+
+          <!-- Card LEFT — code overlay -->
+          <div class="glass-card" style="flex:1;aspect-ratio:9/16;max-height:92%;border-radius:10px;position:relative">
+            <div class="glass-shine"></div>
+            <div style="position:absolute;inset:8px;display:flex;flex-direction:column;justify-content:center">
+              <div class="code-card" style="background:rgba(0,0,0,0.75);border-color:rgba(0,0,0,0.15);font-size:8px;line-height:1.6;padding:8px 10px">
+                <div><span class="key">hookText</span></div>
+                <div>&nbsp;&nbsp;<span class="val hot">"Stop scrolling..."</span></div>
+                <div><span class="key">accentColor</span></div>
+                <div>&nbsp;&nbsp;<span class="val hot">#ff4d4f</span></div>
+                <div><span class="key">creatorClip</span></div>
+                <div>&nbsp;&nbsp;<span class="val">sarah-v2.mp4</span></div>
+                <div><span class="key">ctaText</span></div>
+                <div>&nbsp;&nbsp;<span class="val">"Try it free"</span></div>
+                <div><span class="key">promoCode</span></div>
+                <div>&nbsp;&nbsp;<span class="val">"SAVE20"</span></div>
+                <div><span class="key">bgMusic</span></div>
+                <div>&nbsp;&nbsp;<span class="val">upbeat-01.mp3</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card CENTER — original -->
+          <div class="glass-card" style="flex:1;aspect-ratio:9/16;max-height:92%;border-radius:10px">
+            <div class="glass-shine"></div>
+            <div class="vid-label" style="font-size:7px">Original</div>
+          </div>
+
+          <!-- Card RIGHT — code overlay -->
+          <div class="glass-card" style="flex:1;aspect-ratio:9/16;max-height:92%;border-radius:10px;position:relative">
+            <div class="glass-shine"></div>
+            <div style="position:absolute;inset:8px;display:flex;flex-direction:column;justify-content:center">
+              <div class="code-card" style="background:rgba(0,0,0,0.75);border-color:rgba(0,0,0,0.15);font-size:8px;line-height:1.6;padding:8px 10px">
+                <div><span class="key">hookText</span></div>
+                <div>&nbsp;&nbsp;<span class="val blue">"POV: you found it"</span></div>
+                <div><span class="key">accentColor</span></div>
+                <div>&nbsp;&nbsp;<span class="val blue">#2563eb</span></div>
+                <div><span class="key">creatorClip</span></div>
+                <div>&nbsp;&nbsp;<span class="val">marcus-v1.mp4</span></div>
+                <div><span class="key">ctaText</span></div>
+                <div>&nbsp;&nbsp;<span class="val">"Link in bio"</span></div>
+                <div><span class="key">promoCode</span></div>
+                <div>&nbsp;&nbsp;<span class="val">"MARCUS20"</span></div>
+                <div><span class="key">bgMusic</span></div>
+                <div>&nbsp;&nbsp;<span class="val">chill-02.mp3</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Keyframe B: Code snapped into videos -->
+      <div style="flex:1;position:relative">
+        <div style="position:absolute;top:6px;right:10px;font-size:9px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:0.12em">Keyframe B — snapped to videos</div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:14px;padding:12px 32px">
+
+          <div class="glass-card" style="flex:1;aspect-ratio:9/16;max-height:92%;border-radius:10px">
+            <div class="glass-shine"></div>
+            <div class="vid-label" style="font-size:6px">Variant A</div>
+          </div>
+
+          <div class="glass-card" style="flex:1;aspect-ratio:9/16;max-height:92%;border-radius:10px">
+            <div class="glass-shine"></div>
+            <div class="vid-label" style="font-size:7px">Original</div>
+          </div>
+
+          <div class="glass-card" style="flex:1;aspect-ratio:9/16;max-height:92%;border-radius:10px">
+            <div class="glass-shine"></div>
+            <div class="vid-label" style="font-size:6px">Variant B</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="info">
+    <div class="scene-title"><span>04 — The Variables</span><span class="time">16:00 – 23:00</span></div>
+    <div class="description">The original ad is center-frame in a full-size vertical glass card. Two more glass cards slide out from behind it — one left, one right — all three filling the screen at equal size. The left and right cards have the variable code overlaid on them (dark semi-transparent code block on the glass surface). Changed values are highlighted (red on left, blue on right) and <strong>flip using the same split-flap dial mechanic</strong> from Scene 1. After the values flip, the code fades away and the variant videos are revealed underneath on the same cards.</div>
+    <div class="motion">
+      <b>Phase 1 (1.5s):</b> Two glass cards slide out from behind the center card, filling the screen as three equal-size vertical cards. White background throughout.<br>
+      <b>Phase 2 (2.5s):</b> Code overlays appear on the left and right cards — dark semi-transparent panels with the variable key/value pairs. Changed values highlight and flip using the rotateX split-flap — same Z-axis bend as Scene 1, same 0.7 opacity. hookText and accentColor are the most readable flips.<br>
+      <b>Phase 3 (1s):</b> Code overlays fade away, revealing the variant videos underneath on the same glass cards. Three full-size vertical glass cards with different videos now on screen.<br>
+      <b>Code overlay:</b> ~6 lines each. JetBrains Mono on a semi-transparent dark panel (rgba black ~0.75). Keys in muted gray, values in light, changed values get colored highlight pills.
+    </div>
+    <div class="tags">
+      <span class="tag type-code">Variables</span>
+      <span class="tag type-motion">Split-flap</span>
+      <span class="tag type-glass">Liquid glass</span>
+      <span class="tag type-transition">Card morph</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCENE 5: THE MULTIPLY — 3 becomes 9
+     ═══════════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="frame">
+    <div class="scene-badge">Scene 5</div>
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 16px">
+      <!-- 3 columns, each with 3 stacked vertical cards -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:94%">
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="vid-label" style="font-size:5px">Hook A <span style="color:#ef4444">&#9679;</span></div></div>
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="vid-label" style="font-size:5px">Hook B <span style="color:#ef4444">&#9679;</span></div></div>
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="vid-label" style="font-size:5px">Hook C <span style="color:#ef4444">&#9679;</span></div></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:94%">
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="vid-label" style="font-size:5px">Hook A <span style="color:#2563eb">&#9679;</span></div></div>
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="vid-label" style="font-size:5px">Hook B <span style="color:#2563eb">&#9679;</span></div></div>
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="vid-label" style="font-size:5px">Hook C <span style="color:#2563eb">&#9679;</span></div></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:94%">
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="vid-label" style="font-size:5px">Hook A <span style="color:#22c55e">&#9679;</span></div></div>
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="vid-label" style="font-size:5px">Hook B <span style="color:#22c55e">&#9679;</span></div></div>
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="vid-label" style="font-size:5px">Hook C <span style="color:#22c55e">&#9679;</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="info">
+    <div class="scene-title"><span>05 — The Multiply</span><span class="time">23:00 – 26:00</span></div>
+    <div class="description">The 3 vertical glass cards from Scene 4 are in a row. Two more slide out from behind each (top and bottom), creating a 3x3 grid of 9 vertical liquid glass cards on white. Each cell shows a different combination — different hook text, different accent color dot. All glass cards retain the vertical 9:16 proportions. Grid fills the frame.</div>
+    <div class="motion">
+      <b>Motion:</b> Center row is already in place. Top and bottom cards slide out from behind the center cards (0.5s staggered, power2.out). Grid snaps into a clean 3x3.<br>
+      <b>Hold:</b> Grid holds ~1s to absorb scale. Each card has a subtle color dot (red/blue/green) so they read as clearly different even at small size.
+    </div>
+    <div class="tags">
+      <span class="tag type-motion">Grid expansion</span>
+      <span class="tag type-glass">Liquid glass</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCENE 6: CLOUD RENDER — send them all off
+     ═══════════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="frame">
+    <div class="scene-badge">Scene 6</div>
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 16px">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:94%">
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="render-bar" style="width:100%;background:var(--green)"></div></div>
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="render-bar" style="width:72%;background:var(--green)"></div></div>
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="render-bar" style="width:45%;background:var(--green)"></div></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:94%">
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="render-bar" style="width:88%;background:var(--green)"></div></div>
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="render-bar" style="width:55%;background:var(--green)"></div></div>
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="render-bar" style="width:100%;background:var(--green)"></div></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:94%">
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="render-bar" style="width:95%;background:var(--green)"></div></div>
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="render-bar" style="width:65%;background:var(--green)"></div></div>
+        <div class="glass-card" style="flex:1;width:100%;aspect-ratio:auto;border-radius:6px"><div class="render-bar" style="width:80%;background:var(--green)"></div></div>
+      </div>
+    </div>
+    <div style="position:absolute;bottom:12px;left:0;right:0;text-align:center">
+      <span style="font-family:var(--mono);font-size:9px;color:rgba(0,0,0,0.25);letter-spacing:0.1em;text-transform:uppercase">All rendering in parallel</span>
+    </div>
+  </div>
+  <div class="info">
+    <div class="scene-title"><span>06 — Cloud Render</span><span class="time">26:00 – 30:00</span></div>
+    <div class="description">The 3x3 grid of vertical glass cards stays in place on white. A green progress bar sweeps across the bottom of each card simultaneously — all rendering at once. Some finish faster than others (staggered). As each completes, a subtle brightness pulse on the glass edge. "All rendering in parallel" in quiet mono at the bottom.</div>
+    <div class="motion">
+      <b>Progress bars:</b> Animate left-to-right at slightly different speeds (0.8-2.5s). Green (#22c55e). Thin (2-3px).<br>
+      <b>Completion:</b> As each bar hits 100%, the glass card's border briefly brightens (0.15s). Stagger completions rhythmically.<br>
+      <b>Typography:</b> "All rendering in parallel" in small mono, muted. The motion carries this scene.
+    </div>
+    <div class="tags">
+      <span class="tag type-motion">Progress bars</span>
+      <span class="tag type-code">Batch render</span>
+      <span class="tag type-glass">Liquid glass</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCENE 7: CLOSE — single-line CTA
+     ═══════════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="frame">
+    <div class="scene-badge">Scene 7</div>
+    <div class="center-text" style="flex-direction:column;gap:28px">
+      <div>
+        <div style="font-size:9px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;text-align:left">Line A</div>
+        <div class="headline" style="font-size:24px">Scale your best work.</div>
+      </div>
+      <div>
+        <div style="font-size:9px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;text-align:left">Line B (replaces A)</div>
+        <div class="headline" style="font-size:24px">Not your workload.</div>
+      </div>
+      <div>
+        <div style="font-size:9px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;text-align:left">Final hold</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.06em">hyperframes.heygen.com</div>
+      </div>
+    </div>
+  </div>
+  <div class="info">
+    <div class="scene-title"><span>07 — Close</span><span class="time">30:00 – 35:00</span></div>
+    <div class="description">Clean white frame. Grid collapses/fades. Two sequential single-line text beats: "Scale your best work." slides in, holds, slides out. "Not your workload." slides in, holds. URL fades in below. Holds to end.</div>
+    <div class="motion">
+      <b>Transition in:</b> Grid cells scale down and fade (0.5s). White crossfades in.<br>
+      <b>Line A:</b> "Scale your best work." slides in, holds ~0.5s, slides out.<br>
+      <b>Line B:</b> "Not your workload." slides in, holds. URL fades in below after ~0.5s.<br>
+      <b>Hold:</b> Final frame holds ~2s. Music resolves.<br>
+      <b>Typography:</b> Inter 800 for headlines. JetBrains Mono for URL. All black on white. Single lines. No color.
+    </div>
+    <div class="tags">
+      <span class="tag type-text">Single-line</span>
+      <span class="tag type-cta">CTA</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /grid -->
+</div><!-- /page -->
+</body>
+</html>

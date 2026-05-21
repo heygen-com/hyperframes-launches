@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=block');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1920px; height: 1080px; overflow: hidden; background: #fff; font-family: 'Inter', sans-serif; }
+
+  #scene-04 {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    background: #fff;
+    padding: 40px 80px;
+  }
+
+  .glass-card {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    height: 100%;
+    max-height: 960px;
+    border-radius: 24px;
+    overflow: hidden;
+    background: linear-gradient(165deg,
+      rgba(0,0,0,0.04) 0%,
+      rgba(0,0,0,0.02) 40%,
+      rgba(0,0,0,0.01) 100%
+    );
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow:
+      0 8px 32px rgba(0,0,0,0.06),
+      0 2px 8px rgba(0,0,0,0.04),
+      inset 0 1px 0 rgba(255,255,255,0.8),
+      inset 0 -1px 0 rgba(0,0,0,0.03);
+  }
+
+  .glass-card video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 23px;
+  }
+
+  .glass-shine {
+    position: absolute;
+    top: -30%;
+    left: -20%;
+    width: 140%;
+    height: 50%;
+    background: linear-gradient(180deg,
+      rgba(255,255,255,0.4) 0%,
+      rgba(255,255,255,0) 100%
+    );
+    transform: rotate(-8deg);
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .code-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    border-radius: 23px;
+    padding: 36px 36px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 42px;
+    line-height: 2.2;
+    color: rgba(255,255,255,0.35);
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+  }
+
+  .code-overlay > div {
+    opacity: 0;
+  }
+
+  .variant-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 44px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .code-overlay .comment { color: rgba(255,255,255,0.2); font-style: italic; }
+  .code-overlay .key { color: rgba(255,255,255,0.5); }
+  .code-overlay .str { color: rgba(255,255,255,0.65); }
+  .code-overlay .num { color: rgba(255,255,255,0.6); }
+  .code-overlay .bracket { color: rgba(255,255,255,0.3); }
+  .code-overlay .punct { color: rgba(255,255,255,0.25); }
+
+  .val-swap {
+    position: relative;
+    display: inline-block;
+  }
+  .val-old {
+    display: inline;
+    transition: none;
+  }
+  .val-new {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    white-space: nowrap;
+  }
+  .code-overlay .val-old.str { color: #00C3FF; text-shadow: 0 0 12px rgba(0,195,255,0.3); }
+  .val-new.hot { color: #F3A6FF; text-shadow: 0 0 12px rgba(243,166,255,0.3); }
+  .val-new.blue { color: #35C838; text-shadow: 0 0 12px rgba(53,200,56,0.3); }
+
+  .card-left, .card-right {
+    opacity: 1;
+  }
+
+  .card-left video, .card-right video {
+    filter: brightness(0.7) saturate(0.6);
+  }
+
+  .glass-tint {
+    position: absolute;
+    inset: 0;
+    background: rgba(180, 180, 190, 0.25);
+    border-radius: 23px;
+    pointer-events: none;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+<div id="scene-04" data-composition-id="scene-04" data-width="1920" data-height="1080" data-duration="10.5">
+
+  <!-- Left card — variant A -->
+  <div class="glass-card card-left" id="card-left">
+    <video id="vid-left" data-start="5.7" data-duration="4.8" data-track-index="1" data-volume="0" src="../assets/hook-a.mp4" data-media-offset="10" muted playsinline></video>
+    <div class="glass-shine"></div>
+    <div class="glass-tint" id="tint-left"></div>
+    <div class="code-overlay" id="code-left">
+      <div><span class="variant-label">Variant A</span></div>
+      <div><span class="key">hookText</span><span class="punct">:</span> <span class="val-swap" id="l-hook"><span class="val-old str">"I used to think"</span><span class="val-new hot">"Stop scrolling"</span></span></div>
+      <div><span class="key">accentColor</span><span class="punct">:</span> <span class="val-swap" id="l-color"><span class="val-old str">"#f5a623"</span><span class="val-new hot">"#F3A6FF"</span></span></div>
+      <div><span class="key">creatorClip</span><span class="punct">:</span> <span class="val-swap" id="l-clip"><span class="val-old str">"emma-v1.mp4"</span><span class="val-new hot">"emma-v2.mp4"</span></span></div>
+    </div>
+  </div>
+
+  <!-- Center card — original -->
+  <div class="glass-card" id="card-center">
+    <video id="vid-center" data-start="0" data-duration="10.5" data-track-index="2" data-volume="0" src="../assets/hook-c.mp4" muted playsinline></video>
+    <div class="glass-shine"></div>
+  </div>
+
+  <!-- Right card — variant B -->
+  <div class="glass-card card-right" id="card-right">
+    <video id="vid-right" data-start="5.7" data-duration="4.8" data-track-index="3" data-volume="0" src="../assets/hook-b.mp4" data-media-offset="20" muted playsinline></video>
+    <div class="glass-shine"></div>
+    <div class="glass-tint" id="tint-right"></div>
+    <div class="code-overlay" id="code-right">
+      <div><span class="variant-label">Variant B</span></div>
+      <div><span class="key">hookText</span><span class="punct">:</span> <span class="val-swap" id="r-hook"><span class="val-old str">"I used to think"</span><span class="val-new blue">"POV: you found it"</span></span></div>
+      <div><span class="key">accentColor</span><span class="punct">:</span> <span class="val-swap" id="r-color"><span class="val-old str">"#f5a623"</span><span class="val-new blue">"#35C838"</span></span></div>
+      <div><span class="key">creatorClip</span><span class="punct">:</span> <span class="val-swap" id="r-clip"><span class="val-old str">"emma-v1.mp4"</span><span class="val-new blue">"emma-v3.mp4"</span></span></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+window.__timelines = window.__timelines || {};
+var tl = gsap.timeline({ paused: true });
+
+// Measure distance BEFORE applying zoom-through scale
+var centerRect = document.getElementById("card-center").getBoundingClientRect();
+var leftRect = document.getElementById("card-left").getBoundingClientRect();
+var rightRect = document.getElementById("card-right").getBoundingClientRect();
+var leftOffset = centerRect.left - leftRect.left;
+var rightOffset = centerRect.left - rightRect.left;
+
+// Start cards behind center
+gsap.set("#card-left", { x: leftOffset });
+gsap.set("#card-right", { x: rightOffset });
+gsap.set("#card-center", { zIndex: 3 });
+
+// Freeze center video on first frame, resume when side cards reveal
+var vidCenter = document.getElementById("vid-center");
+tl.call(function() { vidCenter.pause(); vidCenter.currentTime = 0; }, null, 0);
+tl.call(function() { vidCenter.play(); }, null, 5.7);
+
+// Zoom-through entry
+gsap.set("#scene-04", { scale: 0.75, filter: "blur(20px)", opacity: 0.15 });
+tl.to("#scene-04", {
+  scale: 1, filter: "blur(0px)", opacity: 1, duration: 0.5, ease: "expo.out"
+}, 0);
+
+// Cards slide out from behind center
+tl.to("#card-left", { x: 0, duration: 0.8, ease: "power3.out" }, 0.5);
+tl.to("#card-right", { x: 0, duration: 0.8, ease: "power3.out" }, 0.5);
+
+// Cascade each code line in
+var leftLines = document.querySelectorAll("#code-left > div");
+var rightLines = document.querySelectorAll("#code-right > div");
+var lineStart = 1.5;
+
+for (var li = 0; li < leftLines.length; li++) {
+  tl.to(leftLines[li], { opacity: 1, duration: 0.2, ease: "power2.out" }, lineStart + li * 0.05);
+}
+for (var ri = 0; ri < rightLines.length; ri++) {
+  tl.to(rightLines[ri], { opacity: 1, duration: 0.2, ease: "power2.out" }, lineStart + 0.1 + ri * 0.05);
+}
+
+// Animate values changing — left card first
+var swapDur = 0.25;
+var leftSwapStart = 2.8;
+var leftSwaps = ["l-hook", "l-color", "l-clip"];
+var rightSwaps = ["r-hook", "r-color", "r-clip"];
+
+for (var i = 0; i < leftSwaps.length; i++) {
+  var lt = leftSwapStart + i * 0.2;
+  tl.to("#" + leftSwaps[i] + " .val-old", { opacity: 0, y: -8, duration: swapDur, ease: "power2.in" }, lt);
+  tl.to("#" + leftSwaps[i] + " .val-new", { opacity: 1, y: 0, duration: swapDur, ease: "power2.out" }, lt + swapDur * 0.5);
+}
+
+// Right card swaps after left completes
+var rightSwapStart = leftSwapStart + leftSwaps.length * 0.2 + swapDur + 0.3;
+for (var j = 0; j < rightSwaps.length; j++) {
+  var rt = rightSwapStart + j * 0.2;
+  tl.to("#" + rightSwaps[j] + " .val-old", { opacity: 0, y: -8, duration: swapDur, ease: "power2.in" }, rt);
+  tl.to("#" + rightSwaps[j] + " .val-new", { opacity: 1, y: 0, duration: swapDur, ease: "power2.out" }, rt + swapDur * 0.5);
+}
+
+// Brief hold, then reveal videos
+var revealTime = rightSwapStart + rightSwaps.length * 0.2 + swapDur + 0.5;
+
+// Fade out code overlays entirely (background + text)
+tl.to("#code-left", { opacity: 0, duration: 0.5, ease: "power2.in" }, revealTime);
+tl.to("#code-right", { opacity: 0, duration: 0.5, ease: "power2.in" }, revealTime);
+
+// Remove gray filter from side cards so videos look clean
+tl.to("#card-left video", { filter: "brightness(1) saturate(1)", duration: 0.5, ease: "power2.out" }, revealTime);
+tl.to("#card-right video", { filter: "brightness(1) saturate(1)", duration: 0.5, ease: "power2.out" }, revealTime);
+tl.to("#tint-left", { opacity: 0, duration: 0.5, ease: "power2.out" }, revealTime);
+tl.to("#tint-right", { opacity: 0, duration: 0.5, ease: "power2.out" }, revealTime);
+
+// Cut-the-curve exit: all 3 cards slide left with blur
+var ctcExit = 10.17;
+tl.to("#card-left", { x: -200, filter: "blur(8px)", opacity: 0, duration: 0.33, ease: "power2.in" }, ctcExit);
+tl.to("#card-center", { x: -200, filter: "blur(8px)", opacity: 0, duration: 0.33, ease: "power2.in" }, ctcExit);
+tl.to("#card-right", { x: -200, filter: "blur(8px)", opacity: 0, duration: 0.33, ease: "power2.in" }, ctcExit);
+
+window.__timelines["scene-04"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Scene 05 Storyboard</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=block');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111; color: #eee; font-family: 'Inter', sans-serif; padding: 40px; }
+  h1 { font-size: 28px; margin-bottom: 8px; }
+  .meta { color: #888; font-size: 14px; margin-bottom: 40px; }
+  .frames { display: flex; flex-direction: column; gap: 48px; }
+  .frame { display: flex; gap: 32px; align-items: flex-start; }
+  .frame-label { width: 120px; flex-shrink: 0; }
+  .frame-label .time { font-size: 13px; color: #666; font-family: 'JetBrains Mono', monospace; }
+  .frame-label .beat { font-size: 15px; font-weight: 700; margin-top: 4px; }
+  .canvas {
+    width: 768px; height: 432px;
+    background: #fff; border-radius: 12px;
+    position: relative; overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .notes { max-width: 360px; font-size: 14px; color: #aaa; line-height: 1.6; }
+  .notes strong { color: #eee; }
+
+  /* Frame content styles */
+  .headline { font-size: 38px; font-weight: 800; color: #0a0a0a; letter-spacing: -0.03em; text-align: center; }
+  .code-typing {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px; line-height: 2.2;
+    color: rgba(0,0,0,0.4);
+    text-align: left; padding: 40px 60px;
+    width: 100%;
+  }
+  .code-typing .attr { color: #0a0a0a; font-weight: 600; }
+  .code-typing .str { color: #16a34a; }
+  .code-typing .punct { color: rgba(0,0,0,0.3); }
+  .code-typing .cursor { display: inline-block; width: 2px; height: 1.1em; background: #0a0a0a; vertical-align: text-bottom; animation: blink 1s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .sub { font-size: 22px; font-weight: 600; color: #0a0a0a; letter-spacing: -0.02em; text-align: center; opacity: 0.5; }
+
+  .split-canvas { flex-direction: column; gap: 0; }
+  .split-top { flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; }
+  .split-bottom { flex: 1; display: flex; align-items: flex-start; justify-content: center; width: 100%; padding-top: 10px; }
+</style>
+</head>
+<body>
+
+<h1>Scene 05 — Variables</h1>
+<div class="meta">~4s &middot; Text + code typing &middot; White background &middot; Bridges Scene 04 (side-by-side variants) → Scene 06 (grid multiply)</div>
+
+<div class="frames">
+
+  <!-- Beat 1: Headline -->
+  <div class="frame">
+    <div class="frame-label">
+      <div class="time">0.0 – 1.5s</div>
+      <div class="beat">Headline</div>
+    </div>
+    <div class="canvas">
+      <div class="headline">Any composition.<br>Now a template.</div>
+    </div>
+    <div class="notes">
+      <strong>Entry:</strong> Cut-the-curve from Scene 04 (leftward). Text enters from right with blur, settles with expo.out.<br><br>
+      <strong>Hold:</strong> ~1s for reading.<br><br>
+      <strong>Exit:</strong> Zoom-through — text scales toward viewer (1→1.2), blur peaks at 20px.
+    </div>
+  </div>
+
+  <!-- Beat 2: Code typing -->
+  <div class="frame">
+    <div class="frame-label">
+      <div class="time">1.5 – 3.5s</div>
+      <div class="beat">Code type-on</div>
+    </div>
+    <div class="canvas split-canvas">
+      <div class="split-top">
+        <div class="code-typing">
+          <div><span class="attr">data-composition-variables</span><span class="punct">='[</span></div>
+          <div>&nbsp;&nbsp;<span class="punct">{</span> <span class="attr">id</span><span class="punct">:</span> <span class="str">"hookText"</span><span class="punct">,</span> <span class="attr">type</span><span class="punct">:</span> <span class="str">"string"</span> <span class="punct">},</span></div>
+          <div>&nbsp;&nbsp;<span class="punct">{</span> <span class="attr">id</span><span class="punct">:</span> <span class="str">"accentColor"</span><span class="punct">,</span> <span class="attr">type</span><span class="punct">:</span> <span class="str">"color"</span> <span class="punct">},</span></div>
+          <div>&nbsp;&nbsp;<span class="punct">{</span> <span class="attr">id</span><span class="punct">:</span> <span class="str">"creatorClip"</span><span class="punct">,</span> <span class="attr">type</span><span class="punct">:</span> <span class="str">"string"</span> <span class="punct">}</span></div>
+          <div><span class="punct">]'</span><span class="cursor"></span></div>
+        </div>
+      </div>
+      <div class="split-bottom">
+        <div class="sub">Three lines. Infinite variations.</div>
+      </div>
+    </div>
+    <div class="notes">
+      <strong>Type-on:</strong> Characters appear left-to-right with a blinking cursor, ~40 chars/sec. Each line starts after the previous finishes.<br><br>
+      <strong>Tagline:</strong> Fades in 0.3s after typing completes.<br><br>
+      <strong>Exit:</strong> Zoom-through into Scene 06 (grid multiply). Scale 1→1.2, blur peaks, hard cut to Scene 06 at scale 0.75 settling in.
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

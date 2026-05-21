@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=block');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1920px; height: 1080px; overflow: hidden; background: #fff; font-family: 'Inter', sans-serif; }
+
+  #scene-06 {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 281px);
+    grid-template-rows: repeat(3, 500px);
+    gap: 10px;
+  }
+
+  .col-wrap {
+    position: relative;
+    display: contents;
+  }
+
+  .glass-card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: linear-gradient(165deg,
+      rgba(0,0,0,0.04) 0%,
+      rgba(0,0,0,0.02) 40%,
+      rgba(0,0,0,0.01) 100%
+    );
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow:
+      0 4px 16px rgba(0,0,0,0.04),
+      0 1px 4px rgba(0,0,0,0.03),
+      inset 0 1px 0 rgba(255,255,255,0.7),
+      inset 0 -1px 0 rgba(0,0,0,0.02);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .glass-shine {
+    position: absolute;
+    top: -30%;
+    left: -20%;
+    width: 140%;
+    height: 50%;
+    background: linear-gradient(180deg,
+      rgba(255,255,255,0.35) 0%,
+      rgba(255,255,255,0) 100%
+    );
+    transform: rotate(-8deg);
+    pointer-events: none;
+  }
+
+  .mid { z-index: 2; }
+  .top, .bot { z-index: 1; }
+
+  .glass-card video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+  }
+</style>
+</head>
+<body>
+<div id="scene-06" data-composition-id="scene-06" data-width="1920" data-height="1080" data-duration="3.5">
+
+  <div class="grid" id="grid">
+    <!-- Top row — D/E/F trio -->
+    <div class="glass-card top" id="c0-top"><video data-start="0" data-duration="3.5" data-track-index="1" data-volume="0" src="../assets/hook-d.mp4" muted playsinline></video><div class="glass-shine"></div></div>
+    <div class="glass-card top" id="c1-top"><video data-start="0" data-duration="3.5" data-track-index="2" data-volume="0" src="../assets/hook-e.mp4" muted playsinline></video><div class="glass-shine"></div></div>
+    <div class="glass-card top" id="c2-top"><video data-start="0" data-duration="3.5" data-track-index="3" data-volume="0" src="../assets/hook-f.mp4" muted playsinline></video><div class="glass-shine"></div></div>
+
+    <!-- Mid row — A/C/B trio (same as scene-04) -->
+    <div class="glass-card mid" id="c0-mid"><video id="vid-mid-left" data-start="0" data-duration="3.5" data-track-index="4" data-volume="0" src="../assets/hook-a.mp4" muted playsinline></video><div class="glass-shine"></div></div>
+    <div class="glass-card mid" id="c1-mid"><video id="vid-mid-center" data-start="0" data-duration="3.5" data-track-index="5" data-volume="0" src="../assets/hook-c.mp4" muted playsinline></video><div class="glass-shine"></div></div>
+    <div class="glass-card mid" id="c2-mid"><video id="vid-mid-right" data-start="0" data-duration="3.5" data-track-index="6" data-volume="0" src="../assets/hook-b.mp4" muted playsinline></video><div class="glass-shine"></div></div>
+
+    <!-- Bot row — G/H/I trio -->
+    <div class="glass-card bot" id="c0-bot"><video data-start="0" data-duration="3.5" data-track-index="7" data-volume="0" src="../assets/hook-g.mp4" muted playsinline></video><div class="glass-shine"></div></div>
+    <div class="glass-card bot" id="c1-bot"><video data-start="0" data-duration="3.5" data-track-index="8" data-volume="0" src="../assets/hook-h.mp4" muted playsinline></video><div class="glass-shine"></div></div>
+    <div class="glass-card bot" id="c2-bot"><video data-start="0" data-duration="3.5" data-track-index="9" data-volume="0" src="../assets/hook-i.mp4" muted playsinline></video><div class="glass-shine"></div></div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+window.__timelines = window.__timelines || {};
+var tl = gsap.timeline({ paused: true });
+
+// Card + gap height for slide distance
+var slideY = 500 + 10;
+
+// Top row starts behind center (shifted down by one row)
+gsap.set(".top", { y: slideY, opacity: 0 });
+// Bottom row starts behind center (shifted up by one row)
+gsap.set(".bot", { y: -slideY, opacity: 0 });
+
+// Zoom-through entry from Scene 05
+gsap.set("#scene-06", { scale: 0.75, filter: "blur(20px)", opacity: 0.15 });
+tl.to("#scene-06", {
+  scale: 1, filter: "blur(0px)", opacity: 1,
+  duration: 0.5, ease: "expo.out"
+}, 0);
+
+// Hold center cards visible for 0.3s, then multiply
+var fanStart = 0.6;
+
+// Freeze mid row videos until top/bottom rows fan out
+var midVids = document.querySelectorAll(".mid video");
+tl.call(function() { midVids.forEach(function(v) { v.pause(); v.currentTime = 0; }); }, null, 0);
+tl.call(function() { midVids.forEach(function(v) { v.play(); }); }, null, fanStart);
+
+// Top row slides up into place (staggered per column)
+tl.to("#c0-top", { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, fanStart);
+tl.to("#c1-top", { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, fanStart + 0.06);
+tl.to("#c2-top", { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, fanStart + 0.12);
+
+// Bottom row slides down into place
+tl.to("#c0-bot", { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, fanStart + 0.08);
+tl.to("#c1-bot", { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, fanStart + 0.14);
+tl.to("#c2-bot", { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, fanStart + 0.20);
+
+// Cut-the-curve exit — whole grid slides left with blur
+tl.to("#grid", {
+  x: -200, filter: "blur(8px)", opacity: 0,
+  duration: 0.33, ease: "power2.in"
+}, 3.5 - 0.33);
+
+window.__timelines["scene-06"] = tl;
+</script>
+</body>
+</html>

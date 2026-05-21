@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=block');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1920px; height: 1080px; overflow: hidden; background: #fff; font-family: 'Inter', sans-serif; }
+
+  #scene-03 {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+  }
+
+  .line-wrap {
+    position: absolute;
+    display: flex;
+    gap: 18px;
+    white-space: nowrap;
+  }
+
+  .word {
+    font-size: 94px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #0a0a0a;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+<div id="scene-03" data-composition-id="scene-03" data-width="1920" data-height="1080" data-duration="3.2">
+
+  <div class="line-wrap" id="line-a">
+    <span class="word" id="a0">What</span>
+    <span class="word" id="a1">if</span>
+    <span class="word" id="a2">you</span>
+    <span class="word" id="a3">could</span>
+    <span class="word" id="a4">test</span>
+    <span class="word" id="a5" style="color:#F3A6FF">variations</span>
+  </div>
+
+  <div class="line-wrap" id="line-b">
+    <span class="word" id="b0">without</span>
+    <span class="word" id="b1">starting</span>
+    <span class="word" id="b2">from</span>
+    <span class="word" id="b3" style="color:#35C838">scratch?</span>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+window.__timelines = window.__timelines || {};
+var tl = gsap.timeline({ paused: true });
+
+var aWords = ["a0", "a1", "a2", "a3", "a4", "a5"];
+var bWords = ["b0", "b1", "b2", "b3"];
+var slideDur = 0.3;
+
+// Accelerating waterfall delays (same pattern as scene 1)
+var exitDelays = [0, 0.12, 0.08, 0.05, 0.03, 0.02];
+var entryDelays = [0, 0.12, 0.08, 0.05];
+
+// Calculate how far each word needs to fall to get offscreen bottom
+var aOffsets = [];
+for (var i = 0; i < aWords.length; i++) {
+  var el = document.getElementById(aWords[i]);
+  var rect = el.getBoundingClientRect();
+  aOffsets.push(1080 - rect.top + 20);
+}
+
+// Calculate how far each line-b word needs to fall from offscreen top
+var bOffsets = [];
+for (var j = 0; j < bWords.length; j++) {
+  var elB = document.getElementById(bWords[j]);
+  var rectB = elB.getBoundingClientRect();
+  bOffsets.push(rectB.bottom + 20);
+}
+
+// Initial state: line-a enters via cut-the-curve from scene 2
+for (var k = 0; k < aWords.length; k++) {
+  gsap.set("#" + aWords[k], { x: 200, filter: "blur(8px)", opacity: 0 });
+}
+gsap.set("#line-b", { visibility: "hidden" });
+
+// Cut-the-curve entry for line-a words (all at once, matching scene 2 exit)
+for (var m = 0; m < aWords.length; m++) {
+  tl.to("#" + aWords[m], { x: 0, filter: "blur(0px)", opacity: 1, duration: 0.42, ease: "expo.out" }, 0);
+}
+
+// Waterfall exit: line-a words fall downward off screen
+var fallStart = 0.9;
+var fallT = fallStart;
+for (var fi = 0; fi < aWords.length; fi++) {
+  fallT += exitDelays[fi];
+  tl.to("#" + aWords[fi], { y: aOffsets[fi], opacity: 0, duration: slideDur, ease: "power3.in" }, fallT);
+}
+
+// Waterfall entry: line-b words fall in from top
+var dropStart = fallT + slideDur + 0.15;
+tl.set("#line-b", { visibility: "visible" }, dropStart);
+
+var dropT = dropStart;
+for (var di = 0; di < bWords.length; di++) {
+  dropT += entryDelays[di];
+  gsap.set("#" + bWords[di], { y: -bOffsets[di], opacity: 0 });
+  tl.to("#" + bWords[di], { y: 0, opacity: 1, duration: slideDur, ease: "power3.out" }, dropT);
+}
+
+// Zoom-through exit: line-b scales toward viewer with blur
+var zoomExit = 3.0;
+tl.to("#line-b", {
+  scale: 1.2, filter: "blur(20px)", duration: 0.2, ease: "power3.in"
+}, zoomExit);
+tl.to("#line-b", {
+  opacity: 0.15, duration: 0.2, ease: "none"
+}, zoomExit);
+
+window.__timelines["scene-03"] = tl;
+</script>
+</body>
+</html>

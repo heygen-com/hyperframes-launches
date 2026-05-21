@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=block');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1920px; height: 1080px; overflow: hidden; background: #fff; font-family: 'Inter', sans-serif; }
+</style>
+</head>
+<body style="margin:0;padding:0;overflow:hidden;width:1920px;height:1080px;background:#fff">
+
+<div data-composition-id="variables-launch" data-start="0" data-width="1920" data-height="1080" data-duration="43.6" style="position:relative;width:1920px;height:1080px;overflow:hidden">
+
+<!-- Scene 1: The Dial (0-5.5s) -->
+<div data-composition-id="scene-01" data-composition-src="compositions/scene-01.html"
+     data-start="0" data-duration="5.5" data-track-index="1"
+     data-width="1920" data-height="1080"
+     style="position:absolute;inset:0;z-index:1"></div>
+
+<!-- Scene 2: The Proof (5.5-9.5s) -->
+<div data-composition-id="scene-02" data-composition-src="compositions/scene-02.html"
+     data-start="5.5" data-duration="4" data-track-index="1"
+     data-width="1920" data-height="1080"
+     style="position:absolute;inset:0;z-index:1"></div>
+
+<!-- Scene 3: The Question (9.5-12.5s) -->
+<div data-composition-id="scene-03" data-composition-src="compositions/scene-03.html"
+     data-start="9.5" data-duration="3.2" data-track-index="1"
+     data-width="1920" data-height="1080"
+     style="position:absolute;inset:0;z-index:1"></div>
+
+<!-- Scene 4: The Variables (12.5-19.5s) -->
+<div data-composition-id="scene-04" data-composition-src="compositions/scene-04.html"
+     data-start="12.7" data-duration="10.5" data-track-index="1"
+     data-width="1920" data-height="1080"
+     style="position:absolute;inset:0;z-index:1"></div>
+
+<!-- Scene 5: Variables Intro (23.2-29.2s) -->
+<div data-composition-id="scene-05" data-composition-src="compositions/scene-05.html"
+     data-start="23.2" data-duration="6" data-track-index="1"
+     data-width="1920" data-height="1080"
+     style="position:absolute;inset:0;z-index:1"></div>
+
+<!-- Scene 6: The Multiply (29.2-32.7s) -->
+<div data-composition-id="scene-06" data-composition-src="compositions/scene-06.html"
+     data-start="29.2" data-duration="3.5" data-track-index="1"
+     data-width="1920" data-height="1080"
+     style="position:absolute;inset:0;z-index:1"></div>
+
+<!-- Scene 7: Render on AWS at scale (32.7-36.5s) -->
+<div data-composition-id="scene-07" data-composition-src="compositions/scene-07.html"
+     data-start="32.7" data-duration="3.8" data-track-index="1"
+     data-width="1920" data-height="1080"
+     style="position:absolute;inset:0;z-index:1"></div>
+
+<!-- Scene 8: Progress Bars (36.5-40.0s) -->
+<div data-composition-id="scene-08" data-composition-src="compositions/scene-08.html"
+     data-start="36.5" data-duration="3.5" data-track-index="1"
+     data-width="1920" data-height="1080"
+     style="position:absolute;inset:0;z-index:1"></div>
+
+<!-- Scene 9: Close (40.0-43.6s) -->
+<div data-composition-id="scene-09" data-composition-src="compositions/scene-09.html"
+     data-start="40.0" data-duration="3.6" data-track-index="1"
+     data-width="1920" data-height="1080"
+     style="position:absolute;inset:0;z-index:1"></div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+window.__timelines = window.__timelines || {};
+window.__timelines["variables-launch"] = gsap.timeline({ paused: true });
+</script>
+</body>
+</html>
