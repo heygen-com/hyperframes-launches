@@ -1,0 +1,149 @@
+<template id="scene-04-frame-md-built-template">
+  <div class="s4" data-composition-id="scene-04-frame-md-built" data-width="1920" data-height="1080" data-duration="5.24">
+    <style>
+      [data-composition-id="scene-04-frame-md-built"] {
+        --canvas: #fffaf0;
+        --ink: #0a0a0a;
+        --pink: #ff4d8b;
+        --mint: #a4d4c5;
+        --ochre: #e8b94a;
+        --blue: #0007cd;
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: transparent;
+        color: var(--ink);
+        font-family: "Cooper Black", "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+      }
+      [data-composition-id="scene-04-frame-md-built"] * {
+        box-sizing: border-box;
+        letter-spacing: 0;
+      }
+      .s4 .reveal-shell {
+        position: absolute;
+        left: -170px;
+        top: 0;
+        width: 2260px;
+        height: 1240px;
+        border-radius: 56% 56% 0 0 / 22% 22% 0 0;
+        background: var(--canvas);
+        overflow: hidden;
+        box-shadow: 0 -34px 80px rgba(10,10,10,.18);
+        transform-origin: 50% 100%;
+        will-change: transform;
+      }
+      .s4 .frame-stack {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 1840px;
+        height: 500px;
+        transform: translate(-50%, -50%);
+        will-change: transform, opacity, filter;
+      }
+      .s4 .frame-word {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        font-size: 392px;
+        line-height: .9;
+        font-weight: 1000;
+        letter-spacing: -0.075em;
+        white-space: nowrap;
+        will-change: transform, opacity, filter;
+      }
+      .s4 .frame-word.back-pink {
+        color: var(--pink);
+        transform: translate(-24px, -24px);
+        opacity: .82;
+      }
+      .s4 .frame-word.back-blue {
+        color: var(--blue);
+        transform: translate(24px, 30px);
+        opacity: .86;
+      }
+      .s4 .frame-word.main {
+        color: #fff;
+        -webkit-text-stroke: 8px rgba(10,10,10,.92);
+        text-shadow: 0 20px 34px rgba(10,10,10,.24);
+      }
+      .s4 .frame-word span {
+        display: block;
+        transform-origin: 50% 62%;
+      }
+      .s4 .frame-word .dot {
+        color: var(--ochre);
+      }
+      .s4 .frame-word .md {
+        color: var(--mint);
+      }
+      .s4 .frame-word.back-pink .dot,
+      .s4 .frame-word.back-pink .md,
+      .s4 .frame-word.back-blue .dot,
+      .s4 .frame-word.back-blue .md {
+        color: inherit;
+      }
+    </style>
+
+    <div class="reveal-shell">
+      <div class="frame-stack" aria-hidden="true">
+        <div class="frame-word back-pink"><span>frame</span><span class="dot">.</span><span class="md">md</span></div>
+        <div class="frame-word back-blue"><span>frame</span><span class="dot">.</span><span class="md">md</span></div>
+        <div class="frame-word main">
+          <span>f</span><span>r</span><span>a</span><span>m</span><span>e</span><span class="dot">.</span><span class="md">md</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        const q = (s) => `[data-composition-id="scene-04-frame-md-built"] ${s}`;
+        const tl = gsap.timeline({ paused: true });
+
+        gsap.set(q(".reveal-shell"), { y: 1110, scaleX: 1.08, borderRadius: "58% 58% 0 0 / 18% 18% 0 0" });
+        gsap.set(q(".frame-stack"), { opacity: 0, scale: 0.78, y: 108, filter: "blur(20px)" });
+        gsap.set(q(".frame-word.back-pink, .frame-word.back-blue"), { opacity: 0 });
+        gsap.set(q(".frame-word.main span"), { opacity: 0, y: 165, scale: 0.72, rotate: -7, filter: "blur(15px)" });
+
+        tl.to(q(".reveal-shell"), {
+          y: 0,
+          scaleX: 1,
+          borderRadius: "0% 0% 0 0 / 0% 0% 0 0",
+          duration: 0.74,
+          ease: "power4.inOut"
+        }, 0);
+        tl.to(q(".frame-stack"), {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.68,
+          ease: "expo.out"
+        }, 0.72);
+        tl.to(q(".frame-word.back-pink, .frame-word.back-blue"), { opacity: 1, duration: 0.28, ease: "power2.out" }, 0.78);
+        tl.to(q(".frame-word.main span"), {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          rotate: 0,
+          filter: "blur(0px)",
+          duration: 0.7,
+          stagger: 0.035,
+          ease: "back.out(1.32)"
+        }, 0.84);
+        tl.to(q(".frame-stack"), { scale: 1.035, duration: 1.5, ease: "sine.inOut" }, 1.88);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["scene-04-frame-md-built"] = tl;
+
+        const previewTime = new URLSearchParams(window.location.search).get("t");
+        if (previewTime !== null) tl.time(Number(previewTime));
+      })();
+    </script>
+  </div>
+</template>

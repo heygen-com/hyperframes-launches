@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Frame.md Launch - Scene 02 Contact Sheet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Just+Another+Hand&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #1a1a1a;
+      --panel: #f7f7f5;
+      --ink: #050505;
+      --muted: #858585;
+      --accent: #32a88a;
+      --blue: #1949ff;
+      --line: rgba(255,255,255,.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: #f2f2f2;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .sheet {
+      padding: 28px 32px 44px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 24px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1;
+      letter-spacing: 0;
+      font-weight: 700;
+    }
+
+    .dek {
+      margin: 8px 0 0;
+      max-width: 860px;
+      color: #bcbcbc;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .tag {
+      color: #111;
+      background: #f4f4f4;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .cell {
+      min-width: 0;
+    }
+
+    .label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .label span:last-child {
+      color: #c8c8c8;
+      font-weight: 500;
+      font-size: 11px;
+      text-align: right;
+    }
+
+    .frame {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,.16);
+      container-type: inline-size;
+    }
+
+    .frame.bleed-frame {
+      border: 0;
+      outline: 0;
+    }
+
+    .note {
+      margin: 9px 0 0;
+      color: #a8a8a8;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .doc-card {
+      position: absolute;
+      background: #000;
+      color: #fff;
+      border-radius: 32px 0 0 0;
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      overflow: hidden;
+    }
+
+    .doc-crop {
+      left: 48%;
+      top: 37%;
+      width: 86%;
+      height: 88%;
+      padding: 60px 38px;
+    }
+
+    .doc-crop .doc-title {
+      font-size: 38px;
+      line-height: 1;
+    }
+
+    .doc-crop .doc-sub {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .figma-card {
+      left: 26%;
+      top: 22%;
+      width: 92%;
+      height: 110%;
+      border-radius: 4cqw;
+      padding: 11.7cqw 5cqw 0;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      overflow: hidden;
+    }
+
+    /* Zoomed-in markdown crop for 2A-2C. Same font + content as 2D's .md-page,
+       just larger sizing — so the composition can dynamically zoom OUT from this
+       cropped modal to reveal the full document in 2D. Card spills off the right
+       and bottom edges on purpose. */
+    .md-zoom {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 3.4cqw;
+      line-height: 1.5;
+      color: #f1f1f1;
+      text-align: left;
+    }
+
+    .md-zoom h3 {
+      margin: 0 0 0.7em;
+      font-size: 4.3cqw;
+      font-weight: 500;
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+
+    /* 2A-2C show only these two headings, much larger; DESIGN.md dominant. */
+    .md-zoom .doc-h1 {
+      font-size: 12.65cqw;
+      margin-bottom: 0.45em;
+    }
+
+    .md-zoom .doc-h2 {
+      font-size: 7.48cqw;
+      margin-bottom: 0;
+    }
+
+    .md-zoom h3.section {
+      margin-top: 1.2em;
+      margin-bottom: 0.5em;
+    }
+
+    .md-zoom p {
+      margin: 0 0 1em;
+      max-width: none;
+    }
+
+    .md-zoom .color-line {
+      display: block;
+      margin: 0.3em 0;
+    }
+
+    .doc-title {
+      font-size: clamp(34px, 4.2vw, 82px);
+      line-height: 1;
+      letter-spacing: 0;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .doc-sub {
+      font-size: clamp(28px, 3.2vw, 60px);
+      line-height: 1;
+      letter-spacing: 0;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .md-small {
+      font-size: 11px;
+      line-height: 1.34;
+      color: #e8e8e8;
+    }
+
+    .md-small h3 {
+      margin: 0 0 12px;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .md-small p {
+      margin: 0 0 20px;
+      max-width: 42ch;
+    }
+
+    .md-small .color-line { display: block; }
+
+    .md-page {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 7.7px;
+      line-height: 1.38;
+      color: #f1f1f1;
+      text-align: left;
+    }
+
+    .md-page h3 {
+      margin: 0 0 14px;
+      font-size: 9.5px;
+      line-height: 1.2;
+      font-weight: 500;
+      text-align: left;
+    }
+
+    .md-page h3.section {
+      margin-top: 20px;
+      margin-bottom: 9px;
+    }
+
+    .md-page p {
+      margin: 0 0 16px;
+      max-width: none;
+      text-align: left;
+    }
+
+    .md-page .color-line {
+      display: block;
+      margin: 4px 0;
+      text-align: left;
+    }
+    .cyan { color: #1ee6ff; }
+    .red { color: #ff4040; }
+    .green { color: #61e675; }
+    .orange { color: #ff9b2f; }
+
+    .word-pill {
+      position: absolute;
+      color: #000;
+      background: #fff;
+      border: 2px solid #000;
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1;
+      box-shadow: 4px 4px 0 #000;
+    }
+
+    /* 2F — a clean, real web-UI landing page (NOT a muddy overlapping pile).
+       Sized in cqw so it scales with the frame. Browser window is large:
+       ~100px top/bottom + ~190px sides at a 1920-wide render. */
+    .browser-window {
+      position: absolute;
+      inset: 5.2cqw 10cqw;
+      background: #0b0b0c;
+      border: 0.16cqw solid #262629;
+      border-radius: 1.8cqw;
+      color: #fff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    }
+
+    .bw-chrome {
+      flex: none;
+      display: flex;
+      align-items: center;
+      gap: 1.2cqw;
+      height: 3.3cqw;
+      padding: 0 1.6cqw;
+      background: #151518;
+      border-bottom: 0.16cqw solid #232326;
+    }
+
+    .browser-dots { display: flex; gap: 0.7cqw; }
+
+    .browser-dots i {
+      width: 0.82cqw;
+      height: 0.82cqw;
+      border-radius: 999px;
+      display: block;
+    }
+
+    .browser-dots i:nth-child(1) { background: #ff5f57; }
+    .browser-dots i:nth-child(2) { background: #ffbd2e; }
+    .browser-dots i:nth-child(3) { background: #28c840; }
+
+    .bw-url {
+      flex: 1;
+      text-align: center;
+      font-size: 1.15cqw;
+      color: #66666b;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    .bw-page {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0 4.2cqw;
+      min-height: 0;
+    }
+
+    .site-nav {
+      flex: none;
+      display: flex;
+      align-items: center;
+      height: 5.2cqw;
+    }
+
+    .site-brand { font-size: 1.7cqw; font-weight: 700; letter-spacing: -0.02em; }
+
+    .site-menu {
+      display: flex;
+      gap: 2cqw;
+      margin-left: 3cqw;
+      color: #9a9aa0;
+      font-size: 1.25cqw;
+    }
+
+    .site-cta {
+      margin-left: auto;
+      background: #fff;
+      color: #000;
+      border-radius: 0.7cqw;
+      padding: 0.7cqw 1.4cqw;
+      font-size: 1.25cqw;
+      font-weight: 600;
+    }
+
+    .site-hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 64%;
+      min-height: 0;
+    }
+
+    .hero-eyebrow {
+      font-size: 1.02cqw;
+      letter-spacing: 0.2em;
+      color: #6e6e74;
+      font-weight: 600;
+      margin-bottom: 1.1cqw;
+    }
+
+    .hero-h1 {
+      margin: 0 0 1.3cqw;
+      font-size: 5cqw;
+      line-height: 1.02;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-sub {
+      margin: 0 0 1.7cqw;
+      max-width: 31cqw;
+      font-size: 1.4cqw;
+      line-height: 1.45;
+      color: #a0a0a6;
+    }
+
+    .hero-actions { display: flex; gap: 1.1cqw; }
+
+    .btn-primary {
+      background: #fff;
+      color: #000;
+      border-radius: 0.7cqw;
+      padding: 0.85cqw 1.7cqw;
+      font-size: 1.2cqw;
+      font-weight: 600;
+    }
+
+    .btn-ghost {
+      border: 0.14cqw solid #3a3a3f;
+      color: #e6e6ea;
+      border-radius: 0.7cqw;
+      padding: 0.85cqw 1.7cqw;
+      font-size: 1.2cqw;
+      font-weight: 500;
+    }
+
+    .site-cards {
+      flex: none;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.6cqw;
+      padding-bottom: 3cqw;
+    }
+
+    .site-card {
+      background: #151518;
+      border: 0.14cqw solid #2a2a2e;
+      border-radius: 1cqw;
+      padding: 1.4cqw;
+      height: 7cqw;
+    }
+
+    .site-card b {
+      display: block;
+      width: 42%;
+      height: 0.95cqw;
+      background: #fff;
+      border-radius: 999px;
+      margin-bottom: 1.1cqw;
+    }
+
+    .site-card span {
+      display: block;
+      height: 0.62cqw;
+      background: #37373c;
+      border-radius: 999px;
+      margin-top: 0.7cqw;
+    }
+
+    .site-card span:nth-of-type(2) { width: 82%; }
+    .site-card span:nth-of-type(3) { width: 56%; }
+
+    /* 2G — the payoff, as ONE full-bleed presentation slide. The diagnostic message
+       (web language → presentation) is itself rendered as a generic slide: kicker,
+       title, sub, slide footer. The frame demonstrates the point by being a slide. */
+    .deck {
+      position: relative;
+      background: #0b0b0c;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 9cqw 10cqw;
+      text-align: left;
+      overflow: hidden;
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    }
+
+    .slide-kicker {
+      font: 600 1.6cqw/1 Inter, sans-serif;
+      letter-spacing: 0.22em;
+      color: #6e6e74;
+      margin-bottom: 2.4cqw;
+    }
+
+    .slide-title {
+      margin: 0;
+      max-width: 84%;
+      font: 700 7.4cqw/1.04 Inter, sans-serif;
+      letter-spacing: -0.03em;
+      color: #fff;
+    }
+
+    .slide-sub {
+      margin: 3cqw 0 0;
+      max-width: 62%;
+      font: 400 2.1cqw/1.4 Inter, sans-serif;
+      color: #a0a0a6;
+    }
+
+    .slide-footer {
+      position: absolute;
+      left: 10cqw;
+      right: 10cqw;
+      bottom: 5cqw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font: 600 1.4cqw/1 Inter, sans-serif;
+      color: #7a7a80;
+    }
+
+    .slide-brand { color: #fff; font-weight: 700; font-size: 1.7cqw; }
+
+    .motion-label {
+      position: absolute;
+      left: 4cqw;
+      right: 4cqw;
+      bottom: 3cqw;
+      color: #fff;
+      background: rgba(10,10,12,.82);
+      border: 0.14cqw solid rgba(255,255,255,.16);
+      border-radius: 1cqw;
+      padding: 1.1cqw 1.4cqw;
+      font: 600 1.25cqw/1.3 Inter, ui-sans-serif, system-ui, sans-serif;
+    }
+
+    /* 2E — the parallax-zoom morph. A 3D-tilted DESIGN.md page pushes toward camera
+       while extracted terms lift off at different z-depths and snap onto emerging
+       (dark, 2F-style) UI fragments. NO flat rotate. */
+    .morph-stage {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      perspective: 105cqw;
+      perspective-origin: 52% 40%;
+    }
+
+    .morph-doc {
+      position: absolute;
+      left: 16%;
+      top: 11%;
+      width: 50cqw;
+      height: 48cqw;
+      background: #000;
+      border: 0.16cqw solid #2a2a2e;
+      border-radius: 2cqw;
+      padding: 3.4cqw 3cqw;
+      overflow: hidden;
+      transform: rotateX(29deg) rotateZ(-13deg) scale(1);
+      transform-origin: 50% 38%;
+      box-shadow: 0 5cqw 8cqw rgba(0,0,0,.38);
+    }
+
+    .morph-md {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 2.5cqw;
+      line-height: 1.5;
+      color: #f1f1f1;
+      text-align: left;
+    }
+    .morph-md h3 { margin: 0 0 0.6em; font-size: 3.4cqw; font-weight: 500; }
+    .morph-md h3.section { margin-top: 1.1em; }
+    .morph-md p { margin: 0 0 0.9em; }
+    .morph-md .color-line { display: block; margin: 0.3em 0; }
+
+    /* emerging dark UI fragments the terms are snapping into (match 2F) */
+    .morph-frag {
+      position: absolute;
+      background: #141417;
+      border: 0.16cqw solid #2c2c31;
+      border-radius: 1cqw;
+      box-shadow: 0 1.4cqw 3cqw rgba(0,0,0,.28);
+    }
+
+    /* extracted term chips; .near = foreground (larger), .far = background (smaller/faded) */
+    .term-chip {
+      position: absolute;
+      background: #fff;
+      color: #0b0b0c;
+      border-radius: 0.7cqw;
+      padding: 0.7cqw 1.2cqw;
+      font: 600 1.55cqw/1 Inter, ui-sans-serif, system-ui, sans-serif;
+      box-shadow: 0 1.1cqw 2.4cqw rgba(0,0,0,.24);
+      white-space: nowrap;
+    }
+    .term-chip.near { font-size: 2.2cqw; padding: 1cqw 1.7cqw; box-shadow: 0 1.6cqw 3.2cqw rgba(0,0,0,.3); }
+    .term-chip.far { font-size: 1.1cqw; opacity: .72; box-shadow: 0 0.6cqw 1.4cqw rgba(0,0,0,.18); }
+
+    @media (max-width: 1100px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      .sheet { padding: 20px; }
+      .grid { grid-template-columns: 1fr; }
+      .header { flex-direction: column; align-items: start; }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <header class="header">
+      <div>
+        <h1>Scene 02 Contact Sheet - Diagnosis</h1>
+        <p class="dek">Static keyframes for the moment where DESIGN.md is revealed as a page/interface language. Keep the critique elegant: the document is useful, but its vocabulary pulls agents toward web UI and presentation logic.</p>
+      </div>
+      <div class="tag">16:9 keyframes · no animation yet</div>
+    </header>
+
+    <section class="grid">
+      <article class="cell">
+        <div class="label">Frame 2A <span>document enters too large for the frame</span></div>
+        <div class="frame bleed-frame">
+          <div class="doc-card figma-card"></div>
+        </div>
+        <p class="note">Start nearly abstract: white page field, black markdown surface cropped hard right. The source language is entering the video frame before the frame has its own rules.</p>
+      </article>
+
+      <article class="cell">
+        <div class="label">Frame 2B <span>source artifact resolves</span></div>
+        <div class="frame bleed-frame">
+          <div class="doc-card figma-card">
+            <div class="md-zoom">
+              <h3 class="doc-h1">DESIGN.md</h3>
+              <h3 class="doc-h2">## Style Prompt</h3>
+            </div>
+          </div>
+        </div>
+        <p class="note">Match your crop: the markdown is readable but still oversized and partially outside the frame. It feels like a file, not a video composition.</p>
+      </article>
+
+      <article class="cell">
+        <div class="label">Frame 2C <span>keep this phrase</span></div>
+        <div class="frame bleed-frame figma-2c">
+          <svg viewBox="0 0 1600 900" style="position:absolute;inset:0;width:100%;height:100%;" aria-hidden="true">
+            <text x="328.5" y="605" text-anchor="middle" dominant-baseline="middle" font-family="'Just Another Hand', 'Bradley Hand', 'Marker Felt', cursive" font-size="295" font-weight="400" fill="#000" transform="rotate(-90 328.5 605)">Written</text>
+            <text x="328.9" y="259.5" text-anchor="middle" dominant-baseline="middle" font-family="Inter, Arial, sans-serif" font-size="170" font-weight="700" fill="#000" transform="rotate(-80 328.9 259.5)">f</text>
+            <text x="366" y="192" text-anchor="middle" dominant-baseline="middle" font-family="Inter, Arial, sans-serif" font-size="170" font-weight="700" fill="#000" transform="rotate(-45 366 192)">o</text>
+            <text x="444.5" y="137.5" text-anchor="middle" dominant-baseline="middle" font-family="Inter, Arial, sans-serif" font-size="170" font-weight="700" fill="#000" transform="rotate(-15 444.5 137.5)">r</text>
+            <text x="505" y="25" font-family="Inter, Arial, sans-serif" font-size="160" font-weight="700" fill="#000" dominant-baseline="hanging">pages</text>
+          </svg>
+          <div class="doc-card figma-card">
+            <div class="md-zoom">
+              <h3 class="doc-h1">DESIGN.md</h3>
+              <h3 class="doc-h2">## Style Prompt</h3>
+            </div>
+          </div>
+        </div>
+        <p class="note">This keeps your “Written for pages” callout. Treat it as a physical margin annotation wrapping around the document edge, not a joke caption.</p>
+      </article>
+
+      <article class="cell">
+        <div class="label">Frame 2D <span>markdown terms become visible</span></div>
+        <div class="frame">
+          <div class="doc-card" style="left:26%;top:4%;width:50%;height:112%;border-radius:18px;padding:34px 22px;">
+            <div class="md-page">
+              <h3>DESIGN.md</h3>
+              <h3>## Style Prompt</h3>
+              <p>Horizontal launch video built around local background removal, maximal caption energy. The base is a dark technical product layer over the bright showroom footage.</p>
+              <h3 class="section">## Colors</h3>
+              <span class="color-line">- <span class="cyan">#060606</span> deep black for product surfaces</span>
+              <span class="color-line">- <span class="red">#ff3b5f</span> cyan caption accent glow</span>
+              <span class="color-line">- <span class="green">#61e675</span> local terminal green</span>
+              <span class="color-line">- <span class="orange">#ff9b2f</span> punch/highlight red</span>
+              <h3 class="section">## Typography</h3>
+              <p>Primary: Inter/system sans, heavy weights for payload words. Technical: SF Mono for terminal and agent language.</p>
+              <h3 class="section">## Components</h3>
+              <p>Cards, badges, nav bars, feature grids, buttons, panels, responsive layouts.</p>
+            </div>
+          </div>
+          <span class="word-pill" style="left:8%;top:23%;">cards</span>
+          <span class="word-pill" style="left:12%;top:54%;">buttons</span>
+          <span class="word-pill" style="right:12%;top:20%;">nav</span>
+          <span class="word-pill" style="right:10%;top:54%;">grids</span>
+          <span class="word-pill" style="right:7%;bottom:12%;">spacing</span>
+        </div>
+        <p class="note">The doc is credible and specific. Sparse highlighted nouns pull out from the markdown: cards, buttons, nav, grids, spacing. This is the vocabulary that later becomes web UI.</p>
+      </article>
+
+      <article class="cell">
+        <div class="label">Frame 2E <span>parallax zoom morph begins</span></div>
+        <div class="frame">
+          <div class="morph-stage">
+            <!-- emerging dark UI fragments the terms are snapping into (2F-style) -->
+            <div class="morph-frag" style="right:6%;top:13%;width:33%;height:6.5%;"></div>
+            <div class="morph-frag" style="right:8%;bottom:16%;width:25%;height:25%;"></div>
+
+            <!-- the page plane, tilted in 3D and pushing toward camera -->
+            <div class="morph-doc">
+              <div class="morph-md">
+                <h3>DESIGN.md</h3>
+                <h3>## Style Prompt</h3>
+                <p>Horizontal launch video built around product panels, captions, and dense web surfaces.</p>
+                <h3 class="section">## Colors</h3>
+              </div>
+            </div>
+
+            <!-- extracted terms lifting off at different depths, snapping into UI -->
+            <span class="term-chip near" style="left:10%;bottom:21%;transform:rotate(-6deg);">cards</span>
+            <span class="term-chip" style="left:17%;top:24%;transform:rotate(-9deg);">buttons</span>
+            <span class="term-chip near" style="right:12%;top:12%;transform:rotate(4deg);">nav</span>
+            <span class="term-chip" style="right:13%;bottom:25%;transform:rotate(7deg);">grid</span>
+            <span class="term-chip far" style="left:33%;top:9%;transform:rotate(-4deg);">pills</span>
+            <span class="term-chip far" style="right:33%;bottom:9%;transform:rotate(5deg);">spacing</span>
+
+            <div class="motion-label">PARALLAX ZOOM MORPH — the page plane pushes toward camera; foreground terms travel faster on nearer z-depths; extracted words snap into emerging UI fragments.</div>
+          </div>
+        </div>
+        <p class="note">Animation note: this is the key morph. Use parallax zoom, not a flat rotate. The document plane scales toward camera while extracted words move on different z-depths and begin reassembling.</p>
+      </article>
+
+      <article class="cell">
+        <div class="label">Frame 2F <span>web UI emerges from the page language</span></div>
+        <div class="frame">
+          <div class="browser-window">
+            <div class="bw-chrome">
+              <div class="browser-dots"><i></i><i></i><i></i></div>
+              <div class="bw-url">brand.com</div>
+            </div>
+            <div class="bw-page">
+              <nav class="site-nav">
+                <span class="site-brand">brand</span>
+                <span class="site-menu"><span>Product</span><span>Docs</span><span>Pricing</span></span>
+                <span class="site-cta">Get started</span>
+              </nav>
+              <header class="site-hero">
+                <div class="hero-eyebrow">PLATFORM</div>
+                <h2 class="hero-h1">interfaces,<br />not frames</h2>
+                <p class="hero-sub">Ship polished product surfaces with components your team already knows.</p>
+                <div class="hero-actions">
+                  <span class="btn-primary">Get started</span>
+                  <span class="btn-ghost">Read docs</span>
+                </div>
+              </header>
+              <div class="site-cards">
+                <div class="site-card"><b></b><span></span><span></span></div>
+                <div class="site-card"><b></b><span></span><span></span></div>
+                <div class="site-card"><b></b><span></span><span></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="note">This replaces the placeholder frame. The page-language morph resolves into generic web UI: nav, CTA pill, card grid, panels. It should look polished but medium-wrong: an interface arranged inside a video frame.</p>
+      </article>
+
+      <article class="cell">
+        <div class="label">Frame 2G <span>diagnostic payoff</span></div>
+        <div class="frame deck">
+          <div class="slide-kicker">TRANSLATED FOR VIDEO</div>
+          <h2 class="slide-title">Web language becomes a presentation.</h2>
+          <p class="slide-sub">Hand an agent a screen-design spec and the brand arranges itself like slides &mdash; not frames.</p>
+          <div class="slide-footer">
+            <span class="slide-brand">brand</span>
+            <span class="slide-num">01</span>
+          </div>
+        </div>
+        <p class="note">ONE full-bleed slide (no app chrome, no filmstrip). The web-language critique is itself rendered as a generic presentation slide — kicker, title, sub, footer — so the frame demonstrates the point: translate web design for video and you get a slide. Copy is placeholder; easy to tune.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

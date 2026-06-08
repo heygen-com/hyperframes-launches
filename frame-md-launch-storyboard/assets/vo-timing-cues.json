@@ -1,0 +1,27 @@
+{
+  "source": "assets/vo-without-16x9-line.mp3",
+  "duration": 59.61,
+  "rawTranscript": "assets/vo-transcript.json",
+  "notes": [
+    "Generated locally with whisper-cli small.en in CPU mode.",
+    "The 16:9 A-roll line is omitted from this MP3; waveform silence-detect shows its reserved slot from 15.30s to 18.41s."
+  ],
+  "sceneBoundaries": {
+    "scene02": { "start": 0.0, "end": 12.36 },
+    "scene03": { "start": 12.36, "end": 23.36 }
+  },
+  "cues": [
+    { "time": 0.0, "label": "scene02.black_frame_enter", "text": "When you ask..." },
+    { "time": 0.78, "label": "scene02.design_md_text_enter", "text": "agent" },
+    { "time": 3.84, "label": "scene02.written_for_pages_enter", "text": "it often builds a presentation" },
+    { "time": 5.69, "label": "scene02.zoom_out_start", "text": "That's not random" },
+    { "time": 7.77, "label": "scene02.web_page_morph_start", "text": "written" },
+    { "time": 9.99, "label": "scene02.presentation_scale_start", "text": "describe" },
+    { "time": 13.52, "label": "scene03.instructions_text", "text": "but your agent needs different instructions" },
+    { "time": 15.3, "label": "scene03.aroll_16x9_slot_start", "text": "reserved A-roll silence" },
+    { "time": 18.41, "label": "scene03.how_long_message", "text": "How long a message can live" },
+    { "time": 19.76, "label": "scene03.what_should_move", "text": "what should move" },
+    { "time": 20.56, "label": "scene03.what_needs_scale", "text": "what needs scale" },
+    { "time": 21.6, "label": "scene03.what_deserves_silence", "text": "what deserves silence" }
+  ]
+}

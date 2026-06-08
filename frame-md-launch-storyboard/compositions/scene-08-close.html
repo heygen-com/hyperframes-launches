@@ -1,0 +1,269 @@
+<template id="scene-08-close-template">
+  <div class="s8" data-composition-id="scene-08-close" data-width="1920" data-height="1080" data-duration="8.22">
+    <style>
+      [data-composition-id="scene-08-close"] {
+        --canvas: #fffaf0;
+        --paper: #ffffff;
+        --ink: #0a0a0a;
+        --pink: #ff4d8b;
+        --magenta: #ef00e4;
+        --teal: #1a3a3a;
+        --lavender: #b8a4ed;
+        --peach: #ffb084;
+        --ochre: #e8b94a;
+        --mint: #a4d4c5;
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--canvas);
+        color: var(--ink);
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      [data-composition-id="scene-08-close"] * { box-sizing: border-box; letter-spacing: 0; }
+      .s8 .soft-bg {
+        position: absolute;
+        inset: -120px;
+        background:
+          radial-gradient(circle at 18% 32%, rgba(255,77,139,.22), transparent 340px),
+          radial-gradient(circle at 78% 28%, rgba(184,164,237,.26), transparent 360px),
+          radial-gradient(circle at 54% 78%, rgba(232,185,74,.22), transparent 330px);
+      }
+      .s8 .stage { position: absolute; inset: 0; }
+      .s8 .card {
+        position: absolute;
+        top: 150px;
+        width: 700px;
+        height: 540px;
+        border: 6px solid var(--ink);
+        border-radius: 34px;
+        box-shadow: 18px 21px 0 rgba(10,10,10,.13);
+        overflow: hidden;
+      }
+      .s8 .design-card { left: 128px; background: var(--paper); transform: rotate(-2deg); }
+      .s8 .frame-card {
+        right: 128px;
+        background:
+          radial-gradient(circle at 50% 54%, rgba(255,77,139,.56), transparent 205px),
+          linear-gradient(135deg, var(--lavender), var(--mint));
+        transform: rotate(2deg);
+      }
+      .s8 .label {
+        position: absolute;
+        left: 36px;
+        top: 34px;
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 48px;
+        line-height: 1;
+        font-weight: 900;
+        color: var(--magenta);
+      }
+      .s8 .line {
+        position: absolute;
+        left: 42px;
+        height: 22px;
+        border-radius: 999px;
+        background: rgba(10,10,10,.15);
+        transform-origin: left center;
+      }
+      .s8 .l1 { top: 142px; width: 430px; background: var(--pink); }
+      .s8 .l2 { top: 196px; width: 552px; }
+      .s8 .l3 { top: 250px; width: 370px; background: var(--lavender); }
+      .s8 .l4 { top: 304px; width: 500px; }
+      .s8 .swatches {
+        position: absolute;
+        left: 42px;
+        bottom: 54px;
+        display: flex;
+        gap: 18px;
+      }
+      .s8 .swatches i {
+        display: block;
+        width: 68px;
+        height: 68px;
+        border-radius: 50%;
+        border: 4px solid var(--ink);
+      }
+      .s8 .swatches i:nth-child(1) { background: var(--pink); }
+      .s8 .swatches i:nth-child(2) { background: var(--teal); }
+      .s8 .swatches i:nth-child(3) { background: var(--lavender); }
+      .s8 .swatches i:nth-child(4) { background: var(--ochre); }
+      .s8 .frame-box {
+        position: absolute;
+        left: 58px;
+        top: 132px;
+        width: 584px;
+        height: 329px;
+        border: 7px solid var(--ink);
+        border-radius: 24px;
+        background: var(--canvas);
+        overflow: hidden;
+      }
+      .s8 .motion-chip {
+        position: absolute;
+        border: 4px solid var(--ink);
+        border-radius: 999px;
+        box-shadow: 8px 9px 0 rgba(10,10,10,.16);
+      }
+      .s8 .chip-a { left: 48px; top: 86px; width: 210px; height: 76px; background: var(--pink); transform: rotate(-8deg); }
+      .s8 .chip-b { right: 46px; top: 168px; width: 178px; height: 178px; border-radius: 50%; background: var(--peach); }
+      .s8 .chip-c { left: 170px; bottom: 58px; width: 260px; height: 70px; background: var(--teal); transform: rotate(7deg); }
+      .s8 .move-path {
+        position: absolute;
+        left: 74px;
+        top: 118px;
+        width: 520px;
+        height: 260px;
+      }
+      .s8 .move-path path {
+        fill: none;
+        stroke: var(--magenta);
+        stroke-width: 9;
+        stroke-linecap: round;
+        stroke-dasharray: 1 900;
+        filter: drop-shadow(0 6px 0 rgba(10,10,10,.2));
+      }
+      .s8 .center-plus {
+        position: absolute;
+        left: 50%;
+        top: 410px;
+        width: 110px;
+        height: 110px;
+        margin-left: -55px;
+        border: 6px solid var(--ink);
+        border-radius: 50%;
+        background: var(--ochre);
+        display: grid;
+        place-items: center;
+        font-size: 82px;
+        line-height: 1;
+        font-weight: 950;
+        box-shadow: 10px 12px 0 rgba(10,10,10,.14);
+      }
+      .s8 .statement {
+        position: absolute;
+        left: 50%;
+        bottom: 86px;
+        width: 1600px;
+        transform: translateX(-50%);
+        text-align: center;
+        font-family: "Cooper Black", "Arial Rounded MT Bold", Inter, sans-serif;
+        font-size: 86px;
+        line-height: .95;
+        font-weight: 950;
+      }
+      .s8 .statement span { display: inline-block; margin: 0 20px; }
+      .s8 .statement .frame {
+        color: var(--pink);
+        -webkit-text-stroke: 3px var(--ink);
+      }
+      .s8 .final-mark {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 1580px;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        font-family: "Cooper Black", "Arial Rounded MT Bold", Inter, sans-serif;
+        font-size: 146px;
+        line-height: .86;
+        font-weight: 950;
+        opacity: 0;
+      }
+      .s8 .final-mark em {
+        display: block;
+        color: var(--pink);
+        font-style: normal;
+        -webkit-text-stroke: 4px var(--ink);
+      }
+      .s8 .logo-end {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        opacity: 0;
+        z-index: 5;
+        will-change: transform, opacity, filter;
+      }
+      .s8 .logo-end img {
+        width: 1300px;
+        height: auto;
+        display: block;
+      }
+    </style>
+
+    <div class="soft-bg"></div>
+    <div class="stage">
+      <div class="card design-card">
+        <div class="label">design.md</div>
+        <i class="line l1"></i>
+        <i class="line l2"></i>
+        <i class="line l3"></i>
+        <i class="line l4"></i>
+        <div class="swatches"><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="center-plus">+</div>
+      <div class="card frame-card">
+        <div class="label">frame.md</div>
+        <div class="frame-box">
+          <div class="motion-chip chip-a"></div>
+          <div class="motion-chip chip-b"></div>
+          <div class="motion-chip chip-c"></div>
+          <svg class="move-path" viewBox="0 0 520 260" aria-hidden="true">
+            <path d="M 30 198 C 142 64, 245 72, 306 138 S 418 232, 494 70" />
+          </svg>
+        </div>
+      </div>
+      <div class="statement">
+        <span data-hf-studio-original-rotation-transform-origin="" data-hf-studio-original-inline-rotate="none" data-hf-studio-original-rotate="" data-hf-studio-rotation="true" data-hf-studio-original-inline-translate="none" data-hf-studio-original-translate="" data-hf-studio-path-offset="true" style="--hf-studio-offset-x:-166px;--hf-studio-offset-y:-159px;translate:var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px);--hf-studio-rotation:-2deg;rotate:var(--hf-studio-rotation, 0deg);transform-origin:center center" class="design">what the brand is</span>
+        <span data-hf-studio-original-rotation-transform-origin="" data-hf-studio-original-inline-rotate="none" data-hf-studio-original-rotate="" data-hf-studio-rotation="true" data-hf-studio-original-inline-translate="none" data-hf-studio-original-translate="" data-hf-studio-path-offset="true" style="--hf-studio-offset-x:67px;--hf-studio-offset-y:-149px;translate:var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px);--hf-studio-rotation:3deg;rotate:var(--hf-studio-rotation, 0deg);transform-origin:center center" class="frame">how it moves</span>
+      </div>
+      <div class="final-mark">Your brand,<em>translated for motion.</em></div>
+      <div class="logo-end"><img src="../assets/hyperframes-dark.svg" alt="Hyperframes"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        const q = (s) => `[data-composition-id="scene-08-close"] ${s}`;
+        const tl = gsap.timeline({ paused: true });
+        gsap.set(q(".soft-bg"), { opacity: 0, scale: 1.08 });
+        gsap.set(q(".design-card"), { opacity: 0, x: -170, y: 38, rotate: -4, filter: "blur(14px)" });
+        gsap.set(q(".frame-card"), { opacity: 0, x: 170, y: 38, rotate: 4, filter: "blur(14px)" });
+        gsap.set(q(".center-plus"), { opacity: 0, scale: 0.5, rotate: -28 });
+        gsap.set(q(".line"), { scaleX: 0 });
+        gsap.set(q(".swatches i"), { opacity: 0, scale: 0.45, y: 18 });
+        gsap.set(q(".motion-chip"), { opacity: 0, scale: 0.6 });
+        gsap.set(q(".move-path path"), { strokeDasharray: "1 900", strokeDashoffset: 1 });
+        gsap.set(q(".statement span"), { opacity: 0, y: 36, filter: "blur(10px)" });
+        gsap.set(q(".final-mark"), { opacity: 0, scale: 0.84, filter: "blur(18px)" });
+        gsap.set(q(".logo-end"), { opacity: 0, scale: 0.22, filter: "blur(24px)" });
+
+        tl.to(q(".soft-bg"), { opacity: 1, scale: 1, duration: 0.65, ease: "power2.out" }, 0.04);
+        tl.to(q(".design-card"), { opacity: 1, x: 0, y: 0, rotate: -2, filter: "blur(0px)", duration: 0.68, ease: "expo.out" }, 0.14);
+        tl.to(q(".line"), { scaleX: 1, duration: 0.32, stagger: 0.055, ease: "power3.out" }, 0.46);
+        tl.to(q(".swatches i"), { opacity: 1, scale: 1, y: 0, duration: 0.38, stagger: 0.05, ease: "back.out(1.6)" }, 0.72);
+        tl.to(q(".statement .design"), { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.44, ease: "power3.out" }, 1.02);
+        tl.to(q(".center-plus"), { opacity: 1, scale: 1, rotate: 0, duration: 0.46, ease: "back.out(1.7)" }, 1.48);
+        tl.to(q(".frame-card"), { opacity: 1, x: 0, y: 0, rotate: 2, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, 1.72);
+        tl.to(q(".motion-chip"), { opacity: 1, scale: 1, duration: 0.42, stagger: 0.08, ease: "back.out(1.5)" }, 2.04);
+        tl.to(q(".move-path path"), { strokeDasharray: "900 900", strokeDashoffset: 0, duration: 1.05, ease: "power2.inOut" }, 2.28);
+        tl.to(q(".statement .frame"), { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.5, ease: "power3.out" }, 2.58);
+        tl.to(q(".chip-a"), { x: 58, y: -16, rotate: 3, duration: 1.25, ease: "sine.inOut" }, 2.66);
+        tl.to(q(".chip-b"), { x: -42, y: 24, scale: 1.06, duration: 1.25, ease: "sine.inOut" }, 2.66);
+        tl.to(q(".chip-c"), { x: 34, y: -28, rotate: -5, duration: 1.25, ease: "sine.inOut" }, 2.66);
+        tl.to(q(".design-card, .frame-card, .center-plus, .statement"), { opacity: 0, scale: 0.94, filter: "blur(22px)", duration: 0.6, ease: "power3.inOut" }, 4.0);
+        tl.to(q(".final-mark"), { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.62, ease: "expo.out" }, 4.08);
+        tl.to(q(".final-mark em"), { scale: 1.035, duration: 0.56, ease: "sine.inOut" }, 4.68);
+        tl.to(q(".final-mark"), { opacity: 0, scale: 5.2, filter: "blur(30px)", duration: 0.62, ease: "power4.in" }, 6.72);
+        tl.to(q(".soft-bg"), { opacity: 0.42, scale: 1.18, duration: 0.72, ease: "power3.inOut" }, 6.72);
+        tl.to(q(".logo-end"), { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.68, ease: "expo.out" }, 7.04);
+        tl.to(q(".logo-end"), { scale: 1.018, duration: 0.78, ease: "sine.inOut" }, 7.44);
+        window.__timelines = window.__timelines || {};
+        window.__timelines["scene-08-close"] = tl;
+        const previewTime = new URLSearchParams(window.location.search).get("t");
+        if (previewTime !== null) tl.time(Number(previewTime));
+      })();
+    </script>
+  </div>
+</template>

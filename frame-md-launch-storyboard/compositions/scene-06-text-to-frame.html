@@ -1,0 +1,421 @@
+<template id="scene-06-text-to-frame-template">
+  <div class="s6" data-composition-id="scene-06-text-to-frame" data-width="1920" data-height="1080" data-duration="7.25">
+    <style>
+      [data-composition-id="scene-06-text-to-frame"] {
+        --canvas: #fffaf0;
+        --paper: #ffffff;
+        --deep: #0a0a0a;
+        --surface: #142727;
+        --elevated: #1a3a3a;
+        --ink: #0a0a0a;
+        --body: #1a1a1a;
+        --magenta: #ef00e4;
+        --pink: #ff4d8b;
+        --teal: #1a3a3a;
+        --lavender: #b8a4ed;
+        --peach: #ffb084;
+        --ochre: #e8b94a;
+        --mint: #a4d4c5;
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--canvas);
+        color: var(--ink);
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      [data-composition-id="scene-06-text-to-frame"] * {
+        box-sizing: border-box;
+        letter-spacing: 0;
+      }
+      .s6 .text-stage,
+      .s6 .frame-stage {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      .s6 .text-stage {
+        padding: 126px 146px;
+        background: var(--paper);
+      }
+      .s6 .md-block {
+        max-width: 1590px;
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        color: var(--magenta);
+      }
+      .s6 .md-line {
+        display: block;
+        margin: 0;
+        will-change: transform, opacity, filter;
+      }
+      .s6 .md-title {
+        font-size: 82px;
+        line-height: 1.08;
+        font-weight: 850;
+        color: var(--magenta);
+        margin-bottom: 46px;
+      }
+      .s6 .md-title .hash {
+        color: var(--magenta);
+        margin-right: 22px;
+      }
+      .s6 .md-title .accent {
+        color: var(--magenta);
+      }
+      .s6 .origin {
+        margin-top: 0;
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 41px;
+        line-height: 1.86;
+        font-weight: 800;
+        color: var(--magenta);
+      }
+      .s6 .origin .token {
+        color: var(--magenta);
+      }
+      .s6 .body-copy {
+        margin-top: 12px;
+        width: 1560px;
+        font-size: 41px;
+        line-height: 1.86;
+        font-weight: 800;
+        color: var(--magenta);
+      }
+      .s6 .body-copy strong {
+        color: var(--magenta);
+        font-weight: 900;
+      }
+      .s6 .body-copy .blue {
+        color: var(--magenta);
+      }
+      .s6 .pace {
+        margin-top: 12px;
+        display: block;
+        width: 1540px;
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 41px;
+        line-height: 1.86;
+        color: var(--magenta);
+        font-weight: 800;
+      }
+      .s6 .pace b {
+        color: var(--magenta);
+        font-size: inherit;
+        font-weight: 900;
+      }
+      .s6 .highlight-sweep {
+        position: absolute;
+        left: 96px;
+        top: 84px;
+        width: 1620px;
+        height: 760px;
+        border-left: 11px solid var(--magenta);
+        background: transparent;
+        opacity: 0;
+        transform-origin: left center;
+        will-change: transform, opacity;
+      }
+      .s6 .frame-stage {
+        opacity: 0;
+        background: var(--canvas);
+      }
+      .s6 .spotlight {
+        position: absolute;
+        left: 50%;
+        top: 44%;
+        width: 1320px;
+        height: 720px;
+        border-radius: 52px;
+        transform: translate(-50%, -50%);
+        background:
+          radial-gradient(circle at 36% 28%, rgba(255,176,132,.92), transparent 170px),
+          radial-gradient(circle at 72% 38%, rgba(184,164,237,.94), transparent 220px),
+          linear-gradient(135deg, var(--pink), var(--lavender) 56%, var(--mint));
+        filter: blur(0px);
+        opacity: .95;
+      }
+      .s6 .render-wrap {
+        position: absolute;
+        inset: 92px 126px;
+      }
+      .s6 .badges {
+        position: absolute;
+        left: 50%;
+        top: 32px;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 16px;
+      }
+      .s6 .badge {
+        padding: 12px 18px 13px;
+        border-radius: 999px;
+        background: var(--deep);
+        border: 0;
+        color: #ffffff;
+        font-size: 20px;
+        line-height: 1;
+        font-weight: 760;
+        text-transform: uppercase;
+      }
+      .s6 .badge:nth-child(2) {
+        background: var(--ochre);
+        color: var(--deep);
+      }
+      .s6 .hero {
+        position: absolute;
+        left: 50%;
+        top: 130px;
+        width: 1330px;
+        transform: translateX(-50%);
+        text-align: center;
+        font-family: "Cooper Black", "Arial Rounded MT Bold", Inter, sans-serif;
+        font-size: 104px;
+        line-height: .96;
+        font-weight: 900;
+        color: var(--deep);
+      }
+      .s6 .hero-motion {
+        display: block;
+        transform-origin: center center;
+        will-change: transform, opacity, filter;
+      }
+      .s6 .hero span {
+        color: var(--pink);
+        -webkit-text-stroke: 3px var(--deep);
+      }
+      .s6 .terminal-grid {
+        position: absolute;
+        left: 50%;
+        top: 424px;
+        width: 1110px;
+        height: 430px;
+        transform: translateX(-50%);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 16px;
+        padding: 28px;
+        border-radius: 28px;
+        background: var(--deep);
+        border: 5px solid var(--deep);
+        box-shadow: 20px 22px 0 rgba(10,10,10,.16);
+      }
+      .s6 .pane {
+        border-radius: 17px;
+        background: var(--surface);
+        border: 2px solid rgba(255,255,255,.12);
+        padding: 20px;
+        overflow: hidden;
+      }
+      .s6 .pane i,
+      .s6 .pane b {
+        display: block;
+        height: 12px;
+        border-radius: 999px;
+        margin-bottom: 14px;
+      }
+      .s6 .pane b {
+        width: 38%;
+        background: var(--pink);
+      }
+      .s6 .pane i {
+        background: rgba(255,255,255,.32);
+      }
+      .s6 .pane i:nth-child(2) { width: 82%; }
+      .s6 .pane i:nth-child(3) { width: 62%; }
+      .s6 .pane i:nth-child(4) { width: 74%; background: rgba(164,212,197,.68); }
+      .s6 .pane:nth-child(2) b { background: var(--lavender); }
+      .s6 .pane:nth-child(3) b { background: var(--ochre); }
+      .s6 .pane:nth-child(4) b { background: var(--mint); }
+      .s6 .motion-path {
+        position: absolute;
+        left: 238px;
+        top: 330px;
+        width: 1410px;
+        height: 480px;
+        pointer-events: none;
+      }
+      .s6 .motion-path path {
+        fill: none;
+        stroke: var(--pink);
+        stroke-width: 8;
+        stroke-linecap: round;
+        stroke-dasharray: 0 1;
+        opacity: .88;
+        filter: drop-shadow(0 7px 0 rgba(10,10,10,.22));
+      }
+      .s6 .path-dot {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        background: var(--ochre);
+        border: 4px solid var(--deep);
+        box-shadow: 0 0 0 12px rgba(255,77,139,.2);
+      }
+      .s6 .clay-shape {
+        position: absolute;
+        border: 5px solid var(--deep);
+        box-shadow: 14px 16px 0 rgba(10,10,10,.18);
+        will-change: transform, opacity;
+      }
+      .s6 .shape-a {
+        left: 94px;
+        top: 626px;
+        width: 268px;
+        height: 112px;
+        border-radius: 999px;
+        background: var(--teal);
+        transform: rotate(-10deg);
+      }
+      .s6 .shape-b {
+        right: 98px;
+        top: 590px;
+        width: 290px;
+        height: 104px;
+        border-radius: 999px;
+        background: var(--ochre);
+        transform: rotate(12deg);
+      }
+      .s6 .shape-c {
+        right: 188px;
+        top: 188px;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: var(--peach);
+      }
+      .s6 .shape-d {
+        left: 206px;
+        top: 176px;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: var(--lavender);
+      }
+      .s6 .eyebrow.md-line {
+        display: none;
+      }
+      .s6 .s6-caption {
+        position: absolute;
+        left: 50%;
+        bottom: 62px;
+        max-width: 1420px;
+        transform: translateX(-50%) rotate(-1deg);
+        z-index: 8;
+        opacity: 0;
+        will-change: transform, opacity, filter;
+      }
+      .s6 .s6-caption span {
+        display: block;
+        padding: 20px 40px 23px;
+        border-radius: 27px;
+        background: var(--pink);
+        color: #fff;
+        box-shadow: 0 14px 0 rgba(10,10,10,.14);
+        font-size: 42px;
+        line-height: .96;
+        font-weight: 850;
+        text-align: center;
+        white-space: nowrap;
+      }
+      .s6 .s6-caption em {
+        color: var(--ink);
+        background: var(--ochre);
+        border-radius: 10px;
+        padding: 0 8px 2px;
+        font-style: normal;
+      }
+    </style>
+
+    <div class="text-stage">
+      <div class="highlight-sweep"></div>
+      <div class="eyebrow md-line">frame.md / composition vocabulary</div>
+      <div class="md-block">
+        <h2 data-hf-studio-original-inline-translate="none" data-hf-studio-original-translate="" data-hf-studio-path-offset="true" style="--hf-studio-offset-x:-6px;--hf-studio-offset-y:121px;translate:var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)" class="md-line md-title"><span class="hash">##</span> Hero Band</h2>
+        <div data-hf-studio-original-inline-translate="none" data-hf-studio-original-translate="" data-hf-studio-path-offset="true" style="--hf-studio-offset-x:-14px;--hf-studio-offset-y:170px;translate:var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)" class="md-line origin">hero band with spotlight and terminal.</div>
+        <div data-hf-studio-original-inline-translate="none" data-hf-studio-original-translate="" data-hf-studio-path-offset="true" style="--hf-studio-offset-x:-11px;--hf-studio-offset-y:163px;translate:var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)" class="md-line body-copy">
+          Anchor scene. Centered display-mega headline with a primary final clause, badge pair above, and the <strong>2x2 terminal grid</strong> centered beneath inside a radial <span class="blue">primary-glow</span> field.
+        </div>
+        <div data-hf-studio-original-inline-translate="none" data-hf-studio-original-translate="" data-hf-studio-path-offset="true" style="--hf-studio-offset-x:-4px;--hf-studio-offset-y:162px;translate:var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)" class="md-line pace"><b>Frame-pace:</b> low. Needs dwelling for the code panes to read.</div>
+      </div>
+    </div>
+
+    <div id="s6-cap-01" class="s6-caption"><span>A paragraph like <em>hero band with spotlight and terminal</em></span></div>
+    <div id="s6-cap-02" class="s6-caption"><span>stops being documentation.</span></div>
+
+    <div class="frame-stage">
+      <div class="spotlight"></div>
+      <div class="clay-shape shape-a"></div>
+      <div class="clay-shape shape-b"></div>
+      <div class="clay-shape shape-c"></div>
+      <div class="clay-shape shape-d"></div>
+      <div class="render-wrap">
+        <div class="badges">
+          
+          
+        </div>
+        <div data-hf-studio-original-inline-translate="none" data-hf-studio-original-translate="" data-hf-studio-path-offset="true" style="--hf-studio-offset-x:3px;--hf-studio-offset-y:-39px;translate:var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)" class="hero"><div class="hero-motion"><span data-hf-text-key="child:1:span" style="font-size: 144px">It becomes a scene</span></div></div>
+        <div class="terminal-grid">
+          <div class="pane"><b></b><i></i><i></i><i></i></div>
+          <div class="pane"><b></b><i></i><i></i><i></i></div>
+          <div class="pane"><b></b><i></i><i></i><i></i></div>
+          <div class="pane"><b></b><i></i><i></i><i></i></div>
+        </div>
+        <svg class="motion-path" viewBox="0 0 1410 480" aria-hidden="true">
+          <path id="s6-motion-path" d="M 84 404 C 290 258, 436 188, 638 244 S 982 356, 1304 92" />
+        </svg>
+        <div class="path-dot"></div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        const q = (s) => `[data-composition-id="scene-06-text-to-frame"] ${s}`;
+        const tl = gsap.timeline({ paused: true });
+
+        gsap.set(q(".md-line"), { opacity: 0, y: 38, filter: "blur(10px)" });
+        gsap.set(q(".highlight-sweep"), { opacity: 0, scaleX: 0 });
+        gsap.set(q(".frame-stage"), { opacity: 0, scale: 1.04, filter: "blur(18px)" });
+        gsap.set(q(".spotlight"), { opacity: 0, scale: 0.74 });
+        gsap.set(q(".clay-shape"), { opacity: 0, y: 42, scale: 0.88 });
+        gsap.set(q(".hero-motion"), { opacity: 0, y: 34, filter: "blur(12px)" });
+        gsap.set(q(".terminal-grid"), { opacity: 0, y: 56, scale: 0.92, filter: "blur(16px)" });
+        gsap.set(q(".pane"), { opacity: 0, y: 18 });
+        gsap.set(q(".motion-path path"), { strokeDasharray: "1 1600", strokeDashoffset: 1 });
+        gsap.set(q(".path-dot"), { opacity: 0, x: 330, y: 708, scale: 0.55 });
+        gsap.set(q(".s6-caption"), { opacity: 0, y: 18, scale: 0.985, filter: "blur(6px)" });
+
+        tl.to(q(".md-line"), { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.58, stagger: 0.16, ease: "power3.out" }, 0.16);
+        tl.to(q("#s6-cap-01"), { opacity: 0.96, y: 0, scale: 1, filter: "blur(0px)", duration: 0.22, ease: "power2.out" }, 0.82);
+        tl.to(q("#s6-cap-01"), { opacity: 0, y: -10, scale: 0.99, filter: "blur(5px)", duration: 0.18, ease: "power2.in" }, 2.35);
+        tl.to(q("#s6-cap-02"), { opacity: 0.96, y: 0, scale: 1, filter: "blur(0px)", duration: 0.22, ease: "power2.out" }, 2.54);
+        tl.to(q("#s6-cap-02"), { opacity: 0, y: -10, scale: 0.99, filter: "blur(5px)", duration: 0.18, ease: "power2.in" }, 4.44);
+        tl.to(q(".highlight-sweep"), { opacity: 1, scaleX: 1, duration: 0.54, ease: "power3.out" }, 2.55);
+        tl.to(q(".highlight-sweep"), { opacity: 0.35, duration: 1.2, ease: "power2.out" }, 3.1);
+
+        tl.to(q(".text-stage"), { scale: 1.42, opacity: 0, filter: "blur(28px)", duration: 0.78, ease: "power3.inOut" }, 4.82);
+        tl.to(q(".frame-stage"), { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.74, ease: "power3.out" }, 5.0);
+        tl.to(q(".spotlight"), { opacity: 1, scale: 1, duration: 0.85, ease: "power2.out" }, 5.12);
+        tl.to(q(".clay-shape"), { opacity: 1, y: 0, scale: 1, duration: 0.58, stagger: 0.055, ease: "back.out(1.35)" }, 5.22);
+        tl.to(q(".hero-motion"), { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.68, ease: "power3.out" }, 5.48);
+        tl.to(q(".terminal-grid"), { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.72, ease: "power3.out" }, 5.82);
+        tl.to(q(".pane"), { opacity: 1, y: 0, duration: 0.34, stagger: 0.05, ease: "power2.out" }, 6.02);
+        tl.to(q(".motion-path path"), { strokeDasharray: "1600 1600", strokeDashoffset: 0, duration: 1.3, ease: "power2.inOut" }, 6.74);
+        tl.to(q(".path-dot"), { opacity: 1, scale: 1, duration: 0.22, ease: "power2.out" }, 6.78);
+        tl.to(q(".path-dot"), { x: 1550, y: 412, duration: 1.26, ease: "power2.inOut" }, 6.82);
+        tl.to(q(".terminal-grid"), { scale: 1.035, duration: 1.7, ease: "sine.inOut" }, 8.04);
+        tl.to(q(".spotlight"), { scale: 1.12, opacity: 0.92, duration: 1.7, ease: "sine.inOut" }, 8.04);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["scene-06-text-to-frame"] = tl;
+
+        const previewTime = new URLSearchParams(window.location.search).get("t");
+        if (previewTime !== null) tl.time(Number(previewTime));
+      })();
+    </script>
+  </div>
+</template>

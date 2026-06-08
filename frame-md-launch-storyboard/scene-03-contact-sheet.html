@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Frame.md Launch - Scene 03 Contact Sheet</title>
+  <style>
+    :root {
+      --sheet-bg: #1a1a1a;
+      --canvas: #fffaf0;
+      --soft: #faf5e8;
+      --card: #f5f0e0;
+      --ink: #0a0a0a;
+      --body: #3a3a3a;
+      --muted: #6a6a6a;
+      --pink: #ff4d8b;
+      --teal: #1a3a3a;
+      --lavender: #b8a4ed;
+      --peach: #ffb084;
+      --ochre: #e8b94a;
+      --mint: #a4d4c5;
+      --coral: #ff6b5a;
+      --line: rgba(255,255,255,.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--sheet-bg);
+      color: #f2f2f2;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .sheet {
+      padding: 28px 32px 44px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 24px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1;
+      font-weight: 750;
+      letter-spacing: 0;
+    }
+
+    .dek {
+      margin: 8px 0 0;
+      max-width: 920px;
+      color: #bcbcbc;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .tag {
+      color: #111;
+      background: #f4f4f4;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 8px;
+      color: #858585;
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .label span:last-child {
+      color: #c8c8c8;
+      font-weight: 500;
+      font-size: 11px;
+      text-align: right;
+    }
+
+    .frame {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: var(--canvas);
+      color: var(--ink);
+      border: 1px solid rgba(255,255,255,.16);
+      container-type: inline-size;
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    }
+
+    .note {
+      margin: 9px 0 0;
+      color: #a8a8a8;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .note strong {
+      color: #ddd;
+      font-weight: 700;
+    }
+
+    .black-slide {
+      position: absolute;
+      inset: 0;
+      background: #060606;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 9cqw 10cqw;
+      transform-origin: left center;
+    }
+
+    .scene2-end {
+      position: absolute;
+      inset: 0;
+      background: #000;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .scene2-kicker {
+      position: absolute;
+      left: 9.9cqw;
+      top: 15.6cqw;
+      font-size: 1.46cqw;
+      line-height: 1;
+      letter-spacing: .22em;
+      color: #6e6e74;
+      font-weight: 650;
+      text-transform: uppercase;
+    }
+
+    .scene2-hero {
+      position: absolute;
+      left: 9.9cqw;
+      top: 20.85cqw;
+      font-size: 6.04cqw;
+      line-height: 1.02;
+      font-weight: 740;
+      letter-spacing: -0.04em;
+    }
+
+    .scene2-hero u {
+      text-decoration-thickness: .08em;
+      text-underline-offset: .08em;
+    }
+
+    .scene2-sub {
+      position: absolute;
+      left: 9.9cqw;
+      top: 34.35cqw;
+      width: 57.3cqw;
+      font-size: 1.98cqw;
+      line-height: 1.4;
+      color: #a0a0a6;
+    }
+
+    .scene2-brand {
+      position: absolute;
+      left: 9.9cqw;
+      top: 49.6cqw;
+      font-size: 1.56cqw;
+      line-height: 1;
+      font-weight: 720;
+      letter-spacing: -0.02em;
+    }
+
+    .scene2-page {
+      position: absolute;
+      right: 9.9cqw;
+      bottom: 5cqw;
+      font-size: 1.35cqw;
+      line-height: 1;
+      font-weight: 650;
+      color: #7a7a80;
+    }
+
+    .scene3-wipe {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 82% 23%, rgba(255,77,139,.7), transparent 13cqw),
+        radial-gradient(circle at 91% 73%, rgba(184,164,237,.72), transparent 14cqw),
+        linear-gradient(112deg, transparent 0 64%, var(--canvas) 75% 100%);
+      clip-path: polygon(68% 0, 100% 0, 100% 100%, 76% 100%);
+    }
+
+    .handoff-chip {
+      position: absolute;
+      right: 5.8cqw;
+      bottom: 8.2cqw;
+      width: 12cqw;
+      height: 5.5cqw;
+      border-radius: 999px;
+      background: var(--peach);
+      box-shadow: inset -1cqw -1.3cqw 2cqw rgba(0,0,0,.13), inset 1cqw 1cqw 1.6cqw rgba(255,255,255,.34);
+    }
+
+    .slide-kicker {
+      font-size: 1.5cqw;
+      letter-spacing: .18em;
+      color: #777;
+      font-weight: 700;
+      margin-bottom: 2.2cqw;
+    }
+
+    .slide-title {
+      font-size: 6.6cqw;
+      line-height: 1.04;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      max-width: 78%;
+    }
+
+    .cream-field {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 68% 34%, rgba(255,77,139,.34), transparent 24%),
+        radial-gradient(circle at 80% 82%, rgba(184,164,237,.42), transparent 26%),
+        linear-gradient(115deg, rgba(255,250,240,0) 0 36%, var(--canvas) 46%);
+    }
+
+    .color-wipe {
+      position: absolute;
+      inset: -8cqw -8cqw -8cqw 34%;
+      background:
+        radial-gradient(circle at 36% 24%, var(--pink), transparent 19%),
+        radial-gradient(circle at 58% 70%, var(--peach), transparent 20%),
+        radial-gradient(circle at 82% 35%, var(--lavender), transparent 18%);
+      filter: blur(1.6cqw);
+      opacity: .7;
+    }
+
+    .clay-card {
+      position: absolute;
+      border-radius: 2cqw;
+      padding: 2.1cqw;
+      overflow: hidden;
+      border: 0.12cqw solid rgba(10,10,10,.08);
+    }
+
+    .clay-card b {
+      display: block;
+      font-size: 1.6cqw;
+      line-height: 1.15;
+      margin-bottom: .8cqw;
+      font-weight: 800;
+    }
+
+    .clay-card span {
+      display: block;
+      height: .62cqw;
+      width: 70%;
+      border-radius: 999px;
+      background: rgba(10,10,10,.2);
+      margin-top: .7cqw;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 999px;
+      filter: saturate(1.08);
+      box-shadow: inset -1.1cqw -1.4cqw 2cqw rgba(0,0,0,.16), inset 1.1cqw 1.2cqw 1.6cqw rgba(255,255,255,.42);
+    }
+
+    .blob.pink { background: radial-gradient(circle at 32% 28%, #ffc1d5, var(--pink) 56%, #cb1c5f); }
+    .blob.peach { background: radial-gradient(circle at 32% 28%, #ffd9bf, var(--peach) 58%, #db7a4e); }
+    .blob.ochre { background: radial-gradient(circle at 32% 28%, #ffe9a3, var(--ochre) 58%, #a87b13); }
+    .blob.lav { background: radial-gradient(circle at 32% 28%, #e9dcff, var(--lavender) 58%, #7f62c8); }
+
+    .big-line {
+      position: absolute;
+      left: 7.5cqw;
+      right: 7.5cqw;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: center;
+      font-size: 6.5cqw;
+      line-height: .96;
+      font-weight: 800;
+      letter-spacing: -0.045em;
+      color: var(--ink);
+    }
+
+    .big-line .soft {
+      color: rgba(10,10,10,.22);
+    }
+
+    .zoom-ghost {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-size: 10cqw;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      color: rgba(10,10,10,.06);
+      transform: scale(1.22);
+      filter: blur(.8cqw);
+    }
+
+    .aroll-composite {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .aroll-plate {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+      filter: saturate(.86) contrast(.96) brightness(.78);
+    }
+
+    .aroll-grade {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background:
+        radial-gradient(circle at 24% 20%, rgba(255,77,139,.34), transparent 15cqw),
+        radial-gradient(circle at 80% 18%, rgba(184,164,237,.35), transparent 15cqw),
+        linear-gradient(180deg, rgba(255,250,240,.1), rgba(10,10,10,.08));
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .aroll-frame-mark {
+      position: absolute;
+      inset: 4.5cqw 5.8cqw 5.4cqw;
+      border: .16cqw solid rgba(10,10,10,.16);
+      border-radius: 2cqw;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .aroll-frame-mark::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -1.1cqw;
+      width: 16cqw;
+      height: .32cqw;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: var(--ink);
+      opacity: .18;
+    }
+
+    .aroll-giant {
+      position: absolute;
+      left: 50%;
+      top: 1.3cqw;
+      width: 84cqw;
+      height: 34cqw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .78cqw;
+      padding: 0 1.8cqw .45cqw;
+      border-radius: 4.4cqw;
+      background:
+        radial-gradient(circle at 28% 24%, rgba(255,255,255,.5), transparent 16cqw),
+        linear-gradient(135deg, var(--lavender), var(--pink));
+      font-size: 37.8cqw;
+      line-height: .72;
+      font-weight: 850;
+      letter-spacing: 0;
+      color: rgba(10,10,10,.86);
+      transform: translateX(-50%) rotate(-2deg);
+      z-index: 3;
+      box-shadow:
+        0 1.2cqw 0 rgba(10,10,10,.16),
+        inset -1.2cqw -1.5cqw 2.2cqw rgba(10,10,10,.14),
+        inset 1cqw 1cqw 1.8cqw rgba(255,255,255,.34);
+      text-shadow: 0 .25cqw 0 rgba(255,255,255,.22);
+    }
+
+    .aroll-giant span {
+      display: block;
+      flex: 0 0 auto;
+      line-height: .72;
+    }
+
+    .aroll-giant .cx {
+      font-size: .84em;
+      transform: translateY(.02em);
+    }
+
+    .aroll-giant .c1 {
+      margin-right: -.48cqw;
+    }
+
+    .aroll-back-card {
+      position: absolute;
+      border-radius: 2.2cqw;
+      box-shadow: 0 .9cqw 0 rgba(10,10,10,.08);
+      border: .12cqw solid rgba(10,10,10,.08);
+      transform-origin: center;
+      z-index: 3;
+    }
+
+    .aroll-dot {
+      position: absolute;
+      border-radius: 999px;
+      z-index: 3;
+      box-shadow:
+        0 .75cqw 0 rgba(10,10,10,.1),
+        inset -.8cqw -1cqw 1.5cqw rgba(0,0,0,.13),
+        inset .75cqw .75cqw 1.3cqw rgba(255,255,255,.36);
+    }
+
+    .aroll-back-card::after {
+      content: "";
+      position: absolute;
+      left: 1.6cqw;
+      right: 1.6cqw;
+      bottom: 1.5cqw;
+      height: .52cqw;
+      border-radius: 999px;
+      background: rgba(10,10,10,.2);
+    }
+
+    .aroll-back-ribbon {
+      position: absolute;
+      height: 5.4cqw;
+      border-radius: 999px;
+      transform-origin: center;
+      box-shadow: inset -0.8cqw -1cqw 1.6cqw rgba(0,0,0,.14), inset .7cqw .8cqw 1.3cqw rgba(255,255,255,.36);
+      z-index: 3;
+    }
+
+    .aroll-subject {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 4;
+      filter: drop-shadow(0 .8cqw .9cqw rgba(10,10,10,.2));
+    }
+
+    .aroll-caption {
+      position: absolute;
+      left: 50%;
+      bottom: 4.1cqw;
+      transform: translateX(-50%) rotate(-1deg);
+      z-index: 6;
+      max-width: 75cqw;
+      padding: 1.1cqw 2.2cqw 1.25cqw;
+      border-radius: 1.4cqw;
+      background: var(--pink);
+      color: #fff;
+      font-size: 3.5cqw;
+      line-height: .96;
+      font-weight: 850;
+      letter-spacing: -0.055em;
+      text-align: center;
+      box-shadow: 0 .75cqw 0 rgba(10,10,10,.14);
+    }
+
+    .aroll-caption span {
+      color: var(--ink);
+      background: var(--ochre);
+      border-radius: .7cqw;
+      padding: 0 .45cqw .08cqw;
+    }
+
+    .duration-card {
+      position: absolute;
+      left: 8.2cqw;
+      right: 8.2cqw;
+      top: 15.2cqw;
+      height: 15.6cqw;
+      border-radius: 999px;
+      background: var(--lavender);
+      padding: 2cqw 4.2cqw;
+      color: var(--ink);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 1.2cqw 0 rgba(10,10,10,.08);
+    }
+
+    .duration-card h2 {
+      margin: 0;
+      font-size: 5.25cqw;
+      line-height: .96;
+      letter-spacing: -0.045em;
+      max-width: 72cqw;
+    }
+
+    .duration-rail {
+      position: absolute;
+      left: 12cqw;
+      right: 12cqw;
+      bottom: 10cqw;
+      height: 1.3cqw;
+      background: rgba(10,10,10,.12);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .duration-rail i {
+      display: block;
+      width: 36%;
+      height: 100%;
+      background: var(--ink);
+      border-radius: inherit;
+    }
+
+    .timecode {
+      position: absolute;
+      right: 12cqw;
+      bottom: 12.2cqw;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      color: rgba(10,10,10,.45);
+      font-size: 1.2cqw;
+    }
+
+    .lane {
+      position: absolute;
+      height: 5.6cqw;
+      border-radius: 1.35cqw;
+      display: flex;
+      align-items: center;
+      padding: 0 2.1cqw;
+      font-size: 3.2cqw;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      box-shadow: 0 .8cqw 0 rgba(10,10,10,.08);
+    }
+
+    .path-line {
+      position: absolute;
+      height: .2cqw;
+      background: rgba(10,10,10,.18);
+      transform-origin: left center;
+    }
+
+    .scale-wrap {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .scale-small {
+      font-size: 3.2cqw;
+      line-height: 1;
+      font-weight: 750;
+      letter-spacing: -0.035em;
+      color: rgba(10,10,10,.44);
+      margin-bottom: -1cqw;
+    }
+
+    .scale-word {
+      font-size: 14cqw;
+      line-height: .84;
+      font-weight: 850;
+      letter-spacing: -0.07em;
+      color: var(--ink);
+    }
+
+    .scale-rule {
+      position: absolute;
+      left: 10cqw;
+      right: 10cqw;
+      top: 13cqw;
+      height: .2cqw;
+      background: rgba(10,10,10,.22);
+    }
+
+    .scale-rule::before,
+    .scale-rule::after {
+      content: "";
+      position: absolute;
+      top: -.7cqw;
+      width: .2cqw;
+      height: 1.6cqw;
+      background: rgba(10,10,10,.3);
+    }
+
+    .scale-rule::before { left: 0; }
+    .scale-rule::after { right: 0; }
+
+    .silence-field {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 75% 30%, rgba(164,212,197,.18), transparent 20%),
+        var(--canvas);
+      opacity: .72;
+    }
+
+    .quiet-line {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2.8cqw;
+      line-height: 1.1;
+      font-weight: 650;
+      letter-spacing: -0.025em;
+      color: rgba(10,10,10,.58);
+      text-align: center;
+    }
+
+    .quiet-frame {
+      position: absolute;
+      left: 8cqw;
+      right: 8cqw;
+      top: 7cqw;
+      bottom: 7cqw;
+      border: .12cqw solid rgba(10,10,10,.08);
+      border-radius: 1.2cqw;
+    }
+
+    @media (max-width: 1100px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      .sheet { padding: 20px; }
+      .grid { grid-template-columns: 1fr; }
+      .header { flex-direction: column; align-items: start; }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <header class="header">
+      <div>
+        <h1>Scene 03 Contact Sheet - The Missing Layer</h1>
+        <p class="dek">Static keyframes for the shift from Scene 2's black presentation-slide diagnosis into Clay-derived frame language: cream canvas, saturated frame objects, visible timing, motion, scale, and silence.</p>
+      </div>
+      <div class="tag">Clay frame.md source · 16:9 keyframes</div>
+    </header>
+
+    <section class="grid">
+      <article class="cell">
+        <div class="label">Frame 3A <span>exact Scene 2 end state begins to drain</span></div>
+        <div class="frame">
+          <div class="scene2-end">
+            <div class="scene2-kicker">TRANSLATED FOR VIDEO</div>
+            <div class="scene2-hero">Interfaces,<br />not <u>videos</u></div>
+            <div class="scene2-sub">Hand an agent a screen-design spec and the brand arranges itself like slides — not frames.</div>
+            <div class="scene2-brand">DESIGN.md</div>
+            <div class="scene2-page">01</div>
+          </div>
+          <div class="scene3-wipe"></div>
+          <div class="handoff-chip"></div>
+          <div class="blob pink" style="right:14cqw;top:9cqw;width:7.8cqw;height:7.8cqw;"></div>
+        </div>
+        <p class="note"><strong>Transition:</strong> starts from the real 2G end frame, then a diagonal cream/color wipe begins pulling the black slide into Clay's frame language.</p>
+      </article>
+
+      <article class="cell">
+        <div class="label">Frame 3B <span>zoom-through thesis line</span></div>
+        <div class="frame">
+          <div class="zoom-ghost">instructions</div>
+          <span class="blob lav" style="left:8cqw;top:7cqw;width:8cqw;height:8cqw;"></span>
+          <span class="blob ochre" style="right:8cqw;bottom:7cqw;width:7cqw;height:7cqw;"></span>
+          <div class="big-line">But your agent needs<br />different instructions.</div>
+        </div>
+        <p class="note"><strong>Motion:</strong> zoom-through. Incoming text starts behind camera at scale .75 with blur, then resolves crisp on cream.</p>
+      </article>
+
+      <article class="cell">
+        <div class="label">Frame 3C <span>A-roll cutout over frame language</span></div>
+        <div class="frame">
+          <div class="aroll-composite">
+            <img class="aroll-plate" src="assets/scene-03-aroll-frame.png" alt="" />
+            <div class="aroll-grade"></div>
+            <div class="aroll-giant"><span class="c1">1</span><span>6</span><span class="cx">x</span><span>9</span></div>
+            <div class="aroll-frame-mark"></div>
+            <div class="aroll-dot" style="left:9.5cqw;top:13.9cqw;width:9.2cqw;height:9.2cqw;background:var(--peach);"></div>
+            <div class="aroll-back-card" style="right:5cqw;top:19.3cqw;width:15.5cqw;height:8.8cqw;background:var(--mint);transform:rotate(6deg);"></div>
+            <div class="aroll-back-ribbon" style="left:-7.5cqw;bottom:10.2cqw;width:30cqw;background:var(--teal);transform:rotate(-8deg);"></div>
+            <div class="aroll-back-ribbon" style="right:-9.5cqw;bottom:13cqw;width:31cqw;background:var(--ochre);transform:rotate(9deg);"></div>
+            <span class="blob lav" style="left:21.6cqw;top:10cqw;width:5.7cqw;height:5.7cqw;"></span>
+            <span class="blob peach" style="right:20.2cqw;top:11.9cqw;width:4.8cqw;height:4.8cqw;"></span>
+            <img class="aroll-subject" src="assets/scene-03-aroll-cutout.png" alt="" />
+            <div class="aroll-caption">use a <span>16:9</span> frame</div>
+          </div>
+        </div>
+        <p class="note"><strong>VO:</strong> "It needs to know how to use a 16:9 frame." Original A-roll stays as the plate; Clay frame language lives between the background and the cutout speaker.</p>
+      </article>
+
+      <article class="cell">
+        <div class="label">Frame 3D <span>how long a message can live</span></div>
+        <div class="frame">
+          <div class="duration-card">
+            <h2>how long a message can live</h2>
+          </div>
+          <div class="duration-rail"><i></i></div>
+          <div class="timecode">00:02.4 remaining</div>
+          <span class="blob peach" style="left:8cqw;bottom:7cqw;width:5.5cqw;height:5.5cqw;opacity:.75;"></span>
+          <span class="blob mint" style="right:7cqw;top:7cqw;width:6cqw;height:6cqw;opacity:.55;background:radial-gradient(circle at 32% 28%,#e4fff5,var(--mint) 58%,#6aa896);"></span>
+        </div>
+        <p class="note"><strong>Motion:</strong> the rail drains while the card holds. On "live," the message leaves the frame so duration becomes visible.</p>
+      </article>
+
+      <article class="cell">
+        <div class="label">Frame 3E <span>what should move</span></div>
+        <div class="frame">
+          <div class="path-line" style="left:4cqw;top:17cqw;width:35cqw;"></div>
+          <div class="path-line" style="right:4cqw;top:25cqw;width:35cqw;"></div>
+          <div class="path-line" style="left:4cqw;top:33cqw;width:42cqw;"></div>
+          <div class="lane" style="left:10cqw;top:13.8cqw;width:40cqw;background:var(--ochre);">what</div>
+          <div class="lane" style="right:11cqw;top:21.7cqw;width:41cqw;background:var(--teal);color:#fff;">should</div>
+          <div class="lane" style="left:20cqw;top:29.7cqw;width:44cqw;background:var(--pink);color:#fff;">move</div>
+          <span class="blob lav" style="right:8cqw;bottom:7cqw;width:6cqw;height:6cqw;"></span>
+        </div>
+        <p class="note"><strong>Motion:</strong> waterfall slide-in. Lanes arrive from alternating sides and settle into one centered read.</p>
+      </article>
+
+      <article class="cell">
+        <div class="label">Frame 3F <span>what needs scale</span></div>
+        <div class="frame">
+          <div class="scale-rule"></div>
+          <div class="clay-card" style="left:8cqw;bottom:8cqw;width:15cqw;height:10cqw;background:var(--peach);transform:rotate(-5deg);"></div>
+          <div class="clay-card" style="right:8cqw;top:8cqw;width:15cqw;height:10cqw;background:var(--lavender);transform:rotate(5deg);"></div>
+          <div class="scale-wrap">
+            <div class="scale-small">what needs</div>
+            <div class="scale-word">scale</div>
+          </div>
+        </div>
+        <p class="note"><strong>Motion:</strong> previous "move" line morphs and recomposes. The word "scale" grows, forcing every other element outward.</p>
+      </article>
+
+      <article class="cell">
+        <div class="label">Frame 3G <span>what deserves silence</span></div>
+        <div class="frame">
+          <div class="silence-field"></div>
+          <div class="quiet-frame"></div>
+          <div class="quiet-line">what deserves silence</div>
+          <span class="blob ochre" style="left:10cqw;bottom:10cqw;width:4cqw;height:4cqw;opacity:.2;"></span>
+          <span class="blob pink" style="right:12cqw;top:11cqw;width:4.5cqw;height:4.5cqw;opacity:.14;"></span>
+        </div>
+        <p class="note"><strong>Motion:</strong> lower opacity, remove furniture, slow the pacing. Silence is shown by negative space, not a new effect.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

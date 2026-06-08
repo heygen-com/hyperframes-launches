@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <title>Frame.md Launch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Just+Another+Hand&display=swap" rel="stylesheet">
+  <link href="render-styles.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    * { box-sizing: border-box; letter-spacing: 0; }
+    html, body {
+      margin: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #f7f7f5;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    #frame-md-launch {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #f7f7f5;
+    }
+    #scene-01-hook,
+    #scene-02-diagnosis,
+    #scene-03-missing-layer,
+    #scene-04-frame-md-built,
+    #scene-05-ui-flow,
+    #scene-06-text-to-frame,
+    #scene-07-new-format,
+    #scene-08-close {
+      position: absolute;
+      inset: 0;
+    }
+    #scene-01-hook {
+      z-index: 11;
+    }
+    #scene-02-diagnosis {
+      z-index: 1;
+    }
+    #scene-03-missing-layer {
+      z-index: 2;
+    }
+    #scene-04-frame-md-built {
+      z-index: 3;
+    }
+    #scene-05-ui-flow {
+      z-index: 4;
+    }
+    #scene-06-text-to-frame {
+      z-index: 5;
+    }
+    #scene-07-new-format {
+      z-index: 6;
+    }
+    #scene-08-close {
+      z-index: 7;
+    }
+    #quiet-captions {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div
+    id="frame-md-launch"
+    data-composition-id="frame-md-launch"
+    data-start="0"
+    data-width="1920"
+    data-height="1080"
+    data-duration="60.254"
+  >
+    <div
+      id="scene-01-hook"
+      data-composition-id="scene-01-hook"
+      data-composition-src="compositions/scene-01-hook.html"
+      data-start="0"
+      data-width="1920"
+      data-height="1080"
+      data-duration="4"
+      data-track-index="1"
+    ></div>
+    <div
+      id="scene-02-diagnosis"
+      data-composition-id="scene-02-diagnosis"
+      data-composition-src="compositions/scene-02-diagnosis.html"
+      data-start="4"
+      data-width="1920"
+      data-height="1080"
+      data-duration="12.36"
+      data-track-index="1"
+    ></div>
+    <div
+      id="scene-03-missing-layer"
+      data-composition-id="scene-03-missing-layer"
+      data-composition-src="compositions/scene-03-missing-layer.html"
+      data-start="16.36"
+      data-width="1920"
+      data-height="1080"
+      data-duration="11.0"
+      data-track-index="1"
+    ></div>
+    <div
+      id="scene-04-frame-md-built"
+      data-composition-id="scene-04-frame-md-built"
+      data-composition-src="compositions/scene-04-frame-md-built.html"
+      data-start="26.96"
+      data-width="1920"
+      data-height="1080"
+      data-duration="5.24"
+      data-track-index="3"
+    ></div>
+    <div
+      id="scene-05-ui-flow"
+      data-composition-id="scene-05-ui-flow"
+      data-composition-src="compositions/scene-05-ui-flow.html"
+      data-start="29.2"
+      data-width="1920"
+      data-height="1080"
+      data-duration="13.184"
+      data-track-index="4"
+    ></div>
+    <div
+      id="scene-06-text-to-frame"
+      data-composition-id="scene-06-text-to-frame"
+      data-composition-src="compositions/scene-06-text-to-frame.html"
+      data-start="41.624"
+      data-width="1920"
+      data-height="1080"
+      data-duration="7.25"
+      data-track-index="5"
+    ></div>
+    <div
+      id="scene-07-new-format"
+      data-composition-id="scene-07-new-format"
+      data-composition-src="compositions/scene-07-new-format.html"
+      data-start="48.234"
+      data-width="1920"
+      data-height="1080"
+      data-duration="4.15"
+      data-track-index="6"
+    ></div>
+    <div
+      id="scene-08-close"
+      data-composition-id="scene-08-close"
+      data-composition-src="compositions/scene-08-close.html"
+      data-start="52.034"
+      data-width="1920"
+      data-height="1080"
+      data-duration="8.22"
+      data-track-index="7"
+    ></div>
+    <div
+      id="quiet-captions"
+      data-composition-id="quiet-captions"
+      data-composition-src="compositions/quiet-captions.html"
+      data-start="4"
+      data-width="1920"
+      data-height="1080"
+      data-duration="56.254"
+      data-track-index="8"
+    ></div>
+    <audio
+      id="framefinal-vo"
+      src="assets/framefinal.mp3"
+      data-start="4"
+      data-duration="53.47"
+      data-track-index="9"
+      data-volume="1"
+    ></audio>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const rootTimeline = gsap.timeline({ paused: true });
+    window.__timelines["frame-md-launch"] = rootTimeline;
+  </script>
+</body>
+</html>

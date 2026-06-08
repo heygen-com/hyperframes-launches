@@ -1,0 +1,231 @@
+<template id="scene-07-new-format-template">
+  <div class="s7" data-composition-id="scene-07-new-format" data-width="1920" data-height="1080" data-duration="4.15">
+    <style>
+      [data-composition-id="scene-07-new-format"] {
+        --canvas: #fffaf0;
+        --paper: #ffffff;
+        --ink: #0a0a0a;
+        --pink: #ff4d8b;
+        --magenta: #ef00e4;
+        --teal: #1a3a3a;
+        --lavender: #b8a4ed;
+        --peach: #ffb084;
+        --ochre: #e8b94a;
+        --mint: #a4d4c5;
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--canvas);
+        color: var(--ink);
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      [data-composition-id="scene-07-new-format"] * { box-sizing: border-box; letter-spacing: 0; }
+      .s7 .wash {
+        position: absolute;
+        inset: -120px;
+        background:
+          radial-gradient(circle at 24% 30%, rgba(255,77,139,.36), transparent 320px),
+          radial-gradient(circle at 77% 68%, rgba(184,164,237,.38), transparent 380px),
+          radial-gradient(circle at 52% 48%, rgba(164,212,197,.3), transparent 410px);
+      }
+      .s7 .file-idea,
+      .s7 .format-field {
+        position: absolute;
+        inset: 0;
+        will-change: transform, opacity, filter;
+      }
+      .s7 .paper-slab {
+        position: absolute;
+        left: 210px;
+        top: 164px;
+        width: 910px;
+        height: 620px;
+        border: 6px solid var(--ink);
+        border-radius: 32px;
+        background: var(--paper);
+        box-shadow: 24px 28px 0 rgba(10,10,10,.14);
+        transform: rotate(-2deg);
+      }
+      .s7 .paper-title {
+        position: absolute;
+        left: 46px;
+        top: 42px;
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 34px;
+        font-weight: 850;
+        color: var(--magenta);
+      }
+      .s7 .paper-line {
+        position: absolute;
+        left: 46px;
+        height: 24px;
+        border-radius: 999px;
+        background: rgba(10,10,10,.13);
+        transform-origin: left center;
+      }
+      .s7 .l1 { top: 142px; width: 690px; background: var(--pink); }
+      .s7 .l2 { top: 204px; width: 540px; }
+      .s7 .l3 { top: 266px; width: 650px; background: var(--lavender); }
+      .s7 .l4 { top: 328px; width: 470px; }
+      .s7 .l5 { top: 390px; width: 610px; background: var(--mint); }
+      .s7 .not-stamp {
+        position: absolute;
+        left: 820px;
+        top: 144px;
+        padding: 24px 42px 30px;
+        border: 7px solid var(--ink);
+        border-radius: 999px;
+        background: var(--ochre);
+        font-size: 108px;
+        line-height: .8;
+        font-weight: 950;
+        transform: rotate(-12deg);
+        box-shadow: 13px 14px 0 rgba(10,10,10,.18);
+      }
+      .s7 .old-line {
+        position: absolute;
+        left: 730px;
+        top: 534px;
+        width: 900px;
+        font-size: 104px;
+        line-height: .9;
+        font-weight: 950;
+        transform: rotate(2deg);
+      }
+      .s7 .old-line span { display: inline-block; }
+      .s7 .slash {
+        position: absolute;
+        left: 660px;
+        top: 538px;
+        width: 960px;
+        height: 26px;
+        border-radius: 999px;
+        border: 4px solid var(--ink);
+        background: var(--pink);
+        transform: rotate(-8deg) scaleX(0);
+        transform-origin: left center;
+        box-shadow: 0 10px 0 rgba(10,10,10,.14);
+      }
+      .s7 .format-field { opacity: 0; }
+      .s7 .frame-outline {
+        position: absolute;
+        left: 280px;
+        top: 132px;
+        width: 1360px;
+        height: 765px;
+        border: 8px solid var(--ink);
+        border-radius: 46px;
+        background:
+          radial-gradient(circle at 22% 38%, rgba(255,176,132,.78), transparent 175px),
+          radial-gradient(circle at 72% 36%, rgba(184,164,237,.88), transparent 240px),
+          linear-gradient(135deg, var(--pink), #f9c1ff 48%, var(--mint));
+        box-shadow: 22px 25px 0 rgba(10,10,10,.14);
+      }
+      .s7 .new-format {
+        position: absolute;
+        left: 50%;
+        top: 284px;
+        width: 1500px;
+        transform: translateX(-50%);
+        text-align: center;
+        font-family: "Cooper Black", "Arial Rounded MT Bold", Inter, sans-serif;
+        font-size: 206px;
+        line-height: .82;
+        font-weight: 950;
+        text-shadow: 8px 9px 0 rgba(255,255,255,.46);
+      }
+      .s7 .new-format-motion {
+        display: block;
+        transform-origin: center center;
+        will-change: transform, opacity, filter;
+      }
+      .s7 .agent-pill {
+        position: absolute;
+        left: 50%;
+        top: 690px;
+        transform: translateX(-50%) rotate(-2deg);
+        padding: 18px 42px 24px;
+        border-radius: 30px;
+        border: 6px solid var(--ink);
+        background: var(--teal);
+        color: #fff;
+        font-size: 66px;
+        line-height: .9;
+        font-weight: 900;
+        box-shadow: 12px 14px 0 rgba(10,10,10,.17);
+      }
+      .s7 .orbit {
+        position: absolute;
+        border: 5px solid var(--ink);
+        box-shadow: 10px 12px 0 rgba(10,10,10,.16);
+      }
+      .s7 .o1 { left: 182px; top: 300px; width: 172px; height: 172px; border-radius: 50%; background: var(--lavender); }
+      .s7 .o2 { right: 172px; top: 230px; width: 210px; height: 126px; border-radius: 999px; background: var(--ochre); transform: rotate(12deg); }
+      .s7 .o3 { left: 232px; bottom: 156px; width: 245px; height: 104px; border-radius: 999px; background: var(--peach); transform: rotate(-10deg); }
+      .s7 .o4 { right: 254px; bottom: 166px; width: 154px; height: 154px; border-radius: 50%; background: var(--mint); }
+    </style>
+
+    <div class="wash"></div>
+    <div class="file-idea">
+      <div class="paper-slab">
+        <div class="paper-title">design.md</div>
+        <i class="paper-line l1"></i>
+        <i class="paper-line l2"></i>
+        <i class="paper-line l3"></i>
+        <i class="paper-line l4"></i>
+        <i class="paper-line l5"></i>
+      </div>
+      <div data-hf-studio-original-inline-translate="none" data-hf-studio-original-translate="" data-hf-studio-path-offset="true" style="--hf-studio-offset-x:97px;--hf-studio-offset-y:-33px;translate:var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)" class="not-stamp">NOT</div>
+      <div data-hf-studio-original-inline-translate="" data-hf-studio-original-translate="" data-hf-studio-path-offset="true" style="--hf-studio-offset-x:489px;--hf-studio-offset-y:-29px;translate:var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)" class="old-line"><span>a prettier</span> <span>design file</span></div>
+      <div class="slash"></div>
+    </div>
+    <div class="format-field">
+      <div class="frame-outline"></div>
+      <div class="orbit o1"></div>
+      <div class="orbit o2"></div>
+      <div class="orbit o3"></div>
+      <div class="orbit o4"></div>
+      <div data-hf-studio-original-inline-translate="none" data-hf-studio-original-translate="" data-hf-studio-path-offset="true" style="font-size:250px;--hf-studio-offset-x:17px;--hf-studio-offset-y:-54px;translate:var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)" class="new-format"><div class="new-format-motion">NEW FORMAT</div></div>
+      <div class="agent-pill">for agents</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        const q = (s) => `[data-composition-id="scene-07-new-format"] ${s}`;
+        const tl = gsap.timeline({ paused: true });
+        gsap.set(q(".wash"), { opacity: 0, scale: 1.08 });
+        gsap.set(q(".paper-slab"), { opacity: 0, x: -180, y: 34, rotate: -8, filter: "blur(12px)" });
+        gsap.set(q(".paper-line"), { opacity: 0, scaleX: 0 });
+        gsap.set(q(".not-stamp"), { opacity: 0, scale: 0.55, rotate: -25 });
+        gsap.set(q(".old-line span"), { opacity: 0, x: 110, filter: "blur(10px)" });
+        gsap.set(q(".format-field"), { opacity: 0, scale: 1.08, filter: "blur(22px)" });
+        gsap.set(q(".new-format-motion"), { opacity: 0, scale: 0.72, y: 42, filter: "blur(18px)" });
+        gsap.set(q(".agent-pill"), { opacity: 0, y: 46, scale: 0.82 });
+        gsap.set(q(".orbit"), { opacity: 0, scale: 0.55 });
+
+        tl.to(q(".wash"), { opacity: 1, scale: 1, duration: 0.55, ease: "power2.out" }, 0.04);
+        tl.to(q(".paper-slab"), { opacity: 1, x: 0, y: 0, rotate: -2, filter: "blur(0px)", duration: 0.62, ease: "expo.out" }, 0.1);
+        tl.to(q(".paper-line"), { opacity: 1, scaleX: 1, duration: 0.36, stagger: 0.05, ease: "power3.out" }, 0.34);
+        tl.to(q(".old-line span"), { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.46, stagger: 0.08, ease: "power3.out" }, 0.5);
+        tl.to(q(".not-stamp"), { opacity: 1, scale: 1, rotate: -12, duration: 0.42, ease: "back.out(1.7)" }, 0.72);
+        tl.to(q(".slash"), { scaleX: 1, duration: 0.34, ease: "power3.inOut" }, 1.72);
+        tl.to(q(".file-idea"), { x: -140, scale: 0.82, opacity: 0, filter: "blur(24px)", duration: 0.3, ease: "power3.inOut" }, 1.92);
+        tl.to(q(".format-field"), { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.54, ease: "power3.out" }, 2.14);
+        tl.to(q(".orbit"), { opacity: 1, scale: 1, duration: 0.42, stagger: 0.055, ease: "back.out(1.55)" }, 2.34);
+        tl.to(q(".new-format-motion"), { opacity: 1, scale: 1, y: 0, filter: "blur(0px)", duration: 0.56, ease: "expo.out" }, 2.4);
+        tl.to(q(".agent-pill"), { opacity: 1, y: 0, scale: 1, duration: 0.44, ease: "back.out(1.45)" }, 3.12);
+        tl.to(q(".new-format-motion"), { scale: 1.045, duration: 0.78, ease: "sine.inOut" }, 3.28);
+        tl.to(q(".orbit.o1"), { x: 42, y: -18, duration: 0.78, ease: "sine.inOut" }, 3.28);
+        tl.to(q(".orbit.o2"), { x: -38, y: 22, rotate: 5, duration: 0.78, ease: "sine.inOut" }, 3.28);
+        tl.to(q(".orbit.o3"), { x: 38, y: 28, rotate: -4, duration: 0.78, ease: "sine.inOut" }, 3.28);
+        tl.to(q(".orbit.o4"), { x: -30, y: -26, duration: 0.78, ease: "sine.inOut" }, 3.28);
+        window.__timelines = window.__timelines || {};
+        window.__timelines["scene-07-new-format"] = tl;
+        const previewTime = new URLSearchParams(window.location.search).get("t");
+        if (previewTime !== null) tl.time(Number(previewTime));
+      })();
+    </script>
+  </div>
+</template>

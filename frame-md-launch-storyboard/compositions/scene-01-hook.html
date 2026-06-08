@@ -1,0 +1,138 @@
+<template id="scene-01-hook-template">
+  <div class="s1" data-composition-id="scene-01-hook" data-width="1920" data-height="1080" data-duration="4">
+    <style>
+      [data-composition-id="scene-01-hook"] {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #f7f7f5;
+        color: #050505;
+        font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+      }
+      [data-composition-id="scene-01-hook"] * {
+        box-sizing: border-box;
+        letter-spacing: 0;
+      }
+      .s1 .hook-stage {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f7f7f5;
+        will-change: transform;
+      }
+      .s1 .token {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translate(-50%, -50%);
+        font-size: 122px;
+        line-height: 1;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+      .s1 .word {
+        display: inline-block;
+        width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .s1 .suffix {
+        display: inline-block;
+        width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .s1 .caret {
+        display: inline-block;
+        width: 8px;
+        height: 116px;
+        margin-left: 20px;
+        border-radius: 4px;
+        background: #050505;
+        transform: translateY(3px);
+      }
+      .s1 .hook-cursor {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 92px;
+        height: 112px;
+        z-index: 4;
+        opacity: 0;
+        transform-origin: 8px 5px;
+        pointer-events: none;
+        will-change: transform, opacity;
+      }
+      .s1 .hook-cursor svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+
+    <div class="hook-stage">
+      <div id="hook-token" class="token">
+        <span class="word frame-word">FRAME</span>
+        <span class="word design-word">DESIGN</span>
+        <span class="suffix">.md</span>
+        <span class="caret"></span>
+      </div>
+      <div class="hook-cursor" aria-hidden="true">
+        <svg viewBox="0 0 28 34" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.5 1.5L2.5 28L8.5 21.5L14 32L18.5 30L13 19.5L22 19.5L2.5 1.5Z" fill="#050505" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        const q = (s) => `[data-composition-id="scene-01-hook"] ${s}`;
+        const tl = gsap.timeline({ paused: true });
+
+        gsap.set(q(".design-word"), { width: "0ch" });
+        gsap.set(q(".frame-word"), { width: "0ch" });
+        gsap.set(q(".suffix"), { width: "0ch" });
+        gsap.set(q(".caret"), { x: 0, opacity: 0 });
+        gsap.set(q(".hook-cursor"), { x: 210, y: 1160, scale: 1, opacity: 0 });
+        gsap.set(q(".hook-stage"), { x: 0 });
+
+        tl.to(q(".hook-cursor"), { opacity: 1, duration: 0.05, ease: "none" }, 0);
+        tl.to(q(".hook-cursor"), { x: 960, y: 540, duration: 0.26, ease: "power3.out" }, 0);
+        tl.to(q(".hook-cursor"), { scale: 0.82, duration: 0.05, ease: "power4.in" }, 0.24);
+        tl.set(q(".caret"), { opacity: 1 }, 0.29);
+        tl.to(q(".hook-cursor"), { scale: 1, duration: 0.1, ease: "back.out(2)" }, 0.29);
+        tl.to(q(".hook-cursor"), { x: 1130, y: 665, duration: 0.18, ease: "power2.out" }, 0.4);
+
+        [0.46, 0.82, 1.18, 1.54, 1.9, 2.26, 2.62, 2.98, 3.34, 3.7].forEach((time) => {
+          tl.to(q(".caret"), { opacity: 0.14, duration: 0.04, ease: "none" }, time);
+          tl.to(q(".caret"), { opacity: 1, duration: 0.04, ease: "none" }, time + 0.18);
+        });
+
+        tl.to(q(".design-word"), { width: "6ch", duration: 0.27, ease: "steps(6)" }, 0.7);
+        tl.to(q(".suffix"), { width: "3ch", duration: 0.13, ease: "steps(3)" }, 0.97);
+        tl.to(q(".hook-cursor"), { x: 1044, y: 540, duration: 0.32, ease: "power2.inOut" }, 1.66);
+        tl.to(q(".hook-cursor"), { scale: 0.82, duration: 0.05, ease: "power4.in" }, 1.98);
+        tl.set(q(".caret"), { x: -256 }, 2.02);
+        tl.to(q(".hook-cursor"), { scale: 1, duration: 0.1, ease: "back.out(2)" }, 2.03);
+        tl.to(q(".hook-cursor"), { opacity: 0, duration: 0.12, ease: "none" }, 2.14);
+        tl.to(q(".design-word"), { width: "0ch", duration: 0.3, ease: "steps(6)" }, 2.4);
+        tl.set(q(".caret"), { x: -218 }, 2.7);
+        tl.to(q(".frame-word"), { width: "4.75ch", duration: 0.32, ease: "steps(5)" }, 2.7);
+        tl.to(q(".hook-stage"), { x: -1920, duration: 0.18, ease: "power4.in" }, 3.82);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["scene-01-hook"] = tl;
+
+        const previewTime = new URLSearchParams(window.location.search).get("t");
+        if (previewTime !== null) tl.time(Number(previewTime));
+      })();
+    </script>
+  </div>
+</template>

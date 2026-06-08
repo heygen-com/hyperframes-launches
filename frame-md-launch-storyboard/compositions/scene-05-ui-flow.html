@@ -1,0 +1,276 @@
+<template id="scene-05-ui-flow-template">
+  <div class="s5" data-composition-id="scene-05-ui-flow" data-width="1920" data-height="1080" data-duration="13.184">
+    <style>
+      [data-composition-id="scene-05-ui-flow"] {
+        --canvas: #fffaf0;
+        --ink: #0a0a0a;
+        --blue: #0007cd;
+        --pink: #ff4d8b;
+        --mint: #a4d4c5;
+        --ochre: #e8b94a;
+        --surface: #111113;
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: transparent;
+        color: var(--ink);
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      [data-composition-id="scene-05-ui-flow"] * {
+        box-sizing: border-box;
+        letter-spacing: 0;
+      }
+      .s5 .curve-cover {
+        position: absolute;
+        left: -170px;
+        top: 0;
+        width: 2260px;
+        height: 1240px;
+        border-radius: 56% 56% 0 0 / 22% 22% 0 0;
+        background: var(--canvas);
+        box-shadow: 0 -34px 80px rgba(10,10,10,.16);
+        transform-origin: 50% 100%;
+        will-change: transform;
+      }
+      .s5 .studio-frame {
+        position: absolute;
+        left: 330px;
+        top: 74px;
+        width: 1600px;
+        height: 900px;
+        border-radius: 54px;
+        padding: 8px;
+        background: var(--blue);
+        box-shadow:
+          0 10px 0 rgba(10,10,10,.1),
+          0 24px 58px rgba(0,7,205,.18);
+        overflow: hidden;
+        will-change: transform, opacity, filter;
+      }
+      .s5 .studio-screen {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 46px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 72% 18%, rgba(255,77,139,.26), transparent 310px),
+          radial-gradient(circle at 21% 74%, rgba(0,7,205,.24), transparent 340px),
+          linear-gradient(135deg, #f9f5e9, #fffaf0 48%, #f1ecdf);
+      }
+      .s5 .studio-video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 20 !important;
+      }
+      .s5 .placeholder-label {
+        position: absolute;
+        left: 64px;
+        top: 56px;
+        padding: 13px 18px 15px;
+        border-radius: 16px;
+        background: var(--pink);
+        color: #fff;
+        font-size: 28px;
+        line-height: 1;
+        font-weight: 850;
+        transform: rotate(-2deg);
+        box-shadow: 0 7px 0 rgba(10,10,10,.13);
+      }
+      .s5 .ui-shell {
+        position: absolute;
+        left: 85px;
+        right: 85px;
+        top: 132px;
+        bottom: 78px;
+        display: grid;
+        grid-template-columns: 1fr 1.26fr;
+        gap: 26px;
+      }
+      .s5 .panel {
+        border-radius: 28px;
+        background: rgba(255,255,255,.74);
+        border: 1px solid rgba(10,10,10,.12);
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,.55);
+        padding: 34px;
+      }
+      .s5 .panel.dark {
+        background: rgba(12,12,13,.92);
+        color: #fff;
+      }
+      .s5 .row {
+        height: 20px;
+        border-radius: 999px;
+        background: rgba(10,10,10,.13);
+        margin-bottom: 20px;
+      }
+      .s5 .dark .row {
+        background: rgba(255,255,255,.18);
+      }
+      .s5 .row.blue { background: var(--blue); width: 45%; }
+      .s5 .row.pink { background: var(--pink); width: 66%; }
+      .s5 .row.mint { background: var(--mint); width: 54%; }
+      .s5 .row.short { width: 42%; }
+      .s5 .row.mid { width: 70%; }
+      .s5 .row.long { width: 88%; }
+      .s5 .big-placeholder {
+        position: absolute;
+        left: 50%;
+        top: 51%;
+        transform: translate(-50%, -50%) rotate(-2deg);
+        color: rgba(10,10,10,.13);
+        font-size: 96px;
+        line-height: .95;
+        font-weight: 900;
+        text-align: center;
+        white-space: nowrap;
+      }
+      .s5 .cursor {
+        position: absolute;
+        left: 1015px;
+        top: 492px;
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: var(--ochre);
+        box-shadow: 0 0 0 12px rgba(232,185,74,.24);
+      }
+      .s5 .caption {
+        position: absolute;
+        left: 50%;
+        bottom: 48px;
+        max-width: 1700px;
+        transform: translateX(-50%);
+        opacity: 0;
+        z-index: 5;
+        will-change: transform, opacity, filter;
+      }
+      .s5 .caption span {
+        display: block;
+        padding: 10px 82px 13px;
+        border-radius: 20px;
+        background: #ff4d8b;
+        color: #fff;
+        border: 1px solid rgba(255,255,255,.32);
+        box-shadow: 0 7px 0 rgba(10,10,10,.12), 0 15px 28px rgba(255,77,139,.22);
+        font-size: 40px;
+        line-height: .92;
+        font-weight: 830;
+        letter-spacing: -0.035em;
+        text-align: center;
+        white-space: nowrap;
+        transform: rotate(-1deg);
+      }
+      .s5 .caption em {
+        font-style: normal;
+        color: var(--ink);
+        background: var(--mint);
+        border-radius: 10px;
+        padding: 0 8px 2px;
+      }
+      .s5 .caption strong {
+        color: var(--ink);
+        background: var(--ochre);
+        border-radius: 10px;
+        padding: 0 8px 2px;
+      }
+    </style>
+
+    <div class="curve-cover">
+      <div class="studio-frame">
+        <div class="studio-screen">
+          <div class="placeholder-label">Screen Studio placeholder</div>
+          <div class="ui-shell">
+            <div class="panel">
+              <div class="row blue"></div>
+              <div class="row long"></div>
+              <div class="row mid"></div>
+              <div class="row short"></div>
+              <div class="row pink"></div>
+              <div class="row long"></div>
+            </div>
+            <div class="panel dark">
+              <div class="row mint"></div>
+              <div class="row long"></div>
+              <div class="row mid"></div>
+              <div class="row blue"></div>
+              <div class="row long"></div>
+              <div class="row short"></div>
+            </div>
+          </div>
+          <div class="big-placeholder">design spec<br>to frame language</div>
+          <div class="cursor"></div>
+          <video
+            id="s5-screen-studio"
+            class="studio-video"
+            src="../assets/ssframe.mp4"
+            data-start="0"
+            data-duration="13.184"
+            data-track-index="0"
+            muted
+            playsinline
+          ></video>
+        </div>
+      </div>
+    </div>
+
+    <div id="cap-s5-01" class="caption"><span>It takes the brand language from <em>design.md</em></span></div>
+    <div id="cap-s5-02" class="caption"><span>and translates it into <strong>video-native direction.</strong></span></div>
+    <div id="cap-s5-03" class="caption"><span>Paste a design spec.</span></div>
+    <div id="cap-s5-04" class="caption"><span>HyperFrames reads it,</span></div>
+    <div id="cap-s5-05" class="caption"><span>interprets it,</span></div>
+    <div id="cap-s5-06" class="caption"><span>and generates a frame language your agent can direct from.</span></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        const q = (s) => `[data-composition-id="scene-05-ui-flow"] ${s}`;
+        const tl = gsap.timeline({ paused: true });
+
+        gsap.set(q(".curve-cover"), { y: 1110, scaleX: 1.08, borderRadius: "58% 58% 0 0 / 18% 18% 0 0" });
+        gsap.set(q(".studio-frame"), { opacity: 0, y: 80, scale: 0.94, filter: "blur(18px)" });
+        gsap.set(q(".panel"), { opacity: 0, y: 28, scale: 0.98 });
+        gsap.set(q(".big-placeholder"), { opacity: 0, y: 24, filter: "blur(10px)" });
+        gsap.set(q(".cursor"), { opacity: 0, scale: 0.5 });
+        gsap.set(q(".caption"), { opacity: 0, y: 18, scale: 0.985, filter: "blur(6px)" });
+
+        function showCap(selector, start, end) {
+          tl.to(q(selector), { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.22, ease: "power2.out" }, start);
+          tl.to(q(selector), { opacity: 0, y: 10, scale: 0.99, filter: "blur(5px)", duration: 0.18, ease: "power2.in" }, Math.max(start + 0.22, end - 0.18));
+        }
+
+        tl.to(q(".curve-cover"), {
+          y: 0,
+          scaleX: 1,
+          borderRadius: "0% 0% 0 0 / 0% 0% 0 0",
+          duration: 0.64,
+          ease: "power4.inOut"
+        }, 0);
+        tl.to(q(".studio-frame"), { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.68, ease: "power3.out" }, 0.2);
+        tl.to(q(".panel"), { opacity: 1, y: 0, scale: 1, duration: 0.5, stagger: 0.08, ease: "power3.out" }, 0.44);
+        tl.to(q(".big-placeholder"), { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.46, ease: "power2.out" }, 0.72);
+        tl.to(q(".cursor"), { opacity: 1, scale: 1, duration: 0.34, ease: "back.out(1.5)" }, 1.18);
+        tl.to(q(".cursor"), { x: -520, y: -185, duration: 2.0, ease: "power2.inOut" }, 2.0);
+        tl.to(q(".cursor"), { x: 325, y: 105, duration: 2.3, ease: "power2.inOut" }, 4.4);
+        tl.to(q(".studio-frame"), { scale: 1.018, duration: 5.2, ease: "sine.inOut" }, 2.0);
+
+        showCap("#cap-s5-01", 0.18, 2.46);
+        showCap("#cap-s5-02", 2.56, 5.42);
+        showCap("#cap-s5-03", 5.48, 6.62);
+        showCap("#cap-s5-04", 6.78, 8.16);
+        showCap("#cap-s5-05", 8.46, 9.08);
+        showCap("#cap-s5-06", 9.08, 12.304);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["scene-05-ui-flow"] = tl;
+
+        const previewTime = new URLSearchParams(window.location.search).get("t");
+        if (previewTime !== null) tl.time(Number(previewTime));
+      })();
+    </script>
+  </div>
+</template>

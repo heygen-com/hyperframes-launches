@@ -1,0 +1,338 @@
+<template id="scene-02-diagnosis-template">
+  <div class="s2" data-composition-id="scene-02-diagnosis" data-width="1920" data-height="1080" data-duration="12.36">
+    <style>
+      [data-composition-id="scene-02-diagnosis"] {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #f7f7f5;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #f1f1f1;
+      }
+      [data-composition-id="scene-02-diagnosis"] * { box-sizing: border-box; letter-spacing: 0; }
+
+      /* ---- camera (zoom 2A->2D) ---- */
+      .s2 #cam {
+        position: absolute;
+        inset: 0;
+        transform-origin: 0 0;
+        perspective: 2400px;
+        will-change: transform;
+        z-index: 1;
+      }
+
+      /* ---- the ONE persistent dark panel: document -> window -> slide ---- */
+      .s2 #panel {
+        position: absolute;
+        left: 560px; top: 70px;
+        width: 800px; height: 1000px;
+        background: #000;
+        border: 1px solid #262629;
+        border-radius: 28px;
+        padding: 56px 52px;
+        overflow: hidden;
+        transform-origin: 50% 50%;
+        will-change: transform, opacity, left, top, width, height;
+        box-shadow: 0 40px 90px rgba(0,0,0,.35);
+      }
+      .s2 #hook-words {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 190px;
+        height: 190px;
+        color: #000;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 143px;
+        line-height: 1;
+        font-weight: 960;
+        letter-spacing: -0.045em;
+        text-align: center;
+        pointer-events: none;
+        z-index: 5;
+      }
+      .s2 #hook-words .hook-line {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        white-space: nowrap;
+        will-change: transform, opacity;
+      }
+      .s2 #hook-words .hook-word {
+        display: inline-block;
+        will-change: transform, opacity, filter;
+      }
+      .s2 .mz {
+        width: 700px;
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 27px;
+        line-height: 1.55;
+        color: #f1f1f1;
+        text-align: left;
+        will-change: opacity, filter;
+      }
+      .s2 .mz h1 { margin: 0 0 0.42em; font-size: 56px; font-weight: 500; line-height: 1.1; white-space: nowrap; }
+      .s2 .mz h2 { margin: 0 0 0.5em; font-size: 34px; font-weight: 500; line-height: 1.15; white-space: nowrap; }
+      .s2 .mz h2.section { margin-top: 1.05em; }
+      .s2 .mz p { margin: 0 0 1em; max-width: 30ch; }
+      .s2 .mz .cl { display: block; margin: 0.22em 0; }
+      .s2 .scroll-body {
+        will-change: transform, opacity;
+      }
+      .s2 .cyan { color: #1ee6ff; } .s2 .red { color: #ff4040; }
+      .s2 .green { color: #61e675; } .s2 .orange { color: #ff9b2f; }
+
+      /* ---- "Written for pages" annotation (2C) ---- */
+      .s2 #anno { position: absolute; inset: 0; pointer-events: none; will-change: opacity; }
+      .s2 #anno .written-draw {
+        fill: none;
+        stroke: #000;
+        stroke-width: 3.2px;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .s2 #anno .written-fill,
+      .s2 #anno .for-char,
+      .s2 #anno .pages-word {
+        fill: #000;
+      }
+
+      /* ============ 2F web-UI overlays — ALL frame-coords (no mixed systems) ============ */
+      .s2 #chrome {
+        position: absolute; left: 190px; top: 100px; width: 1540px; height: 64px;
+        background: #151518; border-bottom: 1px solid #232326;
+        border-radius: 34px 34px 0 0;
+        display: flex; align-items: center; padding: 0 30px; gap: 22px;
+        opacity: 0; will-change: opacity; z-index: 2;
+      }
+      .s2 #chrome .dots { display: flex; gap: 13px; }
+      .s2 #chrome .dots i { width: 15px; height: 15px; border-radius: 999px; display: block; }
+      .s2 #chrome .dots i:nth-child(1){ background:#ff5f57; }
+      .s2 #chrome .dots i:nth-child(2){ background:#ffbd2e; }
+      .s2 #chrome .dots i:nth-child(3){ background:#28c840; }
+      .s2 #chrome .url { flex:1; text-align:center; font-family: ui-monospace, Menlo, monospace; font-size: 22px; color:#66666b; }
+
+      .s2 .ui { position: absolute; opacity: 0; will-change: transform, opacity; z-index: 2; }
+      .s2 #navmenu { left: 1140px; top: 196px; display: flex; gap: 38px; color:#9a9aa0; font-size: 24px; }
+      .s2 #cta { left: 1488px; top: 178px; background:#fff; color:#000; border-radius:14px; padding:14px 28px; font-size:24px; font-weight:600; }
+      .s2 #eyebrow { left: 270px; top: 332px; font-size:20px; letter-spacing:.2em; color:#6e6e74; font-weight:600; }
+      .s2 #subtext { left: 270px; top: 624px; width: 600px; font-size:28px; line-height:1.45; color:#a0a0a6; }
+      .s2 #actions { left: 270px; top: 724px; display:flex; gap:22px; }
+      .s2 #actions .b1 { background:#fff; color:#000; border-radius:14px; padding:18px 34px; font-size:25px; font-weight:600; }
+      .s2 #actions .b2 { border:1px solid #3a3a3f; color:#e6e6ea; border-radius:14px; padding:18px 34px; font-size:25px; font-weight:500; }
+      .s2 #cards { left: 270px; top: 806px; width: 1380px; display:grid; grid-template-columns:repeat(3,1fr); gap:30px; }
+      .s2 #cards .c { background:#151518; border:1px solid #2a2a2e; border-radius:20px; padding:28px; height:148px; }
+      .s2 #cards .c b { display:block; width:44%; height:18px; background:#fff; border-radius:999px; margin-bottom:22px; }
+      .s2 #cards .c span { display:block; height:12px; background:#37373c; border-radius:999px; margin-top:14px; }
+      .s2 #cards .c span:nth-of-type(2){ width:82%; } .s2 #cards .c span:nth-of-type(3){ width:56%; }
+
+      /* ---- persistent hero + brand (2F -> 2G) ---- */
+      .s2 #hero {
+        position:absolute; left:270px; top:380px;
+        font-size:96px; line-height:1.02; font-weight:700; letter-spacing:-0.03em; color:#fff;
+        opacity:0; will-change: transform, opacity, font-size; z-index:3;
+      }
+      .s2 #brand {
+        position:absolute; left:270px; top:186px;
+        font-size:32px; font-weight:700; letter-spacing:-0.02em; color:#fff;
+        opacity:0; will-change: transform, opacity, font-size; z-index:3;
+      }
+
+      /* ---- 2G slide furniture ---- */
+      .s2 #kicker { position:absolute; left:190px; top:300px; font-size:28px; letter-spacing:.22em; color:#6e6e74; font-weight:600; opacity:0; will-change:opacity; z-index:3; }
+      .s2 #sub2g { position:absolute; left:190px; top:660px; width:1100px; font-size:38px; line-height:1.4; color:#a0a0a6; opacity:0; will-change:opacity; z-index:3; }
+      .s2 #pagenum { position:absolute; right:190px; bottom:96px; font-size:26px; font-weight:600; color:#7a7a80; opacity:0; will-change:opacity; z-index:3; }
+    </style>
+
+    <div id="hook-words" aria-hidden="true">
+      <span class="hook-line">
+        <span class="hook-word">When</span>
+        <span class="hook-word">you</span>
+        <span class="hook-word">ask</span>
+        <span class="hook-word">an</span>
+        <span class="hook-word">agent</span>
+      </span>
+      <span class="hook-line">
+        <span class="hook-word">to</span>
+        <span class="hook-word">make</span>
+        <span class="hook-word">motion</span>
+        <span class="hook-word">graphics</span>
+      </span>
+      <span class="hook-line">
+        <span class="hook-word">from</span>
+        <span class="hook-word">a</span>
+        <span class="hook-word">design.md</span>
+      </span>
+    </div>
+
+    <!-- ============ CAMERA GROUP ============ -->
+    <div id="cam">
+      <div id="panel">
+        <div class="mz">
+          <h1>DESIGN.md</h1>
+          <h2>## Style Prompt</h2>
+          <div class="scroll-body">
+            <p>Horizontal launch video built around local background removal and maximal caption energy.</p>
+            <p>Use a dark terminal surface, crisp white type, and confident motion cues.</p>
+            <h2 class="section">## Colors</h2>
+            <span class="cl">- <span class="cyan">#060606</span> deep black surfaces</span>
+            <span class="cl">- <span class="red">#ff3b5f</span> caption accent glow</span>
+            <span class="cl">- <span class="green">#61e675</span> local terminal green</span>
+            <span class="cl">- <span class="orange">#ff9b2f</span> punch/highlight red</span>
+            <h2 class="section">## Typography</h2>
+            <p>Inter / system sans, heavy weights. SF Mono for terminal and spec surfaces.</p>
+            <p>Specialty caption moments may borrow self, stroke, glow, pill, and texture treatments.</p>
+            <h2 class="section">## Components</h2>
+            <p>Cards, badges, nav bars, feature grids, buttons, panels.</p>
+            <p>Favor web-interface primitives when describing pages and product surfaces.</p>
+          </div>
+        </div>
+      </div>
+
+      <svg id="anno" viewBox="0 0 1920 1080" preserveAspectRatio="none" aria-hidden="true">
+        <text class="written-draw" x="525" y="180" text-anchor="middle" dominant-baseline="middle" font-family="'Just Another Hand','Bradley Hand','Marker Felt',cursive" font-size="95" font-weight="400" transform="rotate(-90 525 180)">Written</text>
+        <text class="written-fill" x="525" y="180" text-anchor="middle" dominant-baseline="middle" font-family="'Just Another Hand','Bradley Hand','Marker Felt',cursive" font-size="95" font-weight="400" transform="rotate(-90 525 180)">Written</text>
+        <text class="for-char" x="545" y="69" text-anchor="middle" dominant-baseline="middle" font-family="Inter, Arial, sans-serif" font-size="56" font-weight="700" transform="rotate(-65 545 69)">f</text>
+        <text class="for-char" x="565" y="46" text-anchor="middle" dominant-baseline="middle" font-family="Inter, Arial, sans-serif" font-size="56" font-weight="700" transform="rotate(-42 565 46)">o</text>
+        <text class="for-char" x="596" y="40" text-anchor="middle" dominant-baseline="middle" font-family="Inter, Arial, sans-serif" font-size="56" font-weight="700" transform="rotate(0 596 40)">r</text>
+        <text class="pages-word" x="628" y="13" font-family="Inter, Arial, sans-serif" font-size="54" font-weight="700" dominant-baseline="hanging">pages</text>
+      </svg>
+
+    </div>
+
+    <!-- ============ 2F WEB-UI OVERLAYS (frame coords) ============ -->
+    <div id="chrome">
+      <div class="dots"><i></i><i></i><i></i></div>
+      <div class="url">brand.com</div>
+    </div>
+    <div class="ui" id="navmenu"><span>Product</span><span>Docs</span><span>Pricing</span></div>
+    <div class="ui" id="cta">Get started</div>
+    <div class="ui" id="eyebrow">PLATFORM</div>
+    <div class="ui" id="subtext">Ship polished product surfaces with components your team already knows.</div>
+    <div class="ui" id="actions"><span class="b1">Get started</span><span class="b2">Read docs</span></div>
+    <div class="ui" id="cards">
+      <div class="c"><b></b><span></span><span></span></div>
+      <div class="c"><b></b><span></span><span></span></div>
+      <div class="c"><b></b><span></span><span></span></div>
+    </div>
+
+    <!-- ============ PERSISTENT HERO + BRAND ============ -->
+    <div id="brand">DESIGN.md</div>
+    <div id="hero">Interfaces,<br>not <u>videos</u></div>
+
+    <!-- ============ 2G SLIDE FURNITURE ============ -->
+    <div id="kicker">TRANSLATED FOR VIDEO</div>
+    <div id="sub2g">Hand an agent a screen-design spec and the brand arranges itself like slides — not frames.</div>
+    <div id="pagenum">01</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        const q = (s) => `[data-composition-id="scene-02-diagnosis"] ${s}`;
+        const tl = gsap.timeline({ paused: true });
+
+        // camera zoom that frames 2A-2C (DESIGN.md big, ## Style Prompt near bottom, annotation in left margin)
+        const ZOOM = { x: -1505, y: 162, scale: 3.5 };
+
+        // ===== INITIAL STATE =====
+        gsap.set(q("#cam"), { x: ZOOM.x, y: ZOOM.y, scale: ZOOM.scale });
+        gsap.set(q("#panel"), { opacity: 1, scale: 1, y: 310, rotateY: 0 });
+        gsap.set(q("#panel .mz"), { opacity: 1, filter: "blur(0px)", y: 0 });
+        gsap.set(q(".mz h1, .mz h2:not(.section)"), { opacity: 0, y: 24 });
+        gsap.set(q(".scroll-body"), { opacity: 0, y: 0 });
+        gsap.set(q("#hook-words .hook-line"), { opacity: 1 });
+        gsap.set(q("#hook-words .hook-word"), { opacity: 0, x: 980, filter: "blur(8px)" });
+        gsap.set(q("#anno"), { opacity: 1 });
+        gsap.set(q("#anno .written-draw"), { opacity: 1, strokeDasharray: 980, strokeDashoffset: 980 });
+        gsap.set(q("#anno .written-fill, #anno .for-char, #anno .pages-word"), { opacity: 0 });
+        gsap.set(q("#chrome, .ui, #hero, #brand, #kicker, #sub2g, #pagenum"), { opacity: 0 });
+        gsap.set(q("#brand, #eyebrow, #navmenu, #cta, #subtext, #actions"), { y: 16 });
+        gsap.set(q("#hero"), { y: 40 });
+        gsap.set(q("#cards .c"), { opacity: 0, y: 24 });
+
+        // ===== 2A->2C : modal builds (camera zoomed in) =====
+        tl.to(q("#panel"), { y: 0, duration: 0.5, ease: "power4.out" }, 1.5);
+        [
+          ["#hook-words .hook-line:nth-child(1) .hook-word:nth-child(1)", 0.25],
+          ["#hook-words .hook-line:nth-child(1) .hook-word:nth-child(2)", 0.31],
+          ["#hook-words .hook-line:nth-child(1) .hook-word:nth-child(3)", 0.44],
+          ["#hook-words .hook-line:nth-child(1) .hook-word:nth-child(4)", 0.63],
+          ["#hook-words .hook-line:nth-child(1) .hook-word:nth-child(5)", 0.78],
+          ["#hook-words .hook-line:nth-child(2) .hook-word:nth-child(1)", 1.06],
+          ["#hook-words .hook-line:nth-child(2) .hook-word:nth-child(2)", 1.18],
+          ["#hook-words .hook-line:nth-child(2) .hook-word:nth-child(3)", 1.43],
+          ["#hook-words .hook-line:nth-child(2) .hook-word:nth-child(4)", 1.84],
+          ["#hook-words .hook-line:nth-child(3) .hook-word:nth-child(1)", 2.33],
+          ["#hook-words .hook-line:nth-child(3) .hook-word:nth-child(2)", 2.67],
+          ["#hook-words .hook-line:nth-child(3) .hook-word:nth-child(3)", 2.71]
+        ].forEach(([selector, time]) => {
+          tl.to(q(selector), {
+            opacity: 1,
+            x: 0,
+            filter: "blur(0px)",
+            duration: 0.3,
+            ease: "power4.out"
+          }, time);
+        });
+        tl.to(q("#hook-words .hook-line:nth-child(1) .hook-word"), { opacity: 0, x: -240, filter: "blur(8px)", duration: 0.22, stagger: 0.025, ease: "power2.in" }, 1.02);
+        tl.to(q("#hook-words .hook-line:nth-child(2) .hook-word"), { opacity: 0, x: -240, filter: "blur(8px)", duration: 0.22, stagger: 0.025, ease: "power2.in" }, 2.27);
+        tl.to(q("#hook-words .hook-line:nth-child(3) .hook-word"), { opacity: 0, x: -240, filter: "blur(8px)", duration: 0.24, stagger: 0.025, ease: "power2.in" }, 3.68);
+        tl.to(q(".mz h1"), { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 2.33);
+        tl.to(q(".mz h2:not(.section)"), { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 2.67);
+        tl.to(q(".scroll-body"), { opacity: 1, duration: 0.4, ease: "power2.out" }, 2.78);
+        tl.to(q("#anno .written-draw"), { strokeDashoffset: 0, duration: 0.62, ease: "power2.inOut" }, 3.84);
+        tl.to(q("#anno .written-fill"), { opacity: 1, duration: 0.18, ease: "power1.out" }, 4.34);
+        tl.to(q("#anno .written-draw"), { opacity: 0, duration: 0.18, ease: "power1.out" }, 4.4);
+        tl.to(q("#anno .for-char"), { opacity: 1, duration: 0.16, stagger: 0.07, ease: "power1.out" }, 4.52);
+        tl.to(q("#anno .pages-word"), { opacity: 1, duration: 0.2, ease: "power1.out" }, 4.78);
+
+        // ===== 2C->2D : ZOOM OUT to reveal full doc + terms =====
+        tl.to(q("#cam"), { x: 0, y: 0, scale: 1, duration: 1.5, ease: "power3.inOut" }, 5.69);
+        tl.to(q("#anno"), { opacity: 0, duration: 0.45, ease: "power1.in" }, 5.69);
+        tl.to(q(".scroll-body"), { opacity: 1, duration: 0.5, ease: "power2.out" }, 6.19);
+        tl.to(q("#panel .mz"), { y: -310, duration: 0.65, ease: "none" }, 7.22);
+
+        // ===== 2D hold ===== (4.0 - 5.0)
+
+        // ===== 2D->2F : the SAME panel rotates + reshapes into the browser window,
+        //               losing the DESIGN.md text as the UI elements come on (one motion) =====
+        // panel reshapes doc-rect -> window-rect
+        tl.to(q("#panel"), { left: 190, top: 100, width: 1540, height: 880, borderRadius: 34, duration: 1.7, ease: "power3.inOut" }, 7.77);
+        // a rotateY turn during the reshape (the "page rotates" feel)
+        tl.to(q("#panel"), { rotateY: -18, duration: 0.85, ease: "power2.inOut" }, 7.77);
+        tl.to(q("#panel"), { rotateY: 0, duration: 0.85, ease: "power2.inOut" }, 8.62);
+        // DESIGN.md text dissolves as the panel turns
+        tl.to(q("#panel .mz"), { opacity: 0, filter: "blur(7px)", duration: 0.6, ease: "power2.in" }, 7.87);
+        // chrome + UI elements come on as the window settles
+        tl.to(q("#chrome"), { opacity: 1, duration: 0.45, ease: "power2.out" }, 9.22);
+        tl.to(q("#brand"), { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 9.22);
+        tl.to(q("#eyebrow, #navmenu, #cta"), { opacity: 1, y: 0, duration: 0.4, stagger: 0.06, ease: "power2.out" }, 9.27);
+        tl.to(q("#hero"), { opacity: 1, y: 0, duration: 0.55, ease: "expo.out" }, 9.32);
+        tl.to(q("#subtext, #actions"), { opacity: 1, y: 0, duration: 0.4, stagger: 0.06, ease: "power2.out" }, 9.48);
+        tl.set(q("#cards"), { opacity: 1 }, 9.62);
+        tl.to(q("#cards .c"), { opacity: 1, y: 0, duration: 0.4, stagger: 0.06, ease: "power2.out" }, 9.62);
+
+        // ===== 2F hold ===== (7.5 - 8.5)
+
+        // ===== 2F->2G : panel expands full-bleed; UI sheds; hero+brand reposition into slide =====
+        tl.to(q("#panel"), { left: 0, top: 0, width: 1920, height: 1080, borderRadius: 0, duration: 1.0, ease: "power3.inOut" }, 9.99);
+        tl.to(q("#chrome, #navmenu, #cta, #subtext, #actions, #cards, #eyebrow"), { opacity: 0, duration: 0.45, ease: "power2.in" }, 9.99);
+        tl.to(q("#hero"), { left: 190, top: 400, fontSize: 116, duration: 1.0, ease: "power3.inOut" }, 9.99);
+        tl.to(q("#brand"), { left: 190, top: 952, fontSize: 30, duration: 1.0, ease: "power3.inOut" }, 9.99);
+        tl.to(q("#kicker"), { opacity: 1, duration: 0.5, ease: "power2.out" }, 10.69);
+        tl.to(q("#sub2g"), { opacity: 1, duration: 0.5, ease: "power2.out" }, 10.84);
+        tl.to(q("#pagenum"), { opacity: 1, duration: 0.5, ease: "power2.out" }, 10.94);
+
+        // ===== 2G hold ===== (10.0 - 11.0)
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["scene-02-diagnosis"] = tl;
+
+        const previewTime = new URLSearchParams(window.location.search).get("t");
+        if (previewTime !== null) tl.time(Number(previewTime));
+      })();
+    </script>
+  </div>
+</template>

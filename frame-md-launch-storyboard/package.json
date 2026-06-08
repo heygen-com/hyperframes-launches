@@ -1,0 +1,11 @@
+{
+  "name": "frame-md-launch-storyboard",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "bun run --cwd /Users/jakemoran/Desktop/CC/repos/hyperframes packages/cli/src/cli.ts preview .",
+    "validate": "bun run --cwd /Users/jakemoran/Desktop/CC/repos/hyperframes packages/cli/src/cli.ts validate .",
+    "snapshot": "bun run --cwd /Users/jakemoran/Desktop/CC/repos/hyperframes packages/cli/src/cli.ts snapshot . --frames 9",
+    "render": "bun run --cwd /Users/jakemoran/Desktop/CC/repos/hyperframes packages/cli/src/cli.ts render ."
+  }
+}

@@ -1,0 +1,691 @@
+<template id="scene-03-missing-layer-template">
+  <div class="s3" data-composition-id="scene-03-missing-layer" data-width="1920" data-height="1080" data-duration="11.0">
+    <style>
+      [data-composition-id="scene-03-missing-layer"] {
+        --canvas: #fffaf0;
+        --soft: #faf5e8;
+        --ink: #0a0a0a;
+        --body: #3a3a3a;
+        --muted: #6a6a6a;
+        --pink: #ff4d8b;
+        --teal: #1a3a3a;
+        --lavender: #b8a4ed;
+        --peach: #ffb084;
+        --ochre: #e8b94a;
+        --mint: #a4d4c5;
+        --coral: #ff6b5a;
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--canvas);
+        color: var(--ink);
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        container-type: inline-size;
+      }
+
+      [data-composition-id="scene-03-missing-layer"] * {
+        box-sizing: border-box;
+        letter-spacing: 0;
+      }
+
+      .s3 .beat {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        transform-origin: 50% 50%;
+        will-change: transform, opacity, filter;
+      }
+
+      .s3 #beat-a {
+        background: #000;
+        color: #fff;
+      }
+
+      .s3 .scene2-kicker {
+        position: absolute;
+        left: 190px;
+        top: 300px;
+        font-size: 28px;
+        line-height: 1;
+        letter-spacing: .22em;
+        color: #6e6e74;
+        font-weight: 650;
+      }
+
+      .s3 .scene2-hero {
+        position: absolute;
+        left: 190px;
+        top: 400px;
+        font-size: 116px;
+        line-height: 1.02;
+        font-weight: 740;
+        letter-spacing: -0.04em;
+      }
+
+      .s3 .scene2-hero u {
+        text-decoration-thickness: .08em;
+        text-underline-offset: .08em;
+      }
+
+      .s3 .scene2-sub {
+        position: absolute;
+        left: 190px;
+        top: 660px;
+        width: 1100px;
+        font-size: 38px;
+        line-height: 1.4;
+        color: #a0a0a6;
+      }
+
+      .s3 .scene2-brand {
+        position: absolute;
+        left: 190px;
+        top: 952px;
+        font-size: 30px;
+        line-height: 1;
+        font-weight: 720;
+      }
+
+      .s3 .scene2-page {
+        position: absolute;
+        right: 190px;
+        bottom: 96px;
+        font-size: 26px;
+        line-height: 1;
+        font-weight: 650;
+        color: #7a7a80;
+      }
+
+      .s3 .scene3-wipe {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 82% 23%, rgba(255,77,139,.7), transparent 250px),
+          radial-gradient(circle at 91% 73%, rgba(184,164,237,.72), transparent 270px),
+          linear-gradient(112deg, transparent 0 64%, var(--canvas) 75% 100%);
+        clip-path: polygon(68% 0, 100% 0, 100% 100%, 76% 100%);
+      }
+
+      .s3 .handoff-chip {
+        position: absolute;
+        right: 112px;
+        bottom: 158px;
+        width: 230px;
+        height: 106px;
+        border-radius: 999px;
+        background: var(--peach);
+        box-shadow: inset -19px -25px 38px rgba(0,0,0,.13), inset 19px 19px 31px rgba(255,255,255,.34);
+      }
+
+      .s3 .blob {
+        position: absolute;
+        border-radius: 999px;
+        filter: saturate(1.08);
+        box-shadow: inset -21px -27px 38px rgba(0,0,0,.16), inset 21px 23px 31px rgba(255,255,255,.42);
+      }
+
+      .s3 .blob.pink { background: radial-gradient(circle at 32% 28%, #ffc1d5, var(--pink) 56%, #cb1c5f); }
+      .s3 .blob.peach { background: radial-gradient(circle at 32% 28%, #ffd9bf, var(--peach) 58%, #db7a4e); }
+      .s3 .blob.ochre { background: radial-gradient(circle at 32% 28%, #ffe9a3, var(--ochre) 58%, #a87b13); }
+      .s3 .blob.lav { background: radial-gradient(circle at 32% 28%, #e9dcff, var(--lavender) 58%, #7f62c8); }
+      .s3 .blob.mint { background: radial-gradient(circle at 32% 28%, #e4fff5, var(--mint) 58%, #6aa896); }
+
+      .s3 #beat-b {
+        background: var(--canvas);
+      }
+
+      .s3 .zoom-ghost {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        font-size: 192px;
+        font-weight: 850;
+        letter-spacing: -0.05em;
+        color: rgba(10,10,10,.06);
+        transform: scale(1.22);
+        filter: blur(16px);
+      }
+
+      .s3 .big-line {
+        position: absolute;
+        left: 144px;
+        right: 144px;
+        top: 50%;
+        transform: translateY(-50%);
+        text-align: center;
+        font-size: 125px;
+        line-height: .96;
+        font-weight: 850;
+        letter-spacing: -0.045em;
+        color: var(--ink);
+      }
+
+      .s3 #beat-c {
+        background: #111;
+      }
+
+      .s3 .aroll-composite {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        background: #111;
+      }
+
+      .s3 .aroll-composite video,
+      .s3 .aroll-composite img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .s3 .aroll-plate {
+        z-index: 1;
+        filter: saturate(.86) contrast(.96) brightness(.78);
+      }
+
+      .s3 .aroll-grade {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        background:
+          radial-gradient(circle at 24% 20%, rgba(255,77,139,.34), transparent 288px),
+          radial-gradient(circle at 80% 18%, rgba(184,164,237,.35), transparent 288px),
+          linear-gradient(180deg, rgba(255,250,240,.1), rgba(10,10,10,.08));
+        mix-blend-mode: screen;
+        pointer-events: none;
+      }
+
+      .s3 .aroll-frame-mark {
+        position: absolute;
+        inset: 86px 111px 104px;
+        border: 3px solid rgba(10,10,10,.16);
+        border-radius: 38px;
+        pointer-events: none;
+        z-index: 3;
+      }
+
+      .s3 .aroll-frame-mark::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: -21px;
+        width: 307px;
+        height: 6px;
+        transform: translateX(-50%);
+        border-radius: 999px;
+        background: var(--ink);
+        opacity: .18;
+      }
+
+      .s3 .aroll-giant {
+        position: absolute;
+        left: 50%;
+        top: 25px;
+        width: 1613px;
+        height: 653px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        padding: 0 35px 9px;
+        border-radius: 84px;
+        background:
+          radial-gradient(circle at 28% 24%, rgba(255,255,255,.5), transparent 307px),
+          linear-gradient(135deg, var(--lavender), var(--pink));
+        font-size: 726px;
+        line-height: .72;
+        font-weight: 850;
+        color: rgba(10,10,10,.86);
+        transform: translateX(-50%) rotate(-2deg);
+        z-index: 3;
+        box-shadow:
+          0 23px 0 rgba(10,10,10,.16),
+          inset -23px -29px 42px rgba(10,10,10,.14),
+          inset 19px 19px 35px rgba(255,255,255,.34);
+        text-shadow: 0 5px 0 rgba(255,255,255,.22);
+        will-change: transform, opacity;
+      }
+
+      .s3 .aroll-giant span {
+        display: block;
+        flex: 0 0 auto;
+        line-height: .72;
+      }
+
+      .s3 .aroll-giant .cx {
+        font-size: .84em;
+        transform: translateY(.02em);
+      }
+
+      .s3 .aroll-giant .c1 {
+        margin-right: -9px;
+      }
+
+      .s3 .aroll-dot,
+      .s3 .aroll-back-card,
+      .s3 .aroll-back-ribbon {
+        position: absolute;
+        z-index: 3;
+        will-change: transform, opacity;
+      }
+
+      .s3 .aroll-dot {
+        left: 182px;
+        top: 267px;
+        width: 177px;
+        height: 177px;
+        border-radius: 999px;
+        background: var(--peach);
+        box-shadow:
+          0 14px 0 rgba(10,10,10,.1),
+          inset -15px -19px 29px rgba(0,0,0,.13),
+          inset 14px 14px 25px rgba(255,255,255,.36);
+      }
+
+      .s3 .aroll-back-card {
+        right: 96px;
+        top: 371px;
+        width: 298px;
+        height: 169px;
+        border-radius: 42px;
+        background: var(--mint);
+        transform: rotate(6deg);
+        box-shadow: 0 17px 0 rgba(10,10,10,.08);
+        border: 2px solid rgba(10,10,10,.08);
+      }
+
+      .s3 .aroll-back-card::after {
+        content: "";
+        position: absolute;
+        left: 31px;
+        right: 31px;
+        bottom: 29px;
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(10,10,10,.2);
+      }
+
+      .s3 .aroll-back-ribbon {
+        height: 104px;
+        border-radius: 999px;
+        transform-origin: center;
+        box-shadow: inset -15px -19px 31px rgba(0,0,0,.14), inset 13px 15px 25px rgba(255,255,255,.36);
+      }
+
+      .s3 .aroll-back-ribbon.left {
+        left: -144px;
+        bottom: 196px;
+        width: 576px;
+        background: var(--teal);
+        transform: rotate(-8deg);
+      }
+
+      .s3 .aroll-back-ribbon.right {
+        right: -182px;
+        bottom: 250px;
+        width: 595px;
+        background: var(--ochre);
+        transform: rotate(9deg);
+      }
+
+      .s3 .aroll-subject {
+        z-index: 4;
+        filter: drop-shadow(0 15px 17px rgba(10,10,10,.2));
+      }
+
+      .s3 .aroll-caption {
+        position: absolute;
+        left: 50%;
+        bottom: 79px;
+        transform: translateX(-50%) rotate(-1deg);
+        z-index: 6;
+        max-width: 1440px;
+        padding: 21px 42px 24px;
+        border-radius: 27px;
+        background: var(--pink);
+        color: #fff;
+        font-size: 67px;
+        line-height: .96;
+        font-weight: 850;
+        letter-spacing: -0.055em;
+        text-align: center;
+        box-shadow: 0 14px 0 rgba(10,10,10,.14);
+        will-change: transform, opacity;
+      }
+
+      .s3 .aroll-caption span {
+        color: var(--ink);
+        background: var(--ochre);
+        border-radius: 13px;
+        padding: 0 9px 2px;
+      }
+
+      .s3 #beat-d,
+      .s3 #beat-e,
+      .s3 #beat-f,
+      .s3 #beat-g {
+        background: var(--canvas);
+      }
+
+      .s3 .duration-card {
+        position: absolute;
+        left: 158px;
+        right: 158px;
+        top: 292px;
+        height: 300px;
+        border-radius: 999px;
+        background: var(--lavender);
+        padding: 38px 81px;
+        color: var(--ink);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        box-shadow: 0 23px 0 rgba(10,10,10,.08);
+      }
+
+      .s3 .duration-card h2 {
+        margin: 0;
+        font-size: 101px;
+        line-height: .96;
+        letter-spacing: -0.045em;
+      }
+
+      .s3 .duration-rail {
+        position: absolute;
+        left: 230px;
+        right: 230px;
+        bottom: 192px;
+        height: 25px;
+        background: rgba(10,10,10,.12);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+
+      .s3 .duration-rail i {
+        display: block;
+        width: 36%;
+        height: 100%;
+        background: var(--ink);
+        border-radius: inherit;
+        transform-origin: left center;
+      }
+
+      .s3 .lane {
+        position: absolute;
+        height: 108px;
+        border-radius: 26px;
+        display: flex;
+        align-items: center;
+        padding: 0 40px;
+        font-size: 61px;
+        line-height: 1;
+        font-weight: 850;
+        letter-spacing: -0.035em;
+        box-shadow: 0 15px 0 rgba(10,10,10,.08);
+      }
+
+      .s3 .path-line {
+        position: absolute;
+        height: 4px;
+        background: rgba(10,10,10,.18);
+      }
+
+      .s3 .scale-wrap,
+      .s3 .quiet-wrap {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .s3 .scale-small {
+        font-size: 61px;
+        line-height: 1;
+        font-weight: 750;
+        letter-spacing: -0.035em;
+        color: rgba(10,10,10,.44);
+        margin-bottom: -19px;
+      }
+
+      .s3 .scale-word {
+        font-size: 269px;
+        line-height: .84;
+        font-weight: 850;
+        letter-spacing: -0.07em;
+      }
+
+      .s3 .quiet-frame {
+        position: absolute;
+        left: 154px;
+        right: 154px;
+        top: 134px;
+        bottom: 134px;
+        border: 2px solid rgba(10,10,10,.08);
+        border-radius: 23px;
+      }
+
+      .s3 .quiet-wrap {
+        font-size: 54px;
+        line-height: 1.1;
+        font-weight: 650;
+        letter-spacing: -0.025em;
+        color: rgba(10,10,10,.58);
+      }
+
+      .s3 .transition-bloom {
+        position: absolute;
+        inset: -120px;
+        z-index: 40;
+        pointer-events: none;
+        opacity: 0;
+        background:
+          radial-gradient(circle at 50% 48%, rgba(255,250,240,1) 0 22%, rgba(255,250,240,.92) 38%, rgba(255,77,139,.28) 54%, rgba(184,164,237,.14) 68%, transparent 82%);
+        filter: blur(34px);
+        transform: scale(.76);
+        mix-blend-mode: normal;
+        will-change: transform, opacity;
+      }
+    </style>
+
+    <div id="beat-a" class="beat">
+      <div class="scene2-kicker">TRANSLATED FOR VIDEO</div>
+      <div class="scene2-hero">Interfaces,<br>not <u>videos</u></div>
+      <div class="scene2-sub">Hand an agent a screen-design spec and the brand arranges itself like slides — not frames.</div>
+      <div class="scene2-brand">DESIGN.md</div>
+      <div class="scene2-page">01</div>
+      <div class="scene3-wipe"></div>
+      <div class="handoff-chip"></div>
+      <div class="blob pink" style="right:269px;top:173px;width:150px;height:150px;"></div>
+    </div>
+
+    <div id="beat-b" class="beat">
+      <div class="zoom-ghost">instructions</div>
+      <span class="blob lav" style="left:154px;top:134px;width:154px;height:154px;"></span>
+      <span class="blob ochre" style="right:154px;bottom:134px;width:134px;height:134px;"></span>
+      <div class="big-line">But your agent needs<br>different instructions.</div>
+    </div>
+
+    <div id="beat-c" class="beat">
+      <div class="aroll-composite">
+        <video id="s3-aroll-plate" class="aroll-plate" src="../assets/scene-03-aroll-h264.mp4" data-start="2.94" data-duration="2.63" data-track-index="0" muted playsinline></video>
+        <audio id="s3-aroll-audio" src="../assets/scene-03-aroll-h264.mp4" data-start="2.94" data-duration="2.63" data-track-index="4" data-volume="1"></audio>
+        <div class="aroll-grade"></div>
+        <div class="aroll-giant"><span class="c1">1</span><span>6</span><span class="cx">x</span><span>9</span></div>
+        <div class="aroll-frame-mark"></div>
+        <div class="aroll-dot"></div>
+        <div class="aroll-back-card"></div>
+        <div class="aroll-back-ribbon left"></div>
+        <div class="aroll-back-ribbon right"></div>
+        <span class="blob lav" style="left:415px;top:192px;width:109px;height:109px;z-index:3;"></span>
+        <span class="blob peach" style="right:388px;top:228px;width:92px;height:92px;z-index:3;"></span>
+        <video id="s3-aroll-subject" class="aroll-subject" src="../assets/scene-03-aroll-cutout.webm" data-start="2.94" data-duration="2.63" data-track-index="1" muted playsinline></video>
+        <div class="aroll-caption">use a <span>16:9</span> frame</div>
+      </div>
+    </div>
+
+    <div id="beat-d" class="beat">
+      <div class="duration-card"><h2>how long a message can live</h2></div>
+      <div class="duration-rail"><i></i></div>
+      <span class="blob peach" style="left:154px;bottom:134px;width:106px;height:106px;opacity:.75;"></span>
+      <span class="blob mint" style="right:134px;top:134px;width:115px;height:115px;opacity:.55;"></span>
+    </div>
+
+    <div id="beat-e" class="beat">
+      <div class="path-line" style="left:77px;top:326px;width:672px;"></div>
+      <div class="path-line" style="right:77px;top:480px;width:672px;"></div>
+      <div class="path-line" style="left:77px;top:634px;width:806px;"></div>
+      <div class="lane lane-a" style="left:192px;top:265px;width:768px;background:var(--ochre);">what</div>
+      <div class="lane lane-b" style="right:211px;top:417px;width:787px;background:var(--teal);color:#fff;">should</div>
+      <div class="lane lane-c" style="left:384px;top:570px;width:845px;background:var(--pink);color:#fff;">move</div>
+      <span class="blob lav" style="right:154px;bottom:134px;width:115px;height:115px;"></span>
+    </div>
+
+    <div id="beat-f" class="beat">
+      <div class="scale-wrap">
+        <div class="scale-small">what needs</div>
+        <div class="scale-word">scale</div>
+      </div>
+    </div>
+
+    <div id="beat-g" class="beat">
+      <div class="quiet-frame"></div>
+      <div class="quiet-wrap">what deserves silence</div>
+      <span class="blob ochre" style="left:192px;bottom:192px;width:77px;height:77px;opacity:.2;"></span>
+      <span class="blob pink" style="right:230px;top:211px;width:86px;height:86px;opacity:.14;"></span>
+    </div>
+
+    <div class="transition-bloom"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        const q = (s) => `[data-composition-id="scene-03-missing-layer"] ${s}`;
+        const tl = gsap.timeline({ paused: true });
+
+        gsap.set(q("#beat-b"), { opacity: 0, scale: 0.94, filter: "blur(18px)" });
+        gsap.set(q("#beat-c"), { opacity: 0, scale: 1.06, filter: "blur(18px)" });
+        gsap.set(q("#beat-d"), { opacity: 0, scale: 0.94, filter: "blur(18px)" });
+        gsap.set(q("#beat-e"), { opacity: 0, x: 260, scale: 1, filter: "blur(0px)" });
+        gsap.set(q("#beat-f"), { opacity: 0, scale: 0.92, filter: "blur(16px)" });
+        gsap.set(q("#beat-g"), { opacity: 0, scale: 1.02, filter: "blur(12px)" });
+        gsap.set(q(".transition-bloom"), { opacity: 0, scale: 0.82 });
+        gsap.set(q(".scene3-wipe"), { xPercent: 18, opacity: 0 });
+        gsap.set(q(".handoff-chip, #beat-a .blob"), { opacity: 0, scale: 0.88 });
+        gsap.set(q("#beat-b .big-line"), { opacity: 0, scale: 0.74, filter: "blur(18px)" });
+        gsap.set(q("#beat-b .zoom-ghost"), { opacity: 0, scale: 1.5, filter: "blur(28px)" });
+        gsap.set(q("#beat-b .blob"), { opacity: 0, scale: 0.5 });
+
+        gsap.set(q("#beat-c"), { opacity: 0 });
+        gsap.set(q(".aroll-grade, .aroll-frame-mark"), { opacity: 0 });
+        gsap.set(q(".aroll-giant"), { opacity: 0, scale: 0.88, y: 34, rotate: -5, transformOrigin: "50% 50%" });
+        gsap.set(q(".aroll-dot"), { opacity: 0, scale: 0.5, x: -120, y: 50 });
+        gsap.set(q(".aroll-back-card"), { opacity: 0, scale: 0.75, x: 130, y: 60, rotate: 14 });
+        gsap.set(q(".aroll-back-ribbon.left"), { opacity: 0, x: -260, rotate: -16 });
+        gsap.set(q(".aroll-back-ribbon.right"), { opacity: 0, x: 260, rotate: 18 });
+        gsap.set(q("#beat-c .blob"), { opacity: 0, scale: 0.55 });
+        gsap.set(q(".aroll-caption"), { opacity: 0, y: 34, scale: 0.92, rotate: -1 });
+
+        gsap.set(q(".duration-card"), { opacity: 0, scale: 0.92, y: 30 });
+        gsap.set(q(".duration-rail"), { opacity: 0, scaleX: 0.82, transformOrigin: "50% 50%" });
+        gsap.set(q(".duration-rail i"), { scaleX: 1, transformOrigin: "left center" });
+        gsap.set(q("#beat-d .blob"), { opacity: 0, scale: 0.5 });
+
+        gsap.set(q("#beat-e .lane-a, #beat-e .lane-b, #beat-e .lane-c"), { opacity: 0, x: 520 });
+        gsap.set(q("#beat-e .path-line"), { opacity: 0, x: 520, scaleX: 1, transformOrigin: "left center" });
+
+        gsap.set(q("#beat-f .scale-small"), { opacity: 0, y: 28 });
+        gsap.set(q("#beat-f .scale-word"), { opacity: 0, scale: 0.58, y: 24 });
+        gsap.set(q("#beat-g .quiet-frame, #beat-g .quiet-wrap, #beat-g .blob"), { opacity: 0 });
+
+        const bloom = (at, opacity = 0.9, inScale = 0.78, outScale = 1.28, outAt = 0.24) => {
+          tl.to(q(".transition-bloom"), { opacity, scale: inScale, duration: 0.2, ease: "power2.out" }, at);
+          tl.to(q(".transition-bloom"), { opacity: 0, scale: outScale, duration: 0.38, ease: "power2.inOut" }, at + outAt);
+        };
+
+        tl.addLabel("blackToInstructions", 0);
+        tl.to(q("#beat-a"), { scale: 1.08, filter: "blur(26px)", opacity: 0, duration: 0.68, ease: "power3.inOut" }, 0.72);
+        bloom(0.82, 0.98, 0.7, 1.34, 0.2);
+
+        tl.to(q("#beat-b"), { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.7, ease: "power3.out" }, 0.96);
+        tl.to(q("#beat-b .zoom-ghost"), { opacity: 1, scale: 1.22, filter: "blur(16px)", duration: 0.68, ease: "power3.out" }, 1.0);
+        tl.to(q("#beat-b .blob"), { opacity: 1, scale: 1, duration: 0.55, stagger: 0.08, ease: "back.out(1.4)" }, 1.1);
+        tl.to(q("#beat-b .big-line"), { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.78, ease: "expo.out" }, 1.16);
+
+        tl.addLabel("instructionsToFrame", 2.72);
+        tl.to(q("#beat-b .big-line"), { scale: 1.92, opacity: 0, filter: "blur(38px)", duration: 0.46, ease: "power3.in" }, "instructionsToFrame");
+        tl.to(q("#beat-b .zoom-ghost"), { scale: 2.1, opacity: 0, filter: "blur(42px)", duration: 0.44, ease: "power3.in" }, "instructionsToFrame+=0.03");
+        tl.to(q("#beat-b .blob"), { opacity: 0, scale: 1.35, duration: 0.3, stagger: 0.03, ease: "power2.in" }, "instructionsToFrame+=0.08");
+        tl.to(q("#beat-b"), { opacity: 0, scale: 1.1, filter: "blur(28px)", duration: 0.52, ease: "power3.inOut" }, "instructionsToFrame+=0.06");
+
+        tl.to(q("#beat-c"), { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.66, ease: "power3.out" }, 2.9);
+        tl.to(q(".aroll-grade"), { opacity: 1, duration: 0.45, ease: "power2.out" }, 3.08);
+        tl.to(q(".aroll-frame-mark"), { opacity: 1, duration: 0.45, ease: "power2.out" }, 3.2);
+        tl.to(q(".aroll-giant"), { opacity: 1, scale: 1, y: 0, rotate: -2, duration: 0.76, ease: "expo.out" }, 3.24);
+        tl.to(q(".aroll-dot"), { opacity: 1, scale: 1, x: 0, y: 0, duration: 0.48, ease: "back.out(1.5)" }, 3.42);
+        tl.to(q(".aroll-back-card"), { opacity: 1, scale: 1, x: 0, y: 0, rotate: 6, duration: 0.5, ease: "back.out(1.3)" }, 3.49);
+        tl.to(q(".aroll-back-ribbon.left"), { opacity: 1, x: 0, rotate: -8, duration: 0.54, ease: "power3.out" }, 3.54);
+        tl.to(q(".aroll-back-ribbon.right"), { opacity: 1, x: 0, rotate: 9, duration: 0.54, ease: "power3.out" }, 3.6);
+        tl.to(q("#beat-c .blob"), { opacity: 1, scale: 1, duration: 0.42, stagger: 0.05, ease: "back.out(1.4)" }, 3.64);
+        tl.to(q(".aroll-caption"), { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.44, ease: "back.out(1.5)" }, 3.86);
+        tl.to(q(".aroll-giant"), { scale: 1.025, duration: 1.15, ease: "sine.inOut", yoyo: true, repeat: 1 }, 4.0);
+
+        tl.addLabel("frameToLive", 4.97);
+        tl.to(q(".aroll-caption"), { opacity: 0, y: -30, scale: 0.96, filter: "blur(10px)", duration: 0.26, ease: "power2.in" }, "frameToLive");
+        tl.to(q(".aroll-giant"), { scale: 1.14, y: -76, rotate: 0, filter: "blur(10px)", duration: 0.44, ease: "power3.inOut" }, "frameToLive+=0.03");
+        tl.to(q(".aroll-dot, .aroll-back-card, .aroll-back-ribbon, #beat-c .blob"), { opacity: 0, scale: 1.08, filter: "blur(10px)", duration: 0.31, stagger: 0.014, ease: "power2.in" }, "frameToLive+=0.06");
+        tl.to(q("#beat-c"), { opacity: 0, scale: 1.06, filter: "blur(24px)", duration: 0.51, ease: "power3.inOut" }, "frameToLive+=0.09");
+        bloom(5.11, 0.62, 0.84, 1.28, 0.16);
+
+        tl.to(q("#beat-d"), { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.58, ease: "power3.out" }, 5.56);
+        tl.to(q(".duration-card"), { opacity: 1, scale: 1, y: 0, duration: 0.58, ease: "back.out(1.25)" }, 5.66);
+        tl.to(q(".duration-rail"), { opacity: 1, scaleX: 1, duration: 0.4, ease: "power2.out" }, 5.85);
+        tl.to(q("#beat-d .blob"), { opacity: 1, scale: 1, duration: 0.4, stagger: 0.05, ease: "back.out(1.4)" }, 5.96);
+        tl.to(q(".duration-rail i"), { scaleX: 0.08, duration: 1.05, ease: "none" }, 6.75);
+
+        tl.addLabel("liveToMove", 7.4);
+        tl.to(q(".duration-card"), { x: -2150, y: 0, scale: 1, rotation: 0, filter: "blur(0px)", duration: 0.44, ease: "power3.inOut" }, "liveToMove");
+        tl.to(q(".duration-rail"), { x: -2150, opacity: 1, filter: "blur(0px)", duration: 0.42, ease: "power3.inOut" }, "liveToMove+=0.02");
+        tl.to(q("#beat-d .blob"), { x: -2150, opacity: 1, scale: 1, duration: 0.42, stagger: 0.02, ease: "power3.inOut" }, "liveToMove+=0.03");
+        tl.to(q("#beat-d"), { opacity: 0, duration: 0.08, ease: "none" }, "liveToMove+=0.44");
+
+        tl.to(q("#beat-e"), { opacity: 1, x: 0, duration: 0.44, ease: "power3.inOut" }, 7.46);
+        tl.to(q("#beat-e .path-line"), { opacity: 1, x: 0, duration: 0.36, stagger: 0.035, ease: "power3.out" }, 7.52);
+        tl.to(q("#beat-e .lane-a, #beat-e .lane-b, #beat-e .lane-c"), { opacity: 1, x: 0, duration: 0.38, stagger: 0.055, ease: "power3.out" }, 7.56);
+
+        tl.addLabel("moveToScale", 8.46);
+        tl.to(q("#beat-e .path-line"), { opacity: 0, scaleX: 0.45, filter: "blur(8px)", duration: 0.28, stagger: 0.03, ease: "power2.in" }, "moveToScale");
+        tl.to(q("#beat-e .lane-a"), { x: 350, y: 168, scale: 0.7, filter: "blur(12px)", duration: 0.42, ease: "power3.inOut" }, "moveToScale+=0.02");
+        tl.to(q("#beat-e .lane-b"), { x: -300, y: 34, scale: 0.74, filter: "blur(12px)", duration: 0.42, ease: "power3.inOut" }, "moveToScale+=0.05");
+        tl.to(q("#beat-e .lane-c"), { x: 220, y: -134, scale: 0.86, filter: "blur(12px)", duration: 0.42, ease: "power3.inOut" }, "moveToScale+=0.08");
+        tl.to(q("#beat-e"), { opacity: 0, scale: 0.98, filter: "blur(18px)", duration: 0.4, ease: "power3.inOut" }, "moveToScale+=0.16");
+        bloom(8.58, 0.54, 1.02, 1.18, 0.18);
+
+        tl.to(q("#beat-f"), { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.48, ease: "power3.out" }, 8.62);
+        tl.to(q("#beat-f .scale-small"), { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 8.76);
+        tl.to(q("#beat-f .scale-word"), { opacity: 1, scale: 1, y: 0, duration: 0.52, ease: "expo.out" }, 8.74);
+        tl.to(q("#beat-f .scale-word"), { scale: 1.24, duration: 0.3, ease: "power1.inOut" }, 9.08);
+
+        tl.addLabel("scaleToSilence", 9.38);
+        tl.to(q("#beat-f .scale-small"), { opacity: 0, y: -22, filter: "blur(8px)", duration: 0.26, ease: "power2.in" }, "scaleToSilence");
+        tl.to(q("#beat-f .scale-word"), { scale: 1.62, opacity: 0, filter: "blur(24px)", duration: 0.5, ease: "power3.inOut" }, "scaleToSilence+=0.04");
+        tl.to(q("#beat-f"), { opacity: 0, scale: 1.04, filter: "blur(22px)", duration: 0.5, ease: "power3.inOut" }, "scaleToSilence+=0.08");
+
+        tl.to(q("#beat-g"), { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.58, ease: "power2.out" }, 9.56);
+        tl.to(q("#beat-g .quiet-frame"), { opacity: 1, duration: 0.52, ease: "power2.out" }, 9.64);
+        tl.to(q("#beat-g .quiet-wrap"), { opacity: 1, duration: 0.58, ease: "power2.out" }, 9.74);
+        tl.to(q("#beat-g .blob"), { opacity: 1, duration: 0.7, stagger: 0.1, ease: "power2.out" }, 9.82);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["scene-03-missing-layer"] = tl;
+      })();
+    </script>
+  </div>
+</template>
