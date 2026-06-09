@@ -1,0 +1,371 @@
+<template id="response-scroll-template">
+  <div id="rs-root" data-composition-id="response-scroll" data-width="1920" data-height="1080" data-duration="6.7">
+    <style>
+      /* local fonts (captured woff2, font-display:block) */
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-400-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-500-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-600-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 700;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-700-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 700;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: italic;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-italic-400-latin-ext-e36b6b.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: italic;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-italic-400-latin-78bd98.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: italic;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-italic-500-latin-ext-e36b6b.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: italic;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-italic-500-latin-78bd98.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-400-latin-ext-7a09be.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-400-latin-f0c28d.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-500-latin-ext-7a09be.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-500-latin-f0c28d.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-600-latin-ext-7a09be.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-600-latin-f0c28d.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Spline Sans Mono';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/SplineSansMono-normal-400-latin-ext-62a811.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Spline Sans Mono';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/SplineSansMono-normal-400-latin-53329b.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Spline Sans Mono';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/SplineSansMono-normal-500-latin-ext-62a811.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Spline Sans Mono';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+
+      #rs-root{
+        --paper:#F0EEE6; --ink:#262624; --muted:#6F6E66; --clay:#D97757; --clay-text:#A8472A;
+        --hairline:#DCD8CC; --hairline-soft:#E7E3D6; --on-accent:#FBF7F0;
+        --f-body:"Hanken Grotesk","Inter",system-ui,sans-serif;
+        --f-serif:"Newsreader",Georgia,serif;
+        position:relative;width:1920px;height:1080px;overflow:hidden;
+        background:var(--paper);container-type:size;color:var(--ink);
+        font-family:var(--f-body);
+      }
+      #rs-root *,
+      #rs-root *::before,
+      #rs-root *::after{box-sizing:border-box;margin:0;padding:0}
+      #rs-root::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
+        background:radial-gradient(circle, rgba(38,36,30,.025) 1px, transparent 1px) 0 0/34px 34px}
+
+      /* conversation column that scrolls up; composer stays pinned */
+      #rs-root .scroll{position:absolute;left:0;top:0;width:100%;height:100%;z-index:1;will-change:transform}
+
+      #rs-root .msg{position:absolute;right:8%;top:9%;max-width:60cqw;
+        background:#EBE6D8;border:1px solid var(--hairline-soft);border-radius:1.8cqw;
+        padding:1.4cqw 2cqw;font:500 2.4cqw/1.4 var(--f-body);color:var(--ink)}
+
+      /* assistant response — faithful Claude markdown render, sized to the chat */
+      #rs-root .resp{position:absolute;left:8.5%;top:24%;width:66cqw;
+        font-family:var(--f-serif);font-weight:400;font-size:2.4cqw;line-height:1.58;color:#2B2926;letter-spacing:.002em}
+      #rs-root .resp > *:first-child{margin-top:0}
+      #rs-root .resp p{margin:0 0 1.7cqw}
+      #rs-root .resp h2{font-family:var(--f-body);font-weight:700;font-size:3.05cqw;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin:3cqw 0 1.2cqw}
+      #rs-root .resp h3{font-family:var(--f-body);font-weight:700;font-size:2.3cqw;line-height:1.2;letter-spacing:-.01em;color:var(--ink);margin:1.9cqw 0 .7cqw}
+      #rs-root .resp ul{list-style:none;margin:0 0 1.8cqw;padding:0}
+      #rs-root .resp ol{list-style:decimal;margin:0 0 1.8cqw;padding-left:3.6cqw}
+      #rs-root .resp li{position:relative;margin:0 0 1.1cqw}
+      #rs-root .resp ul li{padding-left:3cqw}
+      #rs-root .resp ol li{padding-left:.5cqw}
+      #rs-root .resp ul li::before{content:"";position:absolute;left:.75cqw;top:1.5cqw;width:.66cqw;height:.66cqw;border-radius:50%;background:var(--muted)}
+      #rs-root .resp strong{font-weight:600;color:var(--ink)}
+      #rs-root .resp em{font-style:italic}
+
+      /* pinned thin composer (chat-section end-state) — soft fade at the bottom edge behind it */
+      #rs-root .fade{position:absolute;left:0;right:0;bottom:0;height:22%;z-index:2;pointer-events:none;
+        background:linear-gradient(to top, var(--paper) 38%, rgba(240,238,230,0))}
+      #rs-root .composer{position:absolute;left:50%;top:87%;transform:translate(-50%,-50%);z-index:3;
+        width:84cqw;height:8.5cqw;background:#FCFBF7;border:1.5px solid var(--hairline-soft);
+        border-radius:2.4cqw;box-shadow:0 2px 6px rgba(38,38,36,.05), 0 34px 80px -30px rgba(38,38,36,.32)}
+      #rs-root .composer .ph{position:absolute;left:3.4cqw;top:50%;transform:translateY(-50%);
+        font:500 2.7cqw/1 var(--f-body);color:#9b988f;letter-spacing:-.01em;white-space:nowrap}
+      #rs-root .composer .send{position:absolute;right:3.4cqw;top:50%;transform:translateY(-50%);
+        width:5.2cqw;height:5.2cqw;border-radius:50%;background:var(--clay);display:grid;place-items:center}
+      #rs-root .composer .send svg{width:2.7cqw;height:2.7cqw;stroke:var(--on-accent);stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+
+    <div class="scroll" id="scroll">
+      <div class="msg">Can you give your projections for TSLA in 2026?</div>
+      <div class="resp" id="resp">
+        <p>Good question — with one caveat up front: <strong>I can't predict where any stock will actually trade,</strong> and none of this is investment advice. But you asked for projections, so let's go properly deep.</p>
+
+        <h2>The big picture</h2>
+        <p>Tesla in 2026 is really four businesses wearing one ticker: a maturing auto company, a fast-growing energy company, an early-stage autonomy bet, and an optionality-laden robotics moonshot. How you weight those four is the entire debate.</p>
+
+        <h2>What actually drives the stock</h2>
+        <ul>
+          <li><strong>Auto margins and volume.</strong> After years of price cuts, the question is whether deliveries reaccelerate without eroding gross margin further. A refreshed lineup and a genuinely sub-$30k model would change the math.</li>
+          <li><strong>Energy and storage.</strong> The fastest-growing, highest-margin segment — and a real earnings driver if deployments keep compounding.</li>
+          <li><strong>Autonomy (FSD + robotaxi).</strong> The genuine wildcard. Credible driverless traction re-rates the stock; another year of "next quarter" does not.</li>
+          <li><strong>Optimus and robotics.</strong> Pure optionality today, but the part of the story that justifies the most aggressive bull cases.</li>
+          <li><strong>Regulatory credits.</strong> A high-margin tailwind that's slowly fading — worth watching as it rolls off.</li>
+          <li><strong>China.</strong> Both the biggest growth lever and the biggest competitive threat, depending on the quarter.</li>
+          <li><strong>Capital allocation.</strong> Buybacks, capex discipline, and how much they spend chasing the moonshots.</li>
+        </ul>
+
+        <h2>Scenarios</h2>
+        <h3>Bull case</h3>
+        <ul>
+          <li>FSD starts converting to real, recurring revenue.</li>
+          <li>Energy compounds faster than the Street models.</li>
+          <li>Auto margins stabilize and the multiple expands on the AI/robotics narrative.</li>
+        </ul>
+        <h3>Base case</h3>
+        <ul>
+          <li>Steady deliveries, strong energy growth, autonomy still "coming."</li>
+          <li>The stock is range-bound but drifts higher on energy and sentiment.</li>
+        </ul>
+        <h3>Bear case</h3>
+        <ul>
+          <li>Margin pressure persists and autonomy slips again.</li>
+          <li>Credits fade, competition bites, and the multiple compresses hard.</li>
+        </ul>
+
+        <h2>Catalysts to watch (roughly in order)</h2>
+        <ol>
+          <li>Quarterly delivery numbers and the gross-margin trend.</li>
+          <li>Any concrete, metered robotaxi expansion beyond a pilot.</li>
+          <li>The next-gen, lower-cost vehicle actually shipping.</li>
+          <li>Energy storage deployment and backlog updates.</li>
+          <li>Optimus moving from demo to any real deployment.</li>
+        </ol>
+
+        <h2>The risks I'd actually worry about</h2>
+        <ul>
+          <li>Demand softness forcing yet another round of price cuts.</li>
+          <li>Autonomy timelines slipping again — the most expensive risk.</li>
+          <li>Key-person and governance overhang.</li>
+          <li>Chinese competition on both price and technology.</li>
+        </ul>
+
+        <h2>How I'd frame valuation</h2>
+        <p>Almost none of the value sits in the cars-sold-this-year number. It sits in the terminal value of autonomy and energy — which is exactly why the credible range is so wide.</p>
+        <ul>
+          <li>On near-term earnings alone, the stock looks expensive.</li>
+          <li>On a successful-autonomy scenario, it looks cheap.</li>
+          <li>Both can be "true" at once — that's the whole game.</li>
+        </ul>
+
+        <h2>What I'd track week to week</h2>
+        <ul>
+          <li>Gross margin <em>excluding</em> regulatory credits.</li>
+          <li>Energy deployment run-rate.</li>
+          <li>Any real driverless miles — not demos.</li>
+        </ul>
+
+        <h2>Bottom line</h2>
+        <p><strong>By 2026, Tesla is less a car company than a bet on autonomy and energy.</strong> Frame the report around those drivers rather than a single price target — the range of credible outcomes is genuinely enormous.</p>
+        <p>And honestly? Anyone quoting you a precise 2026 price target is guessing with confidence. I'd rather give you the framework and let the data update it.</p>
+        <p>Want me to turn this into a one-page brief with charts, or go deeper on any single driver?</p>
+      </div>
+    </div>
+
+    <div class="fade"></div>
+    <div class="composer">
+      <span class="ph">Write a message...</span>
+      <div class="send"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/CustomEase.min.js"></script>
+    <script>
+    window.__timelines = window.__timelines || {};
+    (async function(){
+      if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch(e){} }
+      const root=document.querySelector('[data-composition-id="response-scroll"]');
+      const plate=root;
+      const scroll=root.querySelector('#scroll');
+      const resp=root.querySelector('#resp');
+
+      // reveal units: paragraphs, headers, and each list item (line-by-line)
+      const units=[];
+      resp.querySelectorAll(':scope > *').forEach(el=>{
+        if(el.tagName==='UL'||el.tagName==='OL') el.querySelectorAll('li').forEach(li=>units.push(li));
+        else units.push(el);
+      });
+      gsap.set(units,{opacity:0,y:26});
+
+      // unscaled (1920×1080) geometry, robust to Studio's transform scaling
+      const pr=plate.getBoundingClientRect();
+      const factor=pr.width/1920 || 1;
+      const yOf=(el)=>(el.getBoundingClientRect().top - pr.top)/factor;
+
+      const FRAME=1080, TARGET=0.62*FRAME;        // where the newest line settles
+      const composerTop=0.87*FRAME;
+      const respBottom=yOf(resp)+resp.offsetHeight;
+      const maxScroll=Math.max(0, respBottom - (composerTop - 0.05*FRAME));
+
+      // cubic-bezier scroll ease: slow start → fast middle → ramp down (tweak the 4 numbers)
+      if(window.CustomEase){ gsap.registerPlugin(CustomEase); CustomEase.create('scrollBez','0.76, 0, 0.24, 1'); }
+      const SCROLL_EASE = window.CustomEase ? 'scrollBez' : 'power3.inOut';
+      const tl=gsap.timeline({paused:true});
+      const SCROLL_START=0.5, SCROLL_DUR=5.2;
+      // ONE continuous scroll with the cubic-bezier velocity curve
+      tl.to(scroll,{y:-maxScroll,duration:SCROLL_DUR,ease:SCROLL_EASE},SCROLL_START);
+      // invert the ease so each line still reveals exactly when the (eased) scroll reaches it
+      const ef=gsap.parseEase(SCROLL_EASE);
+      const invEase=(f)=>{ let lo=0,hi=1; for(let k=0;k<26;k++){ const m=(lo+hi)/2; if(ef(m)<f) lo=m; else hi=m; } return (lo+hi)/2; };
+      const fs=units.filter(u=>(yOf(u)-TARGET)<=0);
+      units.forEach((u)=>{
+        const need=yOf(u)-TARGET;
+        let at;
+        if(need<=0){ at=0.2 + fs.indexOf(u)*((SCROLL_START-0.25)/Math.max(1,fs.length)); }
+        else { at=SCROLL_START + SCROLL_DUR*invEase(Math.min(need,maxScroll)/maxScroll) - 0.08; }
+        tl.to(u,{opacity:1,y:0,duration:.32,ease:'power2.out'},Math.max(0.2,at));
+      });
+      tl.to({},{duration:.7},SCROLL_START+SCROLL_DUR+0.3);  // hold at the bottom + linger behind followup-type so the 3→4 hard cut has no 1-frame gap (timeline ≈ data-duration 6.7)
+
+      window.__timelines["response-scroll"]=tl;
+      const q=new URLSearchParams(location.search);
+      if(q.has('t')) tl.seek(parseFloat(q.get('t'))||0);
+      else if(q.get('dev')==='1') tl.play();
+    })();
+    </script>
+  </div>
+</template>

@@ -1,0 +1,279 @@
+<template id="tesla-rap-template">
+  <div id="tr-root" data-composition-id="tesla-rap" data-width="1920" data-height="1080" data-duration="5.0">
+    <style>
+      /* local fonts (captured woff2, font-display:block) */
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-400-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-500-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-600-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 700;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-700-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 700;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: italic;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-italic-400-latin-ext-e36b6b.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: italic;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-italic-400-latin-78bd98.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: italic;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-italic-500-latin-ext-e36b6b.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: italic;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-italic-500-latin-78bd98.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-400-latin-ext-7a09be.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-400-latin-f0c28d.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-500-latin-ext-7a09be.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-500-latin-f0c28d.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-600-latin-ext-7a09be.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-600-latin-f0c28d.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Spline Sans Mono';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/SplineSansMono-normal-400-latin-ext-62a811.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Spline Sans Mono';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/SplineSansMono-normal-400-latin-53329b.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Spline Sans Mono';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/SplineSansMono-normal-500-latin-ext-62a811.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Spline Sans Mono';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+
+      #tr-root{
+        --red:#E31937; --ink:#0A0A0A; --paper:#F4F1E6;
+        --f-body:"Hanken Grotesk","Inter",system-ui,sans-serif;
+        position:relative;width:1920px;height:1080px;overflow:hidden;background:#0A0E14;
+        container-type:size;font-family:var(--f-body)}
+      #tr-root *,#tr-root *::before,#tr-root *::after{box-sizing:border-box;margin:0;padding:0}
+
+      /* full-bleed photo layers (high-contrast, editorial b/w + red world) */
+      #tr-root .bg{position:absolute;inset:0;background-size:cover;background-position:center;
+        filter:grayscale(1) contrast(1.35) brightness(.62);will-change:transform,opacity}
+      #tr-root #bg1{background-image:url('66d8818a14a5cd1fcc8d2ed3.webp')}
+      #tr-root #bg2{background-image:url('tesla_blog.jpg')}
+      #tr-root .tint{position:absolute;inset:0;background:
+        radial-gradient(120% 90% at 50% 40%, transparent 40%, rgba(0,0,0,.55) 100%);mix-blend-mode:multiply}
+      #tr-root .redwash{position:absolute;inset:0;background:var(--red);mix-blend-mode:overlay;opacity:0}
+      /* film grain / scanline grit */
+      #tr-root .grain{position:absolute;inset:0;pointer-events:none;opacity:.10;
+        background:repeating-linear-gradient(0deg, rgba(255,255,255,.5) 0 1px, transparent 1px 3px)}
+
+      /* flash hit */
+      #tr-root .flash{position:absolute;inset:0;background:var(--red);opacity:0;z-index:8}
+
+      /* kinetic caption stage */
+      #tr-root .stage{position:absolute;inset:0;z-index:6;display:grid;place-items:center}
+      #tr-root .cap{position:absolute;white-space:nowrap;font-weight:800;font-style:italic;
+        text-transform:uppercase;letter-spacing:-.02em;line-height:.9;color:#fff;
+        text-shadow:0 6px 0 rgba(227,25,55,.9), 0 10px 30px rgba(0,0,0,.55);will-change:transform,opacity}
+      #tr-root .cap.red{color:var(--red);text-shadow:0 6px 0 rgba(0,0,0,.85), 0 10px 30px rgba(0,0,0,.5)}
+      #tr-root .yo{font-size:18cqw}
+      #tr-root .wu{font-size:13cqw}
+      #tr-root .det{font-size:8.5cqw;font-style:normal;letter-spacing:-.01em}
+      #tr-root .tsl{font-size:20cqw;color:var(--red);-webkit-text-stroke:0}
+
+      /* TESLA logo lockup on a stark white editorial block */
+      #tr-root .block{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.6);
+        background:#fff;padding:5cqw 7cqw;border-radius:1cqw;opacity:0;z-index:7;
+        box-shadow:0 30px 80px rgba(0,0,0,.6)}
+      #tr-root .block img{width:34cqw;height:auto;display:block}
+    </style>
+
+    <div class="bg" id="bg1"></div>
+    <div class="bg" id="bg2" style="opacity:0"></div>
+    <div class="tint"></div>
+    <div class="redwash" id="redwash"></div>
+    <div class="flash" id="flash"></div>
+    <div class="grain"></div>
+
+    <div class="stage" id="stage">
+      <div class="cap yo"      id="yo1" style="left:9%;top:26%">YO</div>
+      <div class="cap yo red"  id="yo2" style="left:38%;top:40%">YO</div>
+      <div class="cap yo"      id="yo3" style="left:64%;top:30%">YO</div>
+      <div class="cap wu"      id="wu1" style="left:10%;top:30%">WHAT UP</div>
+      <div class="cap wu red"  id="wu2" style="left:40%;top:50%">WHAT UP</div>
+      <div class="cap wu"      id="wu3" style="left:14%;top:66%">WHAT UP</div>
+      <div class="cap det"     id="det" style="left:50%;top:30%;transform:translateX(-50%);text-align:center">ALL THE<br>DETAILS ON</div>
+    </div>
+
+    <div class="block" id="block"><img src="1280px-Tesla_logo.png" alt="Tesla" /></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+    window.__timelines = window.__timelines || {};
+    (function(){
+      const root=document.querySelector('[data-composition-id="tesla-rap"]');
+      const $=s=>root.querySelector(s);
+      const bg1=$('#bg1'),bg2=$('#bg2'),redwash=$('#redwash'),flash=$('#flash'),block=$('#block');
+      const yos=['#yo1','#yo2','#yo3'].map($), wus=['#wu1','#wu2','#wu3'].map($), det=$('#det');
+
+      gsap.set([...yos,...wus,det],{opacity:0}); gsap.set(block,{opacity:0});
+      const STAMP={duration:.13,ease:'back.out(2.4)'};
+      const tl=gsap.timeline({paused:true});
+
+      // ── "YO YO YO" over the aerial gigafactory — synced to the VO ──
+      tl.fromTo(bg1,{scale:1.08},{scale:1.16,duration:1.6,ease:'none'},0);
+      tl.to(redwash,{opacity:.6,duration:.05},0).to(redwash,{opacity:0,duration:.22},0.1);
+      const yoT=[0.0,0.69,1.02];
+      yos.forEach((y,i)=>tl.fromTo(y,{opacity:0,scale:.5,rotation:i%2?7:-7},{opacity:1,scale:1,rotation:i%2?-4:4,...STAMP},yoT[i]));
+
+      // ── cut to the TESLA gigafactory, "WHAT UP" x3 — synced to the VO ──
+      const b2=1.4;
+      tl.set(bg2,{opacity:1},b2); tl.set(bg1,{opacity:0},b2);
+      tl.to(yos,{opacity:0,duration:.08},b2);
+      tl.fromTo(bg2,{scale:1.18,xPercent:-2},{scale:1.04,xPercent:2,duration:2.3,ease:'none'},b2);  // zoom ends ~3.7 → freezes
+      const wuT=[1.51,2.32,3.03];
+      wus.forEach((w,i)=>{
+        tl.fromTo(w,{opacity:0,scale:.55,rotation:i%2?-6:6},{opacity:1,scale:1,rotation:i%2?3:-3,...STAMP},wuT[i]);
+        tl.to(redwash,{opacity:.4,duration:.04},wuT[i]).to(redwash,{opacity:0,duration:.16},wuT[i]+0.06);
+      });
+      // after the signature (~3.7) nothing animates — the player freezes the frame here
+
+      window.__timelines["tesla-rap"]=tl;
+      const q=new URLSearchParams(location.search);
+      if(q.has('t')) tl.seek(parseFloat(q.get('t'))||0);
+      else if(q.get('dev')==='1') tl.play();
+    })();
+    </script>
+  </div>
+</template>
