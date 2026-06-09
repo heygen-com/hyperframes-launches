@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <title>Claude Paper — HyperFrames MCP (full cut)</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #F0EEE6; /* paper — keeps overlapping opaque sections seamless mid-crossfade */
+    }
+    #claude-paper {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #F0EEE6;
+    }
+    /* each section fills the frame; z-index orders the crossfades (later = on top) */
+    #sec-connector { position: absolute; inset: 0; z-index: 1; }
+    #sec-chat      { position: absolute; inset: 0; z-index: 2; }
+    #sec-response  { position: absolute; inset: 0; z-index: 3; }
+    #sec-followup  { position: absolute; inset: 0; z-index: 4; will-change: transform, filter, opacity; }
+    #sec-thinking  { position: absolute; inset: 0; z-index: 5; will-change: transform, filter, opacity; }
+    #sec-compose   { position: absolute; inset: 0; z-index: 6; will-change: transform, filter, opacity; }
+    #sec-sure      { position: absolute; inset: 0; z-index: 7; will-change: transform, filter, opacity; }
+    #sec-thinking2 { position: absolute; inset: 0; z-index: 8; will-change: transform, filter, opacity; }
+    #sec-tasklist  { position: absolute; inset: 0; z-index: 9; will-change: transform, filter, opacity; }
+    #sec-outro     { position: absolute; inset: 0; z-index: 10; will-change: transform, filter, opacity; }
+  </style>
+</head>
+<body>
+  <div
+    id="claude-paper"
+    data-composition-id="claude-paper"
+    data-start="0"
+    data-width="1920"
+    data-height="1080"
+    data-duration="53.3"
+  >
+    <!-- 1 · connector morph: + → tool menu → connectors → Hyperframes ON → prompt box -->
+    <div
+      id="sec-connector"
+      data-composition-id="connector-morph"
+      data-composition-src="compositions/connector-morph.html"
+      data-start="0"
+      data-duration="6.7"
+      data-track-index="1"
+    ></div>
+
+    <!-- 2 · chat: type → send → composer drops to thin bar → thinking -->
+    <div
+      id="sec-chat"
+      data-composition-id="chat-response"
+      data-composition-src="compositions/chat-response.html"
+      data-start="6.7"
+      data-duration="6.9"
+      data-track-index="2"
+    ></div>
+
+    <!-- 3 · response scrolls up; thinking dissolves into the answer at the seam -->
+    <div
+      id="sec-response"
+      data-composition-id="response-scroll"
+      data-composition-src="compositions/response-scroll.html"
+      data-start="13.0"
+      data-duration="6.7"
+      data-track-index="3"
+    ></div>
+
+    <!-- 4 · follow-up: cursor returns, clicks the composer, types the HyperFrames request -->
+    <div
+      id="sec-followup"
+      data-composition-id="followup-type"
+      data-composition-src="compositions/followup-type.html"
+      data-start="19.4"
+      data-duration="6.0"
+      data-track-index="4"
+    ></div>
+
+    <!-- 5 · inverse zoom-through into a GIANT centered Claude thinking (new word sequences) -->
+    <div
+      id="sec-thinking"
+      data-composition-id="thinking-big"
+      data-composition-src="compositions/thinking-big.html"
+      data-start="25.0"
+      data-duration="1.3"
+      data-track-index="5"
+    ></div>
+
+    <!-- 6 · inverse zoom-through into the HyperFrames compose tool UI (Initializing → steps) -->
+    <div
+      id="sec-compose"
+      data-composition-id="compose-ui"
+      data-composition-src="compositions/compose-ui.html"
+      data-start="25.8"
+      data-duration="13.3"
+      data-track-index="6"
+    ></div>
+
+    <!-- 7 · leftward cut-the-curve into the giant Claude reply: "Sure." -->
+    <div
+      id="sec-sure"
+      data-composition-id="sure-response"
+      data-composition-src="compositions/sure-response.html"
+      data-start="38.8"
+      data-duration="0.4"
+      data-track-index="7"
+    ></div>
+
+    <!-- 8 · inverse zoom-through into a GIANT centered Claude thinking: "Making your video…" -->
+    <div
+      id="sec-thinking2"
+      data-composition-id="thinking-big-2"
+      data-composition-src="compositions/thinking-big-2.html"
+      data-start="39.0"
+      data-duration="1.3"
+      data-track-index="9"
+    ></div>
+
+    <!-- 9 · leftward cut-the-curve back into the compose task list, arriving HALFWAY — only the last 3 to-dos cross off -->
+    <div
+      id="sec-tasklist"
+      data-composition-id="compose-tasklist"
+      data-composition-src="compositions/compose-tasklist.html"
+      data-start="40.3"
+      data-duration="9.8"
+      data-track-index="10"
+    ></div>
+
+    <!-- 10 · outro: leftward cut-the-curve → "HyperFrames MCP" → zoom-through "Now natively supported on" → Claude logo -->
+    <div
+      id="sec-outro"
+      data-composition-id="outro"
+      data-composition-src="compositions/outro.html"
+      data-start="49.9"
+      data-duration="3.4"
+      data-track-index="11"
+    ></div>
+
+    <!-- the angry-Scotsman VO plays while the generated video plays inside the compose player, then stops on pause -->
+    <audio
+      id="vo"
+      src="voiceover.mp3"
+      data-start="29.6"
+      data-duration="2.17"
+      data-track-index="8"
+      data-volume="1"
+    ></audio>
+
+    <!-- the neutral presenter VO over the final TSLA explainer (ElevenLabs, 6.41s) -->
+    <audio
+      id="vo-explainer"
+      src="voiceover_explainer.mp3"
+      data-start="42.6"
+      data-duration="6.41"
+      data-track-index="184"
+      data-volume="1"
+    ></audio>
+
+    <!-- click SFX on the download-button tap (cursor press @ 49.3s) -->
+    <audio id="sfx-click-10" src="click.mp3" data-start="49.30" data-duration="0.07" data-track-index="185" data-volume="0.85"></audio>
+
+    <!-- SFX:generated — click.mp3 per click (toggle.mp3 on HF toggle); typenew.mp3 per keystroke, HUMANIZED swell timing -->
+    <audio id="sfx-click-0" src="click.mp3" data-start="1.60" data-duration="0.07" data-track-index="100" data-volume="0.85"></audio>
+    <audio id="sfx-click-1" src="click.mp3" data-start="3.10" data-duration="0.07" data-track-index="101" data-volume="0.85"></audio>
+    <audio id="sfx-toggle" src="toggle.mp3" data-start="4.30" data-duration="2.67" data-track-index="102" data-volume="0.85"></audio>
+    <audio id="sfx-click-3" src="click.mp3" data-start="7.48" data-duration="0.07" data-track-index="103" data-volume="0.85"></audio>
+    <audio id="sfx-click-4" src="click.mp3" data-start="9.93" data-duration="0.07" data-track-index="104" data-volume="0.85"></audio>
+    <audio id="sfx-click-5" src="click.mp3" data-start="20.20" data-duration="0.07" data-track-index="105" data-volume="0.85"></audio>
+    <audio id="sfx-click-6" src="click.mp3" data-start="24.89" data-duration="0.07" data-track-index="106" data-volume="0.85"></audio>
+    <audio id="sfx-click-7" src="click.mp3" data-start="31.77" data-duration="0.07" data-track-index="107" data-volume="0.85"></audio>
+    <audio id="sfx-click-8" src="click.mp3" data-start="33.20" data-duration="0.07" data-track-index="108" data-volume="0.85"></audio>
+    <audio id="sfx-click-9" src="click.mp3" data-start="38.42" data-duration="0.07" data-track-index="183" data-volume="0.85"></audio>
+    <audio id="sfx-type-0" src="typenew.mp3" data-start="7.80" data-duration="0.57" data-track-index="109" data-volume="0.2"></audio>
+    <audio id="sfx-type-1" src="typenew.mp3" data-start="7.94" data-duration="0.57" data-track-index="110" data-volume="0.2"></audio>
+    <audio id="sfx-type-2" src="typenew.mp3" data-start="8.10" data-duration="0.57" data-track-index="111" data-volume="0.2"></audio>
+    <audio id="sfx-type-3" src="typenew.mp3" data-start="8.20" data-duration="0.57" data-track-index="112" data-volume="0.2"></audio>
+    <audio id="sfx-type-4" src="typenew.mp3" data-start="8.30" data-duration="0.57" data-track-index="113" data-volume="0.2"></audio>
+    <audio id="sfx-type-5" src="typenew.mp3" data-start="8.44" data-duration="0.57" data-track-index="114" data-volume="0.2"></audio>
+    <audio id="sfx-type-6" src="typenew.mp3" data-start="8.54" data-duration="0.57" data-track-index="115" data-volume="0.2"></audio>
+    <audio id="sfx-type-7" src="typenew.mp3" data-start="8.61" data-duration="0.57" data-track-index="116" data-volume="0.2"></audio>
+    <audio id="sfx-type-8" src="typenew.mp3" data-start="8.72" data-duration="0.57" data-track-index="117" data-volume="0.2"></audio>
+    <audio id="sfx-type-9" src="typenew.mp3" data-start="8.84" data-duration="0.57" data-track-index="118" data-volume="0.2"></audio>
+    <audio id="sfx-type-10" src="typenew.mp3" data-start="8.91" data-duration="0.57" data-track-index="119" data-volume="0.2"></audio>
+    <audio id="sfx-type-11" src="typenew.mp3" data-start="9.01" data-duration="0.57" data-track-index="120" data-volume="0.2"></audio>
+    <audio id="sfx-type-12" src="typenew.mp3" data-start="9.15" data-duration="0.57" data-track-index="121" data-volume="0.2"></audio>
+    <audio id="sfx-type-13" src="typenew.mp3" data-start="9.24" data-duration="0.57" data-track-index="122" data-volume="0.2"></audio>
+    <audio id="sfx-type-14" src="typenew.mp3" data-start="9.34" data-duration="0.57" data-track-index="123" data-volume="0.2"></audio>
+    <audio id="sfx-type-15" src="typenew.mp3" data-start="9.51" data-duration="0.57" data-track-index="124" data-volume="0.2"></audio>
+    <audio id="sfx-type-16" src="typenew.mp3" data-start="20.80" data-duration="0.57" data-track-index="125" data-volume="0.2"></audio>
+    <audio id="sfx-type-17" src="typenew.mp3" data-start="20.94" data-duration="0.57" data-track-index="126" data-volume="0.2"></audio>
+    <audio id="sfx-type-18" src="typenew.mp3" data-start="21.11" data-duration="0.57" data-track-index="127" data-volume="0.2"></audio>
+    <audio id="sfx-type-19" src="typenew.mp3" data-start="21.20" data-duration="0.57" data-track-index="128" data-volume="0.2"></audio>
+    <audio id="sfx-type-20" src="typenew.mp3" data-start="21.30" data-duration="0.57" data-track-index="129" data-volume="0.2"></audio>
+    <audio id="sfx-type-21" src="typenew.mp3" data-start="21.44" data-duration="0.57" data-track-index="130" data-volume="0.2"></audio>
+    <audio id="sfx-type-22" src="typenew.mp3" data-start="21.54" data-duration="0.57" data-track-index="131" data-volume="0.2"></audio>
+    <audio id="sfx-type-23" src="typenew.mp3" data-start="21.61" data-duration="0.57" data-track-index="132" data-volume="0.2"></audio>
+    <audio id="sfx-type-24" src="typenew.mp3" data-start="21.73" data-duration="0.57" data-track-index="133" data-volume="0.2"></audio>
+    <audio id="sfx-type-25" src="typenew.mp3" data-start="21.84" data-duration="0.57" data-track-index="134" data-volume="0.2"></audio>
+    <audio id="sfx-type-26" src="typenew.mp3" data-start="21.91" data-duration="0.57" data-track-index="135" data-volume="0.2"></audio>
+    <audio id="sfx-type-27" src="typenew.mp3" data-start="22.03" data-duration="0.57" data-track-index="136" data-volume="0.2"></audio>
+    <audio id="sfx-type-28" src="typenew.mp3" data-start="22.17" data-duration="0.57" data-track-index="137" data-volume="0.2"></audio>
+    <audio id="sfx-type-29" src="typenew.mp3" data-start="22.27" data-duration="0.57" data-track-index="138" data-volume="0.2"></audio>
+    <audio id="sfx-type-30" src="typenew.mp3" data-start="22.38" data-duration="0.57" data-track-index="139" data-volume="0.2"></audio>
+    <audio id="sfx-type-31" src="typenew.mp3" data-start="22.64" data-duration="0.57" data-track-index="140" data-volume="0.2"></audio>
+    <audio id="sfx-type-32" src="typenew.mp3" data-start="22.78" data-duration="0.57" data-track-index="141" data-volume="0.2"></audio>
+    <audio id="sfx-type-33" src="typenew.mp3" data-start="22.94" data-duration="0.57" data-track-index="142" data-volume="0.2"></audio>
+    <audio id="sfx-type-34" src="typenew.mp3" data-start="23.03" data-duration="0.57" data-track-index="143" data-volume="0.2"></audio>
+    <audio id="sfx-type-35" src="typenew.mp3" data-start="23.12" data-duration="0.57" data-track-index="144" data-volume="0.2"></audio>
+    <audio id="sfx-type-36" src="typenew.mp3" data-start="23.25" data-duration="0.57" data-track-index="145" data-volume="0.2"></audio>
+    <audio id="sfx-type-37" src="typenew.mp3" data-start="23.35" data-duration="0.57" data-track-index="146" data-volume="0.2"></audio>
+    <audio id="sfx-type-38" src="typenew.mp3" data-start="23.42" data-duration="0.57" data-track-index="147" data-volume="0.2"></audio>
+    <audio id="sfx-type-39" src="typenew.mp3" data-start="23.56" data-duration="0.57" data-track-index="148" data-volume="0.2"></audio>
+    <audio id="sfx-type-40" src="typenew.mp3" data-start="23.70" data-duration="0.57" data-track-index="149" data-volume="0.2"></audio>
+    <audio id="sfx-type-41" src="typenew.mp3" data-start="33.57" data-duration="0.57" data-track-index="150" data-volume="0.2"></audio>
+    <audio id="sfx-type-42" src="typenew.mp3" data-start="33.71" data-duration="0.57" data-track-index="151" data-volume="0.2"></audio>
+    <audio id="sfx-type-43" src="typenew.mp3" data-start="33.89" data-duration="0.57" data-track-index="152" data-volume="0.2"></audio>
+    <audio id="sfx-type-44" src="typenew.mp3" data-start="34.00" data-duration="0.57" data-track-index="153" data-volume="0.2"></audio>
+    <audio id="sfx-type-45" src="typenew.mp3" data-start="34.10" data-duration="0.57" data-track-index="154" data-volume="0.2"></audio>
+    <audio id="sfx-type-46" src="typenew.mp3" data-start="34.27" data-duration="0.57" data-track-index="155" data-volume="0.2"></audio>
+    <audio id="sfx-type-47" src="typenew.mp3" data-start="34.39" data-duration="0.57" data-track-index="156" data-volume="0.2"></audio>
+    <audio id="sfx-type-48" src="typenew.mp3" data-start="34.47" data-duration="0.57" data-track-index="157" data-volume="0.2"></audio>
+    <audio id="sfx-type-49" src="typenew.mp3" data-start="34.61" data-duration="0.57" data-track-index="158" data-volume="0.2"></audio>
+    <audio id="sfx-type-50" src="typenew.mp3" data-start="34.74" data-duration="0.57" data-track-index="159" data-volume="0.2"></audio>
+    <audio id="sfx-type-51" src="typenew.mp3" data-start="34.81" data-duration="0.57" data-track-index="160" data-volume="0.2"></audio>
+    <audio id="sfx-type-52" src="typenew.mp3" data-start="34.93" data-duration="0.57" data-track-index="161" data-volume="0.2"></audio>
+    <audio id="sfx-type-53" src="typenew.mp3" data-start="35.06" data-duration="0.57" data-track-index="162" data-volume="0.2"></audio>
+    <audio id="sfx-type-54" src="typenew.mp3" data-start="35.14" data-duration="0.57" data-track-index="163" data-volume="0.2"></audio>
+    <audio id="sfx-type-55" src="typenew.mp3" data-start="35.23" data-duration="0.57" data-track-index="164" data-volume="0.2"></audio>
+    <audio id="sfx-type-56" src="typenew.mp3" data-start="35.36" data-duration="0.57" data-track-index="165" data-volume="0.2"></audio>
+    <audio id="sfx-type-57" src="typenew.mp3" data-start="35.46" data-duration="0.57" data-track-index="166" data-volume="0.2"></audio>
+    <audio id="sfx-type-58" src="typenew.mp3" data-start="35.53" data-duration="0.57" data-track-index="167" data-volume="0.2"></audio>
+    <audio id="sfx-type-59" src="typenew.mp3" data-start="35.66" data-duration="0.57" data-track-index="168" data-volume="0.2"></audio>
+    <audio id="sfx-type-60" src="typenew.mp3" data-start="35.77" data-duration="0.57" data-track-index="169" data-volume="0.2"></audio>
+    <audio id="sfx-type-61" src="typenew.mp3" data-start="35.84" data-duration="0.57" data-track-index="170" data-volume="0.2"></audio>
+    <audio id="sfx-type-62" src="typenew.mp3" data-start="35.95" data-duration="0.57" data-track-index="171" data-volume="0.2"></audio>
+    <audio id="sfx-type-63" src="typenew.mp3" data-start="36.08" data-duration="0.57" data-track-index="172" data-volume="0.2"></audio>
+    <audio id="sfx-type-64" src="typenew.mp3" data-start="36.16" data-duration="0.57" data-track-index="173" data-volume="0.2"></audio>
+    <audio id="sfx-type-65" src="typenew.mp3" data-start="36.26" data-duration="0.57" data-track-index="174" data-volume="0.2"></audio>
+    <audio id="sfx-type-66" src="typenew.mp3" data-start="36.41" data-duration="0.57" data-track-index="175" data-volume="0.2"></audio>
+    <audio id="sfx-type-67" src="typenew.mp3" data-start="36.51" data-duration="0.57" data-track-index="176" data-volume="0.2"></audio>
+    <audio id="sfx-type-68" src="typenew.mp3" data-start="36.60" data-duration="0.57" data-track-index="177" data-volume="0.2"></audio>
+    <audio id="sfx-type-69" src="typenew.mp3" data-start="36.76" data-duration="0.57" data-track-index="178" data-volume="0.2"></audio>
+    <audio id="sfx-type-70" src="typenew.mp3" data-start="36.89" data-duration="0.57" data-track-index="179" data-volume="0.2"></audio>
+    <audio id="sfx-type-71" src="typenew.mp3" data-start="36.98" data-duration="0.57" data-track-index="180" data-volume="0.2"></audio>
+    <audio id="sfx-type-72" src="typenew.mp3" data-start="37.13" data-duration="0.57" data-track-index="181" data-volume="0.2"></audio>
+    <audio id="sfx-type-73" src="typenew.mp3" data-start="37.30" data-duration="0.57" data-track-index="182" data-volume="0.2"></audio>
+
+  </div>
+
+  <script>
+    // Master timeline drives ONLY the cross-section opacity crossfades (no padding).
+    // Section visibility windows are owned by the framework; we only blend the seams.
+    window.__timelines = window.__timelines || {};
+    const rootTimeline = gsap.timeline({ paused: true });
+
+    // seam 1 (connector → chat) is a HARD CUT at 6.7s — comp1's end composer is built to match
+    // comp2's composer pixel-for-pixel (layout, weight, shadow, cursor), so no blend is needed.
+
+    // only the response section needs to start hidden (for the seam-2 crossfade)
+    rootTimeline.set("#sec-response", { opacity: 0 }, 0);
+
+    // seam 2 (chat → response): thinking dissolves out as the answer fades in (message + composer
+    // sit at identical positions in both, so they stay rock-steady through the 0.6s crossfade)
+    rootTimeline.to("#sec-response", { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 13.0);
+    rootTimeline.to("#sec-chat", { opacity: 0, duration: 0.6, ease: "power1.inOut" }, 13.0);
+
+    // seam 3 (follow-up → thinking) = INVERSE zoom-through. Outbound scene scales DOWN (recedes +
+    // blurs + dims); hard cut at peak blur; the giant thinking enters scaled UP (1.25) and settles
+    // to 1. Both move in the shrinking direction (velocity-matched), just like zoom-through reversed.
+    rootTimeline.set("#sec-thinking", { opacity: 0 }, 0);
+    const CUT = 25.2;
+    rootTimeline.to("#sec-followup", { scale: 0.8, filter: "blur(20px)", duration: 0.2, ease: "power3.in" }, CUT - 0.2);
+    rootTimeline.to("#sec-followup", { opacity: 0.15, duration: 0.2, ease: "none" }, CUT - 0.2);
+    rootTimeline.set("#sec-followup", { opacity: 0 }, CUT);
+    rootTimeline.set("#sec-thinking", { opacity: 0.15, scale: 1.25, filter: "blur(20px)" }, CUT);
+    rootTimeline.to("#sec-thinking", { scale: 1, filter: "blur(0px)", opacity: 1, duration: 0.5, ease: "expo.out" }, CUT);
+
+    // seam 4 (thinking → compose UI) = same INVERSE zoom-through. Each thinking word holds ~0.7s;
+    // after "Rendering" the giant thinking scales down + blurs out, then the compose tool window
+    // enters scaled up (1.25) and settles to its 75% size.
+    rootTimeline.set("#sec-compose", { opacity: 0 }, 0);
+    const CUT2 = 26.0;
+    rootTimeline.to("#sec-thinking", { scale: 0.8, filter: "blur(20px)", duration: 0.2, ease: "power3.in" }, CUT2 - 0.2);
+    rootTimeline.to("#sec-thinking", { opacity: 0.15, duration: 0.2, ease: "none" }, CUT2 - 0.2);
+    rootTimeline.set("#sec-thinking", { opacity: 0 }, CUT2);
+    rootTimeline.set("#sec-compose", { opacity: 0.15, scale: 1.25, filter: "blur(20px)" }, CUT2);
+    rootTimeline.to("#sec-compose", { scale: 1, filter: "blur(0px)", opacity: 1, duration: 0.5, ease: "expo.out" }, CUT2);
+
+    // seam 5 (compose → "Sure.") = a LEFTWARD CUT THE CURVE. After the cursor taps send it sweeps
+    // left and accelerates off-frame; we HARD-CUT mid-sweep (no transition frames) to the giant
+    // Claude reply, which is already sliding left (entering from the right) so the motion carries.
+    rootTimeline.set("#sec-sure", { opacity: 0 }, 0);
+    const CUT3 = 38.8;
+    // outgoing: the whole compose scene THROWS left, accelerating into the cut (power2.in), so it's
+    // moving when we cut — velocity carries into "Sure." sliding left. Behind it is only paper, so
+    // the exposed right edge stays seamless. Cut mid-throw (scene still mostly on-frame).
+    rootTimeline.to("#sec-compose", { xPercent: -13, duration: 0.26, ease: "power2.in" }, CUT3 - 0.26);
+    // …and fades 1 → 0.55 as it goes — the exact inverse of "Sure." fading 0.55 → 1 on entry.
+    rootTimeline.to("#sec-compose", { opacity: 0.55, duration: 0.26, ease: "power2.in" }, CUT3 - 0.26);
+    rootTimeline.set("#sec-compose", { opacity: 0 }, CUT3);
+    rootTimeline.set("#sec-sure", { opacity: 1 }, CUT3);
+
+    // seam 6 ("Sure." → thinking "Making your video…") = INVERSE zoom-through, identical to seams 3/4.
+    // "Sure." scales DOWN (recedes + blurs + dims); hard cut at peak blur; the giant thinking enters
+    // scaled UP (1.25) and settles to 1. Both move in the shrinking direction (velocity-matched).
+    rootTimeline.set("#sec-thinking2", { opacity: 0 }, 0);
+    const CUT4 = 39.2;
+    rootTimeline.to("#sec-sure", { scale: 0.8, filter: "blur(20px)", duration: 0.2, ease: "power3.in" }, CUT4 - 0.2);
+    rootTimeline.to("#sec-sure", { opacity: 0.15, duration: 0.2, ease: "none" }, CUT4 - 0.2);
+    rootTimeline.set("#sec-sure", { opacity: 0 }, CUT4);
+    rootTimeline.set("#sec-thinking2", { opacity: 0.15, scale: 1.25, filter: "blur(20px)" }, CUT4);
+    rootTimeline.to("#sec-thinking2", { scale: 1, filter: "blur(0px)", opacity: 1, duration: 0.5, ease: "expo.out" }, CUT4);
+
+    // seam 7 ("Making your video…" → compose task list) = LEFTWARD CUT THE CURVE, same as seam 5.
+    // "Making your video…" THROWS left (accelerating into the cut) and fades 1 → 0.55; we HARD-CUT
+    // mid-throw to the task list, which is already sliding left (its window enters x:210 → 0, 0.55 → 1)
+    // so the leftward motion carries across the cut. Behind both is paper, so exposed edges stay seamless.
+    rootTimeline.set("#sec-tasklist", { opacity: 0 }, 0);
+    const CUT5 = 40.3;
+    rootTimeline.to("#sec-thinking2", { xPercent: -13, duration: 0.26, ease: "power2.in" }, CUT5 - 0.26);
+    rootTimeline.to("#sec-thinking2", { opacity: 0.55, duration: 0.26, ease: "power2.in" }, CUT5 - 0.26);
+    rootTimeline.set("#sec-thinking2", { opacity: 0 }, CUT5);
+    rootTimeline.set("#sec-tasklist", { opacity: 1 }, CUT5);
+
+    // seam 8 (compose task list → outro) = LEFTWARD CUT THE CURVE, same as seams 5/6. Right after the
+    // cursor taps download, the whole compose card THROWS left (accelerating) + fades 1 → 0.55; we
+    // HARD-CUT mid-throw to the outro, whose "HyperFrames MCP" title is already sliding left (entering
+    // from the right) so the motion carries. Exposed edges are paper, so the seam stays seamless.
+    rootTimeline.set("#sec-outro", { opacity: 0 }, 0);
+    const CUT6 = 49.9;
+    rootTimeline.to("#sec-tasklist", { xPercent: -13, duration: 0.26, ease: "power2.in" }, CUT6 - 0.26);
+    rootTimeline.to("#sec-tasklist", { opacity: 0.55, duration: 0.26, ease: "power2.in" }, CUT6 - 0.26);
+    rootTimeline.set("#sec-tasklist", { opacity: 0 }, CUT6);
+    rootTimeline.set("#sec-outro", { opacity: 1 }, CUT6);
+
+    window.__timelines["claude-paper"] = rootTimeline;
+  </script>
+</body>
+</html>

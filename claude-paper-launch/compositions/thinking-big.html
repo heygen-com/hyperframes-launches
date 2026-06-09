@@ -1,0 +1,265 @@
+<template id="thinking-big-template">
+  <div id="t5-root" data-composition-id="thinking-big" data-width="1920" data-height="1080" data-duration="1.3">
+    <style>
+      /* local fonts (captured woff2, font-display:block) */
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-400-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-500-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-600-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 700;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-700-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 700;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: italic;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-italic-400-latin-ext-e36b6b.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: italic;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-italic-400-latin-78bd98.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: italic;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-italic-500-latin-ext-e36b6b.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: italic;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-italic-500-latin-78bd98.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-400-latin-ext-7a09be.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-400-latin-f0c28d.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-500-latin-ext-7a09be.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-500-latin-f0c28d.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-600-latin-ext-7a09be.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-600-latin-f0c28d.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Spline Sans Mono';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/SplineSansMono-normal-400-latin-ext-62a811.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Spline Sans Mono';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/SplineSansMono-normal-400-latin-53329b.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Spline Sans Mono';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/SplineSansMono-normal-500-latin-ext-62a811.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Spline Sans Mono';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+
+      @font-face {
+        font-family: 'Galaxie Copernicus';
+        font-style: normal;
+        font-weight: 400 600;
+        font-display: block;
+        src: url(fonts/GalaxieCopernicus-Book.woff2) format('woff2');
+      }
+
+      #t5-root{
+        --paper:#F0EEE6; --ink:#262624; --muted:#6F6E66; --clay:#D97757;
+        --f-body:"Hanken Grotesk","Inter",system-ui,sans-serif;
+        --f-serif:"Galaxie Copernicus","Newsreader",Georgia,serif;
+        position:relative;width:1920px;height:1080px;overflow:hidden;
+        background:var(--paper);container-type:size;font-family:var(--f-body);color:var(--ink);
+      }
+      #t5-root *,#t5-root *::before,#t5-root *::after{box-sizing:border-box;margin:0;padding:0}
+      #t5-root::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
+        background:radial-gradient(circle, rgba(38,36,30,.025) 1px, transparent 1px) 0 0/34px 34px}
+
+      /* giant thinking, centered — burst INLINE with a much larger word (logo beside the text) */
+      #t5-root .stage{position:absolute;inset:0;z-index:1;display:grid;place-items:center}
+      #t5-root .row{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:2.5cqw;transform:scale(0.9)}
+      #t5-root .burst{width:14cqw;height:14cqw;display:block;flex:0 0 auto;transform:translateY(-40px)}  /* raised 40px above the text line */
+      #t5-root .tk{position:relative;height:13cqw;display:flex;align-items:center;transform:translateY(-40px)}  /* raised to sit inline with the lottie */
+      #t5-root .tk .unit{position:relative;height:100%;display:flex;align-items:center;white-space:nowrap;
+        font-family:var(--f-serif);font-style:normal;font-weight:700;font-size:9.5cqw;line-height:1;
+        background:linear-gradient(100deg,#33312C 0%,#33312C 40%,#C9C5BB 50%,#33312C 60%,#33312C 100%);
+        background-size:280% 100%;background-position:140% 0;
+        -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+    </style>
+
+    <div class="stage">
+      <div class="row">
+        <div class="burst" id="burst"></div>
+        <div class="tk" id="tk"></div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.14/lottie.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+    window.__timelines = window.__timelines || {};
+    (function(){
+      const root=document.querySelector('[data-composition-id="thinking-big"]');
+      const burst=root.querySelector('#burst'), tk=root.querySelector('#tk');
+
+      // three NEW thinking words (the video-making beat), different from scene 2
+      const WORDS=["Getting started"];
+      tk.innerHTML=WORDS.map(w=>`<span class="unit">${w}<span class="el">…</span></span>`).join('');
+      const units=Array.from(tk.querySelectorAll('.unit'));
+
+      // Lottie thinking logo, timeline-driven (autoplay off; neutralize goToAndStop; step via onUpdate)
+      const animData = {"v":"5.12.1","fr":30,"ip":0,"op":91,"w":500,"h":500,"nm":"Looping Icon","assets":[],"layers":[{"ind":1,"ty":4,"nm":"Alpha","td":1,"sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":0,"k":[256.903,250.352,0],"l":2},"a":{"a":0,"k":[6.903,0.352,0],"l":2},"s":{"a":0,"k":[100,100,100],"l":2}},"ao":0,"shapes":[{"ty":"gr","it":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[-13.2,0],[0,-13.2],[13.2,0],[0,13.2]],"o":[[13.2,0],[0,13.2],[-13.2,0],[0,-13.2]],"v":[[0,-23.901],[23.901,0],[0,23.901],[-23.901,0]],"c":true}},"nm":"Path 1"},{"ty":"fl","c":{"a":0,"k":[1,1,1,1]},"o":{"a":0,"k":100},"r":1,"nm":"Fill 1"},{"ty":"tr","p":{"a":0,"k":[-306.025,1.901]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"Transform"}],"nm":"Ellipse 1"},{"ty":"gr","it":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-297.393,-102.816],[-308.666,1.836]],"c":false}},"nm":"Path 1"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":23},"lc":2,"lj":2,"nm":"Stroke 1"},{"ty":"tm","s":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":0,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":15,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":30,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":45,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":60,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":75,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":90,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":105,"s":[50]},{"t":120,"s":[0]}]},"e":{"a":0,"k":100},"o":{"a":0,"k":0},"m":1,"nm":"Trim Paths 1"},{"ty":"tr","p":{"a":0,"k":[-309.143,1.714]},"a":{"a":0,"k":[-309.143,1.714]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":326.292},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"Transform"}],"nm":"Shape 12"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-297.473,-99.568],[-309.837,1.389]],"c":false}},"nm":"Path 1"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":20},"lc":2,"lj":2,"nm":"Stroke 1"},{"ty":"tm","s":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-3,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":12,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":27,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":42,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":57,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":72,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":87,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":102,"s":[50]},{"t":117,"s":[0]}]},"e":{"a":0,"k":100},"o":{"a":0,"k":0},"m":1,"nm":"Trim Paths 1"},{"ty":"tr","p":{"a":0,"k":[-309.143,1.714]},"a":{"a":0,"k":[-309.143,1.714]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":298.473},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"Transform"}],"nm":"Shape 11"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-298.826,-92.046],[-310.729,1.794]],"c":false}},"nm":"Path 1"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":13},"lc":2,"lj":2,"nm":"Stroke 1"},{"ty":"tm","s":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-6,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":9,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":24,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":39,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":54,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":69,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":84,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":99,"s":[50]},{"t":114,"s":[0]}]},"e":{"a":0,"k":100},"o":{"a":0,"k":0},"m":1,"nm":"Trim Paths 1"},{"ty":"tr","p":{"a":0,"k":[-309.143,1.714]},"a":{"a":0,"k":[-309.143,1.714]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":265.648},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"Transform"}],"nm":"Shape 10"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-298.343,-84.789],[-311.204,2.329]],"c":false}},"nm":"Path 1"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":16},"lc":2,"lj":2,"nm":"Stroke 1"},{"ty":"tm","s":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-9,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":6,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":21,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":36,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":51,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":66,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":81,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":96,"s":[50]},{"t":111,"s":[0]}]},"e":{"a":0,"k":100},"o":{"a":0,"k":0},"m":1,"nm":"Trim Paths 1"},{"ty":"tr","p":{"a":0,"k":[-309.143,1.714]},"a":{"a":0,"k":[-309.143,1.714]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":231.514},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"Transform"}],"nm":"Shape 9"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-296.336,-93.091],[-313.389,-0.392]],"c":false}},"nm":"Path 1"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":13},"lc":2,"lj":2,"nm":"Stroke 1"},{"ty":"tm","s":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-12,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":3,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":18,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":33,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":48,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":63,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":78,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":93,"s":[50]},{"t":108,"s":[0]}]},"e":{"a":0,"k":100},"o":{"a":0,"k":0},"m":1,"nm":"Trim Paths 1"},{"ty":"tr","p":{"a":0,"k":[-309.143,1.714]},"a":{"a":0,"k":[-309.143,1.714]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":207.774},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"Transform"}],"nm":"Shape 8"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-298.959,-88.866],[-311.503,0.848]],"c":false}},"nm":"Path 1"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":16},"lc":2,"lj":2,"nm":"Stroke 1"},{"ty":"tm","s":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-15,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":0,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":15,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":30,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":45,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":60,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":75,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":90,"s":[50]},{"t":105,"s":[0]}]},"e":{"a":0,"k":100},"o":{"a":0,"k":0},"m":1,"nm":"Trim Paths 1"},{"ty":"tr","p":{"a":0,"k":[-309.143,1.714]},"a":{"a":0,"k":[-309.143,1.714]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":178.941},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"Transform"}],"nm":"Shape 7"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-299.045,-95.639],[-306.216,1.452]],"c":false}},"nm":"Path 1"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":16},"lc":2,"lj":2,"nm":"Stroke 1"},{"ty":"tm","s":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-18,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-3,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":12,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":27,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":42,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":57,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":72,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":87,"s":[50]},{"t":102,"s":[0]}]},"e":{"a":0,"k":100},"o":{"a":0,"k":0},"m":1,"nm":"Trim Paths 1"},{"ty":"tr","p":{"a":0,"k":[-309.143,1.714]},"a":{"a":0,"k":[-309.143,1.714]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":143.047},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"Transform"}],"nm":"Shape 6"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-296.057,-102.568],[-308.171,1.094]],"c":false}},"nm":"Path 1"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":12},"lc":2,"lj":2,"nm":"Stroke 1"},{"ty":"tm","s":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-21,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-6,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":9,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":24,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":39,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":54,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":69,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":84,"s":[50]},{"t":99,"s":[0]}]},"e":{"a":0,"k":100},"o":{"a":0,"k":0},"m":1,"nm":"Trim Paths 1"},{"ty":"tr","p":{"a":0,"k":[-309.143,1.714]},"a":{"a":0,"k":[-309.143,1.714]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":123.897},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"Transform"}],"nm":"Shape 5"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-297.558,-92.873],[-308.46,-3.681]],"c":false}},"nm":"Path 1"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":16},"lc":2,"lj":2,"nm":"Stroke 1"},{"ty":"tm","s":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-24,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-9,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":6,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":21,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":36,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":51,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":66,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":81,"s":[50]},{"t":96,"s":[0]}]},"e":{"a":0,"k":100},"o":{"a":0,"k":0},"m":1,"nm":"Trim Paths 1"},{"ty":"tr","p":{"a":0,"k":[-309.143,1.714]},"a":{"a":0,"k":[-309.143,1.714]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":94.293},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"Transform"}],"nm":"Shape 4"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-296.057,-102.568],[-308.76,-0.724]],"c":false}},"nm":"Path 1"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":15},"lc":2,"lj":2,"nm":"Stroke 1"},{"ty":"tm","s":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-27,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-12,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":3,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":18,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":33,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":48,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":63,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":78,"s":[50]},{"t":93,"s":[0]}]},"e":{"a":0,"k":100},"o":{"a":0,"k":0},"m":1,"nm":"Trim Paths 1"},{"ty":"tr","p":{"a":0,"k":[-309.143,1.714]},"a":{"a":0,"k":[-309.143,1.714]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":72.416},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"Transform"}],"nm":"Shape 3"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-296.057,-102.568],[-305.664,-4.469]],"c":false}},"nm":"Path 1"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":22},"lc":2,"lj":2,"nm":"Stroke 1"},{"ty":"tm","s":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-30,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-15,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":0,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":15,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":30,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":45,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":60,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":75,"s":[50]},{"t":90,"s":[0]}]},"e":{"a":0,"k":100},"o":{"a":0,"k":0},"m":1,"nm":"Trim Paths 1"},{"ty":"tr","p":{"a":0,"k":[-309.143,1.714]},"a":{"a":0,"k":[-309.143,1.714]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":32.628},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"Transform"}],"nm":"Shape 2"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-296.057,-91.235],[-308.171,1.094]],"c":false}},"nm":"Path 1"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":16},"lc":2,"lj":2,"nm":"Stroke 1"},{"ty":"tm","s":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-33,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-18,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":-3,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":12,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":27,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":42,"s":[50]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":57,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":72,"s":[50]},{"t":87,"s":[0]}]},"e":{"a":0,"k":100},"o":{"a":0,"k":0},"m":1,"nm":"Trim Paths 1"},{"ty":"tr","p":{"a":0,"k":[-309.143,1.714]},"a":{"a":0,"k":[-309.143,1.714]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"Transform"}],"nm":"Shape 1"},{"ty":"tr","p":{"a":0,"k":[-304.597,0.352]},"a":{"a":0,"k":[-304.597,0.352]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"Transform"}],"nm":"Group 1"},{"ty":"tr","p":{"a":0,"k":[4.465,3.008]},"a":{"a":0,"k":[-307.035,3.008]},"s":{"a":0,"k":[250,250]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"Transform"}],"nm":"Group 1"}],"ip":0,"op":150,"st":0,"ct":1},{"ind":2,"ty":4,"nm":"icon","tt":1,"tp":1,"sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":0,"k":[248.754,250,0],"l":2},"a":{"a":0,"k":[397.236,85.8,0],"l":2},"s":{"a":0,"k":[100,100,100],"l":2}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,1.861],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[-0.432,-1.818],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"v":[[-51.941,28.199],[-18.31,9.327],[-17.747,7.683],[-18.31,6.774],[-19.954,6.774],[-25.581,6.427],[-44.799,5.908],[-61.463,5.215],[-77.607,4.35],[-81.676,3.484],[-85.486,-1.537],[-85.096,-4.047],[-81.676,-6.341],[-76.786,-5.909],[-65.965,-5.173],[-49.734,-4.047],[-37.96,-3.355],[-20.517,-1.537],[-17.747,-1.537],[-17.357,-2.662],[-18.31,-3.355],[-19.045,-4.047],[-35.839,-15.431],[-54.019,-27.464],[-63.541,-34.389],[-68.691,-37.895],[-71.288,-41.185],[-72.413,-48.37],[-67.74,-53.521],[-61.463,-53.088],[-59.862,-52.655],[-53.499,-47.764],[-39.908,-37.246],[-22.162,-24.174],[-19.565,-22.01],[-18.526,-22.746],[-18.396,-23.265],[-19.565,-25.213],[-29.217,-42.656],[-39.519,-60.403],[-44.107,-67.761],[-45.319,-72.176],[-46.054,-77.37],[-40.73,-84.598],[-37.787,-85.55],[-30.689,-84.598],[-27.702,-82.001],[-23.287,-71.916],[-16.145,-56.031],[-5.065,-34.432],[-1.819,-28.026],[-0.087,-22.097],[0.562,-20.279],[1.688,-20.279],[1.688,-21.318],[2.596,-33.48],[4.285,-48.413],[5.93,-67.631],[6.493,-73.041],[9.176,-79.534],[14.5,-83.04],[18.655,-81.049],[22.075,-76.158],[21.599,-72.998],[19.564,-59.797],[15.582,-39.107],[12.985,-25.256],[14.5,-25.256],[16.232,-26.988],[23.243,-36.294],[35.017,-51.01],[40.211,-56.853],[46.271,-63.303],[50.166,-66.376],[57.523,-66.376],[62.935,-58.325],[60.51,-50.015],[52.936,-40.406],[46.66,-32.268],[37.657,-20.149],[32.03,-10.453],[32.549,-9.674],[33.891,-9.804],[54.235,-14.132],[65.229,-16.123],[78.344,-18.374],[84.273,-15.604],[84.923,-12.791],[82.586,-7.034],[68.562,-3.571],[52.114,-0.282],[27.615,5.518],[27.312,5.735],[27.659,6.168],[38.696,7.206],[43.413,7.466],[54.971,7.466],[76.483,9.068],[82.108,12.79],[85.486,17.335],[84.923,20.797],[76.266,25.212],[64.579,22.442],[37.311,15.95],[27.962,13.612],[26.663,13.612],[26.663,14.392],[34.454,22.009],[48.738,34.908],[66.614,51.529],[67.523,55.641],[65.229,58.887],[62.805,58.541],[47.092,46.724],[41.032,41.4],[27.312,29.844],[26.403,29.844],[26.403,31.056],[29.562,35.687],[46.271,60.792],[47.135,68.496],[45.924,71.006],[41.596,72.521],[36.835,71.656],[27.053,57.935],[16.967,42.483],[8.829,28.632],[7.835,29.195],[3.03,80.918],[0.779,83.559],[-4.416,85.55],[-8.744,82.26],[-11.038,76.936],[-8.744,66.418],[-5.974,52.698],[-3.723,41.79],[-1.689,28.242],[-0.477,23.741],[-0.563,23.438],[-1.559,23.568],[-11.774,37.592],[-27.313,58.584],[-39.605,71.742],[-42.548,72.911],[-47.656,70.271],[-47.18,65.553],[-44.323,61.354],[-27.313,39.712],[-17.054,26.294],[-10.432,18.547],[-10.475,17.421],[-10.865,17.421],[-56.053,46.768],[-64.104,47.806],[-67.566,44.56],[-67.133,39.236],[-65.489,37.505],[-51.898,28.156]],"c":true}},"nm":"Path 1"},{"ty":"fl","c":{"a":0,"k":[0.851,0.467,0.341,1]},"o":{"a":0,"k":100},"r":1,"nm":"Fill 1"},{"ty":"tr","p":{"a":0,"k":[402.923,88.769]},"a":{"a":0,"k":[5.688,2.969]},"s":{"a":0,"k":[250,250]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"Transform"}],"nm":"icon"}],"ip":0,"op":150,"st":0,"ct":1}],"markers":[]};
+      let setThinkFrame=()=>{};
+      try{ if(window.lottie&&animData){
+        const anim=window.lottie.loadAnimation({container:burst,renderer:'svg',loop:false,autoplay:false,animationData:animData});
+        const orig=anim.goToAndStop.bind(anim);
+        setThinkFrame=(f)=>{ try{ orig(f,true); }catch(e){} };
+        anim.goToAndStop=function(){};
+        anim.addEventListener('DOMLoaded',()=>setThinkFrame(0));
+      } }catch(e){}
+
+      gsap.set(units,{opacity:0});
+
+      const tl=gsap.timeline({paused:true});
+      // drive the burst frame across the scene (deterministic in render)
+      const bf={frame:0};
+      tl.to(bf,{frame:55,duration:1.1,ease:'none',onUpdate:()=>setThinkFrame(bf.frame)},0.1);
+      // light-band shimmer sweeps across the word
+      tl.fromTo(units,{backgroundPosition:'140% 0'},{backgroundPosition:'-140% 0',duration:.85,ease:'none',repeat:1},0.2);
+      // single word "Getting started…" — enters with the first-word morph, holds; the scene zoom-out
+      // (root) carries it off (same exit as the last word currently). ~1s on screen.
+      gsap.set(units,{transformOrigin:'0% 50%'});
+      tl.fromTo(units[0],{opacity:0,scale:1.12,filter:'blur(12px)'},{opacity:1,scale:1,filter:'blur(0px)',duration:.4,ease:'power3.out'},0.2);
+      tl.to(burst,{opacity:1,duration:.3},1.0);   // hold to end (timeline ≈ data-duration)
+
+      window.__timelines["thinking-big"]=tl;
+      const q=new URLSearchParams(location.search);
+      if(q.has('t')) tl.seek(parseFloat(q.get('t'))||0);
+      else if(q.get('dev')==='1') tl.play();
+    })();
+    </script>
+  </div>
+</template>

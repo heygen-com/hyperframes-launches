@@ -1,0 +1,617 @@
+<template id="compose-ui-template">
+  <div id="c6-root" data-composition-id="compose-ui" data-width="1920" data-height="1080" data-duration="13.3">
+    <style>
+      /* local fonts (captured woff2, font-display:block) */
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-400-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-500-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-600-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 700;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-700-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 700;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: italic;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-italic-400-latin-ext-e36b6b.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: italic;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-italic-400-latin-78bd98.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: italic;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-italic-500-latin-ext-e36b6b.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: italic;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-italic-500-latin-78bd98.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-400-latin-ext-7a09be.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-400-latin-f0c28d.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-500-latin-ext-7a09be.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-500-latin-f0c28d.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-600-latin-ext-7a09be.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-600-latin-f0c28d.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Spline Sans Mono';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/SplineSansMono-normal-400-latin-ext-62a811.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Spline Sans Mono';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/SplineSansMono-normal-400-latin-53329b.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Spline Sans Mono';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/SplineSansMono-normal-500-latin-ext-62a811.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Spline Sans Mono';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+
+      #c6-root{
+        --paper:#F0EEE6;
+        --f-body:"Hanken Grotesk","Inter",system-ui,sans-serif;
+        --f-mono:"Spline Sans Mono","IBM Plex Mono",monospace;
+        position:relative;width:1920px;height:1080px;overflow:hidden;
+        background:var(--paper);container-type:size;font-family:var(--f-body);
+      }
+      #c6-root *,#c6-root *::before,#c6-root *::after{box-sizing:border-box;margin:0;padding:0}
+
+      #c6-root .stage{position:absolute;inset:0;z-index:1;display:grid;place-items:center}
+      /* light brand chrome (surface-2) instead of a black slab */
+      #c6-root .window{width:75cqw;height:48cqw;background:#F4F1E6;border:1px solid #DCD8CC;
+        border-radius:2cqw;overflow:hidden;display:flex;flex-direction:column;
+        box-shadow:0 6px 18px rgba(38,38,36,.07), 0 60px 130px -42px rgba(38,38,36,.34)}
+
+      /* title bar */
+      #c6-root .bar{display:flex;align-items:center;gap:1cqw;height:5cqw;padding:0 1.8cqw;
+        border-bottom:1px solid #E7E3D6;flex:0 0 auto}
+      #c6-root .bar .logo{width:2.1cqw;height:2.1cqw;display:block}
+      #c6-root .bar .name{font-size:1.55cqw;font-weight:600;color:#262624;letter-spacing:-.01em}
+      #c6-root .bar .sub{font-size:1.55cqw;font-weight:500;color:#6F6E66}
+      #c6-root .bar .code{margin-left:auto;color:#6F6E66;font-size:1.7cqw;font-weight:600}
+
+      #c6-root .card{position:relative;flex:1 1 auto;margin:1cqw;background:#FFFFFF;border:1px solid #EFEBE0;border-radius:1.5cqw;overflow:hidden}
+
+      /* ── view A: Initializing ── */
+      #c6-root .viewInit{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.1cqw}
+      #c6-root .mark{width:9cqw;height:9cqw;display:block;filter:drop-shadow(0 0 2.4cqw rgba(31,210,170,.45));margin-bottom:1.4cqw}
+      #c6-root .label{font-size:1.25cqw;font-weight:700;letter-spacing:.2em;color:#9C988F;text-transform:uppercase}
+      #c6-root .task{font-size:3.4cqw;font-weight:800;letter-spacing:-.02em;line-height:1;
+        background:linear-gradient(100deg,#1B1A18 0%,#1B1A18 34%,#2BD07A 46%,#10C2DC 54%,#1B1A18 66%,#1B1A18 100%);
+        background-size:240% 100%;background-position:140% 0;
+        -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+      #c6-root .pidlabel{margin-top:1.6cqw}
+      #c6-root .pid{font-family:var(--f-mono);font-size:1.55cqw;color:#A6A29A}
+
+      /* ── view B: task checklist ── */
+      #c6-root .viewList{position:absolute;inset:0;opacity:0}
+      #c6-root .progress{position:absolute;left:0;right:0;top:0;height:.5cqw;background:#EEEBE4;overflow:hidden}
+      #c6-root .progress .fill{position:absolute;inset:0;transform:scaleX(0);transform-origin:0 50%;
+        background:linear-gradient(90deg,#4FDB5E,#06E3FA)}
+      #c6-root .head{position:absolute;left:3.2cqw;top:2.8cqw;font-size:1.35cqw;font-weight:700;letter-spacing:.16em;color:#9C988F;text-transform:uppercase}
+      #c6-root .head .count{position:relative;display:inline-block;width:1.1cqw;height:1.2cqw;vertical-align:-.05em}
+      #c6-root .head .count .d{position:absolute;left:0;top:0;opacity:0}
+      #c6-root .list{position:absolute;left:2.4cqw;right:2.4cqw;top:7.2cqw;display:flex;flex-direction:column;gap:.5cqw}
+      #c6-root .row{position:relative;display:flex;align-items:center;gap:1.5cqw;height:4.3cqw;padding:0 1.4cqw;border-radius:1cqw}
+      #c6-root .hl{position:absolute;inset:0;border-radius:1cqw;background:rgba(40,200,140,.09);
+        border-left:.32cqw solid #2BD07A;opacity:0}
+      #c6-root .status{position:relative;width:2.2cqw;height:2.2cqw;flex:0 0 auto;z-index:1}
+      #c6-root .status .dot{position:absolute;inset:.25cqw;border:.18cqw solid #CBC7BD;border-radius:50%}
+      #c6-root .status .done{position:absolute;inset:.25cqw;border-radius:50%;background:#27C778;opacity:0}
+      #c6-root .status .play{position:absolute;inset:-.05cqw;opacity:0}
+      #c6-root .status .play svg{width:100%;height:100%;display:block}
+      #c6-root .label2{position:relative;font-size:1.9cqw;font-weight:500;white-space:nowrap;letter-spacing:-.01em;z-index:1}
+      #c6-root .label2 .descvia{color:#6E6B64}
+      #c6-root .label2 .fn{color:#1F1E1C;font-weight:700}
+      #c6-root .label2 .strike{position:absolute;left:0;top:54%;width:100%;height:.16cqw;background:#B9B5AC;transform:scaleX(0);transform-origin:0 50%}
+
+      /* shared pill */
+      #c6-root .pill{position:absolute;right:2.2cqw;bottom:2.2cqw;z-index:2;display:flex;align-items:center;gap:.9cqw;
+        background:#FFFFFF;border:1px solid #ECE9E1;border-radius:999px;padding:1cqw 1.6cqw;
+        box-shadow:0 2px 6px rgba(38,38,36,.06), 0 18px 40px -22px rgba(38,38,36,.4)}
+      #c6-root .pill .logo{width:1.7cqw;height:1.7cqw;display:block}
+      #c6-root .pill .txt{font-size:1.5cqw;font-weight:600;color:#1F1E1C;letter-spacing:-.01em}
+      #c6-root .pill .arr{color:#9C988F;font-size:1.5cqw;font-weight:600}
+
+      /* ── view C: generated video player ── */
+      #c6-root .viewPlayer{position:absolute;inset:0;opacity:0}
+      #c6-root .player{position:absolute;left:1.3cqw;right:1.3cqw;top:1.3cqw;bottom:6.4cqw;
+        background:#0B1622;border:1px solid #20303f;border-radius:1.1cqw;overflow:hidden}
+      #c6-root .vid{position:absolute;inset:0;container-type:size;overflow:hidden;background:#0B1622}
+      /* ── heritage-tartan weave (shared by the small player poster AND the full-frame video) ── */
+      /* translucent warp + weft bands over a forest-green base — crossings build up naturally
+         (navy×navy, red over-check) so the weave reads bright instead of crushing to black */
+      #c6-root .tartan{position:absolute;inset:0;background-color:#2c6240;
+        background-image:
+          repeating-linear-gradient(90deg,rgba(10,38,22,0) 0 44px,rgba(18,42,70,.6) 44px 64px,rgba(10,38,22,0) 64px 96px,rgba(150,30,28,.72) 96px 100px,rgba(10,38,22,0) 100px 110px,rgba(226,218,184,.78) 110px 113px,rgba(10,38,22,0) 113px 120px),
+          repeating-linear-gradient(0deg,rgba(10,38,22,0) 0 44px,rgba(18,42,70,.6) 44px 64px,rgba(10,38,22,0) 64px 96px,rgba(150,30,28,.72) 96px 100px,rgba(10,38,22,0) 100px 110px,rgba(226,218,184,.78) 110px 113px,rgba(10,38,22,0) 113px 120px),
+          repeating-linear-gradient(45deg,rgba(255,255,255,.07) 0 2px,transparent 2px 5px);
+        background-blend-mode:normal,normal,overlay;
+        background-size:120px 120px,120px 120px,9px 9px;will-change:transform}
+      #c6-root .rtint{position:absolute;inset:0;
+        background:radial-gradient(140% 105% at 50% 44%, transparent 46%, rgba(7,26,15,.5) 100%),
+                   linear-gradient(0deg, rgba(7,26,15,.3), rgba(7,26,15,0) 55%)}
+      /* player poster: what the small player shows for ~0.4s before it slides away */
+      #c6-root .poster{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+      #c6-root .poster .ptitle{font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:5.6cqw;line-height:1.04;color:#F0EEE6;
+        text-shadow:0 .4cqw 2cqw rgba(0,0,0,.5)}
+      #c6-root .poster .psub{margin-top:1cqw;font-family:var(--f-mono);font-size:1.7cqw;letter-spacing:.34em;text-transform:uppercase;color:#bfe6c8}
+
+      /* ── the ONE generated-video element; it sits in the player then MORPHS (scales) to full screen ── */
+      #c6-root #vstage{position:absolute;inset:0;overflow:hidden;opacity:0;z-index:7;will-change:transform,opacity}
+      #c6-root .vseg{position:absolute;inset:0;display:grid;place-items:center;text-align:center;opacity:0}
+      #c6-root .vtitle{font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:7cqw;line-height:1.02;color:#F0EEE6;
+        text-shadow:0 .5cqw 2.4cqw rgba(0,0,0,.55)}
+      #c6-root .vsub{margin-top:1.6cqw;font-family:var(--f-mono);font-size:1.7cqw;letter-spacing:.42em;text-transform:uppercase;color:#cfe9d4}
+      #c6-root .vlogocard{background:#fff;border-radius:2cqw;padding:3cqw 4cqw;box-shadow:0 2cqw 7cqw rgba(0,0,0,.5)}
+      #c6-root .vlogo{display:block;width:32cqw;height:auto}
+      #c6-root #vsSplit{display:flex;align-items:center;justify-content:center;gap:4cqw;padding:0 6cqw}
+      #c6-root .vsplitText{flex:1 1 0;text-align:left}
+      #c6-root .vskick{font-family:var(--f-mono);font-size:1.7cqw;letter-spacing:.34em;text-transform:uppercase;color:#cfe9d4;margin-bottom:1.4cqw}
+      #c6-root .vshead{font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:6.4cqw;line-height:1.02;color:#F0EEE6;
+        text-shadow:0 .5cqw 2.4cqw rgba(0,0,0,.55)}
+      #c6-root .vsplitImg{flex:0 0 40cqw;height:46cqw;border-radius:2cqw;border:1px solid rgba(255,255,255,.14);
+        background:url('66d8818a14a5cd1fcc8d2ed3.webp') center/cover;box-shadow:0 2cqw 6cqw rgba(0,0,0,.5)}
+      /* caption — the original editorial green serif on a cream plate, now pinned to the lower half */
+      #c6-root .ecap{position:absolute;left:50%;bottom:13%;transform:translateX(-50%);
+        display:flex;justify-content:center;will-change:transform,opacity}
+      #c6-root .ecap .plate{background:#F4F1E6;border:1px solid #e4ddc9;border-radius:1.1cqw;
+        padding:1.1cqw 2.4cqw;box-shadow:0 .8cqw 2.6cqw rgba(0,0,0,.4)}
+      #c6-root .ecap .line{font-family:'Newsreader',Georgia,serif;font-weight:600;white-space:nowrap;
+        font-size:2.7cqw;line-height:1.1;letter-spacing:-.015em;color:#1E5631;text-align:center}
+      #c6-root .ecap .line em{font-style:italic;font-weight:600;color:#2E7D32}
+      /* full-screen player bar (appears only for the pause beat) + cursor */
+      #c6-root .vbar{position:absolute;left:0;right:0;bottom:0;height:7cqw;display:flex;align-items:center;gap:1.4cqw;
+        padding:0 3cqw;background:linear-gradient(to top, rgba(7,12,20,.82) 25%, rgba(7,12,20,0));opacity:0;z-index:8}
+      #c6-root .vplay{position:relative;width:3.2cqw;height:3.2cqw;flex:0 0 auto}
+      #c6-root .vplay svg{position:absolute;inset:0;width:100%;height:100%;fill:#fff}
+      #c6-root .vtrack{position:relative;flex:1 1 auto;height:.45cqw;background:rgba(255,255,255,.28);border-radius:999px}
+      #c6-root .vprog{position:absolute;left:0;top:0;height:100%;width:11%;background:#fff;border-radius:999px}
+      #c6-root .vthumb{position:absolute;top:50%;left:11%;width:1.3cqw;height:1.3cqw;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 1px 4px rgba(0,0,0,.5)}
+      #c6-root .vtime{flex:0 0 auto;color:#e7edf4;font-size:1.7cqw;font-weight:600;font-variant-numeric:tabular-nums}
+      #c6-root .vvol svg{width:2.2cqw;height:2.2cqw;fill:#cfd8e3;display:block}
+      #c6-root .vspd{flex:0 0 auto;background:rgba(255,255,255,.15);border-radius:.6cqw;padding:.4cqw 1cqw;color:#e7edf4;font-size:1.5cqw;font-weight:700}
+      #c6-root .vcur{position:absolute;width:4.4cqw;height:4.4cqw;z-index:9;left:9%;top:122%;opacity:0;
+        filter:drop-shadow(0 .3cqw .5cqw rgba(0,0,0,.45));pointer-events:none}
+
+      /* player controls overlay (drops away after the video starts, returns for the pause) */
+      #c6-root .ctrls{position:absolute;left:0;right:0;bottom:0;height:6cqw;display:flex;align-items:center;gap:1.6cqw;
+        padding:0 2.2cqw;background:linear-gradient(to top, rgba(7,12,20,.9) 20%, rgba(7,12,20,0));will-change:transform,opacity}
+      #c6-root .play{position:relative;width:3.4cqw;height:3.4cqw;flex:0 0 auto;cursor:default}
+      #c6-root .play svg{position:absolute;inset:0;width:100%;height:100%;fill:#fff}
+      #c6-root .track{position:relative;flex:1 1 auto;height:.55cqw;background:rgba(255,255,255,.22);border-radius:999px}
+      #c6-root .prog{position:absolute;left:0;top:0;height:100%;width:0;background:#fff;border-radius:999px}
+      #c6-root .thumb{position:absolute;top:50%;left:0;width:1.5cqw;height:1.5cqw;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 1px 4px rgba(0,0,0,.5)}
+      #c6-root .cpill{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);white-space:nowrap;
+        background:rgba(13,22,34,.92);border:1px solid rgba(255,255,255,.32);border-radius:.9cqw;padding:.7cqw 1.6cqw;
+        color:#e7edf4;font-weight:600;font-size:1.85cqw;letter-spacing:.005em;
+        box-shadow:0 6px 18px rgba(0,0,0,.45)}
+      #c6-root .time{flex:0 0 auto;color:#cfd8e3;font-size:2.1cqw;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+      #c6-root .vol svg{width:2.6cqw;height:2.6cqw;fill:#cfd8e3;flex:0 0 auto}
+      #c6-root .spd{flex:0 0 auto;background:rgba(255,255,255,.13);border-radius:.7cqw;padding:.5cqw 1.1cqw;color:#cfd8e3;font-size:1.9cqw;font-weight:700}
+
+      #c6-root .vcursor{position:absolute;width:5cqw;height:5cqw;z-index:50;left:18%;top:120%;opacity:0;
+        filter:drop-shadow(0 4px 6px rgba(0,0,0,.45));pointer-events:none}
+
+      /* the revealed chat prompt box — starts a single-line bar, GROWS upward as the text wraps (like scene 4) */
+      #c6-root .rsbox{position:absolute;left:50%;top:84%;transform:translate(-50%,-50%);z-index:30;
+        width:84cqw;height:8.5cqw;background:#FCFBF7;border:1.5px solid #E7E3D6;border-radius:2.4cqw;
+        box-shadow:0 2px 6px rgba(38,38,36,.05),0 34px 80px -30px rgba(38,38,36,.32);opacity:0}
+      #c6-root .rsph{position:absolute;left:3.4cqw;top:50%;transform:translateY(-50%);font:500 2.7cqw/1 var(--f-body);color:#9b988f;letter-spacing:-.01em}
+      #c6-root .rstext{position:absolute;left:3.4cqw;right:3.4cqw;top:2.5cqw;display:flex;flex-direction:column;gap:.5cqw}
+      #c6-root .rsline{height:3.7cqw;display:flex;align-items:center}
+      #c6-root .rsclip{display:inline-block;overflow-x:clip;white-space:nowrap;width:0}
+      #c6-root .rsclip>span{display:inline-block;font:500 2.7cqw/1.05 var(--f-body);color:#1F1E1C;letter-spacing:-.01em;white-space:nowrap}
+      #c6-root .rssend{position:absolute;right:2.4cqw;bottom:2cqw;width:4.6cqw;height:4.6cqw;border-radius:50%;
+        background:#D97757;color:#fff;display:grid;place-items:center;font-size:2.5cqw;font-weight:700}
+    </style>
+
+    <div class="stage">
+      <div class="window">
+        <div class="bar">
+          <span class="logo" id="logoSm"></span>
+          <span class="name">Hyperframes</span>
+          <span class="sub">compose</span>
+          <span class="code">&lt;/&gt;</span>
+        </div>
+        <div class="card">
+
+          <div class="viewInit" id="viewInit">
+            <span class="mark" id="logoBig"></span>
+            <div class="label">Current Task</div>
+            <div class="task">Initializing</div>
+            <div class="label pidlabel">Project ID</div>
+            <div class="pid">9e03b3d7-89df-4015-aafb-f37c13b3239b</div>
+          </div>
+
+          <div class="viewList" id="viewList">
+            <div class="progress"><div class="fill" id="fill"></div></div>
+            <div class="head">Generating &nbsp;·&nbsp; <span class="count" id="count"></span> of 7</div>
+            <div class="list" id="list"></div>
+          </div>
+
+          <div class="viewPlayer" id="viewPlayer">
+            <div class="player">
+              <div class="vid">
+                <div class="tartan" id="vtartan"></div>
+                <div class="rtint"></div>
+                <!-- segment 1 · opener title card, held until he says "Tesla" -->
+                <div class="vseg" id="vsOpener">
+                  <div>
+                    <div class="vtitle">Hamish McTavish&rsquo;s Tips</div>
+                    <div class="vsub">Episode 36</div>
+                  </div>
+                </div>
+                <!-- segment 2 · Tesla graphic, centered, on the word "Tesla" -->
+                <div class="vseg" id="vsTesla">
+                  <div class="vlogocard"><img class="vlogo" src="1280px-Tesla_logo.png" alt="Tesla"></div>
+                </div>
+                <!-- one caption at a time — editorial green serif on cream, lower half -->
+                <div class="ecap" id="ec1"><div class="plate"><div class="line">Right.</div></div></div>
+                <div class="ecap" id="ec2"><div class="plate"><div class="line">Listen up, you wee numpties.</div></div></div>
+                <div class="ecap" id="ec3"><div class="plate"><div class="line">It&rsquo;s <em>Tesla</em>.</div></div></div>
+              </div>
+              <div class="ctrls" id="ctrls">
+                <div class="play" id="playbtn">
+                  <svg id="ic-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+                  <svg id="ic-play" viewBox="0 0 24 24" style="opacity:0"><path d="M7 5v14l12-7z"/></svg>
+                </div>
+                <div class="track"><div class="prog" id="prog"></div><div class="thumb" id="thumb"></div></div>
+                <div class="time" id="time">0:00 / 0:43</div>
+                <div class="vol"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm12 3a3 3 0 0 0-2-2.8v5.6A3 3 0 0 0 16 12zm-2-7v2a5 5 0 0 1 0 9.6v2A7 7 0 0 0 14 5z"/></svg></div>
+                <div class="spd">1x</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pill">
+            <span class="logo" id="logoPill"></span>
+            <span class="txt">Download full video on hyperframes.dev</span>
+            <span class="arr">&#8599;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- cursor lives at the TOP level (full frame, above the card) so it isn't clipped and rises from the very bottom -->
+    <svg class="vcursor" id="vcursor" viewBox="0 0 28 28">
+      <path d="M6 4 L6 23 L11 18 L14.5 25 L17.5 23.6 L14 17 L21 17 Z" fill="#1c1c1c" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round"/>
+    </svg>
+
+    <!-- after the pause, the card lifts up and this prompt box is revealed; the user types a correction -->
+    <div class="rsbox" id="rsbox">
+      <span class="rsph" id="rsph">Write a message&hellip;</span>
+      <div class="rstext">
+        <div class="rsline"><span class="rsclip" id="rsc1"><span>lol sorry - shouldve specified not the Scottish style</span></span></div>
+        <div class="rsline"><span class="rsclip" id="rsc2"><span>this is for my X. Can you use one of the base styles?</span></span></div>
+      </div>
+      <div class="rssend">&#8593;</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+    window.__timelines = window.__timelines || {};
+    (async function(){
+      if(document.fonts && document.fonts.ready){ try{ await document.fonts.ready; }catch(e){} }
+      const root=document.querySelector('[data-composition-id="compose-ui"]');
+
+      function mark(p){return `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.1851 57.8021L33.1145 73.8313C36.2202 75.9978 41.5173 73.5433 42.4816 69.4984L51.7611 30.4271C52.7253 26.3822 48.5802 23.9277 44.4602 26.0942L13.917 42.1235C6.96677 45.7676 4.97564 54.1579 10.1851 57.8021Z" fill="url(#${p}0)"/>
+        <path d="M87.5129 57.5141L56.9696 73.5433C52.8371 75.7098 48.7046 73.2553 49.6688 69.2104L58.9483 30.1391C59.9125 26.0942 65.2097 23.6397 68.3154 25.8062L91.2447 41.8354C96.4668 45.4796 94.4631 53.8699 87.5129 57.5141Z" fill="url(#${p}1)"/>
+        <defs>
+        <linearGradient id="${p}0" x1="48.5676" y1="25" x2="44.7804" y2="71.9384" gradientUnits="userSpaceOnUse"><stop stop-color="#06E3FA"/><stop offset="1" stop-color="#4FDB5E"/></linearGradient>
+        <linearGradient id="${p}1" x1="54.8282" y1="73.8392" x2="72.0989" y2="32.8932" gradientUnits="userSpaceOnUse"><stop stop-color="#06E3FA"/><stop offset="1" stop-color="#4FDB5E"/></linearGradient>
+        </defs></svg>`;}
+      root.querySelector('#logoBig').innerHTML=mark('hb');
+      root.querySelector('#logoSm').innerHTML=mark('hs');
+      root.querySelector('#logoPill').innerHTML=mark('hp');
+
+      // the REAL compose pipeline (from the tool UI)
+      const TASKS=[
+        "Generate narrator scripts via narrative_planner",
+        "Synthesize audio and generate ASR metadata via audio_synth",
+        "Create visual section plan via visual_planner",
+        "Build worker group specification via build_group_spec",
+        "Execute scene compositions via scene_executor workers",
+        "Merge scenes into final index.html via inline_index_html",
+        "Finalize execution and deliver video"
+      ];
+      function fmt(s){
+        const i=s.indexOf(' via ');
+        if(i<0) return `<span class="descvia">${s}</span>`;
+        const desc=s.slice(0,i+5), rest=s.slice(i+5);
+        const sp=rest.indexOf(' '), fn=sp<0?rest:rest.slice(0,sp), tail=sp<0?'':rest.slice(sp);
+        return `<span class="descvia">${desc}</span><span class="fn">${fn}</span><span class="descvia">${tail}</span>`;
+      }
+      const PLAY=mark('rp');
+      const list=root.querySelector('#list');
+      list.innerHTML=TASKS.map(t=>`<div class="row">
+        <div class="hl"></div>
+        <span class="status"><span class="dot"></span><span class="done"></span><span class="play">${PLAY}</span></span>
+        <span class="label2">${fmt(t)}<span class="strike"></span></span>
+      </div>`).join('');
+      const rows=Array.from(list.querySelectorAll('.row')).map(r=>({
+        dot:r.querySelector('.dot'), done:r.querySelector('.done'), play:r.querySelector('.play'),
+        hl:r.querySelector('.hl'), strike:r.querySelector('.strike'),
+        descvia:r.querySelectorAll('.descvia'), fn:r.querySelector('.fn')
+      }));
+
+      // counter digits 0..7
+      const cnt=root.querySelector('#count');
+      cnt.innerHTML=Array.from({length:8},(_,n)=>`<span class="d">${n}</span>`).join('');
+      const digits=Array.from(cnt.querySelectorAll('.d'));
+
+      const viewInit=root.querySelector('#viewInit'), viewList=root.querySelector('#viewList'), fill=root.querySelector('#fill');
+
+      // initial states
+      gsap.set(digits,{opacity:0}); gsap.set(digits[0],{opacity:1});
+      gsap.set(fill,{scaleX:0});
+      rows.forEach(r=>{ gsap.set(r.done,{opacity:0}); gsap.set(r.play,{opacity:0}); gsap.set(r.hl,{opacity:0});
+        gsap.set(r.strike,{scaleX:0,transformOrigin:'0% 50%'}); gsap.set(r.descvia,{color:'#6E6B64'}); });
+
+      const tl=gsap.timeline({paused:true});
+      function toCurrent(r,t){
+        tl.to(r.dot,{opacity:0,duration:.13,ease:'power1.inOut'},t);
+        tl.to(r.play,{opacity:1,duration:.15,ease:'power1.out'},t);
+        tl.to(r.descvia,{color:'#13B468',duration:.16,ease:'power1.inOut'},t);
+        tl.to(r.hl,{opacity:1,duration:.16,ease:'power1.inOut'},t);
+      }
+      function toDone(r,t){
+        tl.to(r.play,{opacity:0,duration:.13,ease:'power1.inOut'},t);
+        tl.to(r.done,{opacity:1,duration:.16,ease:'power1.out'},t);
+        tl.to(r.descvia,{color:'#A6A29A',duration:.19,ease:'power1.inOut'},t);
+        tl.to(r.fn,{color:'#A6A29A',duration:.19,ease:'power1.inOut'},t);
+        tl.to(r.strike,{scaleX:1,duration:.26,ease:'sine.inOut'},t+0.02);
+        tl.to(r.hl,{opacity:0,duration:.16,ease:'power1.inOut'},t);
+      }
+
+      // A · Initializing — held 0.3s longer; the gradient sweeps left→right across the word the whole time
+      const task=root.querySelector('.task');
+      tl.fromTo(task,{backgroundPosition:'140% 0'},{backgroundPosition:'-40% 0',duration:.72,ease:'none',repeat:4},0.05);
+      // …then switches to the checklist (init now holds to 1.0s)
+      tl.to(viewInit,{opacity:0,duration:.3,ease:'power2.inOut'},1.0);
+      tl.fromTo(viewList,{opacity:0},{opacity:1,duration:.3,ease:'power2.inOut'},1.02);
+
+      // B · step through the 7 tasks — sped up (0.3s shorter than before)
+      toCurrent(rows[0],1.25);
+      const STEP=0.25, BASE=1.4;   // 2× faster step cadence
+      for(let k=0;k<7;k++){
+        const t=BASE+k*STEP;
+        toDone(rows[k],t);
+        if(k<6) toCurrent(rows[k+1],t);
+        tl.to(digits[k],{opacity:0,duration:.09,ease:'power1.inOut'},t);
+        tl.to(digits[k+1],{opacity:1,duration:.09,ease:'power1.inOut'},t);
+        tl.to(fill,{scaleX:(k+1)/7,duration:.25,ease:'power1.out'},t);
+      }
+      // hold the completed state to the end (timeline ≈ data-duration)
+      tl.to(fill,{scaleX:1,duration:.2},BASE+6*STEP+0.2);
+
+      // ── C · the video plays INSIDE the player card; the play bar drops away, then returns for the pause ──
+      const viewPlayer=root.querySelector('#viewPlayer');
+      const vtartan=root.querySelector('#vtartan');
+      const vsOpener=root.querySelector('#vsOpener'), vsTesla=root.querySelector('#vsTesla');
+      const ecaps=['#ec1','#ec2','#ec3'].map(s=>root.querySelector(s));
+      const ctrls=root.querySelector('#ctrls'), playbtn=root.querySelector('#playbtn'), vcur=root.querySelector('#vcursor');
+      const icPause=root.querySelector('#ic-pause'), icPlay=root.querySelector('#ic-play');
+      const prog=root.querySelector('#prog'), thumb=root.querySelector('#thumb'), timeEl=root.querySelector('#time');
+      gsap.set([vsOpener,vsTesla],{opacity:0}); gsap.set(ecaps,{opacity:0,y:10});
+      gsap.set(icPlay,{opacity:0}); gsap.set(vcur,{opacity:0,transformOrigin:'21% 14%'});
+
+      const VS=3.5;                 // checklist done (now 2× faster) → switch to the player
+      tl.to(viewList,{opacity:0,duration:.3,ease:'power2.inOut'},VS);
+      tl.fromTo(viewPlayer,{opacity:0},{opacity:1,duration:.3,ease:'power2.inOut'},VS+0.02);
+      tl.to(vsOpener,{opacity:1,duration:.3,ease:'power2.out'},VS+0.06);
+
+      // R = video + VO start (aligns with the root <audio> data-start of 31.3s)
+      const R=VS+0.3;
+      // the play bar drops away 0.1s after the video starts (clean playback inside the card)
+      tl.to(ctrls,{yPercent:130,opacity:0,duration:.3,ease:'power2.in'},R+0.1);
+      // gentle Ken Burns on the weave
+      tl.fromTo(vtartan,{scale:1.04,xPercent:0,yPercent:0},{scale:1.08,xPercent:-.7,yPercent:-.5,duration:2.3,ease:'none'},R);
+
+      // opener title card HOLDS through the (now much earlier) pause — no Tesla beat; he's cut off at "numpties"
+      // captions: "Right." → "Listen up, you wee numpties." (the 2nd holds through the freeze)
+      tl.fromTo(ecaps[0],{opacity:0,y:10},{opacity:1,y:0,duration:.4,ease:'power2.out'},R+0.11);
+      tl.to(ecaps[0],{opacity:0,y:-8,duration:.32,ease:'power2.in'},R+0.89);
+      tl.fromTo(ecaps[1],{opacity:0,y:10},{opacity:1,y:0,duration:.4,ease:'power2.out'},R+1.03);
+
+      // scrubber/time advance (hidden while the bar is away, correct when it returns)
+      const PEND=R+2.17;            // cursor cuts him off 0.1s into "numpties" (root <audio> data-duration matches)
+      tl.fromTo(prog,{width:'0%'},{width:'5%',duration:PEND-R,ease:'none'},R);
+      tl.fromTo(thumb,{left:'0%'},{left:'5%',duration:PEND-R,ease:'none'},R);
+      ['0:00','0:01','0:02'].forEach((s,i)=>tl.add(()=>{timeEl.textContent=s+' / 0:43';},R+i*0.9));  // tl.add(fn,pos): proxy-safe callback (tl.call is unsupported by the render batching proxy)
+
+      // ── the play bar RETURNS and the cursor (in the small frame) clicks PAUSE right after "numpties" ──
+      tl.to(ctrls,{yPercent:0,opacity:1,duration:.3,ease:'power2.out'},PEND-0.6);                                       // bar comes back
+      tl.fromTo(vcur,{opacity:0,left:'17%',top:'120%'},{opacity:1,left:'17.5%',top:'73%',duration:.4,ease:'power3.out'},PEND-0.3); // cursor rises from the bottom of the whole frame, 0.3 early
+      // click — same tap as the connector + / toggle (cursor press at its tip; NO button reaction)
+      tl.to(vcur,{scale:.84,duration:.1,ease:'power2.in'},PEND);
+      tl.to(vcur,{scale:1,duration:.22,ease:'power2.out'},PEND+0.1);
+      tl.to(icPause,{opacity:0,duration:.06},PEND+0.05);   // pause → play icon (stopped)
+      tl.to(icPlay,{opacity:1,duration:.06},PEND+0.05);
+
+      // ── after the pause: the compose card LIFTS up + shrinks, revealing a chat prompt box; the user
+      //    clicks it and types a correction ("…not the Scottish style … base styles?") ──
+      const win=root.querySelector('.window');
+      const rsbox=root.querySelector('#rsbox'), rsph=root.querySelector('#rsph');
+      const rsc=['#rsc1','#rsc2'].map(s=>root.querySelector(s));
+      const RST=PEND+0.45;
+      tl.to(win,{yPercent:-22,scale:0.85,duration:.75,ease:'power3.inOut'},RST);   // start ~100px above the single-line box; it rises reactively as the box grows (below)
+      tl.fromTo(rsbox,{opacity:0,y:46},{opacity:1,y:0,duration:.5,ease:'power3.out'},RST+0.18);
+      // cursor crosses from the (paused) play button down to the prompt box, then taps it
+      tl.to(vcur,{left:'50%',top:'84%',duration:.6,ease:'power3.inOut'},RST+0.25);
+      tl.to(vcur,{scale:.84,duration:.1,ease:'power2.in'},RST+0.95);
+      tl.to(vcur,{scale:1,duration:.22,ease:'power2.out'},RST+1.05);
+      tl.to(rsph,{opacity:0,duration:.18},RST+1.0);                              // placeholder clears on click
+      tl.to(vcur,{left:'64%',top:'122%',duration:.5,ease:'power2.in'},RST+1.2);  // cursor drifts away
+
+      // type the correction — 2 clip-revealed lines, broken to FILL the box width (so "…Scottish
+      // style" runs onto line 1). Widths patched on fonts.ready so nothing clips; the box GROWS
+      // upward (bottom pinned) before line 2 wraps in, like the scene-4 composer.
+      const RSGROW=[null,{top:'80.5%',height:'12.5cqw'}];
+      const WINY=[null,-31];   // the card rises in lockstep with the box grow, holding the ~100px gap
+      let tc=RST+1.35;
+      rsc.forEach((clip,i)=>{
+        if(RSGROW[i]){
+          tl.to(rsbox,{...RSGROW[i],duration:.5,ease:'power3.inOut'},tc-0.22);
+          tl.to(win,{yPercent:WINY[i],duration:.5,ease:'power3.inOut'},tc-0.22);   // reactively push the card up
+        }
+        const len=clip.firstElementChild.textContent.length, dur=len*0.034;
+        // fonts.ready awaited at top → offsetWidth is final, so bake the reveal width straight in
+        // (no tl.recent()/tl.invalidate(), which the render-time GSAP batching proxy can't run)
+        tl.to(clip,{width:clip.firstElementChild.offsetWidth+8,duration:dur,ease:`steps(${len})`},tc);
+        tc+=dur+0.14;
+      });
+      // hold the typed message briefly
+      tl.to(rsbox,{opacity:1,duration:.5},tc+0.3);
+
+      // ── SEND: cursor returns to the ↑ send button, taps (cursor-tap only — no button react),
+      //    then SWEEPS LEFT and accelerates off-frame. The root timeline hard-cuts mid-sweep
+      //    (cut the curve, leftward) into the giant "Sure." reply. ──
+      const SEND=12.0;
+      tl.to(vcur,{left:'87%',top:'84%',duration:.55,ease:'power3.out'},SEND);   // rise back to the send button
+      tl.to(vcur,{scale:.84,duration:.1,ease:'power2.in'},SEND+0.62);
+      tl.to(vcur,{scale:1,duration:.18,ease:'power2.out'},SEND+0.72);
+      tl.to(vcur,{left:'-12%',top:'78%',duration:.5,ease:'power2.in'},SEND+0.78); // leftward sweep, accelerating off-frame
+      tl.to({},{duration:.05},13.25);   // hold to ≈ data-duration
+
+      window.__timelines["compose-ui"]=tl;
+      const q=new URLSearchParams(location.search);
+      if(q.has('t')) tl.seek(parseFloat(q.get('t'))||0);
+      else if(q.get('dev')==='1') tl.play();
+    })();
+    </script>
+  </div>
+</template>
