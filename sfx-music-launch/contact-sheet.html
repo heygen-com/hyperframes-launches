@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SFX &amp; Music Launch — Contact Sheet</title>
+  <style>
+    @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:500;font-display:block;
+      src:url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2'); }
+    @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:600;font-display:block;
+      src:url(fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2'); }
+    @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:700;font-display:block;
+      src:url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2'); }
+    @font-face { font-family:'Galaxie Copernicus';font-style:normal;font-weight:400 600;font-display:block;
+      src:url(fonts/GalaxieCopernicus-Book.woff2) format('woff2'); }
+    @font-face { font-family:'Spline Sans Mono';font-style:normal;font-weight:500;font-display:block;
+      src:url(fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2'); }
+
+    :root {
+      --bg: #1a1a1a;
+      --line: rgba(255,255,255,.12);
+      --muted: #858585;
+      /* in-frame atoms (Claude Paper) */
+      --paper: #F0EEE6; --ink: #262624; --p-muted: #6F6E66;
+      --clay: #D97757; --clay-press: #BF6044; --clay-text: #A8472A; --on-accent: #FBF7F0;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:#f2f2f2;
+      font-family:"Hanken Grotesk", Inter, ui-sans-serif, system-ui, sans-serif; }
+
+    .sheet { padding: 28px 32px 44px; }
+    .header { display:flex; justify-content:space-between; align-items:end; gap:24px;
+      margin-bottom:24px; border-bottom:1px solid var(--line); padding-bottom:18px; }
+    h1 { margin:0; font-size:28px; line-height:1; font-weight:700; }
+    .dek { margin:8px 0 0; max-width:880px; color:#bcbcbc; font-size:14px; line-height:1.45; }
+    .tag { color:#111; background:#f4f4f4; border-radius:999px; padding:8px 12px;
+      font-size:12px; font-weight:700; white-space:nowrap; }
+
+    .grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:22px; }
+    .cell { min-width:0; }
+    .label { display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+      margin-bottom:8px; color:var(--muted); font-size:13px; font-weight:700; }
+    .label span:last-child { color:#c8c8c8; font-weight:500; font-size:11px; text-align:right; }
+    .note { margin:9px 0 0; color:#a8a8a8; font-size:12px; line-height:1.35; }
+    .note b { color:#d8d8d8; }
+    .ttag { display:inline-block; margin-top:7px; padding:2px 8px; border-radius:5px;
+      background:rgba(217,119,87,.14); border:1px solid rgba(217,119,87,.3); color:#e89a7d;
+      font-family:"Spline Sans Mono", monospace; font-size:10.5px; font-weight:500; letter-spacing:.04em; }
+
+    /* ── 16:9 frame mockups (cqw against the cell) ───────────────────── */
+    .frame { position:relative; aspect-ratio:16/9; overflow:hidden;
+      background:var(--paper); border:1px solid rgba(255,255,255,.16);
+      container-type:inline-size; color:var(--ink); }
+    .frame::before { content:""; position:absolute; inset:0; pointer-events:none; opacity:.5;
+      background:radial-gradient(circle, rgba(38,36,30,.025) 1px, transparent 1px) 0 0/12px 12px; }
+
+    /* giant ink button — true Claude register: warm charcoal, sentence case, soft rect.
+       Clay is rationed to the SOUND (the rings), not the button. */
+    .btnpos { position:absolute; left:50%; top:57%; transform:translate(-50%,-50%); }
+    .pbtn { position:relative; z-index:2; display:flex; align-items:center; gap:2.4cqw;
+      background:var(--ink); color:#EFEADD; border-radius:2.2cqw;
+      padding:3.25cqw 6cqw; font-weight:600; font-size:5.25cqw; line-height:1;
+      letter-spacing:-.022em; white-space:nowrap;
+      box-shadow:0 1px 3px rgba(38,38,36,.06), 0 16px 34px -16px rgba(38,38,36,.34); }
+    .pbtn svg { width:5.4cqw; height:5.4cqw; stroke:#EFEADD; stroke-width:2;
+      fill:none; stroke-linecap:round; stroke-linejoin:round; flex:0 0 auto; }
+    .pbtn.pressed { background:#171614; transform:scale(.94);
+      box-shadow:0 1px 2px rgba(38,38,36,.12), 0 5px 14px -9px rgba(38,38,36,.40); }
+    .ring { position:absolute; inset:-.3cqw; z-index:1; border-radius:3cqw;
+      border:.32cqw solid var(--clay); pointer-events:none; }
+
+    /* cursor (claude-paper arrow) */
+    .cur { position:absolute; width:7cqw; height:7cqw; z-index:9;
+      filter:drop-shadow(0 2px 3px rgba(0,0,0,.3)); }
+    .cur.tap { transform:scale(.84); transform-origin:21% 14%; }
+
+    /* claim band */
+    .claim { position:absolute; left:0; right:0; top:14.2cqw; z-index:10; text-align:center;
+      font-weight:700; font-size:5.95cqw; line-height:1.04; letter-spacing:-.025em; color:var(--ink); }
+    .claim .wm { display:inline-block; overflow:hidden; vertical-align:top; margin:0 .55cqw; padding-bottom:.18cqw; }
+    .claim .wm i { display:inline-block; font-style:normal; }
+
+    /* giant serif + message beats */
+    .serifword { position:absolute; inset:0; display:grid; place-items:center;
+      font-family:"Galaxie Copernicus", Georgia, serif; font-weight:500; font-size:15cqw;
+      letter-spacing:-.01em; color:#2B2926; }
+    .bigmsg { position:absolute; inset:0; display:grid; place-items:center; text-align:center;
+      font-weight:700; font-size:8cqw; letter-spacing:-.03em; color:var(--ink); white-space:nowrap; }
+    .midmsg { position:absolute; inset:0; display:grid; place-items:center; text-align:center;
+      font-weight:600; font-size:4.6cqw; line-height:1.1; letter-spacing:-.02em;
+      color:var(--ink); padding:0 8cqw; }
+    .today { color:var(--clay-text); }
+    .blurred { filter:blur(6px); opacity:.55; }
+  </style>
+</head>
+<body>
+<div class="sheet">
+  <div class="header">
+    <div>
+      <h1>SFX &amp; Music Launch — Hook Sequence</h1>
+      <p class="dek">CLI-callable SFX and Music for HyperFrames. ≈10.4s, three comps stitched on paper.
+        Aesthetic + click interaction stolen from claude-paper (FRAME-claude.md). The sequence is
+        <b>intentionally silent</b> — a "Click SFX" button spammed in dead silence is the joke:
+        video without sound is... Boring.</p>
+    </div>
+    <div class="tag">1920×1080 · 10.4s · 3 comps</div>
+  </div>
+
+  <div class="grid">
+
+    <!-- 01 entry -->
+    <div class="cell">
+      <div class="label"><span>01 · ENTRY</span><span>button-spam · 0.0–1.0s</span></div>
+      <div class="frame">
+        <div class="btnpos"><div class="pbtn">
+          <svg viewBox="0 0 24 24"><path d="M11 5 6.5 8.5H3v7h3.5L11 19zM15 9a4.2 4.2 0 0 1 0 6M17.8 6.2a8.2 8.2 0 0 1 0 11.6"/></svg>
+          Click SFX</div></div>
+        <svg class="cur" style="left:46.5%; top:84%" viewBox="0 0 28 28"><path d="M6 4 L6 23 L11 18 L14.5 25 L17.5 23.6 L14 17 L21 17 Z" fill="#1c1c1c" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      </div>
+      <p class="note">Button settles in (fade + rise); cursor enters <b>straight up the y-axis</b>
+        (power3.out, .85s), tip landing on the button face.</p>
+    </div>
+
+    <!-- 02 slow click 1 -->
+    <div class="cell">
+      <div class="label"><span>02 · CLICK 1 (slow)</span><span>button-spam · 1.2s</span></div>
+      <div class="frame">
+        <div class="btnpos">
+          <div class="ring" style="transform:scale(1.12); opacity:.5"></div>
+          <div class="pbtn pressed">
+          <svg viewBox="0 0 24 24"><path d="M11 5 6.5 8.5H3v7h3.5L11 19zM15 9a4.2 4.2 0 0 1 0 6M17.8 6.2a8.2 8.2 0 0 1 0 11.6"/></svg>
+          Click SFX</div></div>
+        <svg class="cur tap" style="left:46.5%; top:53%" viewBox="0 0 28 28"><path d="M6 4 L6 23 L11 18 L14.5 25 L17.5 23.6 L14 17 L21 17 Z" fill="#1c1c1c" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      </div>
+      <p class="note"><b>The press response:</b> cursor tip-tap (scale .84, pivot at tip) synced with
+        button compress to .94, ink deepens #262624→#171614, shadow flattens; a clay
+        <b>sound ring</b> bursts outward — clay is rationed to the sound, not the button.
+        Click 2 repeats at 1.7s (0.5 apart).</p>
+    </div>
+
+    <!-- 03 spam run -->
+    <div class="cell">
+      <div class="label"><span>03 · SPAM RUN</span><span>button-spam · 2.3–4.1s</span></div>
+      <div class="frame">
+        <div class="btnpos">
+          <div class="ring" style="transform:scale(1.5); opacity:.12"></div>
+          <div class="ring" style="transform:scale(1.32); opacity:.28"></div>
+          <div class="ring" style="transform:scale(1.16); opacity:.48"></div>
+          <div class="pbtn pressed">
+          <svg viewBox="0 0 24 24"><path d="M11 5 6.5 8.5H3v7h3.5L11 19zM15 9a4.2 4.2 0 0 1 0 6M17.8 6.2a8.2 8.2 0 0 1 0 11.6"/></svg>
+          Click SFX</div></div>
+        <svg class="cur tap" style="left:46.5%; top:53%" viewBox="0 0 28 28"><path d="M6 4 L6 23 L11 18 L14.5 25 L17.5 23.6 L14 17 L21 17 Z" fill="#1c1c1c" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      </div>
+      <p class="note"><b>10 clicks, 0.2s apart.</b> Rings overlap and stack — the visual "this should
+        be making sound." Each click fires its own pre-built ring so seeks stay deterministic.
+        And the viewer hears nothing — by design.</p>
+    </div>
+
+    <!-- 04 waterfall -->
+    <div class="cell">
+      <div class="label"><span>04 · WATERFALL</span><span>button-spam · 3.3–4.4s (mid-spam)</span></div>
+      <div class="frame">
+        <div class="claim">
+          <span class="wm"><i>Video</i></span>
+          <span class="wm"><i>without</i></span>
+          <span class="wm"><i style="transform:translateY(35%)">sound</i></span>
+          <span class="wm"><i style="transform:translateY(115%)">is...</i></span>
+        </div>
+        <div class="btnpos"><div class="pbtn">
+          <svg viewBox="0 0 24 24"><path d="M11 5 6.5 8.5H3v7h3.5L11 19zM15 9a4.2 4.2 0 0 1 0 6M17.8 6.2a8.2 8.2 0 0 1 0 11.6"/></svg>
+          Click SFX</div></div>
+        <svg class="cur" style="left:46.5%; top:53%" viewBox="0 0 28 28"><path d="M6 4 L6 23 L11 18 L14.5 25 L17.5 23.6 L14 17 L21 17 Z" fill="#1c1c1c" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      </div>
+      <p class="note">"Video without sound is..." <b>waterfalls upward</b> word-by-word through
+        overflow masks at the top of frame (yPercent 115→0, power4.out, stagger .12).</p>
+    </div>
+
+    <!-- 05 cut out -->
+    <div class="cell">
+      <div class="label"><span>05 · THROW LEFT</span><span>seam 1 · 4.64–4.9s</span></div>
+      <div class="frame">
+        <div style="position:absolute; inset:0; transform:translateX(-9%); opacity:.7">
+          <div class="claim">
+            <span class="wm"><i>Video</i></span>
+            <span class="wm"><i>without</i></span>
+            <span class="wm"><i>sound</i></span>
+            <span class="wm"><i>is...</i></span>
+          </div>
+          <div class="btnpos"><div class="pbtn">
+            <svg viewBox="0 0 24 24"><path d="M11 5 6.5 8.5H3v7h3.5L11 19zM15 9a4.2 4.2 0 0 1 0 6M17.8 6.2a8.2 8.2 0 0 1 0 11.6"/></svg>
+            Click SFX</div></div>
+          <svg class="cur" style="left:33%; top:53%" viewBox="0 0 28 28"><path d="M6 4 L6 23 L11 18 L14.5 25 L17.5 23.6 L14 17 L21 17 Z" fill="#1c1c1c" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+      <p class="note">Cursor accelerates left (first ⅓ of path, power2.in); the whole section
+        throws left (xPercent −13) fading 1→.55. <b>Hard cut mid-throw</b> — exposed edge is paper.</p>
+      <span class="ttag">leftward cut-the-curve</span>
+    </div>
+
+    <!-- 06 Boring. -->
+    <div class="cell">
+      <div class="label"><span>06 · "BORING."</span><span>boring · 4.9–5.6s</span></div>
+      <div class="frame"><div class="serifword">Boring.</div></div>
+      <p class="note">Giant Galaxie Copernicus serif (15cqw) <b>slides in from the right</b>
+        (x:210→0, .55→1, .18s power3.out) — carries the cursor's leftward velocity across the cut.
+        Clone of claude-paper's "Sure." beat.</p>
+      <span class="ttag">inverse zoom-through out @5.6</span>
+    </div>
+
+    <!-- 07 And until now -->
+    <div class="cell">
+      <div class="label"><span>07 · B1</span><span>until-now · 5.6–6.5s</span></div>
+      <div class="frame"><div class="bigmsg">And until now</div></div>
+      <p class="note">Enters via the root's inverse zoom-through ("Boring." recedes + blurs;
+        this settles from scale 1.25, expo.out .5s).</p>
+      <span class="ttag">leftward cut-the-curve @6.5</span>
+    </div>
+
+    <!-- 08 B2 -->
+    <div class="cell">
+      <div class="label"><span>08 · B2</span><span>until-now · 6.5–7.9s</span></div>
+      <div class="frame"><div class="midmsg">to use SFX or Music in HyperFrames</div></div>
+      <p class="note">7 words → mid ramp (4.6cqw, weight 600), max-width 78cqw.</p>
+      <span class="ttag">leftward cut-the-curve @7.9</span>
+    </div>
+
+    <!-- 09 B3 -->
+    <div class="cell">
+      <div class="label"><span>09 · B3</span><span>until-now · 7.9–9.5s</span></div>
+      <div class="frame"><div class="midmsg">you had to 🔍 them yourself</div></div>
+      <p class="note">"you had to <b>find</b> them yourself" slides in carrying B2's leftward
+        throw; 0.6s after it lands, <b>"find" slides up out of a clip mask and 🔍 slides up
+        into its place</b> (variables-launch aws→☁️ pattern), holds, then zooms through.</p>
+      <span class="ttag">inverse zoom-through @9.5</span>
+    </div>
+
+    <!-- 10 B4 -->
+    <div class="cell">
+      <div class="label"><span>10 · B4 (held)</span><span>until-now · 9.5–10.4s</span></div>
+      <div class="frame"><div class="bigmsg"><div>That changes <span class="today">today.</span></div></div></div>
+      <p class="note">The single rationed clay moment of the message run — clay-text on
+        "today." Held to end. <b>Music sting lands here.</b> Feature demo continues from this beat.</p>
+    </div>
+
+    <!-- 11 seam map -->
+    <div class="cell">
+      <div class="label"><span>11 · SEAM MAP</span><span>root index.html</span></div>
+      <div class="frame" style="background:#262624; color:#EFEADD">
+        <div style="position:absolute; inset:0; padding:6cqw 7cqw; font-family:'Spline Sans Mono',monospace; font-size:2.6cqw; line-height:2; color:#EFEADD">
+          <div>0.00&nbsp;&nbsp;button-spam&nbsp;&nbsp;&nbsp;&nbsp;[hook]</div>
+          <div style="color:#D97757">5.40&nbsp;&nbsp;⟵ cut-the-curve</div>
+          <div>5.40&nbsp;&nbsp;boring&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["Boring."]</div>
+          <div style="color:#D97757">5.90&nbsp;&nbsp;⊙ inverse zoom-through</div>
+          <div>5.90&nbsp;&nbsp;until-now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[message run]</div>
+          <div style="color:#6F6E66">9.90&nbsp;&nbsp;end / demo continues</div>
+        </div>
+      </div>
+      <p class="note">Root master timeline drives <b>only</b> the two seam blends (no pad tween).
+        Internal B-beat transitions live inside until-now.html, mirroring the outro pattern.</p>
+    </div>
+
+    <!-- 12 silence by design -->
+    <div class="cell">
+      <div class="label"><span>12 · AUDIO</span><span>none — by design</span></div>
+      <div class="frame">
+        <div style="position:absolute; inset:0; display:grid; place-items:center">
+          <div style="text-align:center">
+            <div style="font-family:'Spline Sans Mono',monospace; font-size:2.2cqw; letter-spacing:.18em; color:#6F6E66; margin-bottom:2.4cqw">AUDIO PLAN</div>
+            <div style="font-weight:600; font-size:3.4cqw; line-height:1.6; color:#262624">
+              dead silence, start to finish<br>
+              no clicks, no rings, no sting<br>
+              the silence IS the joke
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="note">A "Click SFX" button hammered 12 times and the viewer hears <b>nothing</b> —
+        that's the setup "Video without sound is... Boring." pays off. No audio tracks in this
+        sequence; sound arrives only in whatever follows "That changes today."</p>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

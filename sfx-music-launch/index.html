@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <title>SFX &amp; Music Launch — full film</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <style>
+    /* ── Fonts (latin subset; full faces live in fonts/fonts.css) ───────── */
+    @font-face { font-family:'Hanken Grotesk'; font-weight:400; font-display:block;
+      src:url(fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2'); }
+    @font-face { font-family:'Hanken Grotesk'; font-weight:500; font-display:block;
+      src:url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2'); }
+    @font-face { font-family:'Hanken Grotesk'; font-weight:600; font-display:block;
+      src:url(fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2'); }
+    @font-face { font-family:'Hanken Grotesk'; font-weight:700; font-display:block;
+      src:url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2'); }
+    @font-face { font-family:'Spline Sans Mono'; font-weight:400; font-display:block;
+      src:url(fonts/SplineSansMono-normal-400-latin-53329b.woff2) format('woff2'); }
+    @font-face { font-family:'Spline Sans Mono'; font-weight:500; font-display:block;
+      src:url(fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2'); }
+
+    html, body {
+      margin: 0; width: 1920px; height: 1080px; overflow: hidden;
+      background: #F0EEE6;          /* cream — keeps every exposed seam edge seamless */
+    }
+    #sfx-music-launch {
+      position: relative; width: 1920px; height: 1080px; overflow: hidden;
+      background: #F0EEE6;
+    }
+    /* every section fills the frame; z-index orders the seams (later = on top).
+       Terminals sit ABOVE their adjacent video so the recede reveals the clip beneath. */
+    #sec-bspam      { position:absolute; inset:0; z-index:1; will-change:transform,opacity,filter; }
+    #sec-boring     { position:absolute; inset:0; z-index:1; will-change:transform,opacity,filter; }
+    #sec-until      { position:absolute; inset:0; z-index:1; will-change:transform,opacity,filter; }
+    #sec-replay1    { position:absolute; inset:0; z-index:2; will-change:transform,opacity,filter; }
+    #sec-term-sfx   { position:absolute; inset:0; z-index:3; will-change:transform,opacity,filter; }
+    #sec-replay2    { position:absolute; inset:0; z-index:4; will-change:transform,opacity,filter; }
+    #sec-term-music { position:absolute; inset:0; z-index:5; will-change:transform,opacity,filter; }
+    #sec-available  { position:absolute; inset:0; z-index:6; will-change:transform,opacity,filter; }
+    #sec-outro      { position:absolute; inset:0; z-index:7; will-change:transform,opacity,filter; }
+
+    /* video clips fill their section; the SECTION wrapper is what we animate (clips force opacity:1) */
+    .vid { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+  </style>
+</head>
+<body>
+  <div
+    id="sfx-music-launch"
+    data-composition-id="sfx-music-launch"
+    data-start="0"
+    data-width="1920"
+    data-height="1080"
+    data-duration="33.8"
+  >
+    <!-- ACT 1 · HOOK (0 → 10.4) — LIVE comps (no baked mp4):
+         button-spam 0–4.9 → leftward cut-the-curve → boring 4.9–5.6
+         → inverse zoom-through → until-now 5.6–10.4 (waterfall test lives here) -->
+    <div id="sec-bspam"
+         data-composition-id="button-spam"
+         data-composition-src="compositions/button-spam.html"
+         data-start="0" data-duration="4.9" data-track-index="1"></div>
+    <div id="sec-boring"
+         data-composition-id="boring"
+         data-composition-src="compositions/boring.html"
+         data-start="4.9" data-duration="0.7" data-track-index="8"></div>
+    <div id="sec-until"
+         data-composition-id="until-now"
+         data-composition-src="compositions/until-now.html"
+         data-start="5.6" data-duration="4.8" data-track-index="9"></div>
+
+    <!-- ACT 3 · REPLAY + SFX (16.9 → 19.9) — the CLICKING only (click SFX lands here in post) -->
+    <div id="sec-replay1">
+      <video class="vid" id="v-replay1" src="assets/intro.mp4" muted playsinline
+             data-start="16.05" data-duration="3.0" data-media-start="1.3" data-track-index="2"></video>
+    </div>
+
+    <!-- ACT 2 · TERMINAL: SFX (10.4 → 17.2) — opens from center; type → think → reply → hold → EXPLODE out -->
+    <div id="sec-term-sfx"
+         data-composition-id="terminal-sfx"
+         data-composition-src="compositions/terminal-sfx.html"
+         data-start="10.4" data-duration="6.8" data-track-index="3"></div>
+
+    <!-- ACT 5 · REPLAY + MUSIC (26.1 → 28.2) — the CLICKING only, ends before the "…sound is" text
+         (music bed lands here in post) -->
+    <div id="sec-replay2">
+      <video class="vid" id="v-replay2" src="assets/intro.mp4" muted playsinline
+             data-start="24.09" data-duration="2.1" data-media-start="1.1" data-track-index="4"></video>
+    </div>
+
+    <!-- ACT 4 · TERMINAL: MUSIC (19.6 → 26.4) — opens from center; type → think → reply → hold → EXPLODE out -->
+    <div id="sec-term-music"
+         data-composition-id="terminal-music"
+         data-composition-src="compositions/terminal-music.html"
+         data-start="18.75" data-duration="6.8" data-track-index="5"></div>
+
+    <!-- ACT 5.5 · TEXT CARD (28.0 → 31.0) — "Music and SFX / Now available for free with the
+         HeyGen API" in the intro's leftward-cut grammar; enters as replay2 swipes left -->
+    <div id="sec-available"
+         data-composition-id="available"
+         data-composition-src="compositions/available.html"
+         data-start="25.99" data-duration="3.0" data-track-index="6"></div>
+
+    <!-- ACT 6 · OUTRO (30.9 → 35.8) — mark liquid-fills → explodes → reverse-implodes to lockup → holds → EXPLODES out -->
+    <div id="sec-outro"
+         data-composition-id="outro"
+         data-composition-src="compositions/outro.html"
+         data-start="28.89" data-duration="4.9" data-track-index="7"></div>
+
+    <!-- NO AUDIO in source — sound is baked in post (see STORYBOARD.md §Audio cue map). -->
+  </div>
+
+  <script>
+    // Master timeline drives ONLY the seam transitions. Each sub-comp owns its own internal timeline.
+    window.__timelines = window.__timelines || {};
+    const T = gsap.timeline({ paused: true });
+
+    const EXPO = "expo.out", P3IN = "power3.in", P3OUT = "power3.out";
+
+    /* ── helper: a terminal "mask-open from center" (window materialises from a point) ── */
+    function maskOpen(sel, t, dur) {
+      T.set(sel, { transformOrigin: "50% 50%", scale: 0.04, opacity: 0 }, 0);
+      T.to(sel, { scale: 1, opacity: 1, duration: dur, ease: EXPO }, t);
+    }
+    /* ── helper: a terminal "EXPLODE out" (window blasts UP + motion-blurs + fades, revealing the
+       clip beneath) — the ollama push-out grammar; reads as a burst, not a forced shrink. ── */
+    function explode(sel, t, dur) {
+      T.to(sel, { scale: 1.55, filter: "blur(18px)", opacity: 0, duration: dur, ease: "power2.in" }, t);
+    }
+
+    // hide everything that enters later than t=0 so nothing flashes at the start
+    T.set("#sec-boring",     { opacity: 0 }, 0);
+    T.set("#sec-until",      { opacity: 0 }, 0);
+    T.set("#sec-term-sfx",   { opacity: 0 }, 0);
+    T.set("#sec-term-music", { opacity: 0 }, 0);
+    T.set("#sec-replay1",    { opacity: 0 }, 0);
+    T.set("#sec-replay2",    { opacity: 0 }, 0);
+    T.set("#sec-available",  { opacity: 0 }, 0);
+    T.set("#sec-outro",      { opacity: 0 }, 0);
+
+    // HOOK SEAM A — button-spam → "Boring." (leftward cut-the-curve @4.9)
+    T.to("#sec-bspam", { xPercent: -13, opacity: 0.55, duration: 0.26, ease: "power2.in" }, 4.64);
+    T.set("#sec-bspam", { opacity: 0 }, 4.9);
+    T.set("#sec-boring", { opacity: 1 }, 4.9);
+
+    // HOOK SEAM B — "Boring." → until-now (inverse zoom-through @5.6: "Boring." recedes
+    // + blurs; until-now arrives oversized and retracts into place)
+    T.to("#sec-boring", { scale: 0.8, filter: "blur(10px)", duration: 0.2, ease: "power3.in" }, 5.4);
+    T.to("#sec-boring", { opacity: 0.15, duration: 0.2, ease: "none" }, 5.4);
+    T.set("#sec-boring", { opacity: 0 }, 5.6);
+    T.set("#sec-until", { opacity: 0.15, scale: 1.25, filter: "blur(10px)" }, 5.6);
+    T.to("#sec-until", { scale: 1, filter: "blur(0px)", opacity: 1, duration: 0.5, ease: "expo.out" }, 5.6);
+
+    // SEAM 1 — until-now's closing line ("That changes today.") throws LEFT (cut-the-curve) →
+    // hard cut to the FULL-BLEED black terminal @10.4; the composer/chips slide in leftward
+    // inside the comp, carrying the motion. The window shrinks to its floating size at the
+    // comp's internal morph (send), revealing cream + traffic lights.
+    T.to("#sec-until", { xPercent: -13, opacity: 0.55, duration: 0.26, ease: "power2.in" }, 10.14);
+    T.set("#sec-until", { opacity: 0 }, 10.4);
+    T.set("#sec-term-sfx", { opacity: 1 }, 10.4);
+
+    // SEAM 2 — Terminal:SFX EXPLODES out → reveal Replay1  (@16.9, after the +0.5s read hold)
+    T.set("#sec-replay1", { opacity: 1 }, 16.05);
+    explode("#sec-term-sfx", 16.05, 0.34);
+
+    // SEAM 3 — Replay1 → Terminal:Music  (LEFTWARD cut-the-curve @18.75: replay1 throws left + fades;
+    // hard cut to the FULL-BLEED black music terminal — the EXACT same entry/morph as the SFX
+    // terminal @10.4 (the comp runs its full-bleed → type → send → dock morph internally))
+    T.to("#sec-replay1", { xPercent: -13, opacity: 0.55, duration: 0.26, ease: "power2.in" }, 18.49);
+    T.set("#sec-replay1", { opacity: 0 }, 18.75);
+    T.set("#sec-term-music", { opacity: 1 }, 18.75);
+
+    // SEAM 4 — Terminal:Music EXPLODES out → reveal Replay2  (@26.1, after the +0.5s read hold)
+    T.set("#sec-replay2", { opacity: 1 }, 24.09);
+    explode("#sec-term-music", 24.09, 0.34);
+
+    // SEAM 5 — Replay2 → Text card  (LEFTWARD cut-the-curve @28.0: replay2 throws left + fades;
+    // the card's B1 line slides in from the right inside its own comp, carrying the motion)
+    T.to("#sec-replay2", { xPercent: -13, opacity: 0.55, duration: 0.26, ease: "power2.in" }, 25.73);
+    T.set("#sec-replay2", { opacity: 0 }, 25.99);
+    T.set("#sec-available", { opacity: 1 }, 25.99);
+
+    // SEAM 6 — Text card → Outro  (card swipes off LEFT @30.9; cream outro fades in, mark liquid-fills)
+    T.to("#sec-available", { xPercent: -13, opacity: 0.55, duration: 0.26, ease: "power2.in" }, 28.63);
+    T.set("#sec-available", { opacity: 0 }, 28.89);
+    // hard cut — the outro's wing pieces waterfall in from the right inside the comp,
+    // carrying the card's leftward swipe (cut-the-curve grammar)
+    T.set("#sec-outro", { opacity: 1 }, 28.89);
+
+    window.__timelines["sfx-music-launch"] = T;
+  </script>
+</body>
+</html>

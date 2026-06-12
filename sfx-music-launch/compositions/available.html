@@ -1,0 +1,99 @@
+<template id="available-template">
+  <!-- Text card in the intro's 6–10s grammar (leftward cut-the-curve between beats):
+       B1 "Music and sound effects"  → leftward cut-the-curve → B2 "now available for free with the HeyGen API"
+       Enters by sliding in from the right (carries replay2's leftward swipe). Section swiped off left by the master. -->
+  <div id="av-root" data-composition-id="available" data-width="1920" data-height="1080" data-duration="3.0">
+    <style>
+      @font-face { font-family:'Hanken Grotesk';font-weight:400;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2'); }
+      @font-face { font-family:'Hanken Grotesk';font-weight:600;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2'); }
+      @font-face { font-family:'Hanken Grotesk';font-weight:700;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2'); }
+      @font-face { font-family:'Hanken Grotesk';font-weight:800;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2'); }
+      #av-root{
+        --paper:#F0EEE6; --ink:#262624; --clay:#D97757; --clay-text:#A8472A;
+        --f-body:"Hanken Grotesk","Inter",system-ui,sans-serif;
+        position:relative;width:1920px;height:1080px;overflow:hidden;
+        background:var(--paper);container-type:size;font-family:var(--f-body);color:var(--ink);
+      }
+      #av-root *,#av-root *::before,#av-root *::after{box-sizing:border-box;margin:0;padding:0}
+      #av-root::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
+        background:radial-gradient(circle, rgba(38,36,30,.025) 1px, transparent 1px) 0 0/34px 34px}
+      #av-root .beat{position:absolute;inset:0;z-index:1;display:grid;place-items:center;text-align:center;
+        padding:0 6cqw;will-change:transform,opacity,filter}
+      #av-root .big{font-weight:800;font-size:6.6cqw;line-height:1.0;letter-spacing:-.03em;color:var(--ink);
+        max-width:84cqw;will-change:transform,opacity}
+      #av-root .mid{font-weight:800;font-size:6.6cqw;line-height:1.06;letter-spacing:-.03em;color:var(--ink);
+        max-width:90cqw;will-change:transform,opacity}
+      #av-root .w{display:inline-block;will-change:transform,opacity}
+      #av-root .line{will-change:transform,opacity}
+      /* "free" — clay-family gradient text; GSAP slides background-position for the
+         multi-tone orange morph (gradient starts+ends on clay so the slide loops clean) */
+      #av-root .free{
+        background:linear-gradient(100deg,#D97757,#E89F7A,#C25E3C,#A8472A,#D97757);
+        background-size:300% 100%;background-position:0% 50%;
+        -webkit-background-clip:text;background-clip:text;color:transparent;
+        will-change:background-position}
+    </style>
+
+    <div class="beat" id="av1"><div class="big"><span class="w">Music</span> <span class="w">and</span> <span class="w">SFX</span></div></div>
+    <div class="beat" id="av2"><div class="mid">
+      <div class="line" id="avl1">Now available for <span class="free" id="avfree">free</span></div>
+      <div class="line" id="avl2">with the HeyGen API</div>
+    </div></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+    window.__timelines = window.__timelines || {};
+    (async function(){
+      if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch(e){} }
+      const root=document.querySelector('[data-composition-id="available"]');
+      const av1=root.querySelector('#av1'), av2=root.querySelector('#av2');
+      const t1=av1.querySelector('.big');
+      const w1=[...t1.querySelectorAll('.w')];
+      const l1=root.querySelector('#avl1'), l2=root.querySelector('#avl2');
+      const free=root.querySelector('#avfree');
+
+      gsap.set(av2,{opacity:0});
+      gsap.set(av1,{opacity:1});
+      // pre-entry states (fromTo immediateRender:false would show settled positions otherwise)
+      gsap.set(w1,{x:230,opacity:0});
+      gsap.set([l1,l2],{y:230,opacity:0});
+
+      const tl=gsap.timeline({paused:true});
+
+      // B1 WATERFALL ENTRY — words cascade in from the right (carries replay2's leftward
+      // swipe), power4.out = mid-motion pickup, shrinking stagger (until-now grammar)
+      { let off=0,gap=0.05;
+        w1.forEach(el=>{
+          tl.fromTo(el,{x:230,opacity:0.35},{x:0,opacity:1,duration:.3,ease:'power4.out',immediateRender:false},off);
+          off+=gap; gap*=0.84;
+        }); }
+
+      // B1 → B2 UPWARD CUT-THE-CURVE @ 1.4 — "Music and SFX" ramps UP as one group
+      // (power4.in, fading through most of the ramp); B2's first line slides UP into
+      // place mid-motion at matched velocity. Lines enter whole, not word-by-word.
+      const CB=1.4;
+      tl.to(t1,{y:-230,duration:.34,ease:'power4.in'},CB-0.34);
+      tl.to(av1,{opacity:0,duration:.3,ease:'power2.in'},CB-0.32);
+      tl.set(av1,{opacity:0},CB);
+      tl.set(av2,{opacity:1},CB);
+      tl.fromTo(l1,{y:230,opacity:0.35},{y:0,opacity:1,duration:.3,ease:'power4.out',immediateRender:false},CB);
+      tl.fromTo(l2,{y:230,opacity:0.35},{y:0,opacity:1,duration:.3,ease:'power4.out',immediateRender:false},CB+0.5);
+
+      // "free" GRADIENT GLOW — after line 1 lands, the clay tones morph through the word
+      // (outro liquid-fill energy, but oranges only; loops clean back onto clay)
+      tl.to(free,{backgroundPosition:'200% 50%',duration:1.1,ease:'sine.inOut'},CB+0.35);
+
+      tl.to({},{duration:.4},2.7);   // hold B2 (master swipes the section off left at local ~2.9)
+
+      window.__timelines["available"]=tl;
+      const q=new URLSearchParams(location.search);
+      if(q.has('t')) tl.seek(parseFloat(q.get('t'))||0);
+      else if(q.get('dev')==='1') tl.play();
+    })();
+    </script>
+  </div>
+</template>

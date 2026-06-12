@@ -1,0 +1,134 @@
+<template id="button-spam-template">
+  <!-- Hook: cursor rides up, clicks the giant ink "Click SFX" button — 2 slow, 10 spam.
+       INTENTIONALLY SILENT: hearing nothing is the joke "Boring." pays off.
+       Every click: cursor tip-tap + button press-down + expanding sound rings.
+       Then "Video without sound is..." waterfalls upward at the top, and the cursor
+       accelerates left into the cut (leftward cut-the-curve handled by the root). -->
+  <div id="bs-root" data-composition-id="button-spam" data-width="1920" data-height="1080" data-duration="4.9">
+    <style>
+      @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:500;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+      @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:700;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+
+      #bs-root{
+        --paper:#F0EEE6; --ink:#262624; --muted:#6F6E66; --clay:#D97757; --clay-press:#BF6044;
+        --on-accent:#FBF7F0; --hairline:#DCD8CC;
+        --f-body:"Hanken Grotesk","Inter",system-ui,sans-serif;
+        position:relative;width:1920px;height:1080px;overflow:hidden;
+        background:var(--paper);container-type:size;font-family:var(--f-body);color:var(--ink);
+      }
+      #bs-root *,#bs-root *::before,#bs-root *::after{box-sizing:border-box;margin:0;padding:0}
+      #bs-root::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
+        background:radial-gradient(circle, rgba(38,36,30,.025) 1px, transparent 1px) 0 0/34px 34px}
+
+      /* claim band — waterfall upward mask reveal, word by word.
+         z-index above the btnwrap (z3) so the expanding rings pass BEHIND the text. */
+      #bs-root .claim{position:absolute;left:0;right:0;top:14.2cqw;z-index:4;text-align:center;
+        font-weight:700;font-size:5.95cqw;line-height:1.04;letter-spacing:-.025em;color:var(--ink)}
+      #bs-root .claim .wm{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.18cqw;margin:0 .55cqw}
+      #bs-root .claim .wi{display:inline-block;will-change:transform}
+
+      /* the giant ink button — true Claude register: warm charcoal, sentence case, soft rect.
+         Clay is rationed to the sound rings, not the button. */
+      #bs-root .btnwrap{position:absolute;left:50%;top:57%;transform:translate(-50%,-50%);z-index:3;will-change:transform,opacity}
+      #bs-root .btn{position:relative;z-index:2;display:flex;align-items:center;gap:2.4cqw;
+        background:var(--ink);color:#EFEADD;border-radius:2.2cqw;
+        padding:3.25cqw 6cqw;font-weight:600;font-size:5.25cqw;line-height:1;letter-spacing:-.022em;
+        white-space:nowrap;will-change:transform;
+        box-shadow:0 1px 3px rgba(38,38,36,.06), 0 32px 70px -32px rgba(38,38,36,.34);}
+      #bs-root .btn svg{width:5.4cqw;height:5.4cqw;stroke:#EFEADD;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+
+      /* sound rings — the "this should be making sound" cue; one fires per click */
+      #bs-root .ring{position:absolute;inset:-.3cqw;z-index:1;border-radius:3cqw;
+        border:.32cqw solid var(--clay);opacity:0;pointer-events:none;will-change:transform,opacity}
+
+      #bs-root .cursor{position:absolute;left:50%;top:115%;width:7cqw;height:7cqw;z-index:20;
+        filter:drop-shadow(0 4px 6px rgba(0,0,0,.3));pointer-events:none;will-change:transform}
+    </style>
+
+    <div class="claim" id="claim">Video without sound is...</div>
+
+    <div class="btnwrap" id="btnwrap">
+      <div class="btn" id="btn">
+        <svg viewBox="0 0 24 24"><path d="M11 5 6.5 8.5H3v7h3.5L11 19zM15 9a4.2 4.2 0 0 1 0 6M17.8 6.2a8.2 8.2 0 0 1 0 11.6"/></svg>
+        <span id="btnlbl">Click SFX</span>
+      </div>
+    </div>
+
+    <svg class="cursor" id="cursor" viewBox="0 0 28 28">
+      <path d="M6 4 L6 23 L11 18 L14.5 25 L17.5 23.6 L14 17 L21 17 Z" fill="#1c1c1c" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round"/>
+    </svg>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+    window.__timelines = window.__timelines || {};
+    (async function(){
+      if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch(e){} }
+      const root=document.querySelector('[data-composition-id="button-spam"]');
+      const btnwrap=root.querySelector('#btnwrap'), btn=root.querySelector('#btn'), cursor=root.querySelector('#cursor');
+
+      // claim → masked word spans for the upward waterfall
+      const claim=root.querySelector('#claim');
+      claim.innerHTML=claim.textContent.trim().split(' ').map(w=>`<span class="wm"><span class="wi">${w}</span></span>`).join(' ');
+      const words=claim.querySelectorAll('.wi');
+
+      // 2 slow clicks (0.5 apart) then 10 spam clicks (0.2 apart)
+      const CLICKS=[1.2, 1.7];
+      for(let i=0;i<10;i++) CLICKS.push(2.3 + i*0.2);
+
+      // one sound ring per click, pre-built so seeks are deterministic
+      const rings=CLICKS.map(()=>{const r=document.createElement('div');r.className='ring';btnwrap.appendChild(r);return r;});
+
+      gsap.set(btnwrap,{xPercent:-50,yPercent:-50});
+      gsap.set(btnwrap,{opacity:0,y:14});
+      gsap.set(words,{yPercent:115});   // masked below their lines until the waterfall
+
+      const E='power3.out';
+      const tl=gsap.timeline({paused:true,defaults:{ease:E}});
+
+      // button settles in (fade + small rise — frame.md cut grammar)
+      tl.to(btnwrap,{opacity:1,y:0,duration:.45},0.05);
+      // cursor rides STRAIGHT UP the y-axis, tip landing on the button face
+      tl.fromTo(cursor,{left:'48.6%',top:'115%'},{left:'48.6%',top:'55%',duration:.85,ease:E},0.25);
+
+      // CLICK — stolen from connector-morph: cursor tip-tap + the dark press response,
+      // plus a sound ring bursting outward (rings overlap during the spam run)
+      CLICKS.forEach((t,i)=>{
+        // cursor tap (pivot at the arrow tip)
+        tl.to(cursor,{scale:0.84,duration:.08,ease:'power2.in',transformOrigin:'21% 14%',overwrite:'auto'},t);
+        tl.to(cursor,{scale:1,duration:.16,ease:'power2.out',transformOrigin:'21% 14%',overwrite:'auto'},t+.08);
+        // button press: compresses + ink deepens + shadow flattens, then springs back
+        tl.to(btn,{scale:0.94,backgroundColor:'#171614',
+          boxShadow:'0 1px 2px rgba(38,38,36,.12), 0 10px 28px -18px rgba(38,38,36,.40)',
+          duration:.09,ease:'power2.out',overwrite:'auto'},t);
+        tl.to(btn,{scale:1,backgroundColor:'#262624',
+          boxShadow:'0 1px 3px rgba(38,38,36,.06), 0 32px 70px -32px rgba(38,38,36,.34)',
+          duration:.16,ease:'power2.inOut',overwrite:'auto'},t+.09);
+        // sound ring — expands ALL THE WAY off the frame edges (scale 6 clears the
+        // 1080 edge from the 57% button center). immediateRender:false or every ring
+        // paints its from-state at t=0 and peeks out from behind the button pre-click.
+        tl.fromTo(rings[i],{scale:1,opacity:.6},
+          {scale:6,opacity:.35,duration:.9,ease:'power2.out',immediateRender:false},t);
+        tl.set(rings[i],{opacity:0},t+.92);
+      });
+
+      // WATERFALL — "Video without sound is..." rises word by word through the masks
+      // (surfaces mid-spam — the claim lands while the button is still being hammered)
+      tl.to(words,{yPercent:0,duration:.55,ease:'power4.out',stagger:.12},3.3);
+
+      // CUT-THE-CURVE: cursor covers the first 1/3 of a leftward path, accelerating into
+      // the hard cut; "Boring." picks the motion up sliding in from the right.
+      tl.to(cursor,{left:'37%',duration:.3,ease:'power2.in'},4.6);
+      tl.to({},{duration:.1},4.8);   // hold so timeline duration === data-duration
+
+      window.__timelines["button-spam"]=tl;
+      const q=new URLSearchParams(location.search);
+      if(q.has('t')) tl.seek(parseFloat(q.get('t'))||0);
+      else if(q.get('dev')==='1') tl.play();
+    })();
+    </script>
+  </div>
+</template>

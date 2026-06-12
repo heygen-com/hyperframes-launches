@@ -1,0 +1,247 @@
+<template>
+<div id="tsfx-root" data-composition-id="terminal-sfx" data-width="1920" data-height="1080">
+  <div class="win">
+    <!-- title bar -->
+    <div class="bar">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    </div>
+
+    <!-- conversation feed -->
+    <div class="convo">
+      <div class="usermsg"><span class="ub"></span></div>
+
+      <div class="agent">
+        <div class="reply">
+          <p class="rl" data-i="0">I'll search HeyGen's audio library for SFX that fit.</p>
+          <p class="rl" data-i="1">Loading mouse clicks / text typing / subtle whooshes</p>
+          <p class="rl" data-i="2">Applying to HyperFrames render…</p>
+        </div>
+      </div>
+      <!-- spinner status line: pinned ~100px above the composer, Claude Code-style -->
+      <div class="think"><span class="ast">✳</span><span class="tt">3s · thinking…</span></div>
+    </div>
+
+    <!-- composer -->
+    <div class="composer">
+      <div class="chips">
+        <span class="chip"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2 19h20"/></svg>Local</span>
+        <span class="chip"><svg viewBox="0 0 24 24"><path d="M3 7.5A2 2 0 0 1 5 5.5h4.2l2 2.2H19a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>CC</span>
+        <span class="chip mini"><svg class="fplus" viewBox="0 0 33 24"><path d="M2.5 7.5a2 2 0 0 1 2-2h3.8l1.8 2.2H15a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H4.5a2 2 0 0 1-2-2z"/><path d="M26.5 10v5M24 12.5h5"/></svg></span>
+      </div>
+      <div class="inputbar">
+        <div class="tline"><span class="typed"></span><span class="caret">▏</span></div>
+        <span class="ret">↵</span>
+        <!-- animated pixel pet typing, perched on the prompt's top edge (looped to cover the comp) -->
+        <div class="pet">
+          <video src="assets/pet-typing.mp4" muted playsinline id="tsfx-pet1" data-start="0"    data-duration="5.27" data-track-index="40"></video>
+          <video src="assets/pet-typing.mp4" muted playsinline id="tsfx-pet2" data-start="5.27" data-duration="1.55" data-track-index="41"></video>
+        </div>
+      </div>
+      <div class="metarow">
+        <div class="ml">
+          <span class="auto">Auto</span>
+          <span class="ico">+</span>
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>
+          <span class="ico sm">⌄</span>
+        </div>
+        <div class="mr">
+          <span>Opus 4.8</span><span class="hi">High</span><span class="orb"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- macOS pointer (same grammar as the connector-morph comp): rises to the ↵ key, taps send -->
+  <svg class="cursor" viewBox="0 0 28 28">
+    <path d="M6 4 L6 23 L11 18 L14.5 25 L17.5 23.6 L14 17 L21 17 Z" fill="#1c1c1c" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round"/>
+  </svg>
+</div>
+
+<style>
+  @font-face{font-family:'Hanken Grotesk';font-weight:400;font-display:block;src:url(fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:500;font-display:block;src:url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:600;font-display:block;src:url(fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:700;font-display:block;src:url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2');}
+  #tsfx-root{ position:absolute; inset:0; width:1920px; height:1080px;
+    container-type:size; font-family:'Hanken Grotesk',system-ui,sans-serif;
+    background:#F0EEE6; }                 /* cream ground (matches the whole film); window sits on it */
+
+  #tsfx-root .win{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:83.3cqw; height:81cqh; background:#1C1C1C; border-radius:1.35cqw;
+    box-shadow:0 2cqw 6cqw -2cqw rgba(20,20,18,.45); overflow:hidden; color:#EFEADD; }
+
+  /* title bar */
+  #tsfx-root .bar{ position:absolute; top:1.4cqw; left:1.6cqw; display:flex; gap:.62cqw; }
+  #tsfx-root .dot{ width:1.05cqw; height:1.05cqw; border-radius:50%; display:block; }
+  #tsfx-root .dot.r{ background:#FF5F57; } #tsfx-root .dot.y{ background:#FEBC2E; }
+  #tsfx-root .dot.g{ background:#28C840; }
+
+  /* conversation */
+  #tsfx-root .convo{ position:absolute; left:3.4cqw; right:3.4cqw; top:6cqw; bottom:17cqw; }
+  #tsfx-root .usermsg{ position:absolute; right:0; top:0; max-width:62cqw; text-align:right;
+    font-size:1.5cqw; font-weight:500; color:#EFEADD; opacity:0; }
+  #tsfx-root .agent{ position:absolute; left:0; top:8.5cqw; opacity:0; }
+  #tsfx-root .think{ position:absolute; left:0; bottom:.4cqw; display:flex; align-items:center;
+    gap:.7cqw; color:#8C8B83; font-size:1.15cqw; font-weight:500; opacity:0; }
+  #tsfx-root .ast{ color:#D97757; font-size:1.5cqw; display:inline-block; }
+  #tsfx-root .reply .rl{ margin:0 0 1.35cqw; font-size:1.5cqw; font-weight:400; line-height:1.4;
+    color:#D8D4C8; opacity:0; }
+
+  /* composer */
+  #tsfx-root .composer{ position:absolute; left:3.4cqw; right:3.4cqw; bottom:3.4cqw; }
+  #tsfx-root .pet{ position:absolute; right:3cqw; bottom:100%; width:7.6cqw; height:4.4cqw; pointer-events:none; }
+  #tsfx-root .pet video{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block;
+    /* LIGHTEN blend: the clip's dark #1C bg merges into the dark window (max-blend → window wins),
+       so the box vanishes entirely; the orange pet wins, dark eyes/legs read as window showing through */
+    mix-blend-mode:lighten; }
+  #tsfx-root .chips{ display:flex; gap:.6cqw; margin-bottom:.9cqw; }
+  #tsfx-root .chip{ display:inline-flex; align-items:center; gap:.5cqw; background:#2C2C2B;
+    color:#D7D4CA; font-size:.98cqw; font-weight:500; padding:.46cqw .82cqw; border-radius:.55cqw; }
+  #tsfx-root .chip svg{ width:1.1cqw; height:1.1cqw; stroke:#C9C6BC; stroke-width:1.8; fill:none;
+    stroke-linecap:round; stroke-linejoin:round; display:block; }
+  #tsfx-root .chip.mini{ padding:.46cqw .6cqw; }
+  #tsfx-root .chip.mini svg.fplus{ width:1.51cqw; }  /* 33-unit viewBox: plus sits clear right of the folder */
+
+  #tsfx-root .inputbar{ position:relative; display:flex; align-items:center; background:#2C2C2B;
+    border:1px solid #3a3a38; border-radius:.9cqw; box-sizing:border-box; min-height:3.3cqw;
+    padding:.7cqw 1.2cqw; font-family:'Hanken Grotesk',system-ui,sans-serif; }
+  /* tline lets the prompt wrap in the big centered phase; collapses back to one line when cleared */
+  #tsfx-root .tline{ flex:1; min-width:0; padding-right:2.6cqw; white-space:pre-wrap;
+    overflow-wrap:break-word; line-height:1.45; }
+  #tsfx-root .typed{ font-size:1.1cqw; font-weight:400; color:#E6E2D6; }
+  #tsfx-root .caret{ font-size:1.4cqw; color:#D97757; margin-left:.05cqw; }
+  #tsfx-root .ret{ position:absolute; right:1.1cqw; top:50%; transform:translateY(-50%);
+    color:#6F6E66; font-size:1.2cqw; }
+  #tsfx-root .composer{ will-change:transform; }
+  #tsfx-root .cursor{ position:absolute; width:5.5cqw; height:5.5cqw; z-index:30; opacity:0;
+    pointer-events:none; filter:drop-shadow(0 .2cqw .35cqw rgba(0,0,0,.35)); }
+
+  #tsfx-root .metarow{ display:flex; justify-content:space-between; align-items:center;
+    margin-top:.85cqw; color:#7C7B73; font-size:1.0cqw; font-weight:500; }
+  #tsfx-root .ml{ display:flex; align-items:center; gap:1.0cqw; }
+  #tsfx-root .auto{ background:rgba(202,164,62,.16); color:#CAA43E; padding:.22cqw .7cqw;
+    border-radius:.45cqw; font-size:.92cqw; }
+  #tsfx-root .ico{ color:#8C8B83; font-size:1.15cqw; display:inline-flex; align-items:center; }
+  #tsfx-root .ico svg{ width:1.25cqw; height:1.25cqw; display:block; }
+  #tsfx-root .ico.sm{ font-size:.85cqw; }
+  #tsfx-root .mr{ display:flex; align-items:center; gap:1.0cqw; }
+  #tsfx-root .mr .hi{ color:#9A998F; }
+  /* blue loading spinner — faint track + bright blue arc */
+  #tsfx-root .orb{ width:1.25cqw; height:1.25cqw; border-radius:50%; box-sizing:border-box;
+    border:0.17cqw solid rgba(96,148,214,0.26); border-top-color:#5A9BE6; }
+</style>
+
+<script>
+(function(){
+  const root = document.currentScript ? document.currentScript.closest('#tsfx-root') : null;
+  const R = root || document.querySelector('#tsfx-root');
+  if (!R || !window.gsap) return;
+
+  const PROMPT = "Lets add sound effects for the mouse clicks and a subtle pulse sound for the animation that follows each click.";
+  const typed  = R.querySelector('.typed');
+  const caret  = R.querySelector('.caret');
+  const ub     = R.querySelector('.usermsg .ub');
+  const usermsg= R.querySelector('.usermsg');
+  const agent  = R.querySelector('.agent');
+  const lines  = R.querySelectorAll('.reply .rl');
+  const composer = R.querySelector('.composer');
+  const cursor   = R.querySelector('.cursor');
+  const ret      = R.querySelector('.ret');
+
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused:true });
+
+  // ── BIG CENTERED PROMPT BOX (connector-morph grammar) ─────────────────────
+  // The composer starts narrow + scaled up, centered in a FULL-BLEED black window (pet
+  // perched on top); after the cursor taps ↵ it morphs down to its docked position WHILE
+  // the window shrinks from full-screen to its floating size (cream + traffic lights reveal).
+  // px against the fixed 1920×1080 root: 1cqw = 19.2px; docked .win = 1599.36 × 874.8,
+  // docked composer = left/right/bottom 3.4cqw → left 65.28, width 1468.8, bottom 65.28.
+  const win = R.querySelector('.win');
+  const bar = R.querySelector('.bar');
+  gsap.set(win, { width:1920, height:1080, borderRadius:0,
+    boxShadow:'0 2cqw 6cqw -2cqw rgba(20,20,18,0)' });
+  gsap.set(bar, { opacity:0 });
+  gsap.set(composer, { right:'auto', width:840, left:540, bottom:370,
+    scale:1.85, transformOrigin:'50% 100%' });
+
+  // ── ENTRY: the elements cut the curve in from the right (the film's leftward grammar) ──
+  const chipsEl = R.querySelector('.chips'), inputEl = R.querySelector('.inputbar'),
+        metaEl  = R.querySelector('.metarow');
+  tl.fromTo(inputEl, {x:280, opacity:0}, {x:0, opacity:1, duration:.55, ease:'power3.out'}, 0.02);
+  tl.fromTo(chipsEl, {x:340, opacity:0}, {x:0, opacity:1, duration:.55, ease:'power3.out'}, 0.10);
+  tl.fromTo(metaEl,  {x:340, opacity:0}, {x:0, opacity:1, duration:.55, ease:'power3.out'}, 0.16);
+
+  // blue spinner spins throughout
+  gsap.set(R.querySelector('.orb'),{transformOrigin:'50% 50%'});
+  tl.to(R.querySelector('.orb'),{rotation:360,duration:1.0,ease:'none',repeat:7},0);
+
+  // caret blink (finite, deterministic) through the typing window
+  gsap.set(caret,{opacity:1});
+  tl.to(caret,{opacity:0,duration:.5,ease:"steps(1)",repeat:9,yoyo:true}, 0.6);
+
+  // ── type the prompt (forward-play textContent reveal; render-safe, no clip-width measuring) ──
+  const obj = { n:0 };
+  tl.to(obj, {
+    n: PROMPT.length, duration: 2.3, ease:"none",
+    onUpdate(){ typed.textContent = PROMPT.slice(0, Math.round(obj.n)); }
+  }, 0.7);
+
+  // ── CURSOR: rises straight up the y-axis to the ↵ send key as typing finishes ──
+  tl.fromTo(cursor, {left:'86.8%', top:'112%', opacity:0},
+    {top:'49.8%', opacity:1, duration:.85, ease:'power3.out'}, 2.15);
+  // tap (same press grammar as connector-morph)
+  tl.to(cursor,{scale:.84, duration:.1, ease:'power2.in',  transformOrigin:'21% 14%'}, 3.02);
+  tl.to(cursor,{scale:1,   duration:.2, ease:'power2.out', transformOrigin:'21% 14%'}, 3.12);
+  // ↵ flashes clay on the click
+  tl.fromTo(ret,{color:'#6F6E66'},{color:'#D97757', duration:.08, ease:'power1.in'}, 3.1);
+  tl.to(ret,{color:'#6F6E66', duration:.25}, 3.3);
+
+  // ── SEND @3.2: text flies up to the upper-right as the user message; composer clears ──
+  tl.add(()=>{ ub.textContent = PROMPT; }, 3.15);
+  tl.set(caret,{opacity:0}, 3.2);
+  tl.fromTo(usermsg,{opacity:0,y:18},{opacity:1,y:0,duration:.4,ease:"power3.out"}, 3.2);
+  tl.add(()=>{ typed.textContent = ""; }, 3.25);
+
+  // ── MORPH @3.25: the box settles down + wide into its docked composer position ──
+  // width is parameterized so VISUAL width (width × scale) interpolates monotonically
+  // 1554 → 1468.8 — a naive width+scale tween overshoots past the window edge mid-morph.
+  // (direct style writes — gsap.set created inside an onUpdate is lazy-deferred a tick,
+  //  which desyncs the renderer's frame-by-frame seek)
+  const morph = { p:0 };
+  tl.to(morph, { p:1, duration:.7, ease:'power2.inOut', onUpdate(){
+    const p = morph.p;
+    const s = 1.85 - 0.85*p;          // scale 1.85 → 1
+    const vw = 1554 - 85.2*p;         // visual width 1554 → 1468.8
+    const w = vw / s;
+    const W = 1920 - 320.64*p;        // window width 1920 → 1599.36 (shrinks in sync below)
+    composer.style.width = w + 'px';
+    composer.style.left = (W/2 - w/2) + 'px';        // hold center on the (shrinking) window
+    composer.style.bottom = (370 - 304.72*p) + 'px'; // 370 → 65.28 (3.4cqw dock)
+    composer.style.transform = 'scale(' + s + ')';
+  }}, 3.25);
+  // window shrinks from full-bleed to its floating size — same ease/window as the dock,
+  // revealing the cream surround; traffic lights fade in as the box lands
+  tl.to(win, { width:1599.36, height:874.8, borderRadius:25.92,
+    boxShadow:'0 2cqw 6cqw -2cqw rgba(20,20,18,.45)', duration:.7, ease:'power2.inOut' }, 3.25);
+  tl.fromTo(bar, {opacity:0, x:-14}, {opacity:1, x:0, duration:.35, ease:'power2.out'}, 3.55);
+  // cursor drifts down and fades as the box departs
+  tl.to(cursor, { top:'58%', opacity:0, duration:.35, ease:'power2.in' }, 3.3);
+
+  // ── thinking @3.6 (spinner line pinned above the composer; replies reveal up top) ──
+  tl.fromTo(agent,{opacity:0},{opacity:1,duration:.3}, 3.6);
+  tl.fromTo(R.querySelector('.think'),{opacity:0},{opacity:1,duration:.3}, 3.6);
+  tl.fromTo(R.querySelector('.ast'),{rotation:0},{rotation:360,duration:1.0,ease:"none"}, 3.6);
+
+  // ── agent reply pops, line by line @4.3 ──
+  lines.forEach((p,i)=>{
+    tl.fromTo(p,{opacity:0,y:14},{opacity:1,y:0,duration:.45,ease:"power3.out"}, 4.3 + i*0.42);
+  });
+
+  // hold last frame to the comp duration (no black tail) — extended +0.5s for reading
+  tl.to({},{duration:0.2}, 6.6);
+
+  window.__timelines["terminal-sfx"] = tl;
+})();
+</script>
+</template>

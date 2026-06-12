@@ -1,0 +1,135 @@
+<template id="until-now-template">
+  <!-- Message run, modeled on claude-paper's outro (multi-beat single comp, mixed transitions):
+       B1 "And until now" (root inverse zoom-throughs the section IN)
+       → leftward cut-the-curve → B2 "to use SFX or Music in HyperFrames"
+       → leftward cut-the-curve → B3 "you had to find them yourself" (find → 🔍 mask swap)
+       → inverse zoom-through → B4 "That changes today." (held) -->
+  <div id="un-root" data-composition-id="until-now" data-width="1920" data-height="1080" data-duration="4.8">
+    <style>
+      @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:500;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+      @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:600;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+      @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:700;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+
+      #un-root{
+        --paper:#F0EEE6; --ink:#262624; --muted:#6F6E66; --clay:#D97757; --clay-text:#A8472A;
+        --f-body:"Hanken Grotesk","Inter",system-ui,sans-serif;
+        position:relative;width:1920px;height:1080px;overflow:hidden;
+        background:var(--paper);container-type:size;font-family:var(--f-body);color:var(--ink);
+      }
+      #un-root *,#un-root *::before,#un-root *::after{box-sizing:border-box;margin:0;padding:0}
+      #un-root::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
+        background:radial-gradient(circle, rgba(38,36,30,.025) 1px, transparent 1px) 0 0/34px 34px}
+
+      #un-root .beat{position:absolute;inset:0;z-index:1;display:grid;place-items:center;text-align:center;will-change:transform,opacity,filter}
+      #un-root .big{font-weight:800;font-size:8cqw;line-height:1;letter-spacing:-.03em;color:var(--ink);will-change:transform,opacity}
+      #un-root .mid{font-weight:600;font-size:4.6cqw;line-height:1.4;letter-spacing:-.02em;color:var(--ink);max-width:78cqw;will-change:transform,opacity}
+      #un-root .today{color:var(--clay-text)}
+      #un-root .w{display:inline-block;will-change:transform,opacity}
+      /* find → 🔍 swap (variables-launch aws→☁️ pattern): word slides up out of a clip
+         mask, emoji slides up into its place */
+      #un-root .fmask{display:inline-block;position:relative;overflow:hidden;vertical-align:bottom}
+      #un-root .fword{display:inline-block;will-change:transform}
+      #un-root .femoji{position:absolute;left:50%;top:50%;font-size:.92em;line-height:1;will-change:transform}
+    </style>
+
+    <div class="beat" id="ub1"><div class="big">And until now</div></div>
+    <div class="beat" id="ub2"><div class="mid"><span class="w">to</span> <span class="w">use</span> <span class="w">SFX</span> <span class="w">or</span> <span class="w">Music</span> <span class="w">in</span> <span class="w">HyperFrames</span></div></div>
+    <div class="beat" id="ub3"><div class="mid"><span class="w">you</span> <span class="w">had</span> <span class="w">to</span> <span class="w fmask"><span class="fword" id="fword">find</span><span style="font-size:121.254px" class="femoji" id="femoji">🔍</span></span> <span class="w">them</span> <span class="w">yourself</span></div></div>
+    <div class="beat" id="ub4"><div class="big">That changes <span class="today">today.</span></div></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+    window.__timelines = window.__timelines || {};
+    (async function(){
+      if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch(e){} }
+      const root=document.querySelector('[data-composition-id="until-now"]');
+      const ub1=root.querySelector('#ub1'), ub2=root.querySelector('#ub2'),
+            ub3=root.querySelector('#ub3'), ub4=root.querySelector('#ub4');
+      const t1=ub1.querySelector('.big'), t2=ub2.querySelector('.mid'), t3=ub3.querySelector('.mid');
+      const fword=root.querySelector('#fword'), femoji=root.querySelector('#femoji');
+
+      gsap.set([ub2,ub3,ub4],{opacity:0});
+      gsap.set(ub1,{opacity:1});
+      // emoji parked below the clip mask until the swap
+      gsap.set(femoji,{xPercent:-50,yPercent:70});
+
+      const tl=gsap.timeline({paused:true});
+      const w2=[...t2.querySelectorAll('.w')], w3=[...t3.querySelectorAll('.w')];
+      // pre-entry state: words hold off-position + invisible until their cascade slot
+      // (fromTo immediateRender:false would otherwise show them settled during the stagger)
+      gsap.set([...w2,...w3],{x:230,opacity:0});
+
+      /* ── CUT-THE-CURVE + WATERFALL (word-by-word test) ──────────────────────
+         EXIT: each word on a PRONOUNCED ramp — power4.in (slow start → hard ramp),
+         x −230 over .34s, but the fade completes at ~.18s, when the word is only
+         ~25-30% into its travel. Speed + early fade sell the exit; nothing leaves
+         the screen. Slight reading-order stagger (.022s).
+         ENTRY: mirrored power4.out (x +230 → 0, .3s) = the back half of a
+         power4.inOut composite — each word picks up ≥50% through the notional
+         path with velocity matched 1:1 to the exit ramp. Waterfall stagger with
+         shrinking gaps so the cascade accelerates.                              */
+      function wordExit(words,C){
+        let s=C-0.32;
+        words.forEach(el=>{
+          tl.to(el,{x:-230,duration:.34,ease:'power4.in'},s);
+          tl.to(el,{opacity:0,duration:.18,ease:'power1.in'},s);
+          s+=0.022;
+        });
+      }
+      function wordEnter(words,C){
+        let off=0,gap=0.05;
+        words.forEach(el=>{
+          tl.fromTo(el,{x:230,opacity:0.35},{x:0,opacity:1,duration:.3,ease:'power4.out',immediateRender:false},C+off);
+          off+=gap; gap*=0.84;
+        });
+      }
+
+      // B1 → B2 LEFTWARD CUT-THE-CURVE @ 0.9 — "And until now" ramps left (power4.in,
+      // fading out early in its travel); B2's words waterfall in mid-flight at the cut.
+      const CB=0.9;
+      // fade runs nearly the whole ramp (ends 0.02 before the cut) so the line is still
+      // visibly streaking left when B2's words ignite — no dead gap at the seam
+      tl.to(t1,{x:-230,duration:.34,ease:'power4.in'},CB-0.34);
+      tl.to(ub1,{opacity:0,duration:.3,ease:'power2.in'},CB-0.32);
+      tl.set(ub1,{opacity:0},CB);
+      tl.set(ub2,{opacity:1},CB);
+      wordEnter(w2,CB);
+
+      // B2 → B3 — word-by-word cut-the-curve both sides: B2's words ramp out staggered,
+      // B3's words waterfall in already moving at matched speed.
+      const CC=2.3;
+      wordExit(w2,CC);
+      tl.set(ub2,{opacity:0},CC);
+      tl.set(ub3,{opacity:1},CC);
+      wordEnter(w3,CC);
+
+      // "find" → 🔍 swap (variables-launch pattern): the word slides up out of the clip
+      // mask while the magnifying glass slides up into its place
+      const SW=CC+0.6;
+      tl.to(fword,{yPercent:-115,duration:.28,ease:'power2.in'},SW);
+      tl.to(femoji,{keyframes: { "0%": { yPercent: 0 }, "100%": { yPercent: -50 }, easeEach: "power3.out" },duration:.35,ease: "none"},SW+.08);
+
+      // B3 → B4 INVERSE ZOOM-THROUGH @ 3.4 (window stretched so the swap lands and holds)
+      const CD=3.9;
+      tl.to(ub3,{scale:0.8,filter:'blur(10px)',duration:0.2,ease:'power3.in'},CD-0.2);
+      tl.to(ub3,{opacity:0.15,duration:0.2,ease:'none'},CD-0.2);
+      tl.set(ub3,{opacity:0},CD);
+      tl.set(ub4,{opacity:0.15,scale:1.25,filter:'blur(10px)'},CD);
+      tl.to(ub4,{scale:1,filter:'blur(0px)',opacity:1,duration:0.5,ease:'expo.out'},CD);
+
+      tl.to({},{duration:.4},4.4);   // hold "That changes today." to ≈ data-duration
+
+      window.__timelines["until-now"]=tl;
+      const q=new URLSearchParams(location.search);
+      if(q.has('t')) tl.seek(parseFloat(q.get('t'))||0);
+      else if(q.get('dev')==='1') tl.play();
+    })();
+    </script>
+  </div>
+</template>

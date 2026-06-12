@@ -1,0 +1,157 @@
+<template>
+<div id="outro-root" data-composition-id="outro" data-width="1920" data-height="1080">
+  <!-- liquid-fill HyperFrames mark (ported from hf-ollama logo.html) -->
+  <div class="stage">
+    <div class="mark" id="mark">
+      <!-- base: solid black mark -->
+      <svg viewBox="190 -2 74 43" xmlns="http://www.w3.org/2000/svg">
+        <path d="M195.219 26.1937L213.529 38.9937C216.009 40.7237 220.239 38.7637 221.009 35.5337L228.419 4.33374C229.189 1.10374 225.879 -0.856262 222.589 0.873738L198.199 13.6737C192.649 16.5837 191.059 23.2837 195.219 26.1937Z" fill="#0B0B0C"/>
+        <path d="M256.97 25.9638L232.58 38.7638C229.28 40.4938 225.98 38.5338 226.75 35.3038L234.16 4.10376C234.93 0.873757 239.16 -1.08624 241.64 0.643757L259.95 13.4438C264.12 16.3538 262.52 23.0538 256.97 25.9638Z" fill="#0B0B0C"/>
+      </svg>
+      <!-- overlay: gradient mark, revealed bottom→top (the liquid) -->
+      <!-- gradients copied verbatim from hyperframes-dark.svg (same userSpace coords)
+           so the landed mark is pixel-identical to the lockup's symbol -->
+      <div class="fill" id="fill">
+        <svg viewBox="190 -2 74 43" xmlns="http://www.w3.org/2000/svg">
+          <path d="M195.219 26.1937L213.529 38.9937C216.009 40.7237 220.239 38.7637 221.009 35.5337L228.419 4.33374C229.189 1.10374 225.879 -0.856262 222.589 0.873738L198.199 13.6737C192.649 16.5837 191.059 23.2837 195.219 26.1937Z" fill="url(#ogGradL)"/>
+          <path d="M256.97 25.9638L232.58 38.7638C229.28 40.4938 225.98 38.5338 226.75 35.3038L234.16 4.10376C234.93 0.873757 239.16 -1.08624 241.64 0.643757L259.95 13.4438C264.12 16.3538 262.52 23.0538 256.97 25.9638Z" fill="url(#ogGradR)"/>
+          <defs>
+            <linearGradient id="ogGradL" x1="225.869" y1="-3.06048e-05" x2="222.845" y2="37.4821" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#06E3FA"/>
+              <stop offset="1" stop-color="#4FDB5E"/>
+            </linearGradient>
+            <linearGradient id="ogGradR" x1="230.87" y1="39" x2="244.661" y2="6.30303" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#06E3FA"/>
+              <stop offset="1" stop-color="#4FDB5E"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- final HyperFrames wordmark (SVG, no symbol) — mask-reveals top→bottom -->
+  <div class="stage"><div class="lock" id="lock"><img src="assets/hf-no-symbol.svg" alt="HyperFrames"></div></div>
+
+  <!-- macOS pointer — rises during the entry, clicks the mark; the press launches the flight -->
+  <svg class="cursor" viewBox="0 0 28 28">
+    <path d="M6 4 L6 23 L11 18 L14.5 25 L17.5 23.6 L14 17 L21 17 Z" fill="#1c1c1c" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round"/>
+  </svg>
+</div>
+
+<style>
+  #outro-root{ position:absolute; inset:0; width:1920px; height:1080px;
+    container-type:size; background:#F0EEE6; overflow:hidden; }
+  #outro-root *{ box-sizing:border-box; margin:0; padding:0; }
+  #outro-root .stage{ position:absolute; inset:0; display:grid; place-items:center; }
+  #outro-root .mark{ position:relative; width:26cqw; height:auto; will-change:transform,filter,opacity; }
+  #outro-root .mark svg{ display:block; width:100%; height:auto; }
+  /* gradient layer sits exactly over the black layer; clip-path reveals it bottom→top */
+  #outro-root .fill{ position:absolute; inset:0; clip-path:inset(100% 0 0 0); will-change:clip-path; }
+  #outro-root .fill svg{ position:absolute; inset:0; width:100%; height:100%; }
+  #outro-root .lock{ width:48cqw; height:auto; opacity:0; will-change:transform,filter,opacity,clip-path; }
+  #outro-root .cursor{ position:absolute; left:49.6%; top:112%; width:5.5cqw; height:5.5cqw;
+    z-index:30; opacity:0; pointer-events:none; filter:drop-shadow(0 .2cqw .35cqw rgba(0,0,0,.3)); }
+  #outro-root .lock img{ width:100%; height:auto; display:block; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/CustomEase.min.js"></script>
+<script>
+(function(){
+  const R = (document.currentScript && document.currentScript.closest('#outro-root')) || document.querySelector('#outro-root');
+  if (!R || !window.gsap) return;
+  const mark = R.querySelector('#mark'), fill = R.querySelector('#fill'), lock = R.querySelector('#lock');
+  // each wing is TWO stacked paths — black base + gradient overlay — that must move as one
+  const baseWings = [...R.querySelectorAll('#mark > svg path')];
+  const fillWings = [...R.querySelectorAll('#fill svg path')];
+  const wingL = [baseWings[0], fillWings[0]], wingR = [baseWings[1], fillWings[1]];
+
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused:true });
+
+  gsap.set(mark,{ scale:1, opacity:1, transformOrigin:'50% 50%' });
+  gsap.set(fill,{ clipPath:'inset(100% 0 0 0)' });
+  gsap.set(lock,{ opacity:0, clipPath:'inset(0% 0% 0% 100%)', transformOrigin:'50% 50%' });
+  // wings hold off-right + invisible until their cascade slot
+  gsap.set([...baseWings,...fillWings],{ x:34, opacity:0 });   // 34 svg-units ≈ 230 screen px at 26cqw
+
+  // ENTRY — leftward cut-the-curve waterfall: the LEFT wing lands dead against the "wall"
+  // (clean power4.out, no recoil); the RIGHT wing carries the bounce (back.out overshoot).
+  // Its snap-back is what launches everything: F below = the right wing's overshoot peak,
+  // so the flight AND the gradient fill ignite on the snap-back frame.
+  tl.fromTo(wingL,{x:34,opacity:0.35},{x:0,opacity:1,duration:.3, ease:'power4.out',  immediateRender:false},0.02);
+  // right wing: whip in, stretch past the wall to −5.2, then a SLOWER, calmer ride back —
+  // these are the big wings, so the bounce-back is deliberately less snappy than the
+  // small landed mark's recoil later
+  tl.fromTo(wingR,{x:34,opacity:0.35},{x:-5.2,opacity:1,duration:.22,ease:'power3.out',immediateRender:false},0.07);
+  // rebound: fast + SPRINGY — back.out overshoots a hair past rest and settles
+  // (rebound runs 0.29 → ~0.47)
+  tl.to(wingR,{x:0,duration:.18,ease:'back.out(2.5)'},0.29);
+
+  // ── CURSOR CLICK — the new trigger ─────────────────────────────────────────
+  // The pointer rises while the wings land; the instant the rebound finishes (0.51)
+  // it clicks the mark, which compresses DOWN (slight y + scale squash); the release
+  // springs it up into the flight path, and gradient + flight ignite on that frame.
+  const cursor = R.querySelector('.cursor');
+  tl.fromTo(cursor,{opacity:0},{top:'53.2%',opacity:1,duration:.45,ease:'power3.out',immediateRender:false},0.25);
+  tl.to(cursor,{scale:.84,duration:.08,ease:'power2.in',transformOrigin:'21% 14%'},0.67);
+  tl.to(cursor,{scale:1,duration:.18,ease:'power2.out',transformOrigin:'21% 14%'},0.75);
+  // squash fires only once the cursor is nearly bottomed-out (0.73 vs press bottom 0.75),
+  // and bites deeper — y 16, scale 0.90
+  tl.to(mark,{y:16,scale:0.90,duration:.12,ease:'power3.out'},0.73);
+  tl.to(cursor,{top:'60%',opacity:0,duration:.3,ease:'power2.in'},0.92); // departs as the mark flies
+
+  // F = 0.85: the press release. The mark UNCOMPRESSES on a steep spring — scale pops
+  // 0.90 → 1.05 (back.out) as y launches — so the release visibly shoves it upward into
+  // the arc; the flight's late scale-down takes over after the pop. FD = flight time.
+  const F = 0.85, FD = 0.9;
+  // LIQUID FILL — ignites with the flight on the snap-back frame and runs exactly FD,
+  // completing on the touchdown frame — the flood finishes as the slam compression begins
+  // linear — a decelerating ease "finishes" perceptually early; constant rise keeps the
+  // surface visibly moving until the exact touchdown frame
+  tl.to(fill,{ clipPath:'inset(0% 0 0 0)', duration:FD, ease:'none' }, F);
+  // FLY TO SLOT — curved "add-to-cart flight" (jh3y QwyOVWX grammar, softened): x, y and
+  // scale ride DIFFERENT béziers so the path arcs — x winds up with a small backswing then
+  // sweeps; y rises early and overshoots a touch before settling down into the slot; scale
+  // stays big through most of the flight and shrinks late. Slight rotation lean for fun.
+  // Slot math (48cqw lockup, viewBox 0 0 263 79, centered): 3.504 px/unit; mark sub-rect
+  // x190 y-2 w74 h43 → screen rect 1164.96,394.59 259.3×150.67 → center (1294.61, 469.93).
+  // Big mark is 26cqw centered at (960, 540) → Δ(+334.61, −70.07), scale 259.3/499.2 = .5194.
+  // The flight ignites at F — the right wing's snap-back frame, shared with the fill —
+  // so the bounce reads as the force launching the mark into its path. The fill clip is
+  // mark-relative so it rides the flight.
+  const CE = window.CustomEase;
+  if (CE && gsap.registerPlugin) gsap.registerPlugin(CE);
+  // UP-AND-OVER arc (the keeper): backswing wind-up, early rise with a touch of overshoot,
+  // hard lateral arrival. The launch coupling comes from F instead — the flight ignites a
+  // QUARTER into the big wing's rebound, when its push-back force is visibly building.
+  const exX = CE ? CE.create('flyX','0.6,-0.28,0.85,0.62') : 'power2.inOut'; // backswing → sweep → HARD arrival
+  const exY = CE ? CE.create('flyY','0.2,0.6,0.4,1.1')  : 'power2.out';    // early rise, slight overshoot
+  const exS = CE ? CE.create('flyS','0.7,0.05,0.85,1')  : 'power3.in';     // big until late, then shrink
+  tl.to(mark,{ x:334.61, duration:FD, ease:exX }, F);
+  tl.to(mark,{ y:-70.07, duration:FD, ease:exY }, F);
+  // RELEASE SPRING — uncompression pops the scale 0.90 → 1.05 on a steep back.out as the
+  // y-launch begins (the shove upward), then the flight's late scale-down takes over
+  tl.to(mark,{ scale:1.05,   duration:.16,    ease:'back.out(2)' }, F);
+  tl.to(mark,{ scale:0.5194, duration:FD-.16, ease:exS }, F+.16);
+  tl.to(mark,{ keyframes:{ rotation:[0,6,0], easeEach:'sine.inOut' }, duration:FD, ease:'none' }, F);
+  // IMPACT RECOIL — the hard landing reads as hitting a wall: the trailing (left) wing
+  // carries its inertia toward its twin, then — same-pole magnets — gets pushed back out
+  // to its rest position with a soft repulsion wobble. (x in svg units: 2.6 ≈ 9 screen px)
+  // asymmetric spring: compression bites fast, snap-out stays FAST and stretches further
+  // past rest (−1.8), then the ride back from full stretch is long and chill — no wobble
+  tl.to(wingL,{ x:3.2,  duration:.07, ease:'power3.out' }, F+FD);            // impact bites
+  tl.to(wingL,{ x:-1.8, duration:.09, ease:'power2.out' }, F+FD+0.07);       // fast snap-out, further past
+  tl.to(wingL,{ x:0,    duration:.55, ease:'power1.inOut' }, F+FD+0.16);     // chill return to rest
+  // MASK REVEAL — right→left, fired at the REBOUND: compression → and exactly as the wing
+  // snaps back out, the wordmark sweeps open from the mark's side, completing at the
+  // most-expanded stretch (snap-out end). The rebound reads as the force flinging it out.
+  tl.set(lock,{ opacity:1 }, F+FD+0.07);
+  tl.to(lock,{ clipPath:'inset(0% 0% 0% 0%)', duration:.09, ease:'power2.out' }, F+FD+0.07);
+  // HOLD — the film ends on the assembled lockup as a static still (no exit animation)
+  tl.to({},{ duration:.1 }, 4.8);   // tail pads the timeline to the comp duration
+
+  window.__timelines["outro"] = tl;
+})();
+</script>
+</template>
