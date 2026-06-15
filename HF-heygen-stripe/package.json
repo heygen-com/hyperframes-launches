@@ -1,0 +1,11 @@
+{
+  "name": "hf_tmp",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.6.75 preview",
+    "check": "npx --yes hyperframes@0.6.75 lint && npx --yes hyperframes@0.6.75 validate && npx --yes hyperframes@0.6.75 inspect",
+    "render": "npx --yes hyperframes@0.6.75 render",
+    "publish": "npx --yes hyperframes@0.6.75 publish"
+  }
+}

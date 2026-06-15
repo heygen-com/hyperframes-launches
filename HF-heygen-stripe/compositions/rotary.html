@@ -1,0 +1,94 @@
+<template id="rotary-template">
+  <div id="ro-root" data-composition-id="rotary" data-width="1920" data-height="1080" data-duration="5.25">
+    <style>
+      @font-face { font-family:'ABC Solar Display'; font-weight:700; font-display:block;
+        src:url(fonts/ABCSolarDisplay-Bold.otf) format('opentype'); }
+      @font-face { font-family:'Hanken Grotesk'; font-weight:700; font-display:block;
+        src:url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2'); }
+      #ro-root{ --ink:#FFFFFF; --green:#35C838;
+        --f-display:"ABC Solar Display","Hanken Grotesk",system-ui,sans-serif;
+        position:relative;width:1920px;height:1080px;overflow:hidden;
+        background:#0A0C0B;container-type:size;font-family:var(--f-display);color:var(--ink)}
+      #ro-root *,#ro-root *::before,#ro-root *::after{box-sizing:border-box}
+      #ro-root .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+
+      /* one centered line: The agent · [drum] · it */
+      #ro-root .row{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+        gap:1.4vw;z-index:3}
+      #ro-root .fixed{font-weight:700;font-size:6vw;letter-spacing:-0.025em;line-height:1;color:var(--ink);white-space:nowrap}
+
+      /* the rotisserie drum: 3D cylinder seen edge-on, top & bottom rows fade behind the "wall".
+         width is set in JS to hug the widest verb so the gap to "it" matches the gap from "agent". */
+      #ro-root .drum{position:relative;width:34vw;height:22vw;perspective:60vw;
+        -webkit-mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.25) 16%,#000 38%,#000 62%,rgba(0,0,0,.25) 84%,transparent 100%);
+                mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.25) 16%,#000 38%,#000 62%,rgba(0,0,0,.25) 84%,transparent 100%)}
+      /* push the assembly back by the radius so the FRONT (active) word lands at z:0 — same scale as the fixed text */
+      #ro-root .axis{position:absolute;inset:0;transform:translateZ(-13vw);transform-style:preserve-3d}
+      /* the cylinder we spin (GSAP drives rotationX) */
+      #ro-root .cyl{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+      /* each verb sits on the cylinder surface: tilt by its angle, then push out by the radius */
+      #ro-root .w{position:absolute;left:0;top:50%;width:100%;text-align:center;
+        font-weight:700;font-size:6vw;letter-spacing:-0.025em;line-height:1;color:var(--green);white-space:nowrap;
+        transform-origin:center center;backface-visibility:hidden}
+    </style>
+    <video class="bg" id="ro-bg" src="assets/bg-dev-loop.mp4" muted playsinline data-start="0" data-duration="5.25" data-media-start="27.0" data-track-index="0"></video>
+    <div class="row">
+      <div class="fixed">The agent</div>
+      <div class="drum"><div class="axis"><div class="cyl" id="cyl"></div></div></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+    (function(){
+      const root=document.querySelector('[data-composition-id="rotary"]');
+      const cyl=root.querySelector('#cyl');
+      const drum=root.querySelector('.drum');
+
+      // Rotisserie geometry. Active (center) word cycles: discovers → provisions → generates → pays.
+      const SEQ=['discovers','provisions','generates','pays'];
+      const STEP=30, R=13;                 // degrees between slots · cylinder radius (vw)
+
+      // Hug the widest verb so the gap to "it" matches the gap from "The agent" (verbs are centered).
+      function fitDrum(){
+        const m=document.createElement('span');
+        m.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font-family:var(--f-display);'
+          +'font-weight:700;font-size:6vw;letter-spacing:-0.025em';
+        drum.appendChild(m);
+        let max=0; SEQ.forEach(t=>{m.textContent=t;max=Math.max(max,m.getBoundingClientRect().width);});
+        drum.removeChild(m);
+        drum.style.width=Math.ceil(max+2)+'px';
+      }
+      fitDrum();
+      if(document.fonts&&document.fonts.ready){document.fonts.ready.then(fitDrum);}
+      // place verbs at intrinsic angle = -n*STEP for n in [-2..4]; container rotates +STEP per advance.
+      for(let n=-2;n<=5;n++){
+        const w=document.createElement('div');
+        w.className='w';
+        w.textContent=SEQ[((n%SEQ.length)+SEQ.length)%SEQ.length];
+        const a=-n*STEP;
+        w.style.transform='translateY(-50%) rotateX('+a+'deg) translateZ('+R+'vw)';
+        cyl.appendChild(w);
+      }
+
+      gsap.set(cyl,{rotationX:0});          // S0: center=discovers
+      const tl=gsap.timeline({paused:true});
+      // motion-blur-in on the fixed "The agent"; the 3D drum stays sharp (a CSS filter would flatten the cylinder)
+      const fixed=root.querySelectorAll('.fixed');
+      gsap.set(fixed,{filter:'blur(7px)'});
+      tl.to(fixed,{filter:'blur(0px)',duration:.5,ease:'power3.out'},0.1);
+      // each verb LANDS centered exactly on its spoken word (scene starts 13.2; onsets: discovers +0.71,
+      // provisions +1.63, generates +2.38, pays +3.30). "discovers" is the resting state, already centered.
+      // scene now starts 27.0 (on the VO); onsets discovers +0.55, provisions +1.47, generates +2.22, pays +3.14
+      tl.to(cyl,{rotationX:30,duration:.35,ease:'power3.inOut'},1.12);  // settles on "provisions" @ 1.47
+      tl.to(cyl,{rotationX:60,duration:.35,ease:'power3.inOut'},1.87);  // settles on "generates"  @ 2.22
+      tl.to(cyl,{rotationX:90,duration:.35,ease:'power3.inOut'},2.79);  // settles on "pays"       @ 3.14
+      tl.to({},{duration:2.11},3.14);                                   // hold on "pays"
+
+      window.__timelines=window.__timelines||{};
+      window.__timelines["rotary"]=tl;
+      const q=new URLSearchParams(location.search);
+      if(q.has('t')){tl.seek(parseFloat(q.get('t'))||0);}
+      else if(q.get('dev')==='1'){tl.play();}
+    })();
+    </script>
+  </div>
+</template>

@@ -1,0 +1,50 @@
+<template id="payoff-template">
+  <div id="po-root" data-composition-id="payoff" data-width="1920" data-height="1080" data-duration="6.28">
+    <style>
+      @font-face { font-family:'ABC Solar Display'; font-weight:700; font-display:block;
+        src:url(fonts/ABCSolarDisplay-Bold.otf) format('opentype'); }
+      @font-face { font-family:'Hanken Grotesk'; font-weight:700; font-display:block;
+        src:url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2'); }
+      #po-root{ --ink:#FFFFFF; --green:#35C838;
+        --f-display:"ABC Solar Display","Hanken Grotesk",system-ui,sans-serif;
+        position:relative;width:1920px;height:1080px;overflow:hidden;
+        background:#0A0C0B;container-type:size;font-family:var(--f-display);color:var(--ink)}
+      #po-root *,#po-root *::before,#po-root *::after{box-sizing:border-box}
+      #po-root .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+      #po-root .card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+        width:92cqw;text-align:center;z-index:3;will-change:transform,opacity}
+      #po-root .card .line{font-weight:700;letter-spacing:-0.025em;line-height:1.06;color:var(--ink)}
+      #po-root #c1 .line{font-size:6.4vw;white-space:nowrap}   /* all on ONE line, centered */
+      #po-root #c2 .line{font-size:7.2vw}
+      #po-root .g{color:var(--green)}
+    </style>
+    <video class="bg" id="po-bg" src="assets/bg-dev-loop.mp4" muted playsinline data-start="0" data-duration="6.28" data-media-start="17.18" data-track-index="0"></video>
+    <div class="card" id="c1"><div data-hf-studio-original-inline-translate="" data-hf-studio-original-translate="" data-hf-studio-path-offset="true" style="--hf-studio-offset-x:-11px;--hf-studio-offset-y:-96px;translate:var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)" class="line">Paid through <span class="g">Stripe</span> Projects</div></div>
+    <div class="card" id="c2"><div data-hf-studio-original-inline-translate="" data-hf-studio-original-translate="" data-hf-studio-path-offset="true" style="--hf-studio-offset-x:-11px;--hf-studio-offset-y:-159px;translate:var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)" class="line">Now agents can build with<br>video <span class="g">autonomously</span>!</div></div>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+    (function(){
+      const root=document.querySelector('[data-composition-id="payoff"]');
+      const c1=root.querySelector('#c1'), c2=root.querySelector('#c2');
+      const E='power3.out';
+      gsap.set(c1,{opacity:0,scale:0.85,yPercent:8,filter:'blur(10px)'});
+      gsap.set(c2,{opacity:0,scale:0.85,yPercent:8,filter:'blur(10px)'});
+      const tl=gsap.timeline({paused:true,defaults:{ease:E}});
+      // beat 1: "Paid through Stripe Projects" settles in over "and paid through Stripe projects" (17.6f), holds,
+      //         then explodes out FAST and is fully gone by ~19.8f — BEFORE beat 2 enters (no overlap).
+      tl.to(c1,{opacity:1,scale:1,yPercent:0,filter:'blur(0px)',duration:.4,ease:E},0.0);
+      tl.to(c1,{scale:2.3,opacity:0,filter:'blur(14px)',duration:.3,ease:'power2.in'},2.0);
+      // beat 2: payoff line settles, holds through "autonomously" (c2 shifted -0.22 to match the tightened pause)
+      tl.to(c2,{opacity:1,scale:1,yPercent:0,filter:'blur(0px)',duration:.55,ease:'expo.out'},2.13);
+      // …then EXPLODES as "autonomously" lands — blow-up + fade + motion blur; the white blows in over it (root timeline)
+      tl.to(c2,{scale:2.5,opacity:0,filter:'blur(16px)',duration:.5,ease:'power3.in'},5.48);
+      tl.to({},{duration:0.3},5.98);
+      window.__timelines=window.__timelines||{};
+      window.__timelines["payoff"]=tl;
+      const q=new URLSearchParams(location.search);
+      if(q.has('t')){tl.seek(parseFloat(q.get('t'))||0);}
+      else if(q.get('dev')==='1'){tl.play();}
+    })();
+    </script>
+  </div>
+</template>
