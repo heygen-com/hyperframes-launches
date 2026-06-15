@@ -1,0 +1,202 @@
+<template id="terminal-template">
+  <div id="tm-root" data-composition-id="terminal" data-width="1920" data-height="1080" data-duration="14.1">
+    <style>
+      @font-face { font-family:'TT Norms Pro'; font-weight:600; font-display:block;
+        src:url(fonts/TTNormsPro-DemiBold.otf) format('opentype'); }
+      @font-face { font-family:'ABC Solar Display'; font-weight:700; font-display:block;
+        src:url(fonts/ABCSolarDisplay-Bold.otf) format('opentype'); }
+      @font-face { font-family:'Spline Sans Mono'; font-weight:500; font-display:block;
+        src:url(fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2'); }
+      #tm-root{
+        --ink:#1A1A1A; --dim:#9B9B9B; --blue:#5739FF; --green:#35C838; --pill:#E4F7E2;
+        --bar-from:#19C7F5; --bar-to:#35C838; --stripe-ink:#141414;
+        --f-term:"TT Norms Pro","Spline Sans Mono","IBM Plex Mono",monospace;
+        --f-display:"ABC Solar Display","Hanken Grotesk",system-ui,sans-serif;
+        --fs:1.6cqw;
+        position:relative;width:1920px;height:1080px;overflow:hidden;
+        background:#FBC24A;container-type:size;font-family:var(--f-term)}
+      #tm-root *,#tm-root *::before,#tm-root *::after{box-sizing:border-box}
+      #tm-root .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+      #tm-root .bg-stripe{z-index:0;will-change:transform}
+      #tm-root .bg-dev-wrap{position:absolute;inset:0;z-index:1;opacity:0;will-change:opacity}
+
+      /* ---- step cards (Step N pill + big headline), centered, slide in/out ---- */
+      #tm-root .cards{position:absolute;inset:0;display:grid;place-items:center;z-index:5}
+      #tm-root .card{position:absolute;text-align:center;will-change:transform,opacity;opacity:0}
+      #tm-root .pill{display:inline-block;background:rgba(255,255,255,.82);color:var(--stripe-ink);
+        font-family:var(--f-term);font-weight:600;font-size:1.5cqw;letter-spacing:0.02em;
+        padding:0.4cqw 1.4cqw;border-radius:9999px;margin-bottom:1.6cqw;box-shadow:0 0.4cqw 1.4cqw rgba(20,15,40,.12)}
+      #tm-root .head{font-family:var(--f-display);font-weight:700;font-size:6.4vw;letter-spacing:-0.03em;
+        line-height:0.98;color:var(--stripe-ink)}
+      /* headline typewriter — width-clipped reveal + caret (same technique as the terminal command text) */
+      #tm-root .htw{display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;width:0}
+      #tm-root .hcaret{display:inline-block;width:0.5cqw;height:4.8vw;background:var(--stripe-ink);
+        vertical-align:-0.7vw;margin-left:0.25cqw;opacity:0;border-radius:0.1cqw}
+      #tm-root .meash{position:absolute;visibility:hidden;white-space:pre;font-family:var(--f-display);
+        font-weight:700;font-size:6.4vw;letter-spacing:-0.03em}
+
+      /* ---- terminal windows (one per step), slide in/out ---- */
+      #tm-root .stage{position:absolute;inset:0;display:grid;place-items:center;z-index:3}
+      #tm-root .win{position:absolute;width:80cqw;height:64cqh;background:#fff;border-radius:1.1cqw;overflow:hidden;
+        box-shadow:0 30px 90px -30px rgba(20,15,40,.45), 0 6px 18px -8px rgba(20,15,40,.18);
+        opacity:0;will-change:transform,opacity}
+      #tm-root .dots{position:absolute;left:2cqw;top:1.9cqw;display:flex;gap:0.8cqw;z-index:2}
+      #tm-root .dots i{display:inline-block;width:1.05cqw;height:1.05cqw;border-radius:50%;background:#E2E2E2}
+      #tm-root .screen{position:absolute;left:4cqw;right:4cqw;top:5cqw;bottom:3cqw;overflow:hidden}
+      #tm-root .ln{display:block;white-space:pre;font-size:var(--fs);line-height:1.95;color:var(--ink);font-weight:600;will-change:opacity,transform}
+      #tm-root .blue{color:var(--blue)} #tm-root .green{color:var(--green)} #tm-root .dim{color:var(--dim)}
+      #tm-root .i1{padding-left:1.6cqw}
+      #tm-root .arg{color:var(--green)}
+      #tm-root .arg.pill2{background:var(--pill);border-radius:0.5cqw;padding:0.05cqw 0.8cqw;color:var(--green)}
+      #tm-root .ready{background:var(--pill);color:var(--green);border-radius:0.6cqw;padding:0.2cqw 1.1cqw;display:inline-flex;align-items:center;gap:0.7cqw}
+      #tm-root .ready .led{width:0.95cqw;height:0.95cqw;border-radius:50%;background:var(--green);display:inline-block}
+      #tm-root .tw{display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;width:0}
+      #tm-root .caret{display:inline-block;width:0.22cqw;height:1.45cqw;background:var(--ink);vertical-align:-0.18cqw;margin-left:0.12cqw}
+      #tm-root .meas{position:absolute;visibility:hidden;white-space:pre;font-size:var(--fs);font-weight:600}
+      #tm-root .barwrap{margin-top:1.4cqw;width:62cqw;height:1.5cqw;border-radius:9999px;background:#15171A;overflow:hidden}
+      #tm-root .bar{height:100%;width:0%;border-radius:9999px;background:linear-gradient(90deg,var(--bar-from),var(--bar-to))}
+      #tm-root .render{margin-top:1.4cqw;color:var(--dim);font-size:2.5cqw;font-weight:600}
+      #tm-root .render #done{font-weight:700}
+    </style>
+
+    <img class="bg bg-stripe" id="bgstripe" src="assets/bg-stripe.png" alt="" />
+    <div class="bg-dev-wrap" id="bgdevwrap"><video class="bg" id="tm-bgdev" src="assets/bg-dev-loop.mp4" muted playsinline data-start="0" data-duration="14.1" data-media-start="12.9" data-track-index="2"></video></div>
+
+    <span class="meas" id="meas"></span>
+    <span class="meash" id="meash"></span>
+
+    <!-- terminal windows (one per step) -->
+    <div class="stage">
+      <div class="win" id="win1">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="screen">
+          <span class="ln"><span class="blue">&gt; stripe</span> <span class="tw" id="tw1"><span id="tw1i">projects add <span class="arg" id="arg1">heygen/api</span></span></span><span class="caret" id="caret1"></span></span>
+          <span class="ln w1o" style="margin-top:0.4cqw"><span class="green">✓ Connected HeyGen account</span></span>
+          <span class="ln w1o"><span class="dim">○ Provisioning heygen/api…</span></span>
+          <span class="ln w1o i1"><span class="dim">✓ Resource provisioned</span></span>
+          <span class="ln w1o i1"><span class="dim">✓ Credentials synced</span></span>
+          <span class="ln w1o" style="margin-top:0.6cqw"><span class="ready"><span class="led"></span> heygen/api ready</span></span>
+        </div>
+      </div>
+      <div class="win" id="win2">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="screen">
+          <span class="ln"><span class="blue">&gt; curl</span> <span class="tw" id="tw2"><span id="tw2i">-fsSL https://static.heygen.ai/cli/install.sh</span></span><span class="caret" id="caret2"></span></span>
+          <span class="ln w2o i1">| bash</span>
+          <span class="ln w2o" style="margin-top:0.6cqw"><span class="green">✓ HeyGen CLI installed</span></span>
+          <span class="ln w2o"><span class="dim">&gt; export HEYGEN_API_KEY="$HEYGEN_API_KEY"</span></span>
+        </div>
+      </div>
+      <div class="win" id="win3">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="screen">
+          <span class="ln" id="w3l1"><span class="green">&gt; heygen</span> video-agent create</span>
+          <span class="ln i1"><span class="tw" id="tw3"><span id="tw3i">--prompt "HeyGen &lt;&gt; Stripe Product Launch" — wait</span></span><span class="caret" id="caret3"></span></span>
+          <div class="barwrap w3o"><div class="bar" id="bar"></div></div>
+          <div class="render w3o">rendering … <span id="done">done</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- step cards -->
+    <div class="cards">
+      <div class="card" id="card1"><div class="pill">Step 1</div><div class="head"><span class="htw" id="h1a">Add agent from</span><span class="hcaret" id="hc1a"></span><br><span class="htw" id="h1b">Stripe project</span><span class="hcaret" id="hc1b"></span></div></div>
+      <div class="card" id="card2"><div class="pill">Step 2</div><div class="head"><span class="htw" id="h2">Install the agent</span><span class="hcaret" id="hc2"></span></div></div>
+      <div class="card" id="card3"><div class="pill">Step 3</div><div class="head"><span class="htw" id="h3">Generate videos</span><span class="hcaret" id="hc3"></span></div></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+    (function(){
+      const root=document.querySelector('[data-composition-id="terminal"]');
+      const $=s=>root.querySelector(s), $$=s=>Array.from(root.querySelectorAll(s));
+      const meas=$('#meas'), bgdevwrap=$('#bgdevwrap'), bgstripe=$('#bgstripe'), bar=$('#bar'), done=$('#done'), arg1=$('#arg1');
+      const E='power3.out';
+      const T1={tw:$('#tw1'), full:'projects add heygen/api', caret:$('#caret1'), sets:[]};
+      const T2={tw:$('#tw2'), full:'-fsSL https://static.heygen.ai/cli/install.sh', caret:$('#caret2'), sets:[]};
+      const T3={tw:$('#tw3'), full:'--prompt "HeyGen <> Stripe Product Launch" — wait', caret:$('#caret3'), sets:[]};
+      // headline typewriters (one object per visual line) — typed in like the terminal text
+      const meash=$('#meash');
+      const H1a={tw:$('#h1a'), full:'Add agent from',    caret:$('#hc1a'), sets:[]};
+      const H1b={tw:$('#h1b'), full:'Stripe project',    caret:$('#hc1b'), sets:[]};
+      const H2 ={tw:$('#h2'),  full:'Install the agent', caret:$('#hc2'),  sets:[]};
+      const H3 ={tw:$('#h3'),  full:'Generate videos',   caret:$('#hc3'),  sets:[]};
+      const HEADS=[H1a,H1b,H2,H3];
+
+      gsap.set([T1.caret,T2.caret,T3.caret],{opacity:0});
+      gsap.set([H1a.tw,H1b.tw,H2.tw,H3.tw],{width:0});
+      gsap.set([H1a.caret,H1b.caret,H2.caret,H3.caret],{opacity:0});
+      gsap.set('#win1 .w1o',{opacity:0,y:14}); gsap.set('#win2 .w2o',{opacity:0,y:14}); gsap.set('#win3 .w3o',{opacity:0,y:14});
+      gsap.set(['#win1','#win2','#win3'],{xPercent:60,opacity:0});
+      gsap.set(['#card1','#card2','#card3'],{opacity:0,yPercent:14,scale:0.96});
+      gsap.set(bar,{width:'0%'}); gsap.set(done,{color:'#9B9B9B'});
+      gsap.set(bgstripe,{transformOrigin:'50% 50%'});
+
+      const tl=gsap.timeline({paused:true,defaults:{ease:E}});
+      tl.fromTo(bgstripe,{scale:1.04,xPercent:-1.2,yPercent:0.8},{scale:1.14,xPercent:-3.2,yPercent:2.1,duration:13.7,ease:'none'},0);
+
+      function typeBlock(T,start,dur){ const N=T.full.length;
+        for(let i=1;i<=N;i++){ const t=start+(i/N)*dur; tl.set(T.tw,{width:0},t); T.sets.push(tl.recent()); } }
+      function popList(sel,start,step){ $$(sel).forEach((ln,i)=> tl.to(ln,{opacity:1,y:0,duration:.3,ease:E},start+i*step)); }
+      function cardIn(sel,t){ tl.to(sel,{opacity:1,yPercent:0,scale:1,duration:.45,ease:E},t); }
+      function cardOut(sel,t){ tl.to(sel,{opacity:0,yPercent:-14,duration:.4,ease:'power2.in'},t); }
+      function winIn(sel,t){ tl.to(sel,{xPercent:0,opacity:1,duration:.45,ease:E},t); }
+      function winOut(sel,t){ tl.to(sel,{yPercent:-150,opacity:0,duration:.45,ease:'power3.in'},t); }
+
+      function measure(){
+        [T1,T2,T3].forEach(T=>{ const W=[],N=T.full.length; for(let i=1;i<=N;i++){ meas.textContent=T.full.slice(0,i); W.push(meas.offsetWidth);} W[N-1]+=6;
+          T.sets.forEach((s,i)=>{ if(W[i]!=null) s.vars.width=W[i]; }); });
+        tl.invalidate();
+      }
+      function measureHeads(){
+        HEADS.forEach(H=>{ const W=[],N=H.full.length; for(let i=1;i<=N;i++){ meash.textContent=H.full.slice(0,i); W.push(meash.offsetWidth);} W[N-1]+=4;
+          H.sets.forEach((s,i)=>{ if(W[i]!=null) s.vars.width=W[i]; }); });
+        tl.invalidate();
+      }
+
+      // ===== STEP 1 — card → terminal =====
+      cardIn('#card1',0.1);  cardOut('#card1',0.85);
+      // headline TYPES in, line 1 then line 2, the caret riding the edge of each line
+      tl.set(H1a.caret,{opacity:1},0.18); typeBlock(H1a,0.20,0.32); tl.set(H1a.caret,{opacity:0},0.53);
+      tl.set(H1b.caret,{opacity:1},0.52); typeBlock(H1b,0.54,0.28); tl.to(H1b.caret,{opacity:0,duration:.18},0.84);
+      winIn('#win1',1.15);
+      tl.to(T1.caret,{opacity:1,duration:.01},1.5); typeBlock(T1,1.6,0.85);
+      tl.set(T1.tw,{width:'auto'},2.48); tl.call(()=>arg1.classList.add('pill2'),null,2.49);
+      tl.to(T1.caret,{opacity:0,duration:.1},2.53);
+      popList('#win1 .w1o',2.6,0.14);
+      winOut('#win1',3.7);
+
+      // ===== STEP 2 — card → terminal =====
+      cardIn('#card2',3.95);  cardOut('#card2',4.75);
+      tl.set(H2.caret,{opacity:1},4.02); typeBlock(H2,4.05,0.50); tl.to(H2.caret,{opacity:0,duration:.18},4.58);
+      winIn('#win2',5.05);
+      tl.to(T2.caret,{opacity:1,duration:.01},5.4); typeBlock(T2,5.5,0.9);
+      tl.to(T2.caret,{opacity:0,duration:.1},6.45);
+      popList('#win2 .w2o',6.5,0.16);
+      winOut('#win2',7.5);
+
+      // ===== STEP 3 — card → terminal (slow bar fills, readable), morph + swipe lands at 27.0 (rotary hand-off) =====
+      cardIn('#card3',7.75);  cardOut('#card3',8.55);
+      tl.set(H3.caret,{opacity:1},7.82); typeBlock(H3,7.85,0.50); tl.to(H3.caret,{opacity:0,duration:.18},8.38);
+      winIn('#win3',8.85);
+      tl.to('#w3l1',{opacity:1,y:0,duration:.3,ease:E},8.85);
+      tl.to(T3.caret,{opacity:1,duration:.01},9.25); typeBlock(T3,9.35,0.9);
+      tl.to(T3.caret,{opacity:0,duration:.1},10.35);
+      tl.to('#win3 .w3o',{opacity:1,y:0,duration:.3,ease:E,stagger:0.18},10.45);
+      tl.to(bar,{width:'100%',duration:1.8,ease:'power1.inOut'},10.7);    // slow load so it reads
+      tl.to(done,{color:'#35C838',duration:.3,ease:'none'},12.55);        // "rendering … done" greens (large)
+      tl.to(bgdevwrap,{opacity:1,duration:.5,ease:'power1.inOut'},12.6);  // fully morphed to dev by ~13.1
+      tl.to('#win3',{yPercent:-150,filter:'blur(8px)',opacity:0,duration:.5,ease:'power3.in'},13.2);  // gone by 13.7 (film 27.0)
+
+      measure(); measureHeads();
+      if(document.fonts&&document.fonts.ready){document.fonts.ready.then(()=>{measure();measureHeads();});}
+
+      window.__timelines=window.__timelines||{};
+      window.__timelines["terminal"]=tl;
+      const q=new URLSearchParams(location.search);
+      if(q.has('t')){tl.seek(parseFloat(q.get('t'))||0);}
+      else if(q.get('dev')==='1'){tl.play();}
+    })();
+    </script>
+  </div>
+</template>

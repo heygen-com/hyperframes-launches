@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0A0C0B; }
+      #hs-root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #0A0C0B; }
+      #sec-open     { position: absolute; inset: 0; z-index: 1; }
+      #sec-lockup   { position: absolute; inset: 0; z-index: 2; }
+      #sec-commands { position: absolute; inset: 0; z-index: 3; will-change: opacity; }
+      #sec-terminal { position: absolute; inset: 0; z-index: 4; }
+      #sec-rotary   { position: absolute; inset: 0; z-index: 8; will-change: opacity; }
+      #sec-close    { position: absolute; inset: 0; z-index: 9; will-change: opacity; }
+      #sec-captions { position: absolute; inset: 0; z-index: 10; }
+      #sec-endcard  { position: absolute; inset: 0; z-index: 11; will-change: opacity; }
+    </style>
+  </head>
+  <body>
+    <div id="hs-root" data-composition-id="heygen-stripe" data-start="0" data-width="1920" data-height="1080" data-duration="38.7">
+
+      <!-- NARRATION (new A-roll) — V12 two-block pacing: front block, music+typed-terminal middle, back block -->
+      <audio id="vo-narration" src="assets/narration-v7.mp3" data-start="0" data-duration="35.5" data-track-index="0" data-volume="1"></audio>
+
+      <div id="sec-open"     data-composition-id="open-aroll" data-composition-src="compositions/open-aroll.html" data-start="0"    data-duration="5.4"  data-track-index="1"></div>
+      <div id="sec-lockup"   data-composition-id="lockup"     data-composition-src="compositions/lockup.html"     data-start="5.0"  data-duration="3.9"  data-track-index="2"></div>
+      <div id="sec-commands" data-composition-id="commands"   data-composition-src="compositions/commands.html"   data-start="8.8"  data-duration="4.1"  data-track-index="3"></div>
+      <!-- terminal: TYPED — step 1 -> step 2 -> step 3, leisurely (the music-paced middle, like V12). Starts 12.9 (right after VO "video"), ends 27.0 -->
+      <div id="sec-terminal" data-composition-id="terminal"   data-composition-src="compositions/terminal.html"   data-start="12.9" data-duration="14.1" data-track-index="4"></div>
+      <div id="sec-rotary"   data-composition-id="rotary"     data-composition-src="compositions/rotary.html"     data-start="27.0" data-duration="5.25" data-track-index="8"></div>
+      <div id="sec-close"    data-composition-id="aroll-rise" data-composition-src="compositions/aroll-rise.html" data-start="32.25" data-duration="3.3" data-track-index="9"></div>
+      <div id="sec-captions" data-composition-id="captions"   data-composition-src="compositions/captions.html"   data-start="0"    data-duration="38.7" data-track-index="11"></div>
+      <!-- endcard: white screen (same crossfade transition) -->
+      <div id="sec-endcard"  data-composition-id="endcard"    data-composition-src="compositions/endcard.html"    data-start="35.0" data-duration="3.7"  data-track-index="12"></div>
+
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const rootTimeline = gsap.timeline({ paused: true });
+      rootTimeline.set("#sec-commands", { opacity: 0 }, 0);
+      rootTimeline.to("#sec-commands", { opacity: 1, duration: 0.3, ease: "power1.inOut" }, 8.5);
+      // terminal->rotary (27.0) and rotary->close (32.25) are HARD CUTS on the continuous dev background — no crossfade
+      // blend. Rotary fades its own text in; the close window SLIDES UP into place. (rotary lands as the VO says "The agent…")
+      // endcard: white crossfades in OVER the frozen avatar window so the whole thing fades to white together.
+      rootTimeline.set("#sec-endcard", { opacity: 0 }, 0);
+      rootTimeline.to("#sec-endcard", { opacity: 1, duration: 0.4, ease: "power1.inOut" }, 35.0);
+      window.__timelines["heygen-stripe"] = rootTimeline;
+    </script>
+  </body>
+</html>

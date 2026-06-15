@@ -1,0 +1,67 @@
+<template id="open-aroll-template">
+  <div id="oa-root" data-composition-id="open-aroll" data-width="1920" data-height="1080" data-duration="5.4">
+    <style>
+      /* Brand fonts: ABC Solar Display (claims) + TT Norms Pro (chrome/intro/terminal).
+         Real files not yet supplied → Hanken Grotesk loads underneath as the stand-in. */
+      @font-face { font-family:'Hanken Grotesk'; font-weight:700; font-display:block;
+        src:url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2'); }
+      @font-face { font-family:'Hanken Grotesk'; font-weight:500; font-display:block;
+        src:url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2'); }
+      @font-face { font-family:'TT Norms Pro'; font-weight:600; font-display:block;
+        src:url(fonts/TTNormsPro-DemiBold.otf) format('opentype'); }
+
+      #oa-root{
+        --green:#35C838;
+        --f-norms:"TT Norms Pro","Hanken Grotesk",system-ui,sans-serif;          /* intro / chrome */
+        position:relative;width:1920px;height:1080px;overflow:hidden;
+        background:#0A0C0B;container-type:size;font-family:var(--f-norms);color:#FFFFFF}
+      #oa-root *,#oa-root *::before,#oa-root *::after{box-sizing:border-box}
+
+      /* the real HeyGen-dev perspective background */
+      #oa-root .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+
+      /* centering wrapper — animate the CHILD's transform from a clean 0 */
+      #oa-root .stage{position:absolute;inset:0;display:grid;place-items:center}
+
+      /* A-roll window: James' video inside an animated neon-green border.
+         The window (.aroll) is the non-timed wrapper we animate; the <video> inside is a clean clip. */
+      #oa-root .aroll{position:relative;width:88cqw;height:82cqh;border-radius:1.4cqw;overflow:hidden;
+        background:#111;box-shadow:0 30px 90px -30px rgba(0,0,0,.7);will-change:transform,opacity}
+      #oa-root .aroll .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+      #oa-root .aroll .ring{position:absolute;inset:0;border-radius:1.4cqw;pointer-events:none;
+        border:0.3cqw solid var(--green);box-shadow:0 0 2.2cqw rgba(47,210,97,.5), inset 0 0 1.4cqw rgba(47,210,97,.3)}
+    </style>
+
+    <video class="bg" id="oa-bg" src="assets/bg-dev-loop.mp4" muted playsinline data-start="0" data-duration="5.4" data-media-start="0" data-track-index="0"></video>
+
+    <div class="stage" style="z-index:3">
+      <div class="aroll" id="aroll">
+        <video data-hf-studio-original-inline-translate="" data-hf-studio-original-translate="" data-hf-studio-path-offset="true" style="--hf-studio-offset-x:8px;--hf-studio-offset-y:2px;translate:var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)" class="photo" id="oa-video" src="assets/aroll-v7-open.mp4" muted playsinline data-start="0" data-duration="5.4" data-track-index="1"></video>
+        <div class="ring" id="ring"></div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+    (function(){
+      const root=document.querySelector('[data-composition-id="open-aroll"]');
+      const aroll=root.querySelector('#aroll');
+      const E='power3.out';
+
+      gsap.set(aroll,{xPercent:0,opacity:0});       // centered by .stage; fade up on the film open
+
+      const tl=gsap.timeline({paused:true,defaults:{ease:E}});
+      // quick open on James — lead-in trimmed, he's already speaking ("Video generation, provisioned from the CLI")
+      tl.to(aroll,{opacity:1,duration:.15,ease:'power2.out'},0);
+      // hold through "Video generation… / It's never been easier…", then swipe off LEFT into the lockup
+      tl.to(aroll,{xPercent:-210,duration:.45,ease:'power3.in'},4.95);
+
+      window.__timelines=window.__timelines||{};
+      window.__timelines["open-aroll"]=tl;
+      const q=new URLSearchParams(location.search);
+      if(q.has('t')){tl.seek(parseFloat(q.get('t'))||0);}
+      else if(q.get('dev')==='1'){tl.play();}
+    })();
+    </script>
+  </div>
+</template>

@@ -1,0 +1,307 @@
+[
+  {
+    "text": "video",
+    "start": 0.06,
+    "end": 0.44
+  },
+  {
+    "text": "generation",
+    "start": 0.44,
+    "end": 1.32
+  },
+  {
+    "text": "provision",
+    "start": 1.32,
+    "end": 2.11
+  },
+  {
+    "text": "from",
+    "start": 2.11,
+    "end": 2.29
+  },
+  {
+    "text": "the",
+    "start": 2.38,
+    "end": 2.72
+  },
+  {
+    "text": "CLI.",
+    "start": 3,
+    "end": 3.13
+  },
+  {
+    "text": "It's",
+    "start": 3.13,
+    "end": 3.31
+  },
+  {
+    "text": "never",
+    "start": 3.31,
+    "end": 3.53
+  },
+  {
+    "text": "been",
+    "start": 3.53,
+    "end": 3.71
+  },
+  {
+    "text": "easier",
+    "start": 3.71,
+    "end": 4
+  },
+  {
+    "text": "to",
+    "start": 4,
+    "end": 4.02
+  },
+  {
+    "text": "build",
+    "start": 4.16,
+    "end": 4.35
+  },
+  {
+    "text": "a",
+    "start": 4.35,
+    "end": 4.4
+  },
+  {
+    "text": "product.",
+    "start": 4.4,
+    "end": 4.8
+  },
+  {
+    "text": "With",
+    "start": 4.86,
+    "end": 5.05
+  },
+  {
+    "text": "Stripe",
+    "start": 5.06,
+    "end": 5.42
+  },
+  {
+    "text": "projects",
+    "start": 5.42,
+    "end": 5.92
+  },
+  {
+    "text": "and",
+    "start": 5.92,
+    "end": 6.11
+  },
+  {
+    "text": "the",
+    "start": 6.11,
+    "end": 6.22
+  },
+  {
+    "text": "Hagen",
+    "start": 6.33,
+    "end": 6.6
+  },
+  {
+    "text": "CLI,",
+    "start": 6.61,
+    "end": 6.96
+  },
+  {
+    "text": "an",
+    "start": 6.96,
+    "end": 7.06
+  },
+  {
+    "text": "agent",
+    "start": 7.06,
+    "end": 7.09
+  },
+  {
+    "text": "can",
+    "start": 7.18,
+    "end": 7.49
+  },
+  {
+    "text": "create",
+    "start": 7.49,
+    "end": 7.83
+  },
+  {
+    "text": "its",
+    "start": 7.83,
+    "end": 7.97
+  },
+  {
+    "text": "own",
+    "start": 8.03,
+    "end": 8.16
+  },
+  {
+    "text": "account,",
+    "start": 8.16,
+    "end": 8.56
+  },
+  {
+    "text": "get",
+    "start": 8.61,
+    "end": 8.75
+  },
+  {
+    "text": "a",
+    "start": 8.75,
+    "end": 8.8
+  },
+  {
+    "text": "capped",
+    "start": 8.81,
+    "end": 9.19
+  },
+  {
+    "text": "budget",
+    "start": 9.19,
+    "end": 9.54
+  },
+  {
+    "text": "without",
+    "start": 9.6,
+    "end": 9.98
+  },
+  {
+    "text": "ever",
+    "start": 10.09,
+    "end": 10.26
+  },
+  {
+    "text": "handing",
+    "start": 10.26,
+    "end": 10.69
+  },
+  {
+    "text": "a",
+    "start": 10.69,
+    "end": 10.76
+  },
+  {
+    "text": "card",
+    "start": 10.76,
+    "end": 10.85
+  },
+  {
+    "text": "over,",
+    "start": 10.94,
+    "end": 11.38
+  },
+  {
+    "text": "and",
+    "start": 11.38,
+    "end": 11.67
+  },
+  {
+    "text": "create",
+    "start": 11.67,
+    "end": 11.95
+  },
+  {
+    "text": "a",
+    "start": 11.95,
+    "end": 12.01
+  },
+  {
+    "text": "finished",
+    "start": 12.01,
+    "end": 12.51
+  },
+  {
+    "text": "launch",
+    "start": 12.51,
+    "end": 12.89
+  },
+  {
+    "text": "video.",
+    "start": 12.89,
+    "end": 13.26
+  },
+  {
+    "text": "The",
+    "start": 26.86,
+    "end": 27.01
+  },
+  {
+    "text": "agent",
+    "start": 27.01,
+    "end": 27.37
+  },
+  {
+    "text": "discovers,",
+    "start": 27.37,
+    "end": 28.16
+  },
+  {
+    "text": "provisions,",
+    "start": 28.16,
+    "end": 29.02
+  },
+  {
+    "text": "generates,",
+    "start": 29.02,
+    "end": 29.84
+  },
+  {
+    "text": "and",
+    "start": 29.91,
+    "end": 30.14
+  },
+  {
+    "text": "pays",
+    "start": 30.14,
+    "end": 30.56
+  },
+  {
+    "text": "through",
+    "start": 30.56,
+    "end": 30.82
+  },
+  {
+    "text": "Stripe",
+    "start": 30.96,
+    "end": 31.15
+  },
+  {
+    "text": "projects.",
+    "start": 31.15,
+    "end": 31.59
+  },
+  {
+    "text": "Now",
+    "start": 31.74,
+    "end": 31.89
+  },
+  {
+    "text": "agents",
+    "start": 31.89,
+    "end": 32.32
+  },
+  {
+    "text": "can",
+    "start": 32.32,
+    "end": 32.49
+  },
+  {
+    "text": "build",
+    "start": 32.53,
+    "end": 32.89
+  },
+  {
+    "text": "with",
+    "start": 32.89,
+    "end": 33.1
+  },
+  {
+    "text": "video",
+    "start": 33.21,
+    "end": 33.53
+  },
+  {
+    "text": "autonomously.",
+    "start": 33.53,
+    "end": 34.64
+  }
+]

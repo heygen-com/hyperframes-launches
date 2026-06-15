@@ -1,0 +1,83 @@
+<template id="lockup-template">
+  <div id="lk-root" data-composition-id="lockup" data-width="1920" data-height="1080" data-duration="3.9">
+    <style>
+      @font-face { font-family:'Hanken Grotesk'; font-weight:700; font-display:block;
+        src:url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2'); }
+      @font-face { font-family:'Hanken Grotesk'; font-weight:500; font-display:block;
+        src:url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2'); }
+      @font-face { font-family:'TT Norms Pro'; font-weight:600; font-display:block;
+        src:url(fonts/TTNormsPro-DemiBold.otf) format('opentype'); }
+      @font-face { font-family:'ABC Solar Display'; font-weight:700; font-display:block;
+        src:url(fonts/ABCSolarDisplay-Bold.otf) format('opentype'); }
+
+      #lk-root{
+        --green:#2FD261;
+        --f-display:"ABC Solar Display","Hanken Grotesk",system-ui,sans-serif;
+        --f-norms:"TT Norms Pro","Hanken Grotesk",system-ui,sans-serif;
+        position:relative;width:1920px;height:1080px;overflow:hidden;
+        background:#0A0C0B;container-type:size;font-family:var(--f-norms);color:#FFFFFF}
+      #lk-root *,#lk-root *::before,#lk-root *::after{box-sizing:border-box}
+
+      #lk-root .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+      #lk-root .group{position:absolute;inset:0;z-index:4;transform-origin:50% 50%;will-change:transform,opacity}
+
+      /* the + is the ANCHOR — dead center of the 16:9 frame */
+      #lk-root .plus{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+        font-family:var(--f-norms);font-weight:500;font-size:4.4vw;color:rgba(255,255,255,.95);line-height:1;z-index:5;will-change:transform,opacity}
+      /* "Introducing" centered directly above the + */
+      #lk-root .intro{position:absolute;left:50%;top:33cqh;transform:translateX(-50%);
+        font-family:var(--f-norms);font-weight:500;font-size:1.9vw;letter-spacing:0.02em;color:rgba(255,255,255,.85);z-index:4;will-change:transform,opacity}
+      /* HeyGen flanks to the LEFT of center, stripe to the RIGHT — symmetric about the + */
+      #lk-root .word{position:absolute;top:50%;font-family:var(--f-display);font-weight:700;font-size:6vw;letter-spacing:-0.02em;line-height:1;display:flex;align-items:center;gap:1.1cqw;color:#FFFFFF;z-index:4;will-change:transform,opacity}
+      #lk-root .heygen{right:calc(50% + 3.4cqw);transform:translateY(-50%);justify-content:flex-end}
+      #lk-root .stripe{left:calc(50% + 3.4cqw);transform:translateY(-50%)}
+      #lk-root .mark{width:4.4cqw;height:4.4cqw;flex:0 0 auto;display:grid;place-items:center}
+      #lk-root .mark img{width:100%;height:100%;object-fit:contain;display:block}
+      #lk-root .stripe img{height:9vw;width:auto;display:block}   /* larger to offset the PNG's internal padding so letters match HeyGen */
+    </style>
+
+    <video class="bg" id="lk-bg" src="assets/bg-dev-loop.mp4" muted playsinline data-start="0" data-duration="3.9" data-media-start="5.0" data-track-index="0"></video>
+
+    <div class="group" id="group">
+      <div class="intro" id="intro">Introducing</div>
+      <div class="plus" id="plus">+</div>
+      <div class="word heygen" id="heygen">HeyGen
+        <span class="mark"><img src="assets/heygen-logo.png" alt="HeyGen"></span>
+      </div>
+      <div class="word stripe" id="stripe"><img src="assets/stripe-logo.png" alt="stripe"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+    (function(){
+      const root=document.querySelector('[data-composition-id="lockup"]');
+      const group=root.querySelector('#group'), intro=root.querySelector('#intro'), plus=root.querySelector('#plus');
+      const E='power3.out';
+
+      gsap.set(plus,{opacity:1,scale:1,filter:'blur(8px)'});   // the + is ALREADY dead-center
+      gsap.set(intro,{opacity:0,y:-150,filter:'blur(10px)'});  // Introducing starts above (px, safe w/ translateX)
+      gsap.set('#heygen',{opacity:0,x:-340,filter:'blur(10px)'});  // HeyGen from the left
+      gsap.set('#stripe',{opacity:0,x:340,filter:'blur(10px)'});   // stripe from the right
+
+      const tl=gsap.timeline({paused:true,defaults:{ease:E}});
+      const IN=0.0, DUR=1.15;   // words come in SLOWER (more graceful settle)
+      // all three land together, motion blur clearing as they settle
+      tl.to(intro,{opacity:1,y:0,filter:'blur(0px)',duration:DUR,ease:'power2.out'},IN);
+      tl.to('#heygen',{opacity:1,x:0,filter:'blur(0px)',duration:DUR,ease:'power2.out'},IN);
+      tl.to('#stripe',{opacity:1,x:0,filter:'blur(0px)',duration:DUR,ease:'power2.out'},IN);
+      tl.to(plus,{filter:'blur(0px)',duration:DUR,ease:'power2.out'},IN);
+      // CONTINUOUS slow growth while held — "bigger and bigger" (kills the stillness)
+      tl.fromTo(group,{scale:1.0},{scale:1.2,duration:2.15,ease:'none'},IN+DUR);
+      // SPEED-RAMP out — accelerate hard into the explode, handing to "Three commands" (scale up + fade + motion blur)
+      tl.to(group,{scale:3.6,opacity:0,filter:'blur(18px)',duration:.4,ease:'power4.in'},3.3);
+      tl.to({},{duration:.2},3.7);
+
+      window.__timelines=window.__timelines||{};
+      window.__timelines["lockup"]=tl;
+      const q=new URLSearchParams(location.search);
+      if(q.has('t')){tl.seek(parseFloat(q.get('t'))||0);}
+      else if(q.get('dev')==='1'){tl.play();}
+    })();
+    </script>
+  </div>
+</template>
