@@ -1,0 +1,94 @@
+<template id="outro-template">
+  <div id="ou-root" data-composition-id="outro" data-width="1920" data-height="1080" data-duration="3.4">
+    <style>
+      @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:400;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+      @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:500;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+      @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:700;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+
+      #ou-root{
+        --bg:#030404; --ink:#F4F4F0; --muted:#A7A7A2; --accent:#06E3FA;
+        --f-body:"Hanken Grotesk",system-ui,sans-serif;
+        position:relative;width:1920px;height:1080px;overflow:hidden;
+        background:var(--bg);container-type:size;font-family:"Hanken Grotesk","Inter",system-ui,sans-serif;color:var(--ink);
+      }
+      #ou-root *,#ou-root *::before,#ou-root *::after{box-sizing:border-box;margin:0;padding:0}
+      #ou-root::before{content:"";position:absolute;inset:-12%;z-index:0;pointer-events:none;
+        background:
+          radial-gradient(circle at 50% 48%, rgba(6,227,250,.12), rgba(6,227,250,0) 30%),
+          radial-gradient(circle at 80% 18%, rgba(79,219,94,.08), rgba(79,219,94,0) 24%),
+          radial-gradient(circle, rgba(244,244,240,.03) 1px, rgba(244,244,240,0) 1px) 0 0/34px 34px}
+      #ou-root .edge{position:absolute;inset:0;border:2px solid rgba(24,76,60,.75);box-shadow:inset 0 0 60px rgba(24,76,60,.18);z-index:1}
+      #ou-root .beat{position:absolute;inset:0;z-index:2;display:grid;place-items:center;text-align:center;will-change:transform,opacity,filter}
+      #ou-root .mcp{font-weight:800;font-size:9.5cqw;line-height:1;letter-spacing:-.03em;color:var(--ink)}
+      #ou-root .supp{font-weight:700;font-size:4.6cqw;line-height:1.1;letter-spacing:-.02em;color:var(--ink)}
+      #ou-root .lockup{display:grid;place-items:center;color:var(--ink)}
+      #ou-root .grok-wordmark{display:block;width:34cqw;height:12.75cqw;color:var(--ink);overflow:visible}
+      #ou-root .tag{position:absolute;left:50%;top:68%;font-family:"Hanken Grotesk","Inter",system-ui,sans-serif;font-size:1.45cqw;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+    </style>
+
+    <div class="edge"></div>
+    <div class="beat" id="ob1"><div class="mcp">HyperFrames MCP</div></div>
+    <div class="beat" id="ob2"><div class="supp">Now natively supported on</div></div>
+    <div class="beat" id="ob3" data-layout-allow-overflow="true">
+      <div class="lockup" id="lockup">
+        <svg class="grok-wordmark" id="grokLogo" width="320" height="64" viewBox="0 0 88 33" fill="none" xmlns="http://www.w3.org/2000/svg" variant="hero" aria-label="Grok">
+          <path d="M76.4462 24.7077V8.41584H79.0216V19.1679L84.4685 12.9109H87.5908L82.6908 18.2731L87.6364 24.7077H84.5596L80.5539 19.1788L79.0216 19.1679V24.7077H76.4462Z" fill="currentColor"></path>
+          <path d="M68.6362 24.9815C64.8074 24.9815 62.7335 22.2662 62.7335 18.7979C62.7335 15.3068 64.8074 12.6143 68.6362 12.6143C72.4878 12.6143 74.5389 15.3068 74.5389 18.7979C74.5389 22.2662 72.4878 24.9815 68.6362 24.9815ZM65.4228 18.7979C65.4228 21.4904 66.8813 22.8366 68.6362 22.8366C70.4139 22.8366 71.8497 21.4904 71.8497 18.7979C71.8497 16.1054 70.4139 14.7363 68.6362 14.7363C66.8813 14.7363 65.4228 16.1054 65.4228 18.7979Z" fill="currentColor"></path>
+          <path d="M55.5659 24.7077V14.782L57.731 12.9109H62.3347V15.1014H58.1413V24.7077H55.5659Z" fill="currentColor"></path>
+          <path d="M45.7187 25.009C40.8101 25.009 37.8834 21.4448 37.8834 16.5846C37.8834 11.6788 40.9146 8.02795 45.8145 8.02795C49.6433 8.02795 52.4466 9.99027 53.1075 13.6411H50.1675C49.7345 11.5647 48.0024 10.401 45.8145 10.401C42.282 10.401 40.7322 13.4586 40.7322 16.5846C40.7322 19.7106 42.282 22.7454 45.8145 22.7454C49.1875 22.7454 50.6689 20.3039 50.7828 18.2731H45.7006V15.9105H53.381L53.3684 17.1457C53.3684 21.7359 51.4978 25.009 45.7187 25.009Z" fill="currentColor"></path>
+          <path d="M13.2371 21.0407L24.3186 12.8506C24.8619 12.4491 25.6384 12.6057 25.8973 13.2294C27.2597 16.5185 26.651 20.4712 23.9403 23.1851C21.2297 25.8989 17.4581 26.4941 14.0108 25.1386L10.2449 26.8843C15.6463 30.5806 22.2053 29.6665 26.304 25.5601C29.5551 22.3051 30.562 17.8683 29.6205 13.8673L29.629 13.8758C28.2637 7.99809 29.9647 5.64871 33.449 0.844576C33.5314 0.730667 33.6139 0.616757 33.6964 0.5L29.1113 5.09055V5.07631L13.2343 21.0436" fill="currentColor"></path>
+          <path d="M10.9503 23.0313C7.07343 19.3235 7.74185 13.5853 11.0498 10.2763C13.4959 7.82722 17.5036 6.82767 21.0021 8.2971L24.7595 6.55998C24.0826 6.07017 23.215 5.54334 22.2195 5.17313C17.7198 3.31926 12.3326 4.24192 8.67479 7.90126C5.15635 11.4239 4.0499 16.8403 5.94992 21.4622C7.36924 24.9165 5.04257 27.3598 2.69884 29.826C1.86829 30.7002 1.0349 31.5745 0.36364 32.5L10.9474 23.0341" fill="currentColor"></path>
+        </svg>
+      </div>
+      <div class="tag">HyperFrames by HeyGen connector</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const root=document.querySelector('[data-composition-id="outro"]');
+      const ob1=root.querySelector('#ob1'), ob2=root.querySelector('#ob2'), ob3=root.querySelector('#ob3');
+      const a=ob1.querySelector('.mcp'), logo=root.querySelector('#grokLogo'), tag=root.querySelector('.tag');
+
+      gsap.set([ob2,ob3],{opacity:0});
+      gsap.set(ob1,{opacity:1});
+      gsap.set(a,{x:210,opacity:0.55,scale:1.02,transformOrigin:'50% 50%'});
+      gsap.set([logo,tag],{opacity:0});
+      gsap.set(logo,{scale:.94,transformOrigin:'50% 50%'});
+      gsap.set(tag,{xPercent:-50,y:18});
+
+      const tl=gsap.timeline({paused:true});
+
+      tl.to(a,{x:0,opacity:1,scale:1,duration:.4,ease:'power3.out'},0);
+
+      const CB=0.7;
+      tl.to(ob1,{scale:0.8,filter:'blur(20px)',duration:0.2,ease:'power3.in'},CB-0.2);
+      tl.to(ob1,{opacity:0.15,duration:0.2,ease:'none'},CB-0.2);
+      tl.set(ob1,{opacity:0},CB);
+      tl.set(ob2,{opacity:0.15,scale:1.25,filter:'blur(20px)'},CB);
+      tl.to(ob2,{scale:1,filter:'blur(0px)',opacity:1,duration:0.5,ease:'expo.out'},CB);
+
+      const CC=1.4;
+      tl.to(ob2,{scale:0.8,filter:'blur(20px)',duration:0.2,ease:'power3.in'},CC-0.2);
+      tl.to(ob2,{opacity:0.15,duration:0.2,ease:'none'},CC-0.2);
+      tl.set(ob2,{opacity:0},CC);
+      tl.set(ob3,{opacity:0.15,scale:1.25,filter:'blur(20px)'},CC);
+      tl.to(ob3,{scale:1,filter:'blur(0px)',opacity:1,duration:0.5,ease:'expo.out'},CC);
+
+      tl.to(logo,{opacity:1,scale:1,duration:.5,ease:'back.out(1.35)'},CC+.12);
+      tl.to(tag,{y:0,opacity:1,duration:.36,ease:'power2.out'},CC+.72);
+      tl.to({},{duration:.22},3.18);
+
+      window.__timelines["outro"]=tl;
+      const q=new URLSearchParams(location.search);
+      if(q.has('t')) tl.seek(parseFloat(q.get('t'))||0);
+      else if(q.get('dev')==='1') tl.play();
+    </script>
+  </div>
+</template>

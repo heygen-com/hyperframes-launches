@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" role="img" aria-label="Tesla wordmark">
+  <rect width="960" height="260" rx="34" fill="#F4F4F0"/>
+  <g fill="#E31937">
+    <path d="M122 62h236v34h-98v115h-40V96h-98V62Z"/>
+    <path d="M392 62h188v34H432v26h118v33H432v22h151v34H392V62Z"/>
+    <path d="M625 62h40v115h142v34H625V62Z"/>
+    <path d="M155 224h650v12H155z" opacity=".16"/>
+  </g>
+  <text x="132" y="184" font-family="Arial, Helvetica, sans-serif" font-size="96" font-weight="800" letter-spacing="18" fill="#E31937">TESLA</text>
+</svg>
