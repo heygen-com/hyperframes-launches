@@ -1,0 +1,372 @@
+<template id="compose-tasklist-template">
+  <!-- NOTE: this comp now runs the whole OUTPUT beat: arrive mid-checklist (cross off last 3) →
+       same viewList→viewPlayer transition as compose-ui → the 6s TSLA explainer (frame.md
+       "default" style) plays INSIDE the player card → holds for the download-button click. -->
+  <div id="ct-root" data-composition-id="compose-tasklist" data-width="1920" data-height="1080" data-duration="10.0">
+    <style>
+      /* local fonts (captured woff2, font-display:block) */
+      @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:400;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-400-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+      @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:400;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+      @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:500;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-500-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+      @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:500;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+      @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:700;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-700-latin-ext-d9a6a0.woff2) format('woff2');
+        unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+      @font-face { font-family:'Hanken Grotesk';font-style:normal;font-weight:700;font-display:block;
+        src:url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+      @font-face { font-family:'Spline Sans Mono';font-style:normal;font-weight:500;font-display:block;
+        src:url(fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+      @font-face { font-family:'Newsreader';font-style:normal;font-weight:500;font-display:block;
+        src:url(fonts/Newsreader-normal-500-latin-f0c28d.woff2) format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+      @font-face { font-family:'Galaxie Copernicus';font-style:normal;font-weight:400 600;font-display:block;
+        src:url(fonts/GalaxieCopernicus-Book.woff2) format('woff2'); }
+
+      #ct-root{
+        --paper:#030404; --ink:#F4F4F0; --muted:#A7A7A2; --clay:#F4F4F0; --on-accent:#030404;
+        --surface-2:#111211; --hairline:#2B2B2B;
+        --f-body:"Hanken Grotesk","Inter",system-ui,sans-serif;
+        --f-mono:"Spline Sans Mono","IBM Plex Mono",monospace;
+        --f-serif:"Hanken Grotesk","Inter",system-ui,sans-serif;
+        position:relative;width:1920px;height:1080px;overflow:hidden;
+        background:var(--paper);container-type:size;font-family:"Hanken Grotesk","Inter",system-ui,sans-serif;
+      }
+      #ct-root *,#ct-root *::before,#ct-root *::after{box-sizing:border-box;margin:0;padding:0}
+
+      #ct-root .stage{position:absolute;inset:0;z-index:1;display:grid;place-items:center}
+      #ct-root .window{width:75cqw;height:48cqw;background:#111211;border:1px solid #2B2B2B;
+        border-radius:2cqw;overflow:hidden;display:flex;flex-direction:column;will-change:transform,opacity;
+        box-shadow:0 6px 18px rgba(0,0,0,.07), 0 60px 130px -42px rgba(0,0,0,.34)}
+
+      /* title bar */
+      #ct-root .bar{display:flex;align-items:center;gap:1cqw;height:5cqw;padding:0 1.8cqw;
+        border-bottom:1px solid #252525;flex:0 0 auto}
+      #ct-root .bar .logo{width:2.1cqw;height:2.1cqw;display:block}
+      #ct-root .bar .name{font-size:1.55cqw;font-weight:600;color:#F4F4F0;letter-spacing:-.01em}
+      #ct-root .bar .sub{font-size:1.55cqw;font-weight:500;color:#A7A7A2}
+      #ct-root .bar .code{margin-left:auto;color:#A7A7A2;font-size:1.7cqw;font-weight:600}
+
+      #ct-root .card{position:relative;flex:1 1 auto;margin:1cqw;background:#202020;border:1px solid #2B2B2B;border-radius:1.5cqw;overflow:hidden}
+
+      /* ── view B: task checklist ── */
+      #ct-root .viewList{position:absolute;inset:0}
+      #ct-root .progress{position:absolute;left:0;right:0;top:0;height:.5cqw;background:#303030;overflow:hidden}
+      #ct-root .progress .fill{position:absolute;inset:0;transform:scaleX(0);transform-origin:0 50%;
+        background:linear-gradient(90deg,#4FDB5E,#06E3FA)}
+      #ct-root .head{position:absolute;left:3.2cqw;top:2.8cqw;font-size:1.35cqw;font-weight:700;letter-spacing:.16em;color:#A7A7A2;text-transform:uppercase}
+      #ct-root .head .count{position:relative;display:inline-block;width:1.1cqw;height:1.2cqw;vertical-align:-.05em}
+      #ct-root .head .count .d{position:absolute;left:0;top:0;opacity:0}
+      #ct-root .list{position:absolute;left:2.4cqw;right:2.4cqw;top:7.2cqw;display:flex;flex-direction:column;gap:.5cqw}
+      #ct-root .row{position:relative;display:flex;align-items:center;gap:1.5cqw;height:4.3cqw;padding:0 1.4cqw;border-radius:1cqw}
+      #ct-root .hl{position:absolute;inset:0;border-radius:1cqw;background:rgba(40,200,140,.09);border-left:.32cqw solid #2BD07A;opacity:0}
+      #ct-root .status{position:relative;width:2.2cqw;height:2.2cqw;flex:0 0 auto;z-index:1}
+      #ct-root .status .dot{position:absolute;inset:.25cqw;border:.18cqw solid #74746F;border-radius:50%}
+      #ct-root .status .done{position:absolute;inset:.25cqw;border-radius:50%;background:#27C778;opacity:0}
+      #ct-root .status .play{position:absolute;inset:-.05cqw;opacity:0}
+      #ct-root .status .play svg{width:100%;height:100%;display:block}
+      #ct-root .label2{position:relative;font-size:1.9cqw;font-weight:500;white-space:nowrap;letter-spacing:-.01em;z-index:1}
+      #ct-root .label2 .descvia{color:#A7A7A2}
+      #ct-root .label2 .fn{color:#F4F4F0;font-weight:700}
+      #ct-root .label2 .strike{position:absolute;left:0;top:54%;width:100%;height:.16cqw;background:#74746F;transform:scaleX(0);transform-origin:0 50%}
+
+      /* shared pill */
+      #ct-root .pill{position:absolute;right:2.2cqw;bottom:2.2cqw;z-index:5;display:flex;align-items:center;gap:.9cqw;
+        background:#202020;border:1px solid #2B2B2B;border-radius:999px;padding:1cqw 1.6cqw;
+        box-shadow:0 2px 6px rgba(0,0,0,.06), 0 18px 40px -22px rgba(0,0,0,.4)}
+      #ct-root .pill .logo{width:1.7cqw;height:1.7cqw;display:block}
+      #ct-root .pill .txt{font-size:1.5cqw;font-weight:600;color:#F4F4F0;letter-spacing:-.01em}
+      #ct-root .pill .arr{color:#A7A7A2;font-size:1.5cqw;font-weight:600}
+
+      /* ── view C: generated-video player (the 6s explainer plays inside .vid) ── */
+      #ct-root .viewPlayer{position:absolute;inset:0;opacity:0}
+      #ct-root .player{position:absolute;left:1.3cqw;right:1.3cqw;top:1.3cqw;bottom:6.4cqw;
+        background:#F2EFE7;border:1px solid #DED9CC;border-radius:1.1cqw;overflow:hidden}
+      #ct-root .vid{position:absolute;inset:0;container-type:size;overflow:hidden;background:#F2EFE7}
+      #ct-root .vid::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
+        background:radial-gradient(circle, rgba(20,18,14,.03) 1px, transparent 1px) 0 0/34px 34px}
+
+      /* explainer beats (frame.md "default" style) */
+      #ct-root .xb{position:absolute;inset:0;z-index:1}
+      #ct-root .x-eyebrow{font-family:"Spline Sans Mono","IBM Plex Mono",monospace;font-size:1.55cqw;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:#9A9488}
+      /* beat 1 — opener */
+      #ct-root .x-hero{position:absolute;left:0;right:0;top:0;height:49cqh;background:#ECE8DD;border-bottom:1px solid #DED9CC;will-change:transform,clip-path}
+      #ct-root .x-lower{position:absolute;left:5.5cqw;right:5.5cqw;bottom:6cqh;display:flex;flex-direction:column;align-items:flex-start;gap:1.3cqh}
+      #ct-root .x-h1{font-family:"Galaxie Copernicus","Newsreader",Georgia,serif;font-weight:600;font-size:6.6cqw;line-height:.98;letter-spacing:-.005em;color:#161410}
+      #ct-root .x-chip{font-family:"Spline Sans Mono","IBM Plex Mono",monospace;font-size:1.35cqw;font-weight:600;letter-spacing:.14em;color:#4A463C;background:transparent;border:1px solid #CFC9BA;border-radius:999px;padding:.85cqh 1.5cqw}
+      /* beat 2 — the number */
+      #ct-root #xb2{display:flex;align-items:center;gap:4cqw;padding:0 5.5cqw}
+      #ct-root .x-numwrap{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:1.4cqh}
+      #ct-root .x-stat{font-family:"Galaxie Copernicus","Newsreader",Georgia,serif;font-weight:500;font-size:12.5cqw;line-height:.9;letter-spacing:-.02em;color:#161410;font-variant-numeric:tabular-nums}
+      #ct-root .x-ledger{font-family:"Hanken Grotesk","Inter",system-ui,sans-serif;font-weight:600;font-size:2.1cqw;letter-spacing:.0em;color:#6F6B60}
+      #ct-root .x-delta{color:#6F6B60;margin-left:.6cqw}
+      #ct-root .x-plate{flex:0 0 31cqw;height:60cqh;border-radius:1.4cqw;border:1px solid #DED9CC;background:#ECE8DD;overflow:hidden;position:relative;
+        box-shadow:0 1px 3px rgba(0,0,0,.05),0 22px 50px -26px rgba(0,0,0,.3);will-change:clip-path}
+      #ct-root .x-plate svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+      #ct-root .mc-flash{position:absolute;inset:0;z-index:1;background:#2BD07A;opacity:0}
+      #ct-root .mc-stage{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.4cqh}
+      #ct-root .mc-label{font-family:"Spline Sans Mono","IBM Plex Mono",monospace;font-size:1.55cqw;letter-spacing:.22em;text-transform:uppercase;color:#9A9488}
+      #ct-root .mc-amount{font-family:"Hanken Grotesk","Inter",system-ui,sans-serif;font-weight:800;font-size:14cqw;line-height:.9;letter-spacing:-.03em;color:#161410;font-variant-numeric:tabular-nums;text-shadow:0 1cqh 4cqh rgba(0,0,0,.08)}
+      #ct-root .mc-burst{position:absolute;inset:0;z-index:2;pointer-events:none}
+      #ct-root .mc-icon{position:absolute;left:50%;top:50%;display:grid;place-items:center;opacity:0;font-weight:800;font-size:1.2cqw;will-change:transform,opacity}
+      #ct-root .mc-icon.bill{width:3.2cqw;height:1.9cqw;border-radius:.5cqw;background:#30d158;color:#07541f;box-shadow:0 1cqh 2cqh rgba(7,84,31,.18)}
+      #ct-root .mc-icon.coin{width:2.3cqw;height:2.3cqw;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff7a6,#ffd54f 42%,#d9a514);color:#6f4c00;box-shadow:0 1cqh 2cqh rgba(111,76,0,.16)}
+      /* beat: three engines (light editorial) */
+      #ct-root #xb3{display:flex;align-items:center;justify-content:center;padding:0 5.5cqw}
+      #ct-root .x-engines{display:flex;flex-direction:column;align-items:center;gap:3.4cqh;width:100%}
+      #ct-root .x-erow{display:flex;align-items:stretch;justify-content:center;width:100%}
+      #ct-root .x-eng{flex:1 1 0;display:flex;flex-direction:column;align-items:center;gap:.9cqh;padding:0 2cqw;border-left:1px solid #DED9CC}
+      #ct-root .x-eng:first-child{border-left:0}
+      #ct-root .x-eng-n{font-family:"Galaxie Copernicus","Newsreader",Georgia,serif;font-weight:600;font-size:3.7cqw;color:#161410;line-height:1}
+      #ct-root .x-eng-l{font-family:"Spline Sans Mono","IBM Plex Mono",monospace;font-size:1.25cqw;letter-spacing:.18em;text-transform:uppercase;color:#9A9488}
+
+      /* VO captions (synced subtitle, dark Grok pill) */
+      #ct-root .xcap{position:absolute;left:8cqw;right:8cqw;bottom:3.4cqh;z-index:4;text-align:center;opacity:0;will-change:transform,opacity}
+      #ct-root .xcap .b{display:inline;box-decoration-break:clone;-webkit-box-decoration-break:clone;
+        font-family:"Hanken Grotesk","Inter",system-ui,sans-serif;font-weight:500;font-size:2.4cqw;line-height:1.45;letter-spacing:-.005em;color:#161410;
+        background:rgba(242,239,231,.94);border:1px solid #DED9CC;border-radius:.7cqw;padding:.6cqh 1.4cqw;
+        box-shadow:0 1px 2px rgba(0,0,0,.06),0 12px 28px -18px rgba(0,0,0,.4)}
+      #ct-root .xcap .clay{color:#161410;font-weight:700}
+
+      /* cursor (frame level — rises from the very bottom, unclipped) */
+      #ct-root .vcursor{position:absolute;width:4.6cqw;height:4.6cqw;z-index:50;left:72%;top:120%;opacity:0;
+        filter:drop-shadow(0 4px 6px rgba(0,0,0,.35));pointer-events:none}
+
+      /* player controls overlay (drops away once the explainer is playing) */
+      #ct-root .ctrls{position:absolute;left:0;right:0;bottom:0;height:6cqw;display:flex;align-items:center;gap:1.6cqw;z-index:6;
+        padding:0 2.2cqw;background:linear-gradient(to top, rgba(242,239,231,.94) 20%, rgba(242,239,231,0));will-change:transform,opacity}
+      #ct-root .play{position:relative;width:3.4cqw;height:3.4cqw;flex:0 0 auto}
+      #ct-root .play svg{position:absolute;inset:0;width:100%;height:100%;fill:#161410}
+      #ct-root .track{position:relative;flex:1 1 auto;height:.55cqw;background:rgba(20,18,14,.16);border-radius:999px}
+      #ct-root .prog{position:absolute;left:0;top:0;height:100%;width:0;background:#161410;border-radius:999px}
+      #ct-root .thumb{position:absolute;top:50%;left:0;width:1.5cqw;height:1.5cqw;border-radius:50%;background:#161410;transform:translate(-50%,-50%);box-shadow:0 1px 4px rgba(0,0,0,.25)}
+      #ct-root .time{flex:0 0 auto;color:#6F6B60;font-size:2.0cqw;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+      #ct-root .vol svg{width:2.6cqw;height:2.6cqw;fill:#6F6B60;flex:0 0 auto}
+      #ct-root .spd{flex:0 0 auto;background:rgba(255,255,255,.13);border-radius:.7cqw;padding:.5cqw 1.1cqw;color:#cfd8e3;font-size:1.9cqw;font-weight:700}
+    </style>
+
+    <div class="stage">
+      <div class="window">
+        <div class="bar">
+          <span class="logo" id="logoSm"></span>
+          <span class="name">HyperFrames by HeyGen</span>
+          <span class="sub">compose</span>
+          <span class="code">&lt;/&gt;</span>
+        </div>
+        <div class="card">
+
+          <div class="viewList" id="viewList">
+            <div class="progress"><div class="fill" id="fill"></div></div>
+            <div class="head">Generating &#160;·&#160; <span class="count" id="count"></span> of 7</div>
+            <div class="list" id="list"></div>
+          </div>
+
+          <div class="viewPlayer" id="viewPlayer">
+            <div class="player">
+              <div class="vid" id="vid">
+                <!-- result video: SpaceX $1T valuation count-up (stat pattern) -->
+                <div class="mc-flash" id="mcFlash"></div>
+                <div class="mc-burst" id="mcBurst" data-layout-allow-overflow></div>
+                <div class="mc-stage">
+                  <div class="mc-label" id="mcLabel">SpaceX &#160;·&#160; Implied IPO Valuation</div>
+                  <div class="mc-amount" id="mcAmount">$0.0T</div>
+                </div>
+                <!-- synced VO captions -->
+                <div class="xcap" id="xcap" data-layout-allow-occlusion="true"><span class="b" id="xcaptext"></span></div>
+              </div>
+              <div class="ctrls" id="ctrls">
+                <div class="play"><svg viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg></div>
+                <div class="track"><div class="prog" id="prog"></div><div class="thumb" id="thumb"></div></div>
+                <div class="time" id="time">0:00 / 0:06</div>
+                <div class="vol"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm12 3a3 3 0 0 0-2-2.8v5.6A3 3 0 0 0 16 12zm-2-7v2a5 5 0 0 1 0 9.6v2A7 7 0 0 0 14 5z" /></svg></div>
+                <div class="spd">1x</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pill">
+            <span class="logo" id="logoPill"></span>
+            <span class="txt">Download full video on hyperframes.dev</span>
+            <span class="arr">↗</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- cursor at frame level so it rises from the very bottom, unclipped -->
+    <svg class="vcursor" id="vcursor" viewBox="0 0 28 28" data-layout-allow-overflow="true">
+      <path d="M6 4 L6 23 L11 18 L14.5 25 L17.5 23.6 L14 17 L21 17 Z" fill="#1c1c1c" stroke="#F4F4F0" stroke-width="1.4" stroke-linejoin="round"/>
+    </svg>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+    window.__timelines = window.__timelines || {};
+    (async function(){
+      if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch(e){} }
+      const root=document.querySelector('[data-composition-id="compose-tasklist"]');
+      const win=root.querySelector('.window');
+
+      function mark(p){return `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.1851 57.8021L33.1145 73.8313C36.2202 75.9978 41.5173 73.5433 42.4816 69.4984L51.7611 30.4271C52.7253 26.3822 48.5802 23.9277 44.4602 26.0942L13.917 42.1235C6.96677 45.7676 4.97564 54.1579 10.1851 57.8021Z" fill="url(#${p}0)"/>
+        <path d="M87.5129 57.5141L56.9696 73.5433C52.8371 75.7098 48.7046 73.2553 49.6688 69.2104L58.9483 30.1391C59.9125 26.0942 65.2097 23.6397 68.3154 25.8062L91.2447 41.8354C96.4668 45.4796 94.4631 53.8699 87.5129 57.5141Z" fill="url(#${p}1)"/>
+        <defs>
+        <linearGradient id="${p}0" x1="48.5676" y1="25" x2="44.7804" y2="71.9384" gradientUnits="userSpaceOnUse"><stop stop-color="#06E3FA"/><stop offset="1" stop-color="#4FDB5E"/></linearGradient>
+        <linearGradient id="${p}1" x1="54.8282" y1="73.8392" x2="72.0989" y2="32.8932" gradientUnits="userSpaceOnUse"><stop stop-color="#06E3FA"/><stop offset="1" stop-color="#4FDB5E"/></linearGradient>
+        </defs></svg>`;}
+      root.querySelector('#logoSm').innerHTML=mark('ts');
+      root.querySelector('#logoPill').innerHTML=mark('tl');
+
+      // hero / plate image grounds are set in static CSS (so the compiler embeds them at render)
+
+      // ── task checklist (same 7-task pipeline as compose-ui) ──
+      const TASKS=[
+        "Generate narrator scripts via narrative_planner",
+        "Synthesize audio and generate ASR metadata via audio_synth",
+        "Create visual section plan via visual_planner",
+        "Build worker group specification via build_group_spec",
+        "Execute scene compositions via scene_executor workers",
+        "Merge scenes into final index.html via inline_index_html",
+        "Finalize execution and deliver video"
+      ];
+      function fmt(s){
+        const i=s.indexOf(' via ');
+        if(i<0) return `<span class="descvia">${s}</span>`;
+        const desc=s.slice(0,i+5), rest=s.slice(i+5);
+        const sp=rest.indexOf(' '), fn=sp<0?rest:rest.slice(0,sp), tail=sp<0?'':rest.slice(sp);
+        return `<span class="descvia">${desc}</span><span class="fn">${fn}</span><span class="descvia">${tail}</span>`;
+      }
+      const PLAY=mark('tp');
+      const list=root.querySelector('#list');
+      list.innerHTML=TASKS.map(t=>`<div class="row">
+        <div class="hl"></div>
+        <span class="status"><span class="dot"></span><span class="done"></span><span class="play">${PLAY}</span></span>
+        <span class="label2">${fmt(t)}<span class="strike"></span></span>
+      </div>`).join('');
+      const rows=Array.from(list.querySelectorAll('.row')).map(r=>({
+        dot:r.querySelector('.dot'), done:r.querySelector('.done'), play:r.querySelector('.play'),
+        hl:r.querySelector('.hl'), strike:r.querySelector('.strike'),
+        descvia:r.querySelectorAll('.descvia'), fn:r.querySelector('.fn')
+      }));
+      const cnt=root.querySelector('#count');
+      cnt.innerHTML=Array.from({length:8},(_,n)=>`<span class="d">${n}</span>`).join('');
+      const digits=Array.from(cnt.querySelectorAll('.d'));
+      const fill=root.querySelector('#fill');
+
+      const DONE=4;   // arrive HALFWAY — first 4 already complete; animate only the last 3 (idx 4,5,6)
+      rows.forEach(r=>{ gsap.set(r.done,{opacity:0}); gsap.set(r.play,{opacity:0}); gsap.set(r.hl,{opacity:0});
+        gsap.set(r.strike,{scaleX:0,transformOrigin:'0% 50%'}); gsap.set(r.descvia,{color:'#A7A7A2'}); });
+      gsap.set(digits,{opacity:0});
+      for(let k=0;k<DONE;k++){ const r=rows[k];
+        gsap.set(r.dot,{opacity:0}); gsap.set(r.done,{opacity:1}); gsap.set(r.strike,{scaleX:1});
+        gsap.set(r.descvia,{color:'#A7A7A2'}); gsap.set(r.fn,{color:'#A7A7A2'}); }
+      (function(){ const r=rows[DONE];
+        gsap.set(r.dot,{opacity:0}); gsap.set(r.play,{opacity:1}); gsap.set(r.descvia,{color:'#13B468'}); gsap.set(r.hl,{opacity:1}); })();
+      gsap.set(digits[DONE],{opacity:1});
+      gsap.set(fill,{scaleX:DONE/7,transformOrigin:'0 50%'});
+
+      // enter sliding LEFT from the right — carries the leftward cut-the-curve from "Making your video…"
+      gsap.set(win,{x:210,opacity:0.55,transformOrigin:'50% 50%'});
+
+      const tl=gsap.timeline({paused:true});
+      tl.to(win,{x:0,opacity:1,duration:.45,ease:'power3.out'},0);
+
+      function toCurrent(r,t){
+        tl.to(r.dot,{opacity:0,duration:.13,ease:'power1.inOut'},t);
+        tl.to(r.play,{opacity:1,duration:.15,ease:'power1.out'},t);
+        tl.to(r.descvia,{color:'#13B468',duration:.16,ease:'power1.inOut'},t);
+        tl.to(r.hl,{opacity:1,duration:.16,ease:'power1.inOut'},t);
+      }
+      function toDone(r,t){
+        tl.to(r.play,{opacity:0,duration:.13,ease:'power1.inOut'},t);
+        tl.to(r.done,{opacity:1,duration:.16,ease:'power1.out'},t);
+        tl.to(r.descvia,{color:'#A7A7A2',duration:.19,ease:'power1.inOut'},t);
+        tl.to(r.fn,{color:'#A7A7A2',duration:.19,ease:'power1.inOut'},t);
+        tl.to(r.strike,{scaleX:1,duration:.26,ease:'sine.inOut'},t+0.02);
+        tl.to(r.hl,{opacity:0,duration:.16,ease:'power1.inOut'},t);
+      }
+      const STEP=0.35, BASE=0.55;
+      for(let i=0;i<3;i++){
+        const k=DONE+i, t=BASE+i*STEP;
+        toDone(rows[k],t);
+        if(k<6) toCurrent(rows[k+1],t);
+        tl.to(digits[k],{opacity:0,duration:.09,ease:'power1.inOut'},t);
+        tl.to(digits[k+1],{opacity:1,duration:.09,ease:'power1.inOut'},t);
+        tl.to(fill,{scaleX:(k+1)/7,duration:.25,ease:'power1.out'},t);
+      }
+      tl.to(fill,{scaleX:1,duration:.2},BASE+2*STEP+0.25);
+
+      // ── transition viewList → viewPlayer (same as compose-ui) ──
+      const viewList=root.querySelector('#viewList'), viewPlayer=root.querySelector('#viewPlayer');
+      const ctrls=root.querySelector('#ctrls'), prog=root.querySelector('#prog'), thumb=root.querySelector('#thumb'), timeEl=root.querySelector('#time');
+      const VS=2.0;
+      tl.to(viewList,{opacity:0,duration:.3,ease:'power2.inOut'},VS);
+      tl.fromTo(viewPlayer,{opacity:0},{opacity:1,duration:.3,ease:'power2.inOut'},VS+0.02);
+
+      // ── result video: SpaceX $1T valuation count-up (apple-money-count stat pattern, ported) ──
+      const R=VS+0.3;
+      const XD=5.6;
+      tl.to(ctrls,{yPercent:130,opacity:0,duration:.32,ease:'power2.in'},R+0.7);
+      tl.fromTo(prog,{width:'0%'},{width:'100%',duration:XD,ease:'none'},R);
+      tl.fromTo(thumb,{left:'0%'},{left:'100%',duration:XD,ease:'none'},R);
+      for(let i=0;i<=5;i++){ tl.add(((sec)=>()=>{timeEl.textContent='0:0'+sec+' / 0:05';})(i),R+i); }
+
+      const mcAmount=root.querySelector('#mcAmount'), mcFlash=root.querySelector('#mcFlash'), mcLabel=root.querySelector('#mcLabel'), mcBurst=root.querySelector('#mcBurst');
+      const cs={v:0};
+      const mcFmt=(v)=>'$'+Math.max(0,v).toFixed(1)+'T';
+      mcAmount.textContent=mcFmt(0);
+      const icons=[],specs=[];
+      for(let i=0;i<16;i++){ const coin=i%3===0; const ic=document.createElement('div'); ic.className='mc-icon '+(coin?'coin':'bill'); ic.textContent='$'; mcBurst.appendChild(ic); icons.push(ic);
+        const ang=i*2.39996323; const rad=150+(i%4)*46; specs.push({x:Math.cos(ang)*rad, y:Math.sin(ang*1.13)*(rad*0.6), rot:((i*43)%140)-70, sc:coin?0.95:0.9, d:(i%6)*0.03}); }
+      gsap.set(icons,{xPercent:-50,yPercent:-50,x:0,y:0,opacity:0,scale:0.2,transformOrigin:'50% 50%'});
+
+      tl.from(mcLabel,{opacity:0,y:14,duration:.5,ease:'power3.out'},R+0.25);
+      tl.from(mcAmount,{opacity:0,y:18,scale:0.985,duration:.45,ease:'power2.out'},R+0.35);
+      tl.to(cs,{v:1,duration:3.0,ease:'power1.out',onUpdate:()=>{mcAmount.textContent=mcFmt(cs.v);},onComplete:()=>{mcAmount.textContent=mcFmt(1);}},R+0.55);
+
+      const HIT=R+3.55;
+      tl.to(mcAmount,{color:'#1f9d57',duration:.18},HIT);
+      tl.to(mcAmount,{scale:1.06,duration:.16,ease:'back.out(2.2)'},HIT);
+      tl.to(mcAmount,{scale:1,duration:.24,ease:'power2.out'},HIT+0.16);
+      tl.to(mcFlash,{opacity:0.26,duration:.08,ease:'none'},HIT);
+      tl.to(mcFlash,{opacity:0.16,duration:.72,ease:'none'},HIT+0.08);
+      tl.to(mcFlash,{opacity:0,duration:.2,ease:'power2.out'},HIT+0.82);
+      icons.forEach((ic,i)=>{ const sp=specs[i];
+        tl.to(ic,{x:sp.x,y:sp.y,rotation:sp.rot,scale:sp.sc,opacity:1,duration:.7,ease:'power4.out'},HIT+0.1+sp.d);
+        tl.to(ic,{y:sp.y+(sp.y<0?-50:50),scale:sp.sc*0.55,opacity:0,duration:.4,ease:'power2.in'},HIT+0.95+sp.d);
+      });
+
+      const xcap=root.querySelector('#xcap'), xcaptext=root.querySelector('#xcaptext');
+      gsap.set(xcap,{opacity:0});
+      function showCap(html,t,outT){ tl.add(()=>{xcaptext.innerHTML=html;},t-0.1); tl.fromTo(xcap,{opacity:0,y:8},{opacity:1,y:0,duration:.4,ease:'power2.out'},t); tl.to(xcap,{opacity:0,y:-6,duration:.32,ease:'power2.in'},outT); }
+      showCap('The most anticipated IPO in years', R+0.4, R+3.0);
+      showCap('SpaceX could top a <span class="clay">$1 trillion</span> valuation', R+3.4, R+5.4);
+
+      const vcur=root.querySelector('#vcursor'), pill=root.querySelector('.pill');
+      gsap.set(vcur,{opacity:0,left:'72%',top:'120%',scale:1,transformOrigin:'0% 0%'});
+      gsap.set(pill,{opacity:0,y:10});
+      const END=R+XD+0.5;
+      tl.to(pill,{opacity:1,y:0,duration:.24,ease:'power2.out'},END-0.45);
+      tl.to(vcur,{opacity:1,left:'74%',top:'82%',duration:.3,ease:'power3.out'},END-0.3);
+      tl.to(vcur,{scale:.84,duration:.1,ease:'power2.in'},END);
+      tl.to(pill,{scale:.97,duration:.1,ease:'power2.in',transformOrigin:'88% 50%'},END);
+      tl.to(vcur,{scale:1,duration:.22,ease:'power2.out'},END+0.1);
+      tl.to(pill,{scale:1,duration:.22,ease:'power2.out'},END+0.1);
+      tl.to({},{duration:.5},END+0.4);
+
+      window.__timelines["compose-tasklist"]=tl;
+      const q=new URLSearchParams(location.search);
+      if(q.has('t')) tl.seek(parseFloat(q.get('t'))||0);
+      else if(q.get('dev')==='1') tl.play();
+    })();
+    </script>
+  </div>
+</template>

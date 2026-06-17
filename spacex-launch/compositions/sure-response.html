@@ -1,0 +1,104 @@
+<template id="sure-response-template">
+  <div id="su-root" data-composition-id="sure-response" data-width="1920" data-height="1080" data-duration="0.4">
+    <style>
+      /* local fonts (captured woff2, font-display:block) */
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url(fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-400-latin-ext-7a09be.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-400-latin-f0c28d.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-500-latin-ext-7a09be.woff2) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url(fonts/Newsreader-normal-500-latin-f0c28d.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+
+      @font-face {
+        font-family: 'Galaxie Copernicus';
+        font-style: normal;
+        font-weight: 400 600;
+        font-display: block;
+        src: url(fonts/GalaxieCopernicus-Book.woff2) format('woff2');
+      }
+
+      #su-root{
+        --paper:#030404; --ink:#F4F4F0;
+        --f-grok:"Hanken Grotesk","Inter",system-ui,sans-serif;
+        position:relative;width:1920px;height:1080px;overflow:hidden;
+        background:var(--paper);container-type:size;color:var(--ink);font-family:"Hanken Grotesk","Inter",system-ui,sans-serif;
+      }
+      #su-root *,#su-root *::before,#su-root *::after{box-sizing:border-box;margin:0;padding:0}
+      /* same faint dotted grain as the Grok response surface */
+      #su-root::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
+        background:radial-gradient(circle, rgba(244,244,240,.025) 1px, transparent 1px) 0 0/34px 34px}
+
+      #su-root .stage{position:absolute;inset:0;z-index:1;display:grid;place-items:center}
+      #su-root .word{font-family:"Hanken Grotesk","Inter",system-ui,sans-serif;font-weight:500;font-size:14cqw;line-height:1;
+        letter-spacing:0;color:var(--ink);will-change:transform,opacity}
+    </style>
+
+    <div class="stage">
+      <div class="word" id="suWord">Sure.</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+    window.__timelines = window.__timelines || {};
+    (async function(){
+      if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch(e){} }
+      const root=document.querySelector('[data-composition-id="sure-response"]');
+      const word=root.querySelector('#suWord');
+
+      // local coords are always 1920-wide (container-type:size), so a constant px offset = a fixed
+      // fraction of the frame at any Studio scale. Enter from the right, sliding LEFT → carries the
+      // cursor's leftward sweep across the hard cut.
+      gsap.set(word,{x:210,opacity:0.55,scale:1.045,transformOrigin:'50% 50%'});
+
+      const tl=gsap.timeline({paused:true});
+      tl.to(word,{x:0,opacity:1,scale:1,duration:.18,ease:'power3.out'},0);   // snap in fast — 0.4s total beat
+      tl.to({},{duration:.22},.18);   // brief hold; the root zoom-throughs it out at ~0.2s in (timeline ≈ data-duration)
+
+      window.__timelines["sure-response"]=tl;
+      const q=new URLSearchParams(location.search);
+      if(q.has('t')) tl.seek(parseFloat(q.get('t'))||0);
+      else if(q.get('dev')==='1') tl.play();
+    })();
+    </script>
+  </div>
+</template>

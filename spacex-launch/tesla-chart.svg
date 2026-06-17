@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1100" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#111211"/>
+      <stop offset="1" stop-color="#030404"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" x2="1">
+      <stop offset="0" stop-color="#E31937"/>
+      <stop offset="1" stop-color="#4FDB5E"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1100" fill="url(#bg)"/>
+  <g stroke="#2B2B2B" stroke-width="2">
+    <path d="M90 160 H810 M90 300 H810 M90 440 H810 M90 580 H810 M90 720 H810 M90 860 H810"/>
+    <path d="M150 120 V940 M300 120 V940 M450 120 V940 M600 120 V940 M750 120 V940"/>
+  </g>
+  <path d="M95 812 C180 750 220 780 288 662 C358 540 422 592 488 480 C558 362 632 420 705 260 C752 158 802 186 840 128" fill="none" stroke="url(#line)" stroke-width="18" stroke-linecap="round"/>
+  <g fill="#F4F4F0" font-family="Arial, Helvetica, sans-serif">
+    <text x="86" y="104" font-size="34" font-weight="700" letter-spacing="5">TSLA OUTLOOK</text>
+    <text x="86" y="1010" font-size="82" font-weight="800">$1,450</text>
+    <text x="440" y="1006" font-size="34" font-weight="700" fill="#A7A7A2">BASE CASE</text>
+  </g>
+  <rect x="86" y="950" width="220" height="12" rx="6" fill="#4FDB5E"/>
+</svg>

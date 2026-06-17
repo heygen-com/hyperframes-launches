@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 780" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#172033"/>
+      <stop offset=".55" stop-color="#0D111A"/>
+      <stop offset="1" stop-color="#030404"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#29303A"/>
+      <stop offset="1" stop-color="#090A0A"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".32" r=".45">
+      <stop offset="0" stop-color="#4FDB5E" stop-opacity=".55"/>
+      <stop offset=".48" stop-color="#4FDB5E" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#4FDB5E" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="780" fill="url(#sky)"/>
+  <rect width="1200" height="780" fill="url(#glow)"/>
+  <path d="M0 580 C210 520 360 510 560 545 C760 580 940 545 1200 500 L1200 780 L0 780 Z" fill="url(#road)"/>
+  <path d="M570 780 L630 780 L606 548 L594 548 Z" fill="#F4F4F0" opacity=".72"/>
+  <path d="M0 548 C250 514 402 505 594 548" fill="none" stroke="#F4F4F0" stroke-opacity=".18" stroke-width="5"/>
+  <path d="M606 548 C790 580 930 548 1200 503" fill="none" stroke="#F4F4F0" stroke-opacity=".18" stroke-width="5"/>
+  <g opacity=".42">
+    <rect x="80" y="338" width="84" height="170" rx="8" fill="#202020"/>
+    <rect x="188" y="294" width="126" height="214" rx="8" fill="#171717"/>
+    <rect x="338" y="358" width="94" height="150" rx="8" fill="#202020"/>
+    <rect x="916" y="312" width="112" height="196" rx="8" fill="#171717"/>
+    <rect x="1052" y="352" width="72" height="156" rx="8" fill="#202020"/>
+  </g>
+  <g fill="#4FDB5E" opacity=".85">
+    <circle cx="484" cy="536" r="7"/>
+    <circle cx="716" cy="548" r="7"/>
+    <circle cx="872" cy="530" r="5"/>
+  </g>
+</svg>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920, height=1080">
+  <title>Grok HyperFrames — HyperFrames MCP (full cut)</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #030404; /* Grok canvas keeps overlapping opaque sections seamless mid-crossfade */
+    }
+    #grok-launch {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #030404;
+    }
+    /* each section fills the frame; z-index orders the crossfades (later = on top) */
+    #sec-connector { position: absolute; inset: 0; z-index: 1; }
+    #sec-chat      { position: absolute; inset: 0; z-index: 2; }
+    #sec-response  { position: absolute; inset: 0; z-index: 3; }
+    #sec-followup  { position: absolute; inset: 0; z-index: 4; will-change: transform, filter, opacity; }
+    #sec-thinking  { position: absolute; inset: 0; z-index: 5; will-change: transform, filter, opacity; }
+    #sec-compose   { position: absolute; inset: 0; z-index: 6; will-change: transform, filter, opacity; }
+    #sec-sure      { position: absolute; inset: 0; z-index: 7; will-change: transform, filter, opacity; }
+    #sec-thinking2 { position: absolute; inset: 0; z-index: 8; will-change: transform, filter, opacity; }
+    #sec-tasklist  { position: absolute; inset: 0; z-index: 9; will-change: transform, filter, opacity; }
+    #sec-outro     { position: absolute; inset: 0; z-index: 10; will-change: transform, filter, opacity; }
+  </style>
+</head>
+<body>
+  <div data-hf-id="hf-u6x8" id="grok-launch" data-composition-id="grok-launch" data-start="0" data-width="1920" data-height="1080" data-duration="39.5">
+    <!-- 1 · connector morph: + → tool menu → connectors → HyperFrames by HeyGen ON → prompt box -->
+    <div data-hf-id="hf-pjjw" id="sec-connector" data-composition-id="connector-morph" data-composition-src="compositions/connector-morph.html" data-start="0" data-duration="6.7" data-track-index="1"></div>
+
+    <!-- 2 · chat: type → send → composer drops to thin bar → thinking -->
+    <div data-hf-id="hf-6z79" id="sec-chat" data-composition-id="chat-response" data-composition-src="compositions/chat-response.html" data-start="6.7" data-duration="6.9" data-track-index="2"></div>
+
+    <!-- 3 · response scrolls up; thinking dissolves into the answer at the seam -->
+    <div data-hf-id="hf-oppa" id="sec-response" data-composition-id="response-scroll" data-composition-src="compositions/response-scroll.html" data-start="13.0" data-duration="6.7" data-track-index="3"></div>
+
+    <!-- 4 · follow-up: cursor returns, clicks the composer, types the HyperFrames request -->
+    <div data-hf-id="hf-zst7" id="sec-followup" data-composition-id="followup-type" data-composition-src="compositions/followup-type.html" data-start="19.4" data-duration="6.0" data-track-index="4"></div>
+
+
+
+
+    <!-- 8 · inverse zoom-through into a GIANT centered Grok thinking: "Making your video…" -->
+    <div data-hf-id="hf-q2z4" id="sec-thinking2" data-composition-id="thinking-big-2" data-composition-src="compositions/thinking-big-2.html" data-start="25.0" data-duration="1.5" data-track-index="9"></div>
+
+    <!-- 9 · leftward cut-the-curve back into the compose task list, arriving HALFWAY — only the last 3 to-dos cross off -->
+    <div data-hf-id="hf-n7lx" id="sec-tasklist" data-composition-id="compose-tasklist" data-composition-src="compositions/compose-tasklist.html" data-start="26.3" data-duration="10.0" data-track-index="10"></div>
+
+    <!-- 10 · outro: leftward cut-the-curve → "HyperFrames MCP" → zoom-through "Now natively supported on" → Grok logo -->
+    <div data-hf-id="hf-5tph" id="sec-outro" data-composition-id="outro" data-composition-src="compositions/outro.html" data-start="36.1" data-duration="3.4" data-track-index="11"></div>
+
+
+    <!-- the neutral presenter VO over the final SpaceX explainer (ElevenLabs, 6.43s) -->
+    <audio data-hf-id="hf-05bl" id="vo-explainer" src="voiceover_explainer.mp3" data-start="28.6" data-duration="7.31" data-track-index="184" data-volume="1"></audio>
+
+    <!-- restored music + SFX bed from the stronger HyperFrames launch audio pack -->
+    <audio data-hf-id="hf-qi8y" id="music-bed" src="launch-music-trimmed.mp3" data-start="0" data-duration="39.5" data-track-index="12" data-volume="0.13"></audio>
+
+    <!-- cursor taps: richer mouse-click sample, trimmed per hit -->
+    <audio data-hf-id="hf-p4e9" id="sfx-click-0" src="mouse-click.mp3" data-start="1.60" data-duration="0.30" data-track-index="100" data-volume="0.55"></audio>
+    <audio data-hf-id="hf-qc1k" id="sfx-click-1" src="mouse-click.mp3" data-start="3.10" data-duration="0.30" data-track-index="101" data-volume="0.55"></audio>
+    <audio data-hf-id="hf-sfa2" id="sfx-toggle" src="bass-drop-1.mp3" data-start="4.30" data-duration="1.30" data-track-index="102" data-volume="0.26"></audio>
+    <audio data-hf-id="hf-y8q2" id="sfx-click-toggle" src="mouse-click.mp3" data-start="4.30" data-duration="0.30" data-track-index="111" data-volume="0.52"></audio>
+    <audio data-hf-id="hf-k2je" id="sfx-click-3" src="mouse-click.mp3" data-start="7.48" data-duration="0.30" data-track-index="103" data-volume="0.50"></audio>
+    <audio data-hf-id="hf-hqvk" id="sfx-click-4" src="mouse-click.mp3" data-start="9.93" data-duration="0.30" data-track-index="104" data-volume="0.50"></audio>
+    <audio data-hf-id="hf-7djf" id="sfx-click-5" src="mouse-click.mp3" data-start="20.20" data-duration="0.30" data-track-index="105" data-volume="0.50"></audio>
+    <audio data-hf-id="hf-9q0a" id="sfx-click-6" src="mouse-click.mp3" data-start="24.89" data-duration="0.30" data-track-index="106" data-volume="0.50"></audio>
+    <audio data-hf-id="hf-ocra" id="sfx-click-10" src="mouse-click.mp3" data-start="34.70" data-duration="0.30" data-track-index="110" data-volume="0.55"></audio>
+
+    <!-- typing beds: one continuous high-quality keyboard loop per passage -->
+    <audio data-hf-id="hf-xyz8" id="sfx-type-chat" src="keyboard-typing.mp3" data-start="7.80" data-duration="1.95" data-track-index="120" data-volume="0.24"></audio>
+    <audio data-hf-id="hf-tk2y" id="sfx-type-followup" src="keyboard-typing.mp3" data-start="20.80" data-duration="3.15" data-track-index="121" data-volume="0.24"></audio>
+
+  </div>
+
+  <script>
+    // Master timeline — Hamish/Scotsman removed; flow: followup -> "Making your video..." -> SpaceX result -> outro.
+    window.__timelines = window.__timelines || {};
+    const rootTimeline = gsap.timeline({ paused: true });
+
+    // seam 1 (connector -> chat): hard cut at 6.7
+    rootTimeline.set("#sec-response", { opacity: 0 }, 0);
+    // seam 2 (chat -> response): crossfade at 13.0
+    rootTimeline.to("#sec-response", { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 13.0);
+    rootTimeline.to("#sec-chat", { opacity: 0, duration: 0.6, ease: "power1.inOut" }, 13.0);
+
+    // seam 3 (follow-up -> "Making your video...") = inverse zoom-through
+    rootTimeline.set("#sec-thinking2", { opacity: 0 }, 0);
+    const CUT = 25.2;
+    rootTimeline.to("#sec-followup", { scale: 0.8, filter: "blur(20px)", duration: 0.2, ease: "power3.in" }, CUT - 0.2);
+    rootTimeline.to("#sec-followup", { opacity: 0.15, duration: 0.2, ease: "none" }, CUT - 0.2);
+    rootTimeline.set("#sec-followup", { opacity: 0 }, CUT);
+    rootTimeline.set("#sec-thinking2", { opacity: 0.15, scale: 1.25, filter: "blur(20px)" }, CUT);
+    rootTimeline.to("#sec-thinking2", { scale: 1, filter: "blur(0px)", opacity: 1, duration: 0.5, ease: "expo.out" }, CUT);
+
+    // seam 4 ("Making your video..." -> compose task list) = leftward cut-the-curve
+    rootTimeline.set("#sec-tasklist", { opacity: 0 }, 0);
+    const CUTc = 26.3;
+    rootTimeline.to("#sec-thinking2", { xPercent: -13, duration: 0.26, ease: "power2.in" }, CUTc - 0.26);
+    rootTimeline.to("#sec-thinking2", { opacity: 0.55, duration: 0.26, ease: "power2.in" }, CUTc - 0.26);
+    rootTimeline.set("#sec-thinking2", { opacity: 0 }, CUTc);
+    rootTimeline.set("#sec-tasklist", { opacity: 1 }, CUTc);
+
+    // seam 5 (compose task list -> outro) = leftward cut-the-curve
+    rootTimeline.set("#sec-outro", { opacity: 0 }, 0);
+    const CUTd = 36.1;
+    rootTimeline.to("#sec-tasklist", { xPercent: -13, duration: 0.26, ease: "power2.in" }, CUTd - 0.26);
+    rootTimeline.to("#sec-tasklist", { opacity: 0.55, duration: 0.26, ease: "power2.in" }, CUTd - 0.26);
+    rootTimeline.set("#sec-tasklist", { opacity: 0 }, CUTd);
+    rootTimeline.set("#sec-outro", { opacity: 1 }, CUTd);
+
+    window.__timelines["grok-launch"] = rootTimeline;
+  </script>
+</body>
+</html>
