@@ -1,0 +1,106 @@
+<template>
+<div id="ask-root" data-composition-id="ask" data-width="1920" data-height="1080" data-duration="4.0">
+  <audio data-sfx="1" id="sfx-ask-0" src="assets/sfx/type-short.mp3" data-start="0.2" data-duration="0.9" data-track-index="64"></audio>
+  <audio data-sfx="1" id="sfx-ask-1" src="assets/sfx/click.mp3" data-start="2.05" data-duration="0.27" data-track-index="65"></audio>
+  <audio data-sfx="1" id="sfx-ask-2" src="assets/sfx/pop.mp3" data-start="2.12" data-duration="0.27" data-track-index="66"></audio>
+  <div class="win">
+    <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+    <div class="feed">
+      <div class="stack">
+        <div class="urow">Hey, can we render my edited podcast video we worked on in HyperFrames?</div>
+        <div class="arow">On it — rendering <b>podcast-final.mp4</b> locally now.</div>
+        <div class="urow r-in r-new">can we also render my five projects from yesterday?</div>
+      </div>
+    </div>
+    <div class="composer">
+      <div class="inputbar">
+        <div class="tline"><span class="typed"></span><span class="ph">Reply to Claude…</span><span class="caret">▏</span></div>
+        <span class="ret">↵</span>
+        <!-- pixel pet typing, perched on the prompt's top edge -->
+        <div class="pet"><video src="assets/pet-typing.mp4" muted playsinline id="ask-pet1" data-start="0" data-duration="4.0" data-track-index="42"></video></div>
+      </div>
+      <div class="metarow"><div class="ml"><span class="auto">Auto</span><span class="ico">＋</span></div><div class="mr"><span>Opus 4.8</span><span class="hi">High</span><span class="orb"></span></div></div>
+    </div>
+  </div>
+  <svg class="cursor" viewBox="0 0 28 28"><path d="M6 4 L6 23 L11 18 L14.5 25 L17.5 23.6 L14 17 L21 17 Z" fill="#1c1c1c" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+
+<style>
+  @font-face{font-family:'Hanken Grotesk';font-weight:400;font-display:block;src:url(fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:500;font-display:block;src:url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:600;font-display:block;src:url(fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');}
+  #ask-root{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;font-family:'Hanken Grotesk',system-ui,sans-serif;background:#F0EFE9;}
+  #ask-root .win{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:83.3cqw;height:81cqh;background:#1D1F1F;border-radius:1.35cqw;box-shadow:0 2cqw 6cqw -2cqw rgba(20,20,18,.45);overflow:hidden;color:#EFEADD;}
+  #ask-root .bar{position:absolute;top:1.4cqw;left:1.6cqw;display:flex;gap:.62cqw;}
+  #ask-root .dot{width:1.05cqw;height:1.05cqw;border-radius:50%;display:block;}
+  #ask-root .dot.r{background:#FF5F57;}#ask-root .dot.y{background:#FEBC2E;}#ask-root .dot.g{background:#28C840;}
+  /* shared chat layout */
+  #ask-root .feed{position:absolute;left:3.4cqw;right:3.4cqw;top:6cqw;bottom:16.5cqw;overflow:hidden;}
+  #ask-root .stack{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:1.6cqw;}
+  #ask-root .urow{align-self:flex-end;max-width:66%;text-align:right;font-size:1.6cqw;font-weight:500;color:#EFEADD;line-height:1.3;}
+  #ask-root .urow b{color:#fff;font-weight:700;}
+  #ask-root .arow{align-self:flex-start;max-width:82%;font-size:1.6cqw;font-weight:400;color:#D8D4C8;line-height:1.4;}
+  #ask-root .arow b{color:#fff;font-weight:600;}#ask-root .arow .mint{color:#3CE6AC;font-weight:600;}
+  #ask-root .composer{position:absolute;left:3.4cqw;right:3.4cqw;bottom:3.4cqw;}
+  #ask-root .inputbar{position:relative;display:flex;align-items:center;background:#2C2C2B;border:1px solid #3a3a38;border-radius:.9cqw;min-height:3.3cqw;padding:.7cqw 1.2cqw;}
+  #ask-root .tline{flex:1;min-width:0;padding-right:2.6cqw;white-space:pre-wrap;overflow-wrap:break-word;line-height:1.45;}
+  #ask-root .typed{font-size:1.6cqw;font-weight:500;color:#EFEADD;}
+  #ask-root .ph{font-size:1.6cqw;color:#6F6E66;}
+  #ask-root .caret{font-size:1.8cqw;color:#D97757;margin-left:.05cqw;}
+  #ask-root .ret{position:absolute;right:1.1cqw;top:50%;transform:translateY(-50%);color:#6F6E66;font-size:1.2cqw;}
+  #ask-root .metarow{display:flex;justify-content:space-between;align-items:center;margin-top:.85cqw;color:#7C7B73;font-size:1.0cqw;font-weight:500;}
+  #ask-root .ml,#ask-root .mr{display:flex;align-items:center;gap:1.0cqw;}
+  #ask-root .auto{background:rgba(202,164,62,.16);color:#CAA43E;padding:.22cqw .7cqw;border-radius:.45cqw;font-size:.92cqw;}
+  #ask-root .ico{color:#8C8B83;font-size:1.15cqw;}
+  #ask-root .orb{width:1.25cqw;height:1.25cqw;border-radius:50%;box-sizing:border-box;border:0.17cqw solid rgba(96,148,214,0.26);border-top-color:#5A9BE6;}
+  #ask-root .pet{position:absolute;right:3cqw;bottom:100%;width:7.6cqw;height:4.4cqw;pointer-events:none;}
+  #ask-root .pet video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;
+    -webkit-mask-image:linear-gradient(to right,transparent 0,#000 3%,#000 98%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 8%,#000 98%,transparent 100%);
+    -webkit-mask-composite:source-in;
+    mask-image:linear-gradient(to right,transparent 0,#000 3%,#000 98%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 8%,#000 98%,transparent 100%);
+    mask-composite:intersect;}
+  #ask-root .cursor{position:absolute;width:5.5cqw;height:5.5cqw;z-index:30;opacity:0;pointer-events:none;filter:drop-shadow(0 .2cqw .35cqw rgba(0,0,0,.35));}
+</style>
+
+<script>
+(function(){
+  const R=(document.currentScript&&document.currentScript.closest('#ask-root'))||document.querySelector('#ask-root');
+  if(!R||!window.gsap) return;
+  const GAP=30.72, CUR=105.6; // 1.6cqw gap, 5.5cqw cursor
+  const PROMPT="can we also render my five projects from yesterday?";
+  const typed=R.querySelector('.typed'),ph=R.querySelector('.ph'),caret=R.querySelector('.caret'),
+        stack=R.querySelector('.stack'),newrow=R.querySelector('.r-new'),
+        cursor=R.querySelector('.cursor'),ret=R.querySelector('.ret');
+  // centre of an element in the root's own px coords (honours transforms + studio scaling)
+  function ctr(el){const rb=R.getBoundingClientRect(),b=el.getBoundingClientRect(),s=(R.offsetWidth||1920)/(rb.width||1);return{x:(b.left+b.width/2-rb.left)*s,y:(b.top+b.height/2-rb.top)*s};}
+  const rc=ctr(ret), tipX=rc.x-0.21*CUR, tipY=rc.y-0.14*CUR; // ↵ centre, offset to the cursor tip
+  window.__timelines=window.__timelines||{};
+  const tl=gsap.timeline({paused:true});
+
+  // rest: M3 (new) clipped below the fold; M1+M2 bottom-anchored (== opener end frame)
+  const dNew=newrow.offsetHeight+GAP;
+  gsap.set(stack,{y:dNew});
+  gsap.set(newrow,{opacity:0});
+  gsap.set(ph,{display:'none'});gsap.set(caret,{opacity:1});gsap.set(R.querySelector('.orb'),{transformOrigin:'50% 50%'});
+
+  tl.to(R.querySelector('.orb'),{rotation:360,duration:1.0,ease:'none',repeat:3},0);
+  tl.to(caret,{opacity:0,duration:.5,ease:'steps(1)',repeat:5,yoyo:true},0.1);
+  const obj={n:0};
+  tl.to(obj,{n:PROMPT.length,duration:1.2,ease:'none',onUpdate(){typed.textContent=PROMPT.slice(0,Math.round(obj.n));}},0.2);
+  // cursor moves to the ↵ glyph and taps
+  tl.fromTo(cursor,{left:tipX-260,top:tipY+150,opacity:0},{left:tipX,top:tipY,opacity:1,duration:.6,ease:'power3.out'},1.35);
+  tl.to(cursor,{scale:.84,duration:.1,ease:'power2.in',transformOrigin:'21% 14%'},2.0);
+  tl.to(cursor,{scale:1,duration:.2,ease:'power2.out',transformOrigin:'21% 14%'},2.1);
+  tl.fromTo(ret,{color:'#6F6E66'},{color:'#D97757',duration:.08},2.05);
+  tl.to(ret,{color:'#6F6E66',duration:.25},2.25);
+  // SEND: clear composer; M3 arrives at the bottom, M1+M2 shift up one row
+  tl.add(()=>{typed.textContent='';},2.1);
+  tl.set(caret,{opacity:0},2.1);
+  tl.fromTo(newrow,{opacity:0},{opacity:1,duration:.4,ease:'power2.out'},2.12);
+  tl.to(stack,{y:0,duration:.55,ease:'power3.out'},2.12);
+  tl.to(cursor,{opacity:0,duration:.3},2.3);
+  tl.to({},{duration:.2},3.8);
+  window.__timelines["ask"]=tl;
+})();
+</script>
+</div>
+</template>

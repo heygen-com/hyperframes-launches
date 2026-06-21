@@ -1,0 +1,169 @@
+<template>
+<div id="con-root" data-composition-id="connect" data-width="1920" data-height="1080" data-duration="6.4">
+  <audio data-sfx="1" id="sfx-connect-0" src="assets/sfx/whoosh-slide.mp3" data-start="0.0" data-duration="0.31" data-track-index="72"></audio>
+  <audio data-sfx="1" id="sfx-connect-1" src="assets/sfx/type-short.mp3" data-start="0.2" data-duration="0.9" data-track-index="73"></audio>
+  <audio data-sfx="1" id="sfx-connect-2" src="assets/sfx/click.mp3" data-start="1.25" data-duration="0.27" data-track-index="74"></audio>
+  <audio data-sfx="1" id="sfx-connect-3" src="assets/sfx/pop.mp3" data-start="1.32" data-duration="0.27" data-track-index="75"></audio>
+  <audio data-sfx="1" id="sfx-connect-4" src="assets/sfx/pop.mp3" data-start="2.0" data-duration="0.27" data-track-index="76"></audio>
+  <audio data-sfx="1" id="sfx-connect-5" src="assets/sfx/pop.mp3" data-start="2.8" data-duration="0.27" data-track-index="77"></audio>
+  <audio data-sfx="1" id="sfx-connect-6" src="assets/sfx/click.mp3" data-start="3.98" data-duration="0.27" data-track-index="78"></audio>
+  <audio data-sfx="1" id="sfx-connect-7" src="assets/sfx/pop.mp3" data-start="4.5" data-duration="0.27" data-track-index="79"></audio>
+  <audio data-sfx="1" id="sfx-connect-8" src="assets/sfx/chime.mp3" data-start="5.3" data-duration="1.3" data-track-index="80"></audio>
+  <div class="win">
+    <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+    <div class="feed">
+      <div class="stack">
+        <div class="arow">On it — rendering <b>podcast-final.mp4</b> locally now.</div>
+        <div class="urow">can we also render my five projects from yesterday?</div>
+        <div class="arow">The podcast render's at <b>75%</b> — still about <b>10 minutes</b> to go. I can add them to the queue, or render them on <span class="mint">HeyGen Cloud Render</span> so your machine stays free.</div>
+        <div class="urow r-in r-q">Okay cool — how do I do that?</div>
+        <div class="arow r-in r-a">I'll connect HeyGen for you.</div>
+        <div class="tool r-in r-tool"><span class="cmdtxt"><span class="dim">$</span> hyperframes auth login</span><span class="okpart">&nbsp;&nbsp;<span class="ok">✓ Connected to HeyGen</span></span></div>
+      </div>
+    </div>
+    <div class="composer">
+      <div class="inputbar"><div class="tline"><span class="typed"></span><span class="ph">Reply to Claude…</span><span class="caret">▏</span></div><span class="ret">↵</span><div class="pet"><video src="assets/pet-typing.mp4" muted playsinline id="con-pet1" data-start="0" data-duration="5.27" data-track-index="44"></video><video src="assets/pet-typing.mp4" muted playsinline id="con-pet2" data-start="5.27" data-duration="1.2" data-track-index="45"></video></div></div>
+      <div class="metarow"><div class="ml"><span class="auto">Auto</span><span class="ico">＋</span></div><div class="mr"><span>Opus 4.8</span><span class="hi">High</span><span class="orb"></span></div></div>
+      <div class="permit">
+        <div class="permit-head"><span class="pic">&gt;_</span> Bash command</div>
+        <div class="permit-cmd">hyperframes auth login</div>
+        <div class="permit-desc">Connect this project to HeyGen Cloud Render</div>
+        <div class="permit-q">Do you want to proceed?</div>
+        <div class="permit-opts">
+          <div class="opt sel"><span class="car">❯</span> 1. Yes</div>
+          <div class="opt"><span class="car"> </span> 2. Yes, and don't ask again for hyperframes commands</div>
+          <div class="opt"><span class="car"> </span> 3. No, and tell Claude what to do differently</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <svg class="cursor" viewBox="0 0 28 28"><path d="M6 4 L6 23 L11 18 L14.5 25 L17.5 23.6 L14 17 L21 17 Z" fill="#1c1c1c" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+
+<style>
+  @font-face{font-family:'Hanken Grotesk';font-weight:400;font-display:block;src:url(fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:500;font-display:block;src:url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:600;font-display:block;src:url(fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:500;font-display:block;src:url(fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');}
+  #con-root{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;font-family:'Hanken Grotesk',system-ui,sans-serif;background:#F0EFE9;}
+  #con-root .win{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:83.3cqw;height:81cqh;background:#1D1F1F;border-radius:1.35cqw;box-shadow:0 2cqw 6cqw -2cqw rgba(20,20,18,.45);overflow:hidden;color:#EFEADD;}
+  #con-root .bar{position:absolute;top:1.4cqw;left:1.6cqw;display:flex;gap:.62cqw;}
+  #con-root .dot{width:1.05cqw;height:1.05cqw;border-radius:50%;display:block;}
+  #con-root .dot.r{background:#FF5F57;}#con-root .dot.y{background:#FEBC2E;}#con-root .dot.g{background:#28C840;}
+  /* shared chat layout */
+  #con-root .feed{position:absolute;left:3.4cqw;right:3.4cqw;top:6cqw;bottom:16.5cqw;overflow:hidden;}
+  #con-root .stack{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:1.6cqw;}
+  #con-root .urow{align-self:flex-end;max-width:66%;text-align:right;font-size:1.6cqw;font-weight:500;color:#EFEADD;line-height:1.3;}
+  #con-root .urow b{color:#fff;font-weight:700;}
+  #con-root .arow{align-self:flex-start;max-width:82%;font-size:1.6cqw;font-weight:400;color:#D8D4C8;line-height:1.4;}
+  #con-root .arow b{color:#fff;font-weight:600;}#con-root .arow .mint{color:#3CE6AC;font-weight:600;}
+  #con-root .tool{align-self:flex-start;font-family:'Spline Sans Mono',monospace;font-size:1.3cqw;color:#8C8B83;}
+  #con-root .tool .ok{color:#3CE6AC;}#con-root .tool .dim{color:#6F6E66;}
+  #con-root .composer{position:absolute;left:3.4cqw;right:3.4cqw;bottom:3.4cqw;}
+  #con-root .inputbar{position:relative;display:flex;align-items:center;background:#2C2C2B;border:1px solid #3a3a38;border-radius:.9cqw;min-height:3.3cqw;padding:.7cqw 1.2cqw;}
+  #con-root .tline{flex:1;min-width:0;padding-right:2.6cqw;white-space:pre-wrap;overflow-wrap:break-word;line-height:1.45;}
+  #con-root .typed{font-size:1.6cqw;font-weight:500;color:#EFEADD;}#con-root .ph{font-size:1.6cqw;color:#6F6E66;}
+  #con-root .caret{font-size:1.8cqw;color:#D97757;margin-left:.05cqw;}
+  #con-root .ret{position:absolute;right:1.1cqw;top:50%;transform:translateY(-50%);color:#6F6E66;font-size:1.2cqw;}
+  #con-root .metarow{display:flex;justify-content:space-between;align-items:center;margin-top:.85cqw;color:#7C7B73;font-size:1.0cqw;font-weight:500;}
+  #con-root .ml,#con-root .mr{display:flex;align-items:center;gap:1.0cqw;}
+  #con-root .auto{background:rgba(202,164,62,.16);color:#CAA43E;padding:.22cqw .7cqw;border-radius:.45cqw;font-size:.92cqw;}
+  #con-root .ico{color:#8C8B83;font-size:1.15cqw;}
+  #con-root .orb{width:1.25cqw;height:1.25cqw;border-radius:50%;box-sizing:border-box;border:0.17cqw solid rgba(96,148,214,0.26);border-top-color:#5A9BE6;}
+  #con-root .cursor{position:absolute;width:5.5cqw;height:5.5cqw;z-index:30;opacity:0;pointer-events:none;filter:drop-shadow(0 .2cqw .35cqw rgba(0,0,0,.35));}
+  #con-root .pet{position:absolute;right:3cqw;bottom:100%;width:7.6cqw;height:4.4cqw;pointer-events:none;}
+  #con-root .pet video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;
+    -webkit-mask-image:linear-gradient(to right,transparent 0,#000 3%,#000 98%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 8%,#000 98%,transparent 100%);
+    -webkit-mask-composite:source-in;
+    mask-image:linear-gradient(to right,transparent 0,#000 3%,#000 98%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 8%,#000 98%,transparent 100%);
+    mask-composite:intersect;}
+  /* terminal permission prompt (faithful Claude Code) */
+  #con-root .permit{position:absolute;left:0;right:0;bottom:0;background:#26211E;border:1px solid #D97757;border-radius:.9cqw;padding:.95cqw 1.25cqw;opacity:0;}
+  #con-root .permit-head{display:flex;align-items:center;gap:.55cqw;color:#D97757;font-size:1.0cqw;font-weight:600;margin-bottom:.55cqw;}
+  #con-root .permit-head .pic{font-family:'Spline Sans Mono',monospace;font-size:.95cqw;}
+  #con-root .permit-cmd{font-family:'Spline Sans Mono',monospace;font-size:1.3cqw;color:#EFEADD;}
+  #con-root .permit-desc{font-size:.98cqw;color:#9A988F;margin-top:.25cqw;margin-bottom:.7cqw;}
+  #con-root .permit-q{font-size:1.0cqw;color:#C9C6BC;margin-bottom:.5cqw;}
+  #con-root .permit-opts{display:flex;flex-direction:column;gap:.22cqw;}
+  #con-root .permit-opts .opt{font-size:1.0cqw;color:#8C8B83;padding:.2cqw .45cqw;border-radius:.4cqw;}
+  #con-root .permit-opts .opt .car{font-family:'Spline Sans Mono',monospace;color:#D97757;}
+  #con-root .permit-opts .opt.sel{color:#EFEADD;background:rgba(217,119,87,.16);}
+</style>
+
+<script>
+(function(){
+  const R=(document.currentScript&&document.currentScript.closest('#con-root'))||document.querySelector('#con-root');
+  if(!R||!window.gsap) return;
+  const GAP=30.72, CUR=105.6;
+  const Q_TXT="Okay cool — how do I do that?";
+  const typed=R.querySelector('.typed'),ph=R.querySelector('.ph'),caret=R.querySelector('.caret'),
+        stack=R.querySelector('.stack'),q=R.querySelector('.r-q'),a=R.querySelector('.r-a'),
+        tool=R.querySelector('.r-tool'),okpart=R.querySelector('.okpart'),
+        cursor=R.querySelector('.cursor'),ret=R.querySelector('.ret'),
+        inputbar=R.querySelector('.inputbar'),metarow=R.querySelector('.metarow'),
+        permit=R.querySelector('.permit'),yes=R.querySelector('.opt.sel'),
+        feed=R.querySelector('.feed'),composer=R.querySelector('.composer');
+  const rows=[...stack.children]; // [M2, M3, M4, Q, A, TOOL]
+  function ctr(el){const rb=R.getBoundingClientRect(),b=el.getBoundingClientRect(),s=(R.offsetWidth||1920)/(rb.width||1);return{x:(b.left+b.width/2-rb.left)*s,y:(b.top+b.height/2-rb.top)*s};}
+  const rc=ctr(ret), tipX=rc.x-0.21*CUR, tipY=rc.y-0.14*CUR;        // ↵ send key
+  const yc=ctr(yes), yX=yc.x-0.21*CUR, yY=yc.y-0.14*CUR;            // "Yes" option
+  // the prompt box grows into the permission card → push the chat up by the extra height
+  const PSHIFT=Math.max(0, permit.offsetHeight - (inputbar.offsetHeight + metarow.offsetHeight + 16) + 24);
+  window.__timelines=window.__timelines||{};
+  const tl=gsap.timeline({paused:true});
+
+  // rest: Q + A + TOOL clipped below; M2+M3+M4 bottom-anchored (== responds end frame)
+  const dQ=q.offsetHeight+GAP, dA=a.offsetHeight+GAP, dTool=tool.offsetHeight+GAP;
+  gsap.set(stack,{y:dQ+dA+dTool});
+  gsap.set([q,a,tool],{opacity:0});
+  gsap.set([okpart,permit],{opacity:0});
+  gsap.set(ph,{display:'none'});gsap.set(caret,{opacity:1});gsap.set(R.querySelector('.orb'),{transformOrigin:'50% 50%'});
+
+  tl.to(R.querySelector('.orb'),{rotation:360,duration:1.0,ease:'none',repeat:6},0);
+
+  // 1) the user asks how — types the question, taps send
+  tl.to(caret,{opacity:0,duration:.5,ease:'steps(1)',repeat:1,yoyo:true},0.15);
+  const oq={n:0};
+  tl.to(oq,{n:Q_TXT.length,duration:.85,ease:'none',onUpdate(){typed.textContent=Q_TXT.slice(0,Math.round(oq.n));}},0.2);
+  tl.fromTo(cursor,{left:tipX-260,top:tipY+150,opacity:0},{left:tipX,top:tipY,opacity:1,duration:.5,ease:'power3.out'},0.7);
+  tl.to(cursor,{scale:.84,duration:.1,ease:'power2.in',transformOrigin:'21% 14%'},1.2);
+  tl.to(cursor,{scale:1,duration:.2,ease:'power2.out',transformOrigin:'21% 14%'},1.3);
+  tl.fromTo(ret,{color:'#6F6E66'},{color:'#D97757',duration:.08},1.25);
+  tl.to(ret,{color:'#6F6E66',duration:.25},1.45);
+  tl.add(()=>{typed.textContent='';},1.3);
+  tl.fromTo(q,{opacity:0},{opacity:1,duration:.4,ease:'power2.out'},1.32);
+  tl.to(stack,{y:dA+dTool,duration:.5,ease:'power3.out'},1.32);
+  tl.to(rows[0],{opacity:0,duration:.4,ease:'power2.out'},1.32);
+  tl.to(cursor,{opacity:0,duration:.3},1.5);
+
+  // 2) quick reply: Claude says it'll connect, M3 fades out the top
+  tl.fromTo(a,{opacity:0},{opacity:1,duration:.4,ease:'power3.out'},2.0);
+  tl.to(stack,{y:dTool,duration:.5,ease:'power3.out'},2.0);
+  tl.to(rows[1],{opacity:0,duration:.4,ease:'power2.out'},2.0);
+
+  // 3) PERMISSION PROMPT — the composer becomes the "Bash command / proceed?" card, chat pushes up
+  tl.to([inputbar,metarow],{opacity:0,duration:.25,ease:'power2.in'},2.65);
+  tl.fromTo(permit,{opacity:0,y:14},{opacity:1,y:0,duration:.4,ease:'power3.out'},2.8);
+  tl.to(stack,{y:dTool-PSHIFT,duration:.4,ease:'power3.out'},2.8);
+  // cursor moves to "Yes" and clicks
+  tl.fromTo(cursor,{left:yX-220,top:yY+170,opacity:0},{left:yX,top:yY,opacity:1,duration:.55,ease:'power3.out'},3.3);
+  tl.to(cursor,{scale:.84,duration:.1,ease:'power2.in',transformOrigin:'21% 14%'},3.95);
+  tl.to(cursor,{scale:1,duration:.2,ease:'power2.out',transformOrigin:'21% 14%'},4.05);
+  tl.to(yes,{backgroundColor:'rgba(217,119,87,.42)',duration:.1},3.98);
+  tl.to(yes,{backgroundColor:'rgba(217,119,87,.16)',duration:.3},4.12);
+  tl.to(cursor,{opacity:0,duration:.3},4.25);
+
+  // 4) approved → permit closes, composer returns, the command runs in the feed (M4 fades), result resolves
+  tl.to(permit,{opacity:0,duration:.3,ease:'power2.in'},4.35);
+  tl.to([inputbar,metarow],{opacity:1,duration:.35,ease:'power2.out'},4.5);
+  tl.fromTo(tool,{opacity:0},{opacity:1,duration:.4,ease:'power3.out'},4.5);
+  tl.to(stack,{y:0,duration:.5,ease:'power3.out'},4.5);
+  tl.to(rows[2],{opacity:0,duration:.4,ease:'power2.out'},4.5);
+  tl.fromTo(okpart,{opacity:0},{opacity:1,duration:.35,ease:'power2.out'},5.3);
+  // chat fades out, leaving the BARE dark window + chrome, for the seamless cut to fleet
+  tl.to([feed,composer],{opacity:0,duration:.4,ease:'power2.in'},5.9);
+  tl.to({},{duration:.2},6.6);
+  window.__timelines["connect"]=tl;
+})();
+</script>
+</div>
+</template>

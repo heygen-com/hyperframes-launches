@@ -1,0 +1,38 @@
+<template>
+<div id="tb-root" data-composition-id="textbeat" data-width="1920" data-height="1080" data-duration="2.6">
+  <audio data-sfx="1" id="sfx-textbeat-0" src="assets/sfx/swish.mp3" data-start="0.0" data-duration="0.45" data-track-index="70"></audio>
+  <audio data-sfx="1" id="sfx-textbeat-1" src="assets/sfx/swish.mp3" data-start="1.9" data-duration="0.45" data-track-index="71"></audio>
+  <div class="wrap"><div class="line"><span class="w">Don't</span> <span class="w">get</span> <span class="w">blocked</span> <span class="w">by</span> <span class="w">your</span> <span class="w mint">machine.</span></div></div>
+<style>
+  @font-face{font-family:'Hanken Grotesk';font-weight:700;font-display:block;src:url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2');}
+  #tb-root{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;background:#F0EFE9;font-family:'Hanken Grotesk',system-ui,sans-serif;}
+  #tb-root::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;background:radial-gradient(circle,rgba(38,36,30,.025) 1px,transparent 1px) 0 0/34px 34px;}
+  #tb-root .wrap{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;}
+  #tb-root .line{font-weight:700;font-size:6.2cqw;letter-spacing:-.03em;color:#0A0A0A;white-space:nowrap;}
+  #tb-root .w{display:inline-block;will-change:transform;}
+  #tb-root .mint{color:transparent;background:linear-gradient(90deg,#3CE6AC,#00E3FF);-webkit-background-clip:text;background-clip:text;}
+</style>
+<script>
+(function(){
+  const R=(document.currentScript&&document.currentScript.closest('#tb-root'))||document.querySelector('#tb-root');
+  if(!R||!window.gsap) return;
+  const words=R.querySelectorAll('.w'),mint=R.querySelector('.mint');
+  window.__timelines=window.__timelines||{};
+  const tl=gsap.timeline({paused:true});
+
+  // ENTRY — CUT-THE-CURVE whip (Spotify-style single power4.out, NOT the slow 3-phase nudge): words
+  // throw in leftward fast and settle, tight overlapping stagger so they arrive fast + together,
+  // reading order ("Don't" first). Continues responds' leftward exit. Single staggered tween = lint-clean.
+  gsap.set(words,{opacity:0,x:82});
+  tl.to(words,{opacity:1,x:0,duration:.32,ease:'power4.out',stagger:.055},0.12);
+  // gradient accent breathes on "machine." during the hold
+  tl.fromTo(mint,{scale:1},{scale:1.04,duration:.3,yoyo:true,repeat:1,ease:'power2.inOut',transformOrigin:'50% 50%'},1.15);
+
+  // EXIT — downward WATERFALL: words throw down fast and accelerate away (Don't first), tight stagger
+  tl.to(words,{y:200,opacity:0,duration:.4,ease:'power3.in',stagger:.05},1.9);
+  tl.to({},{duration:.05},2.55);
+  window.__timelines["textbeat"]=tl;
+})();
+</script>
+</div>
+</template>

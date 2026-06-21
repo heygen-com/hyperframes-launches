@@ -1,0 +1,93 @@
+[a] URL → Video
+[a] Create frame.md
+[span] New video
+[a] Log in
+[h1] Community Playground
+[a] Star us
+[a] Prompt guide
+[a] Contribute
+[span] Made with HyperFrames
+[button] Examples
+[button] Catalog
+[button] Community
+[span] New video
+[p] Generate with an AI agent
+[p] hermes-hyperframes
+[p] s ·
+[p] 1920
+[p] 1080
+[span] Remix
+[p] ycombinator
+[p] s ·
+[p] 1920
+[p] 1080
+[span] Remix
+[p] Notion Showcase
+[p] s ·
+[p] 1920
+[p] 1080
+[span] Remix
+[p] blue-sweater-intro-video
+[p] s ·
+[p] 1920
+[p] 1080
+[span] Remix
+[p] Dribbble Showcase
+[p] s ·
+[p] 1920
+[p] 1080
+[span] Remix
+[p] may-financial-recap-cathedral-light
+[p] s ·
+[p] 1920
+[p] 1080
+[span] Remix
+[p] Stripe Showcase
+[p] s ·
+[p] 1920
+[p] 1080
+[span] Remix
+[p] Raycast Showcase
+[p] s ·
+[p] 1920
+[p] 1080
+[span] Remix
+[p] Fitness App Showcase
+[p] 5.5
+[p] s ·
+[p] 1920
+[p] 1080
+[span] Remix
+[p] Spotify Bento
+[p] 26.5
+[p] s ·
+[p] 1920
+[p] 1080
+[span] Remix
+[p] UI 3D Reveal
+[p] s ·
+[p] 1920
+[p] 1080
+[span] Remix
+[p] agentbook-launch-video
+[p] s ·
+[p] 1920
+[p] 1080
+[span] Remix
+[p] California News
+[p] 16.5
+[p] s ·
+[p] 1080
+[p] 1920
+[span] Remix
+[p] avatar-explainer
+[p] s ·
+[p] 1920
+[p] 1080
+[span] Remix
+[p] airbnb-reel
+[p] 31.6
+[p] s ·
+[p] 1920
+[p] 1080
+[span] Remix
