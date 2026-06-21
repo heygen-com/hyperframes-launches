@@ -1,0 +1,107 @@
+<template>
+<div id="fin-root" data-composition-id="finished" data-width="1920" data-height="1080" data-duration="3.2">
+  <audio data-sfx="1" id="sfx-finished-morph" src="assets/sfx/whoosh-morph.mp3" data-start="0.0" data-duration="0.97" data-track-index="96"></audio>
+  <audio data-sfx="1" id="sfx-finished-0" src="assets/sfx/ux-chime.mp3" data-start="1.7" data-duration="0.57" data-track-index="83"></audio>
+  <div class="win">
+    <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+    <div class="feed">
+      <div class="stack">
+        <div class="urow">Okay cool — how do I do that?</div>
+        <div class="arow">I'll connect HeyGen for you.</div>
+        <div class="tool"><span class="dim">$</span> hyperframes auth login&nbsp;&nbsp;<span class="ok">✓ Connected to HeyGen</span></div>
+        <div class="arow big r-in r-new">All 6 projects have finished rendering.</div>
+      </div>
+      <div class="think"><span class="ast">✳</span><span>rendering 6 projects on HeyGen…</span></div>
+    </div>
+    <div class="composer">
+      <div class="inputbar"><div class="tline"><span class="ph">Reply to Claude…</span></div><span class="ret">↵</span><div class="pet"><video src="assets/pet-typing.mp4" muted playsinline id="fin-pet1" data-start="0" data-duration="3.2" data-track-index="46"></video></div></div>
+      <div class="metarow"><div class="ml"><span class="auto">Auto</span><span class="ico">＋</span></div><div class="mr"><span>Opus 4.8</span><span class="hi">High</span><span class="orb"></span></div></div>
+    </div>
+  </div>
+
+<style>
+  @font-face{font-family:'Hanken Grotesk';font-weight:400;font-display:block;src:url(fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:500;font-display:block;src:url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:600;font-display:block;src:url(fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:500;font-display:block;src:url(fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');}
+  #fin-root{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;font-family:'Hanken Grotesk',system-ui,sans-serif;background:#F0EFE9;}
+  #fin-root .win{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:83.3cqw;height:81cqh;background:#1D1F1F;border-radius:1.35cqw;box-shadow:0 2cqw 6cqw -2cqw rgba(20,20,18,.45);overflow:hidden;color:#EFEADD;}
+  #fin-root .bar{position:absolute;top:1.4cqw;left:1.6cqw;display:flex;gap:.62cqw;}
+  #fin-root .dot{width:1.05cqw;height:1.05cqw;border-radius:50%;display:block;}
+  #fin-root .dot.r{background:#FF5F57;}#fin-root .dot.y{background:#FEBC2E;}#fin-root .dot.g{background:#28C840;}
+  /* shared chat layout */
+  #fin-root .feed{position:absolute;left:3.4cqw;right:3.4cqw;top:6cqw;bottom:16.5cqw;overflow:hidden;}
+  #fin-root .stack{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:1.6cqw;}
+  #fin-root .urow{align-self:flex-end;max-width:66%;text-align:right;font-size:1.6cqw;font-weight:500;color:#EFEADD;line-height:1.3;}
+  #fin-root .urow b{color:#fff;font-weight:700;}
+  #fin-root .arow{align-self:flex-start;max-width:82%;font-size:1.6cqw;font-weight:400;color:#D8D4C8;line-height:1.4;}
+  #fin-root .arow b{color:#fff;font-weight:600;}#fin-root .arow .mint{color:#3CE6AC;font-weight:600;}
+  #fin-root .arow.big{font-size:2.1cqw;font-weight:500;color:#EFEADD;}
+  #fin-root .cmd{font-family:'Spline Sans Mono',monospace;font-size:1.35cqw;background:#2C2C2B;color:#EFEADD;padding:.08cqw .5cqw;border-radius:.4cqw;}
+  #fin-root .tool{align-self:flex-start;font-family:'Spline Sans Mono',monospace;font-size:1.3cqw;color:#8C8B83;}
+  #fin-root .tool .ok{color:#3CE6AC;}#fin-root .tool .dim{color:#6F6E66;}
+  #fin-root .think{position:absolute;left:0;bottom:0;display:flex;align-items:center;gap:.7cqw;color:#8C8B83;font-size:1.4cqw;opacity:0;}
+  #fin-root .think .ast{color:#D97757;font-size:1.6cqw;display:inline-block;}
+  #fin-root .composer{position:absolute;left:3.4cqw;right:3.4cqw;bottom:3.4cqw;}
+  #fin-root .inputbar{position:relative;display:flex;align-items:center;background:#2C2C2B;border:1px solid #3a3a38;border-radius:.9cqw;min-height:3.3cqw;padding:.7cqw 1.2cqw;}
+  #fin-root .ph{font-size:1.6cqw;color:#6F6E66;}
+  #fin-root .ret{position:absolute;right:1.1cqw;top:50%;transform:translateY(-50%);color:#6F6E66;font-size:1.2cqw;}
+  #fin-root .metarow{display:flex;justify-content:space-between;align-items:center;margin-top:.85cqw;color:#7C7B73;font-size:1.0cqw;font-weight:500;}
+  #fin-root .ml,#fin-root .mr{display:flex;align-items:center;gap:1.0cqw;}
+  #fin-root .auto{background:rgba(202,164,62,.16);color:#CAA43E;padding:.22cqw .7cqw;border-radius:.45cqw;font-size:.92cqw;}
+  #fin-root .ico{color:#8C8B83;font-size:1.15cqw;}
+  #fin-root .orb{width:1.25cqw;height:1.25cqw;border-radius:50%;box-sizing:border-box;border:0.17cqw solid rgba(96,148,214,0.26);border-top-color:#5A9BE6;}
+  #fin-root .pet{position:absolute;right:3cqw;bottom:100%;width:7.6cqw;height:4.4cqw;pointer-events:none;}
+  #fin-root .pet video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;
+    -webkit-mask-image:linear-gradient(to right,transparent 0,#000 3%,#000 98%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 8%,#000 98%,transparent 100%);
+    -webkit-mask-composite:source-in;
+    mask-image:linear-gradient(to right,transparent 0,#000 3%,#000 98%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 8%,#000 98%,transparent 100%);
+    mask-composite:intersect;}
+</style>
+
+<script>
+(function(){
+  const R=(document.currentScript&&document.currentScript.closest('#fin-root'))||document.querySelector('#fin-root');
+  if(!R||!window.gsap) return;
+  const GAP=30.72;
+  const think=R.querySelector('.think'),ast=R.querySelector('.ast'),
+        stack=R.querySelector('.stack'),reply=R.querySelector('.r-new'),oldest=stack.children[0],
+        win=R.querySelector('.win'),bar=R.querySelector('.bar'),composer=R.querySelector('.composer');
+  const pastRows=[...stack.children].filter(el=>!el.classList.contains('r-in')); // Q,A,TOOL
+  window.__timelines=window.__timelines||{};
+  const tl=gsap.timeline({paused:true});
+
+  // rest: M6 (big) clipped below; Q+A+TOOL bottom-anchored (== connect end frame)
+  const dNew=reply.offsetHeight+GAP;
+  const thinkSlot=think.offsetHeight+GAP;
+  gsap.set(stack,{y:dNew});
+  gsap.set([reply,think],{opacity:0});
+  gsap.set(R.querySelector('.orb'),{transformOrigin:'50% 50%'});
+  gsap.set(ast,{transformOrigin:'50% 50%'});
+
+  // ENTRANCE: full-screen render terminal morphs DOWN into the chat window; chrome + prompt + messages animate on
+  gsap.set(win,{width:1920,height:1080,borderRadius:0});
+  gsap.set(bar,{opacity:0});
+  gsap.set(composer,{opacity:0,y:34});
+  gsap.set(pastRows,{opacity:0,y:18});
+  tl.to(win,{width:1599.36,height:874.8,borderRadius:25.92,duration:.6,ease:'power3.inOut'},0);
+  tl.to(bar,{opacity:1,duration:.32,ease:'power2.out'},0.32);
+  tl.to(composer,{opacity:1,y:0,duration:.42,ease:'power3.out'},0.28);
+  tl.to(pastRows,{opacity:1,y:0,duration:.42,ease:'power3.out',stagger:.07},0.34);
+
+  tl.to(R.querySelector('.orb'),{rotation:360,duration:1.0,ease:'none',repeat:3},0);
+  // thinking opens the bottom slot: history shifts up, the render status sits closest to the composer
+  tl.to(stack,{y:dNew-thinkSlot,duration:.4,ease:'power3.out'},0.7);
+  tl.fromTo(think,{opacity:0,y:8},{opacity:1,y:0,duration:.3,ease:'power2.out'},1.0);
+  tl.to(ast,{rotation:360,duration:1.0,ease:'none'},1.0);
+  // M6 payoff line replaces the thinking line at the bottom; oldest (Q) fades out the top
+  tl.to(think,{opacity:0,duration:.3,ease:'power2.in'},1.55);
+  tl.fromTo(reply,{opacity:0},{opacity:1,duration:.5,ease:'power3.out'},1.7);
+  tl.to(stack,{y:0,duration:.6,ease:'power3.out'},1.7);
+  tl.to(oldest,{opacity:0,duration:.5,ease:'power2.out'},1.7);
+  tl.to({},{duration:.2},3.0);
+  window.__timelines["finished"]=tl;
+})();
+</script>
+</div>
+</template>

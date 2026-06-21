@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cloud Render Launch — Contact Sheet v3</title>
+<style>
+  @font-face{font-family:'Hanken Grotesk';font-weight:400;font-display:block;src:url(fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:500;font-display:block;src:url(fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:600;font-display:block;src:url(fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:700;font-display:block;src:url(fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:400;font-display:block;src:url(fonts/SplineSansMono-normal-400-latin-53329b.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:500;font-display:block;src:url(fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');}
+
+  :root{
+    --pagebg:#1a1a1a; --line:rgba(255,255,255,.12); --muted:#858585;
+    --paper:#F0EFE9; --paper-panel:#F6F5F1; --paper-sunken:#E8E7E1;
+    --ink:#0A0A0A; --ink2:#6B6B6B; --ink3:#999; --hair:#E0DFDB;
+    --tile:#111113; --tile2:#18181B; --tline:rgba(255,255,255,.06);
+    --onvoid:#FAFAFA; --onvoid2:#A1A1AA; --onvoid3:#71717A;
+    --mint:#3CE6AC; --cyan:#00E3FF; --mintsoft:rgba(60,230,172,.15);
+    --cc:#1D1F1F; --cctext:#EFEADD; --ccmuted:#8C8B83; --ccpanel:#2C2C2B; --clay:#D97757;
+    --amber:#CAA43E; --blue:#5A9BE6;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--pagebg);color:#f2f2f2;font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;}
+  .sheet{padding:28px 32px 48px;}
+  .header{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:22px;border-bottom:1px solid var(--line);padding-bottom:18px;}
+  h1{margin:0;font-size:28px;line-height:1;font-weight:700;}
+  .dek{margin:9px 0 0;max-width:980px;color:#bcbcbc;font-size:13.5px;line-height:1.5;}
+  .dek b{color:#e4e4e4;}
+  .tag{color:#111;background:#f4f4f4;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:700;white-space:nowrap;}
+
+  .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;}
+  .cell{min-width:0;}
+  .label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px;color:var(--muted);font-size:13px;font-weight:700;}
+  .label span:last-child{color:#c8c8c8;font-weight:500;font-size:11px;text-align:right;}
+  .note{margin:9px 0 0;color:#a8a8a8;font-size:12px;line-height:1.4;}
+  .note b{color:#dadada;}
+  .ttag{display:inline-block;margin-top:7px;padding:2px 8px;border-radius:5px;background:rgba(60,230,172,.12);border:1px solid rgba(60,230,172,.32);color:#7df0c6;font-family:'Spline Sans Mono',monospace;font-size:10.5px;font-weight:500;letter-spacing:.03em;}
+  .ttag.clay{background:rgba(217,119,87,.12);border-color:rgba(217,119,87,.34);color:#e89a7d;}
+
+  /* 16:9 frame — everything lives on warm paper */
+  .frame{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--paper);border:1px solid rgba(255,255,255,.16);container-type:inline-size;color:var(--ink);font-family:'Hanken Grotesk',sans-serif;}
+  .frame.dot::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;background:radial-gradient(circle,rgba(10,10,10,.03) 1px,transparent 1px) 0 0/13px 13px;}
+
+  /* Claude Code window (faithful to terminal-sfx) */
+  .win{position:absolute;background:var(--cc);overflow:hidden;color:var(--cctext);box-shadow:0 1.5cqw 4cqw -1.5cqw rgba(20,20,18,.45);}
+  .win.dock{inset:5cqw 7cqw;border-radius:1.4cqw;}
+  .win.full{inset:0;border-radius:0;}
+  .tl{position:absolute;top:1.8cqw;left:2cqw;display:flex;gap:.75cqw;z-index:5;}
+  .tl i{width:1.1cqw;height:1.1cqw;border-radius:50%;display:block;}
+  .tl .r{background:#FF5F57;}.tl .y{background:#FEBC2E;}.tl .g{background:#28C840;}
+
+  /* conversation feed (history + current) */
+  .feed{position:absolute;left:3cqw;right:3cqw;top:5cqw;bottom:9.5cqw;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:1.6cqw;}
+  .urow{align-self:flex-end;max-width:66%;text-align:right;color:var(--cctext);font-size:2cqw;font-weight:500;line-height:1.3;}
+  .arow{align-self:flex-start;max-width:82%;color:#D8D4C8;font-size:2cqw;font-weight:400;line-height:1.38;}
+  .arow b{color:#fff;font-weight:600;}.arow .mint{color:var(--mint);font-weight:600;}
+  .past{opacity:.34;}
+  .tool{align-self:flex-start;font-family:'Spline Sans Mono',monospace;font-size:1.7cqw;color:var(--ccmuted);}
+  .tool .ok{color:var(--mint);}.tool .dim{color:#6F6E66;}
+  .think{align-self:flex-start;display:flex;align-items:center;gap:.8cqw;color:var(--ccmuted);font-size:1.7cqw;}
+  .think .ast{color:var(--clay);font-size:2cqw;}
+
+  /* composer (always present) */
+  .composer{position:absolute;left:3cqw;right:3cqw;bottom:2.4cqw;}
+  .composer.big{left:50%;right:auto;width:50%;bottom:23cqw;transform:translateX(-50%) scale(1.3);transform-origin:50% 100%;}
+  .chips{display:flex;gap:.6cqw;margin-bottom:.8cqw;}
+  .chip{display:inline-flex;align-items:center;gap:.5cqw;background:var(--ccpanel);color:#D7D4CA;font-size:1.25cqw;font-weight:500;padding:.5cqw .9cqw;border-radius:.6cqw;}
+  .chip svg{width:1.3cqw;height:1.3cqw;stroke:#C9C6BC;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .inputbar{position:relative;display:flex;align-items:center;background:var(--ccpanel);border:1px solid #3a3a38;border-radius:1cqw;min-height:4.6cqw;padding:1cqw 1.4cqw;font-size:1.9cqw;color:#E6E2D6;}
+  .inputbar .ph{color:#6F6E66;}
+  .caret{color:var(--clay);font-size:2.3cqw;line-height:1;margin-left:.1cqw;}
+  .ret{position:absolute;right:1.3cqw;color:#6F6E66;font-size:1.9cqw;}
+  .metarow{display:flex;justify-content:space-between;align-items:center;margin-top:.8cqw;color:#7C7B73;font-size:1.25cqw;font-weight:500;}
+  .metarow .ml,.metarow .mr{display:flex;align-items:center;gap:1cqw;}
+  .auto{background:rgba(202,164,62,.16);color:var(--amber);padding:.25cqw .8cqw;border-radius:.5cqw;font-size:1.15cqw;}
+  .orb{width:1.35cqw;height:1.35cqw;border-radius:50%;border:.2cqw solid rgba(96,148,214,.26);border-top-color:var(--blue);}
+
+  /* the Claude Code character (pixel pet) perched on the composer */
+  .pet{position:absolute;right:5%;bottom:97%;width:24%;aspect-ratio:16/9;pointer-events:none;
+    -webkit-mask-image:linear-gradient(to right,transparent,#000 6%,#000 96%,transparent),linear-gradient(to bottom,transparent,#000 12%,#000 98%,transparent);
+    -webkit-mask-composite:source-in;mask-composite:intersect;}
+  .pet video{width:100%;height:100%;object-fit:contain;display:block;}
+
+  /* macOS cursor */
+  .cur{position:absolute;width:4.4cqw;height:4.4cqw;z-index:30;filter:drop-shadow(0 .2cqw .35cqw rgba(0,0,0,.35));}
+
+  /* dark terminal console (sits in a .win on paper) */
+  .con{position:absolute;inset:0;padding:5cqw 3.2cqw 3cqw;font-family:'Spline Sans Mono',monospace;font-size:1.78cqw;line-height:1.78;color:var(--onvoid);}
+  .con .dim{color:var(--onvoid3);}.con .ok{color:var(--mint);}.con .c{color:var(--cyan);}.con .pr{color:var(--clay);}.con .w{color:#fff;}
+  .con .red{color:#e0584a;}
+  .bargx{display:inline-block;color:var(--mint);letter-spacing:.08em;}
+  .bargx .e{color:rgba(255,255,255,.14);}
+
+  /* big text beat */
+  .bigline{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font-weight:700;font-size:4.7cqw;line-height:1.04;letter-spacing:-.03em;color:var(--ink);padding:0 4cqw;white-space:nowrap;}
+  .bigline .mint{color:transparent;background:linear-gradient(90deg,var(--mint),var(--cyan));-webkit-background-clip:text;background-clip:text;}
+
+  /* S9 payoff — playground grid on CREAM, dark tiles, real logo svg */
+  .pg9{position:absolute;inset:4cqw;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:1.5cqw;}
+  .pg9 .t{background:var(--tile);border:1px solid rgba(0,0,0,.08);border-radius:1cqw;position:relative;box-shadow:0 .4cqw 1.4cqw -.6cqw rgba(0,0,0,.25);}
+  .pg9 .t::after{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:0;height:0;border-style:solid;border-width:1.1cqw 0 1.1cqw 1.8cqw;border-color:transparent transparent transparent rgba(60,230,172,.9);}
+  .pg9 .t.clear{background:transparent;border:none;box-shadow:none;}.pg9 .t.clear::after{display:none;}
+  .logo9{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:1.4cqw;text-align:center;}
+  .logo9 img{width:30cqw;display:block;}
+  .logo9 .cmd9{font-family:'Spline Sans Mono',monospace;font-size:2cqw;color:var(--ink2);}
+
+  /* zoom-through */
+  .zoomgrid{position:absolute;inset:0;background:var(--paper);display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:1cqw;padding:3cqw;-webkit-mask:radial-gradient(circle at 50% 50%,transparent 22%,#000 44%);mask:radial-gradient(circle at 50% 50%,transparent 22%,#000 44%);}
+  .zoomgrid .t{background:var(--tile);border-radius:.6cqw;}
+  .zoomwin{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(1.5);width:60%;height:60%;background:var(--cc);border-radius:1.3cqw;}
+  .zoomwin .tl{top:1.3cqw;left:1.5cqw;}
+
+  /* palette */
+  .palette{position:absolute;inset:0;padding:3cqw 3.5cqw;display:flex;flex-direction:column;gap:1.5cqw;background:var(--paper);}
+  .sw{display:flex;gap:1cqw;flex-wrap:wrap;}
+  .sw i{width:5.3cqw;height:5.3cqw;border-radius:.8cqw;display:block;border:1px solid rgba(0,0,0,.08);position:relative;}
+  .sw i b{position:absolute;left:0;right:0;bottom:-2.5cqw;font-style:normal;font-size:1.1cqw;color:var(--ink3);text-align:center;font-family:'Spline Sans Mono',monospace;}
+  .ptitle{font-family:'Spline Sans Mono',monospace;font-size:1.6cqw;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;}
+  .ptype{font-size:2.3cqw;color:var(--ink);font-weight:600;}
+  .ptype span{color:var(--ink3);font-weight:400;font-size:1.8cqw;}
+
+  /* big Claude thinking — REAL Lottie (claude-paper thinking-big): 14cqw burst beside serif word */
+  @font-face{font-family:'Galaxie Copernicus';font-weight:400 600;font-display:block;src:url(fonts/GalaxieCopernicus-Book.woff2) format('woff2');}
+  .tbig{position:absolute;inset:0;display:grid;place-items:center;}
+  .tbig .row{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:2.5cqw;transform:scale(.9);}
+  .tbig .burst{width:14cqw;height:14cqw;display:block;flex:0 0 auto;transform:translateY(-2.4cqw);}
+  .tbig .tk{height:13cqw;display:flex;align-items:center;transform:translateY(-2.4cqw);}
+  .tbig .unit{white-space:nowrap;font-family:'Galaxie Copernicus',serif;font-weight:700;font-size:9.5cqw;line-height:1;
+    background:linear-gradient(100deg,#33312C 0%,#33312C 40%,#C9C5BB 50%,#33312C 60%,#33312C 100%);background-size:280% 100%;
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+    animation:crShimmer 2.2s linear infinite;}
+  @keyframes crShimmer{from{background-position:140% 0}to{background-position:-140% 0}}
+  /* scan-line highlight on the worker console */
+  .scanhl{background:rgba(60,230,172,.16);box-shadow:inset .25cqw 0 0 var(--mint);border-radius:.2cqw;}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="header">
+    <div>
+      <h1>Cloud Render Launch — Contact Sheet v4</h1>
+      <p class="dek">HyperFrames <b>Cloud Render</b> on <b>HeyGen</b>. ~30s, no VO. <b>One persistent Claude Code
+        window</b> (ported from <b>sfx-music-launch/terminal-sfx.html</b>, incl. the pixel-pet character) — every
+        chat scene keeps the <b>conversation history + the prompt box</b>. Story: render podcast → ask for 5 more →
+        <b>✳ Claude checks</b> → it <b>reads the worker</b> (scan ↓ to 1% / ~15 min) → reports back →
+        <i>don't get blocked by your machine</i> → connect HeyGen → "render all 6" → the <b>HeyGen cloud fleet</b>
+        rips them in parallel chunks → all finished → playground grid + logo. Render = <b>real pipeline code</b>.
+        Law in <b>design-system/frame.md</b>.</p>
+    </div>
+    <div class="tag">1920×1080 · ~30s · 11 scenes</div>
+  </div>
+
+  <div class="grid">
+
+    <!-- 01 opener -->
+    <div class="cell">
+      <div class="label"><span>01 · OPENER · TYPE + SEND</span><span>S1a · 0.0–3.0s</span></div>
+      <div class="frame">
+        <div class="win full">
+          <div class="composer big">
+            <div class="pet"><video src="assets/pet-typing.mp4" autoplay muted loop playsinline></video></div>
+            <div class="chips">
+              <span class="chip"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2 19h20"/></svg>Local</span>
+              <span class="chip"><svg viewBox="0 0 24 24"><path d="M3 7.5A2 2 0 0 1 5 5.5h4.2l2 2.2H19a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>CC</span>
+            </div>
+            <div class="inputbar"><span>Hey, can we render my edited podcast video?</span><span class="caret">▏</span><span class="ret">↵</span></div>
+            <div class="metarow"><div class="ml"><span class="auto">Auto</span><span>＋</span></div><div class="mr"><span>Opus 4.8</span><span>High</span><span class="orb"></span></div></div>
+          </div>
+          <svg class="cur" style="left:62%;top:55%" viewBox="0 0 28 28"><path d="M6 4 L6 23 L11 18 L14.5 25 L17.5 23.6 L14 17 L21 17 Z" fill="#1c1c1c" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+      <p class="note">Faithful terminal-sfx opener: a <b>focused, centered prompt box</b> (not full-width) with the
+        <b>Claude Code pixel-pet perched on top</b>. Prompt types in (clay caret); <b>cursor rises to ↵ and taps</b>.</p>
+      <span class="ttag">morph: box docks ↓ as window shrinks</span>
+    </div>
+
+    <!-- 02 reply text -->
+    <div class="cell">
+      <div class="label"><span>02 · REPLY (text only)</span><span>S1b · 3.0–6.0s</span></div>
+      <div class="frame dot">
+        <div class="win dock">
+          <div class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+          <div class="feed">
+            <div class="urow">Hey, can we render my edited podcast video?</div>
+            <div class="arow">On it — rendering <b>podcast-final.mp4</b> locally now. It'll take a little while.</div>
+          </div>
+          <div class="composer"><div class="inputbar"><span class="ph">Reply to Claude…</span><span class="ret">↵</span></div></div>
+        </div>
+      </div>
+      <p class="note"><b>Morph lands:</b> message flew up to the user bubble, window shrank to floating, composer
+        docked. Claude replies in <b>plain text</b> — no pill, no bar. The <b>prompt box stays</b>.</p>
+      <span class="ttag clay">one persistent window →</span>
+    </div>
+
+    <!-- 03 ask: five projects -->
+    <div class="cell">
+      <div class="label"><span>03 · ASK · 5 PROJECTS</span><span>S2 · 6.0–8.0s</span></div>
+      <div class="frame dot">
+        <div class="win dock">
+          <div class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+          <div class="feed">
+            <div class="urow past">Hey, can we render my edited podcast video?</div>
+            <div class="arow past">On it — rendering podcast-final.mp4 locally now.</div>
+            <div class="urow">can we also render my five projects from yesterday?</div>
+          </div>
+          <div class="composer"><div class="inputbar"><span class="ph">Reply to Claude…</span><span class="ret">↵</span></div></div>
+        </div>
+      </div>
+      <p class="note"><b>History persists</b> (first turn dimmed). The user asks for the <b>five projects from
+        yesterday</b> — no reply yet. Cursor clicks ↵ → Claude goes to check.</p>
+      <span class="ttag">cut → Claude checks</span>
+    </div>
+
+    <!-- 04 Claude checks (big thinking) -->
+    <div class="cell">
+      <div class="label"><span>04 · CLAUDE CHECKS</span><span>S2.5 · 8.0–9.5s</span></div>
+      <div class="frame dot">
+        <div class="tbig">
+          <div class="row">
+            <div class="burst" id="cr-burst"></div>
+            <div class="tk"><span class="unit">Checking…</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="note"><b>Hard cut to the big Claude thinking Lottie</b> — the real <b>Claude Icon Loading</b> lottie
+        (<code>assets/claude-thinking.json</code>, 500×500) at <b>14cqw</b> beside a serif word, light-band shimmer
+        sweeping — exactly claude-paper's <b>thinking-big</b>. In build: render-safe (autoplay off, neutralize
+        goToAndStop, drive frame via GSAP onUpdate — the hf-lottie-pattern).</p>
+      <span class="ttag clay">Lottie ✳ · 14cqw · shimmer</span>
+    </div>
+
+    <!-- 05 reading the worker (scan down) -->
+    <div class="cell">
+      <div class="label"><span>05 · READING THE WORKER</span><span>S3 · 9.5–13.0s</span></div>
+      <div class="frame dot">
+        <div class="win dock">
+          <div class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+          <div class="con" style="font-size:1.5cqw;line-height:1.6;padding-top:4.4cqw">
+            <div><span class="dim">$</span> hyperframes render <span class="dim">./podcast --out renders/video.mp4</span></div>
+            <div><span class="ok">✓</span> project loaded · 1440 frames · 1920×1080 @30fps</div>
+            <div><span class="ok">✓</span> headless chrome ↑ 1 instance <span class="dim">(local · your GPU)</span></div>
+            <div class="dim">──────────────────────────────────────────</div>
+            <div>frame <span class="w">0014</span>/1440 &nbsp;<span class="dim">seek 0.467s → capture → encode</span></div>
+            <div class="dim">&nbsp;&nbsp;↳ png 1920×1080 · h264 · 3.1 MB · 1 frame at a time</div>
+            <div class="scanhl">fps <span class="w">1.6</span> &nbsp; elapsed 00:09 &nbsp; eta <span class="w">~14m 51s</span> &nbsp;<span class="dim">◂ scan stops here</span></div>
+            <div><span class="bargx">▓<span class="e">░░░░░░░░░░░░░░░░░░░░░</span></span>&nbsp; 1%</div>
+            <div class="dim">──────────────────────────────────────────</div>
+            <div><span class="red">●</span> GPU 100% &nbsp; <span class="red">●</span> 1 worker · serial &nbsp; <span class="dim">fans spinning</span></div>
+            <div class="dim">◌ queued (yesterday): product-demo · teaser · ad-cut-02 · reel-03 · promo-01</div>
+          </div>
+        </div>
+      </div>
+      <p class="note"><b>Claude reads the worker.</b> A mint <b>highlight scans line by line downward</b> through the
+        log and <b>stops on the elapsed/eta line</b> (fps 1.6 · elapsed 00:09 · eta ~14m). Makes the slowness
+        visceral. Real local-render output (1 worker, serial, GPU pegged, 5 projects queued).</p>
+      <span class="ttag">↓ line-by-line scan · back to chat</span>
+    </div>
+
+    <!-- 06 Claude responds -->
+    <div class="cell">
+      <div class="label"><span>06 · CLAUDE RESPONDS</span><span>S3.5 · 13.0–16.0s</span></div>
+      <div class="frame dot">
+        <div class="win dock">
+          <div class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+          <div class="feed">
+            <div class="urow past">can we also render my five projects from yesterday?</div>
+            <div class="arow">The podcast render's at <b>1%</b> — about <b>15 minutes</b> to go. I can add them to the queue, or render them on <span class="mint">HeyGen Cloud Render</span> so your machine stays free.</div>
+          </div>
+          <div class="composer"><div class="inputbar"><span class="ph">Reply to Claude…</span><span class="ret">↵</span></div></div>
+        </div>
+      </div>
+      <p class="note"><b>Back to the same window.</b> Claude reports what it read: <b>1% · ~15 min</b>, then offers
+        the two paths — <b>add to the queue</b>, or <b>HeyGen Cloud Render</b> (no emoji). The laugh + the pivot.</p>
+      <span class="ttag">⟵ cut-the-curve → text beat</span>
+    </div>
+
+    <!-- 07 text beat -->
+    <div class="cell">
+      <div class="label"><span>07 · TEXT BEAT · THE TURN</span><span>S4 · 16.0–18.5s</span></div>
+      <div class="frame dot">
+        <div class="bigline"><span>Don't get blocked by your <span class="mint">machine.</span></span></div>
+      </div>
+      <p class="note"><b>Single line.</b> Words <b>waterfall in right-to-left</b> — "machine." leads, the line
+        assembles toward the left — then "<b>machine.</b>" resolves into the <b>mint→cyan gradient</b>. Only color
+        on the frame.</p>
+      <span class="ttag">R→L waterfall · gradient resolve</span>
+    </div>
+
+    <!-- 06 setup + ask -->
+    <div class="cell">
+      <div class="label"><span>08 · CONNECT HEYGEN + ASK</span><span>S5 · 18.5–21.5s</span></div>
+      <div class="frame dot">
+        <div class="win dock">
+          <div class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+          <div class="feed">
+            <div class="arow past">…add them to the queue, or render them on HeyGen Cloud Render.</div>
+            <div class="tool"><span class="dim">$</span> hyperframes auth login &nbsp;<span class="ok">✓ Connected to HeyGen</span></div>
+            <div class="urow">Let's do it — render all 6 on <b style="color:#fff">HeyGen Cloud Render</b>.</div>
+          </div>
+          <div class="composer"><div class="inputbar"><span class="ph">Reply to Claude…</span><span class="ret">↵</span></div></div>
+        </div>
+      </div>
+      <p class="note"><b>Back to chat (history kept).</b> Setup flow: <code style="color:#cfcfcf">hyperframes auth login</code>
+        → <b>✓ Connected to HeyGen</b>. Then the ask names the product specifically: render <b>all 6 recent
+        projects</b> on <b>HeyGen Cloud Render</b>.</p>
+      <span class="ttag clay">cut → the fleet</span>
+    </div>
+
+    <!-- 07 cloud workers -->
+    <div class="cell">
+      <div class="label"><span>09 · HEYGEN FLEET · PARALLEL</span><span>S6 · 21.5–25.0s</span></div>
+      <div class="frame dot">
+        <div class="win dock">
+          <div class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+          <div class="con" style="font-size:1.55cqw;line-height:1.7">
+            <div class="dim">HeyGen Cloud Render · 6 projects · plan → renderChunk → assemble</div>
+            <div>w00 podcast&nbsp;&nbsp;&nbsp;<span class="dim">[0–239]</span> <span class="bargx">▓▓▓▓▓▓▓▓</span> <span class="ok">done</span></div>
+            <div>w03 product&nbsp;&nbsp;&nbsp;<span class="dim">[240–479]</span> <span class="bargx">▓▓▓▓▓▓<span class="e">░░</span></span></div>
+            <div>w06 teaser&nbsp;&nbsp;&nbsp;&nbsp;<span class="dim">[480–719]</span> <span class="bargx">▓▓▓▓▓<span class="e">░░░</span></span></div>
+            <div>w09 ad-cut&nbsp;&nbsp;&nbsp;&nbsp;<span class="dim">[720–959]</span> <span class="bargx">▓▓▓▓▓▓▓<span class="e">░</span></span></div>
+            <div>w12 reel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dim">[960–1199]</span> <span class="bargx">▓▓▓▓<span class="e">░░░░</span></span></div>
+            <div>w15 promo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dim">[1200–1439]</span> <span class="bargx">▓▓▓▓▓▓<span class="e">░░</span></span></div>
+            <div class="dim" style="margin-top:.5cqw">16 workers · seek→capture→encode · idr · assemble→<span class="c">video_url</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="note"><b>The cool technical visual (quick).</b> 6 projects split into <b>240-frame chunks</b>, up to
+        <b>16 parallel workers</b> on HeyGen's fleet — each owns a frame range (seek→capture→ffmpeg, IDR keyframes,
+        lossless assemble). Real ascii log.</p>
+      <span class="ttag">live fleet log · mint fills</span>
+    </div>
+
+    <!-- 08 finished chat -->
+    <div class="cell">
+      <div class="label"><span>10 · ALL FINISHED</span><span>S7 · 25.0–27.0s</span></div>
+      <div class="frame dot">
+        <div class="win dock">
+          <div class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+          <div class="feed">
+            <div class="urow past">…render all 6 on HeyGen Cloud Render.</div>
+            <div class="think"><span class="ast">✳</span> rendering 6 projects on HeyGen…</div>
+            <div class="arow">All 6 projects have finished rendering.</div>
+          </div>
+          <div class="composer"><div class="inputbar"><span class="ph">Reply to Claude…</span><span class="ret">↵</span></div></div>
+        </div>
+      </div>
+      <p class="note"><b>Back to the same window</b> (history kept): a quick <b>✳ working</b> beat, then the plain-text
+        payoff line — <b>"All your projects have finished."</b> Closes the loop on the 1% gag.</p>
+      <span class="ttag">⊙ zoom-through the window →</span>
+    </div>
+
+    <!-- 09 payoff on cream -->
+    <div class="cell">
+      <div class="label"><span>11 · PAYOFF + LOGO</span><span>S8 · 27.0–30.5s</span></div>
+      <div class="frame dot">
+        <div class="pg9">
+          <div class="t"></div><div class="t"></div><div class="t"></div><div class="t"></div>
+          <div class="t"></div><div class="t clear"></div><div class="t clear"></div><div class="t"></div>
+          <div class="t"></div><div class="t"></div><div class="t"></div><div class="t"></div>
+        </div>
+        <div class="logo9"><img src="assets/hyperframes-dark.svg" alt="HyperFrames"><div class="cmd9">hyperframes cloud render</div></div>
+      </div>
+      <p class="note"><b>On the cream ground</b> (same as the code/chat world). Camera pushes through the window onto
+        the grid of finished videos — dark tiles on paper. Center tiles fade to carve space; the <b>real HyperFrames
+        logo (SVG)</b> settles in with the CTA command. Perimeter keeps playing.</p>
+      <span class="ttag">grid keeps performing</span>
+    </div>
+
+    <!-- 10 seam map -->
+    <div class="cell">
+      <div class="label"><span>12 · SEAM MAP</span><span>root index.html</span></div>
+      <div class="frame dot">
+        <div class="win dock"><div class="con" style="font-size:1.6cqw;line-height:1.72;padding-top:4cqw">
+          <div>0.0&nbsp;&nbsp;opener · type+send <span class="dim">[hook]</span></div>
+          <div>3.0&nbsp;&nbsp;reply <span class="dim">(rendering podcast)</span></div>
+          <div>6.0&nbsp;&nbsp;ask · 5 projects</div>
+          <div style="color:var(--clay)">8.0&nbsp;&nbsp;✳ Claude checks</div>
+          <div>9.5&nbsp;&nbsp;read worker · scan ↓</div>
+          <div>13&nbsp;&nbsp;&nbsp;responds · queue or HeyGen</div>
+          <div style="color:var(--mint)">16&nbsp;&nbsp;&nbsp;⟵ text beat <span class="dim">["…your machine"]</span></div>
+          <div>18.5&nbsp;connect HeyGen → fleet</div>
+          <div>25&nbsp;&nbsp;&nbsp;all finished <span class="dim">[chat]</span></div>
+          <div style="color:var(--mint)">27&nbsp;&nbsp;&nbsp;⊙ zoom-through → grid + logo</div>
+        </div></div>
+      </div>
+      <p class="note"><b>One persistent chat window</b> threads the film; the render consoles are dark windows on the
+        same cream. Two camera seams: leftward <b>cut-the-curve</b> into the turn, <b>zoom-through</b> into the payoff.</p>
+    </div>
+
+    <!-- 11 system -->
+    <div class="cell">
+      <div class="label"><span>13 · SYSTEM</span><span>frame.md · hyperframes.dev</span></div>
+      <div class="frame">
+        <div class="palette">
+          <div class="ptitle">Ground &amp; ink</div>
+          <div class="sw">
+            <i style="background:#F0EFE9"><b>paper</b></i><i style="background:#111113"><b>tile</b></i>
+            <i style="background:#1D1F1F"><b>cc-win</b></i><i style="background:#6B6B6B"><b>ink-2</b></i>
+          </div>
+          <div class="ptitle" style="margin-top:1cqw">Brand (rationed) &amp; Claude accent</div>
+          <div class="sw">
+            <i style="background:linear-gradient(90deg,#3CE6AC,#00E3FF)"><b>mint→cyan</b></i>
+            <i style="background:#3CE6AC"><b>mint</b></i><i style="background:#00E3FF"><b>cyan</b></i>
+            <i style="background:#D97757"><b>clay*</b></i>
+          </div>
+          <div class="ptype" style="margin-top:1.4cqw">ABC Solar / TT Norms Pro <span>— display &amp; body</span></div>
+          <div class="ptype" style="font-family:'Spline Sans Mono',monospace;font-size:1.95cqw">TT Norms Pro Mono <span>— code · commands</span></div>
+        </div>
+      </div>
+      <p class="note"><b>Everything on cream.</b> Mint = product, clay = assistant (*clay only inside the Claude
+        window). Logo is the <b>real hyperframes-dark.svg</b>. Fonts are fallbacks (Hanken / Spline Mono); swap to
+        TT Norms Pro / ABC Solar if licensed. <b>No pill "intro" scene</b> (removed per note).</p>
+    </div>
+
+  </div>
+</div>
+<!-- contact-sheet preview only: autoplay the real Claude thinking lottie at the real size.
+     In the actual composition it's GSAP frame-driven (render-safe), per thinking-big.html. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.14/lottie.min.js"></script>
+<script>
+(function(){
+  var el=document.getElementById('cr-burst');
+  if(!el) return;
+  function go(){
+    if(!window.lottie){return setTimeout(go,100);}
+    fetch('assets/claude-thinking.json').then(function(r){return r.json();}).then(function(data){
+      window.lottie.loadAnimation({container:el,renderer:'svg',loop:true,autoplay:true,animationData:data});
+    }).catch(function(){});
+  }
+  go();
+})();
+</script>
+</body>
+</html>

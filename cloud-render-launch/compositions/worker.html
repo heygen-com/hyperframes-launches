@@ -1,0 +1,81 @@
+<template>
+<div id="wrk-root" data-composition-id="worker" data-width="1920" data-height="1080" data-duration="4.6">
+  <audio data-sfx="1" id="sfx-worker-0" src="assets/sfx/whoosh-morph.mp3" data-start="0.0" data-duration="0.97" data-track-index="68"></audio>
+  <div class="win">
+    <div class="con">
+      <div class="scan" id="wrk-scan"></div>
+      <div class="ln"><span class="dim">$</span> hyperframes render <span class="dim">./podcast --out renders/video.mp4</span></div>
+      <div class="ln"><span class="ok">✓</span> project loaded · 1440 frames · 1920×1080 @30fps</div>
+      <div class="ln"><span class="ok">✓</span> headless chrome ↑ 1 instance <span class="dim">(local · your GPU)</span></div>
+      <div class="ln dim">──────────────────────────────────────────────</div>
+      <div class="ln">frame <span class="w">1080</span>/1440 &nbsp;<span class="dim">seek 0.467s → capture → encode</span></div>
+      <div class="ln dim">&nbsp;&nbsp;↳ png 1920×1080 · h264 · 3.1 MB · 1 frame at a time</div>
+      <div class="ln eta" id="wrk-eta">fps <span class="w">1.2</span> &nbsp; elapsed <span class="el">15:00</span> &nbsp; eta <span class="et">~10m 4s</span></div>
+      <div class="ln"><span class="barg">▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓<span class="e">░░░░░░</span></span>&nbsp; 75%</div>
+      <div class="ln dim">──────────────────────────────────────────────</div>
+      <div class="ln"><span class="red">●</span> GPU 100% &nbsp; <span class="red">●</span> 1 worker · serial &nbsp; <span class="dim">fans spinning</span></div>
+      <div class="ln dim">◌ queued (yesterday): product-demo · teaser · ad-cut-02 · reel-03 · promo-01</div>
+    </div>
+  </div>
+
+<style>
+  @font-face{font-family:'Spline Sans Mono';font-weight:400;font-display:block;src:url(fonts/SplineSansMono-normal-400-latin-53329b.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:500;font-display:block;src:url(fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');}
+  #wrk-root{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;background:#1D1F1F;font-family:'Spline Sans Mono',monospace;}
+  /* FULL-SCREEN terminal (no window chrome) */
+  #wrk-root .win{position:absolute;inset:0;width:1920px;height:1080px;background:#1D1F1F;overflow:hidden;color:#FAFAFA;}
+  /* centred + large terminal block */
+  #wrk-root .con{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:84cqw;font-size:2.1cqw;line-height:1.66;color:#FAFAFA;}
+  #wrk-root .ln{position:relative;padding:.18cqw .7cqw;border-radius:.35cqw;z-index:2;}
+  #wrk-root .dim{color:#71717A;}#wrk-root .ok{color:#3CE6AC;}#wrk-root .w{color:#fff;}#wrk-root .red{color:#e0584a;}
+  #wrk-root .barg{color:#3CE6AC;letter-spacing:.08em;}#wrk-root .barg .e{color:rgba(255,255,255,.14);}
+  /* line-by-line check: a soft highlight box steps down each log line (behind the text) */
+  #wrk-root .scan{position:absolute;left:0;right:0;height:3.5cqw;border-radius:.45cqw;background:rgba(60,230,172,.16);box-shadow:inset .25cqw 0 0 #3CE6AC;top:0;opacity:0;z-index:1;}
+  /* the slow ETA line — a mint→cyan gradient SWEEPS ACROSS THE TEXT FACE (clipped to the glyphs),
+     no highlight box. Children inherit the clip via transparent fill so the sweep runs over them too. */
+  #wrk-root .eta{
+    background:linear-gradient(100deg,#EDEAE1 0%,#EDEAE1 28%,#3CE6AC 43%,#00E3FF 57%,#EDEAE1 72%,#EDEAE1 100%);
+    background-size:230% 100%;background-position:140% 0;
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;}
+  #wrk-root .eta .el,#wrk-root .eta .et,#wrk-root .eta .w{-webkit-text-fill-color:transparent;color:transparent;font-weight:500;}
+</style>
+
+<script>
+(function(){
+  const R=(document.currentScript&&document.currentScript.closest('#wrk-root'))||document.querySelector('#wrk-root');
+  if(!R||!window.gsap) return;
+  const con=R.querySelector('.con'),scan=R.querySelector('#wrk-scan'),lines=R.querySelectorAll('.con .ln'),
+        eta=R.querySelector('.eta'),el=R.querySelector('.eta .el'),et=R.querySelector('.eta .et');
+  // cache line tops/heights ONCE (no live measuring)
+  const tops=[],hs=[];
+  lines.forEach(l=>{tops.push(l.offsetTop);hs.push(l.offsetHeight);});
+  const ETA=6; // index of the fps/eta line
+  window.__timelines=window.__timelines||{};
+  const tl=gsap.timeline({paused:true});
+  // line-by-line check: the highlight steps down each log line, "reading" how much time is left
+  gsap.set(scan,{top:tops[0]+'px',height:hs[0]+'px',opacity:0});
+  tl.to(scan,{opacity:1,duration:.2},0.2);
+  const s={i:0};
+  tl.to(s,{i:ETA,duration:1.8,ease:'steps('+ETA+')',onUpdate(){
+    const k=Math.min(ETA,Math.round(s.i));scan.style.top=tops[k]+'px';scan.style.height=hs[k]+'px';
+  }},0.35);
+  // the slow ETA line — a mint→cyan gradient sweeps ACROSS the text face (clipped to the glyphs).
+  // Held off until the scan LANDS on the ETA line (~2.1s), then ONE slow sweep that lingers on the text.
+  gsap.set(eta,{backgroundPosition:'140% 0'});
+  tl.to(eta,{backgroundPosition:'-40% 0',duration:2.0,ease:'none'},2.1);
+  // the elapsed clock ticks UP in real-time across the WHOLE scene (live "still grinding" feel);
+  // the eta counts down in step
+  const cnt={s:0};
+  tl.to(cnt,{s:4,duration:4.0,ease:'none',onUpdate(){
+    const k=Math.floor(cnt.s);                              // 0,1,2,3,4 over the scene
+    el.textContent='15:'+String(k).padStart(2,'0');         // 15:00 → 15:04
+    et.textContent='~10m '+Math.max(0,4-k)+'s';             // ~10m 4s → ~10m 0s
+  }},0.2);
+  // log fades to a BARE full-screen dark before the seamless cut to responds
+  tl.to(con,{opacity:0,duration:.35,ease:'power2.in'},4.2);
+  tl.to({},{duration:.2},4.4);
+  window.__timelines["worker"]=tl;
+})();
+</script>
+</div>
+</template>

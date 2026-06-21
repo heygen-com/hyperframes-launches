@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <title>Cloud Render Launch — full film</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <style>
+    html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#F0EFE9;}
+    #cloud-render-launch{position:relative;width:1920px;height:1080px;overflow:hidden;background:#F0EFE9;}
+    #s-opener{position:absolute;inset:0;z-index:1;will-change:transform,opacity,filter;}
+    #s-checks{position:absolute;inset:0;z-index:3;will-change:transform,opacity,filter;}
+    #s-worker{position:absolute;inset:0;z-index:4;will-change:transform,opacity,filter;}
+    #s-responds{position:absolute;inset:0;z-index:5;will-change:transform,opacity,filter;}
+    #s-textbeat{position:absolute;inset:0;z-index:6;will-change:transform,opacity,filter;}
+    #s-connect{position:absolute;inset:0;z-index:7;will-change:transform,opacity,filter;}
+    #s-fleet{position:absolute;inset:0;z-index:8;will-change:transform,opacity,filter;}
+    #s-finished{position:absolute;inset:0;z-index:9;will-change:transform,opacity,filter;}
+    #s-payoff{position:absolute;inset:0;z-index:10;will-change:transform,opacity,filter;}
+  </style>
+</head>
+<body>
+  <div id="cloud-render-launch" data-composition-id="cloud-render-launch" data-start="0" data-width="1920" data-height="1080" data-duration="38.0">
+    <!-- ACT 1 · the ask (persistent Claude Code window) -->
+    <div id="s-opener"   data-composition-id="opener"   data-composition-src="compositions/opener.html"   data-start="0"    data-duration="6.0" data-track-index="1"></div>
+    <!-- ACT 2 · Claude checks → reads the local worker -->
+    <div id="s-checks"   data-composition-id="checks"   data-composition-src="compositions/checks.html"   data-start="6.0"  data-duration="1.6" data-track-index="3"></div>
+    <div id="s-worker"   data-composition-id="worker"   data-composition-src="compositions/worker.html"   data-start="7.6"  data-duration="4.6" data-track-index="4"></div>
+    <div id="s-responds" data-composition-id="responds" data-composition-src="compositions/responds.html" data-start="12.2" data-duration="5.0" data-track-index="5"></div>
+    <!-- ACT 3 · the turn -->
+    <div id="s-textbeat" data-composition-id="textbeat" data-composition-src="compositions/textbeat.html" data-start="17.2" data-duration="2.6" data-track-index="6"></div>
+    <!-- ACT 4 · connect HeyGen → fleet → done -->
+    <div id="s-connect"  data-composition-id="connect"  data-composition-src="compositions/connect.html"  data-start="19.8" data-duration="6.4" data-track-index="7"></div>
+    <div id="s-fleet"    data-composition-id="fleet"    data-composition-src="compositions/fleet.html"    data-start="26.2" data-duration="3.6" data-track-index="8"></div>
+    <div id="s-finished" data-composition-id="finished" data-composition-src="compositions/finished.html" data-start="29.8" data-duration="3.2" data-track-index="9"></div>
+    <!-- ACT 5 · payoff -->
+    <div id="s-payoff"   data-composition-id="payoff"   data-composition-src="compositions/payoff.html"   data-start="33.0" data-duration="5.0" data-track-index="10"></div>
+  </div>
+
+  <script>
+    // Master timeline drives ONLY the seam transitions. Each sub-comp owns its internal timeline.
+    window.__timelines = window.__timelines || {};
+    const T = gsap.timeline({ paused: true });
+
+    // hide everything that enters after t=0 so nothing flashes
+    T.set(['#s-checks','#s-worker','#s-responds','#s-textbeat','#s-connect','#s-fleet','#s-finished','#s-payoff'], { opacity: 0 }, 0);
+
+    // opener → checks  (UPWARD cut-the-curve: the chat leaves up, the thinking scene rises up in — both
+    // tight + quick. The checks slide-whoosh sits at checks-local-0, so it fires on this seam.)
+    T.to('#s-opener', { yPercent: -13, opacity: 0, duration: 0.22, ease: 'power2.in' }, 5.8);
+    T.set('#s-opener', { opacity: 0 }, 6.02);
+    T.fromTo('#s-checks', { yPercent: 14, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.32, ease: 'power3.out' }, 6.0);
+
+    // checks → worker  (ZOOM-THROUGH: push into the ✳, the worker zooms in behind it)
+    T.to('#s-checks', { scale: 2.2, opacity: 0, duration: 0.18, ease: 'power2.in', transformOrigin: '50% 50%' }, 7.42);
+    T.set('#s-checks', { opacity: 0 }, 7.6);
+    T.set('#s-worker', { opacity: 1 }, 7.6);
+    T.fromTo('#s-worker', { scale: 0.86 }, { scale: 1, duration: 0.5, ease: 'power3.out', transformOrigin: '50% 50%' }, 7.6);
+
+    // worker → responds  (worker's log fades to a bare full-screen dark; HARD CUT to responds which
+    // starts at the identical full-screen dark, then morphs DOWN revealing the chat — seamless, no bg flash)
+    T.set('#s-worker', { opacity: 0 }, 12.2);  T.set('#s-responds', { opacity: 1 }, 12.2);
+
+    // responds → textbeat  (leftward cut-the-curve)
+    T.to('#s-responds', { xPercent: -12, opacity: 0.4, duration: 0.26, ease: 'power2.in' }, 16.94);
+    T.set('#s-responds', { opacity: 0 }, 17.2);  T.set('#s-textbeat', { opacity: 1 }, 17.2);
+
+    // textbeat → connect  (textbeat text has waterfalled DOWN to empty cream; the connect window then
+    // DROPS IN with a downward cut-the-curve — 3-phase slow ramp → fast burst → long tail. Cream→cream.)
+    T.set('#s-textbeat', { opacity: 0 }, 19.8);
+    T.set('#s-connect', { opacity: 1, y: -130 }, 19.8);
+    T.to('#s-connect', { y: 0, duration: 0.45, ease: 'power4.out' }, 19.8);
+
+    // connect → fleet  (connect's chat fades, leaving the bare dark window + chrome; HARD CUT to fleet at
+    // the identical dark window, then fleet morphs UP to full-screen — seamless, no bg flash)
+    T.set('#s-connect', { opacity: 0 }, 26.2);  T.set('#s-fleet', { opacity: 1 }, 26.2);
+
+    // fleet → finished  (fleet's bars fade to a bare full-screen dark; HARD CUT to finished which morphs
+    // DOWN revealing the chat — same seamless reveal as worker → responds)
+    T.set('#s-fleet', { opacity: 0 }, 29.8);  T.set('#s-finished', { opacity: 1 }, 29.8);
+
+    // finished → payoff  (ZOOM-THROUGH the window into the playground grid)
+    T.to('#s-finished', { scale: 1.8, filter: 'blur(12px)', opacity: 0, duration: 0.42, ease: 'power2.in', transformOrigin: '50% 50%' }, 32.8);
+    T.set('#s-finished', { opacity: 0 }, 33.0);
+    T.set('#s-payoff', { opacity: 1 }, 33.0);
+    T.fromTo('#s-payoff', { scale: 1.1, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'power3.out', transformOrigin: '50% 50%' }, 33.0);
+
+    window.__timelines["cloud-render-launch"] = T;
+  </script>
+</body>
+</html>

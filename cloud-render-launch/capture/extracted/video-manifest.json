@@ -1,0 +1,130 @@
+[
+  {
+    "index": 0,
+    "url": "https://gen-os-static.s3.us-east-2.amazonaws.com/hyperframes/templates/showcase/tpl-notion.mp4#t=3",
+    "filename": "tpl-notion.mp4#t=3",
+    "width": 350,
+    "height": 197,
+    "heading": "Community Playground",
+    "caption": "Notion Showcase",
+    "ariaLabel": "",
+    "preview": "assets/videos/previews/video-0-preview.png",
+    "localPath": "assets/videos/video.mp4"
+  },
+  {
+    "index": 1,
+    "url": "https://gen-os-static.s3.us-east-2.amazonaws.com/hyperframes/templates/showcase/tpl-dribbble.mp4#t=2.5",
+    "filename": "tpl-dribbble.mp4#t=2.5",
+    "width": 350,
+    "height": 197,
+    "heading": "Community Playground",
+    "caption": "Dribbble Showcase",
+    "ariaLabel": "",
+    "preview": "assets/videos/previews/video-1-preview.png",
+    "localPath": "assets/videos/tpl-dribbble.mp4_t_2.5"
+  },
+  {
+    "index": 2,
+    "url": "https://gen-os-static.s3.us-east-2.amazonaws.com/hyperframes/templates/showcase/tpl-stripe.mp4#t=3",
+    "filename": "tpl-stripe.mp4#t=3",
+    "width": 350,
+    "height": 197,
+    "heading": "Community Playground",
+    "caption": "Stripe Showcase",
+    "ariaLabel": "",
+    "preview": "assets/videos/previews/video-2-preview.png",
+    "localPath": "assets/videos/video.mp4"
+  },
+  {
+    "index": 3,
+    "url": "https://gen-os-static.s3.us-east-2.amazonaws.com/hyperframes/templates/showcase/tpl-raycast.mp4#t=3",
+    "filename": "tpl-raycast.mp4#t=3",
+    "width": 350,
+    "height": 197,
+    "heading": "Community Playground",
+    "caption": "Raycast Showcase",
+    "ariaLabel": "",
+    "preview": "assets/videos/previews/video-3-preview.png",
+    "localPath": "assets/videos/video.mp4"
+  },
+  {
+    "index": 4,
+    "url": "https://gen-os-static.s3.us-east-2.amazonaws.com/hyperframes/templates/primitives/fitness-app-showcase/renders/fitness-app-showcase.mp4#t=3",
+    "filename": "fitness-app-showcase.mp4#t=3",
+    "width": 350,
+    "height": 197,
+    "heading": "Community Playground",
+    "caption": "Fitness App Showcase",
+    "ariaLabel": "",
+    "preview": "assets/videos/previews/video-4-preview.png",
+    "localPath": "assets/videos/video.mp4"
+  },
+  {
+    "index": 5,
+    "url": "https://gen-os-static.s3.us-east-2.amazonaws.com/hyperframes/templates/compositions/spotify-bento/renders/spotify-bento.mp4#t=3",
+    "filename": "spotify-bento.mp4#t=3",
+    "width": 350,
+    "height": 197,
+    "heading": "Community Playground",
+    "caption": "Spotify Bento",
+    "ariaLabel": "",
+    "preview": "assets/videos/previews/video-5-preview.png",
+    "localPath": "assets/videos/video.mp4"
+  },
+  {
+    "index": 6,
+    "url": "https://gen-os-static.s3.us-east-2.amazonaws.com/hyperframes/templates/primitives/ui-3d-reveal/renders/ui-3d-reveal.mp4#t=3",
+    "filename": "ui-3d-reveal.mp4#t=3",
+    "width": 350,
+    "height": 197,
+    "heading": "Community Playground",
+    "caption": "UI 3D Reveal",
+    "ariaLabel": "",
+    "preview": "assets/videos/previews/video-6-preview.png",
+    "localPath": "assets/videos/video.mp4"
+  },
+  {
+    "index": 7,
+    "url": "https://www.hyperframes.dev/api/projects/420105c1-386a-4064-8d30-98446a7492d0/preview/assets/avatar-scene12-bg-video.mp4",
+    "filename": "avatar-scene12-bg-video.mp4",
+    "width": 0,
+    "height": 0,
+    "heading": "",
+    "caption": "",
+    "ariaLabel": "",
+    "localPath": "assets/videos/avatar-scene12-bg-video.mp4"
+  },
+  {
+    "index": 8,
+    "url": "https://www.hyperframes.dev/api/projects/420105c1-386a-4064-8d30-98446a7492d0/preview/assets/avatar-scene3-bg-video.mp4",
+    "filename": "avatar-scene3-bg-video.mp4",
+    "width": 0,
+    "height": 0,
+    "heading": "",
+    "caption": "",
+    "ariaLabel": "",
+    "localPath": "assets/videos/avatar-scene3-bg-video.mp4"
+  },
+  {
+    "index": 9,
+    "url": "https://www.hyperframes.dev/api/projects/420105c1-386a-4064-8d30-98446a7492d0/preview/assets/avatar-scene3-bg.mp4",
+    "filename": "avatar-scene3-bg.mp4",
+    "width": 0,
+    "height": 0,
+    "heading": "",
+    "caption": "",
+    "ariaLabel": "",
+    "localPath": "assets/videos/avatar-scene3-bg.mp4"
+  },
+  {
+    "index": 10,
+    "url": "https://www.hyperframes.dev/api/projects/420105c1-386a-4064-8d30-98446a7492d0/preview/assets/avatar-scene12-bg.mp4",
+    "filename": "avatar-scene12-bg.mp4",
+    "width": 0,
+    "height": 0,
+    "heading": "",
+    "caption": "",
+    "ariaLabel": "",
+    "localPath": "assets/videos/avatar-scene12-bg.mp4"
+  }
+]

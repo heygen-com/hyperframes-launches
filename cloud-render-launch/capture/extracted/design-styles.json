@@ -1,0 +1,160 @@
+{
+  "typography": [
+    {
+      "role": "display",
+      "fontFamily": "TT Norms Pro",
+      "fontSize": "30px",
+      "fontWeight": "700",
+      "lineHeight": "36px",
+      "letterSpacing": "-0.75px",
+      "color": "#FAFAFA",
+      "sampleText": "Community Playground"
+    },
+    {
+      "role": "body",
+      "fontFamily": "TT Norms Pro",
+      "fontSize": "12px",
+      "fontWeight": "500",
+      "lineHeight": "18px",
+      "letterSpacing": "normal",
+      "color": "#71717A",
+      "sampleText": "Generate with an AI agent"
+    },
+    {
+      "role": "link",
+      "fontFamily": "TT Norms Pro",
+      "fontSize": "12px",
+      "fontWeight": "600",
+      "lineHeight": "18px",
+      "letterSpacing": "normal",
+      "color": "#A1A1AA",
+      "sampleText": "Create frame.md"
+    }
+  ],
+  "spacing": {
+    "observed": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      20,
+      24
+    ],
+    "baseUnit": 4
+  },
+  "radius": [
+    "8px",
+    "14px",
+    "9999px"
+  ],
+  "shadows": [
+    {
+      "value": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "count": 1
+    }
+  ],
+  "buttons": [
+    {
+      "label": "button",
+      "background": "#000000",
+      "color": "#71717A",
+      "padding": "0px",
+      "borderRadius": "8px",
+      "border": "0px solid rgb(229, 231, 235)",
+      "boxShadow": "none",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "height": "28px"
+    },
+    {
+      "label": "New videoNew",
+      "background": "#000000",
+      "color": "#A1A1AA",
+      "padding": "6px 16px",
+      "borderRadius": "9999px",
+      "border": "1px solid rgba(255, 255, 255, 0.06)",
+      "boxShadow": "none",
+      "fontSize": "12px",
+      "fontWeight": "500",
+      "height": "32px"
+    },
+    {
+      "label": "Examples",
+      "background": "#FFFFFF",
+      "color": "#FAFAFA",
+      "padding": "6px 14px",
+      "borderRadius": "8px",
+      "border": "0px solid rgb(229, 231, 235)",
+      "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "fontSize": "12px",
+      "fontWeight": "500",
+      "height": "30px"
+    },
+    {
+      "label": "New videoGenerate with an AI agent",
+      "background": "#111113",
+      "color": "#FAFAFA",
+      "padding": "0px",
+      "borderRadius": "14px",
+      "border": "1px dashed rgba(255, 255, 255, 0.12)",
+      "boxShadow": "none",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "height": "259.375px"
+    }
+  ],
+  "cards": [
+    {
+      "label": "card",
+      "background": "#111113",
+      "color": "#FAFAFA",
+      "padding": "0px",
+      "borderRadius": "14px",
+      "border": "1px dashed rgba(255, 255, 255, 0.12)",
+      "boxShadow": "none",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "height": "259.375px"
+    },
+    {
+      "label": "card",
+      "background": "#111113",
+      "color": "#FAFAFA",
+      "padding": "0px",
+      "borderRadius": "14px",
+      "border": "1px solid rgba(255, 255, 255, 0.06)",
+      "boxShadow": "none",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "height": "259.375px"
+    },
+    {
+      "label": "card",
+      "background": "#111113",
+      "color": "#FAFAFA",
+      "padding": "0px",
+      "borderRadius": "0px",
+      "border": "0px solid rgb(229, 231, 235)",
+      "boxShadow": "none",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "height": "196.875px"
+    }
+  ],
+  "nav": {
+    "label": "navigation",
+    "background": "#000000",
+    "color": "#FAFAFA",
+    "padding": "0px 16px",
+    "borderRadius": "0px",
+    "border": "",
+    "boxShadow": "none",
+    "fontSize": "16px",
+    "fontWeight": "400",
+    "height": "48px"
+  }
+}

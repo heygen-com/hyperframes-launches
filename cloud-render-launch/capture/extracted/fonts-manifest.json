@@ -1,0 +1,116 @@
+{
+  "files": [
+    {
+      "file": "ABCSolarDisplay-Bold.woff2",
+      "family": "ABC Solar Display",
+      "rawFamily": "ABC Solar Display",
+      "subfamily": "Bold",
+      "postscript": "ABCSolarDisplay-Bold",
+      "weight": 700,
+      "style": "normal",
+      "variationAxes": [],
+      "identified": true
+    },
+    {
+      "file": "TT_Norms_Pro_Bold.woff2",
+      "family": "TT Norms Pro",
+      "rawFamily": "TT Norms Pro",
+      "subfamily": "Bold",
+      "postscript": "TTNormsPro-Bd",
+      "weight": 700,
+      "style": "normal",
+      "variationAxes": [],
+      "identified": true
+    },
+    {
+      "file": "TT_Norms_Pro_DemiBold.woff2",
+      "family": "TT Norms Pro",
+      "rawFamily": "TT Norms Pro DemiBold",
+      "subfamily": "Regular",
+      "postscript": "TTNormsPro-DmBd",
+      "weight": 600,
+      "style": "normal",
+      "variationAxes": [],
+      "identified": true
+    },
+    {
+      "file": "TT_Norms_Pro_Medium.woff2",
+      "family": "TT Norms Pro",
+      "rawFamily": "TT Norms Pro Medium",
+      "subfamily": "Regular",
+      "postscript": "TTNormsPro-Md",
+      "weight": 500,
+      "style": "normal",
+      "variationAxes": [],
+      "identified": true
+    },
+    {
+      "file": "TT_Norms_Pro_Mono_Regular.woff2",
+      "family": ".",
+      "rawFamily": ".",
+      "subfamily": "",
+      "postscript": "",
+      "weight": 400,
+      "style": "normal",
+      "variationAxes": [],
+      "identified": true
+    },
+    {
+      "file": "TT_Norms_Pro_Normal.woff2",
+      "family": "TT Norms Pro",
+      "rawFamily": "TT Norms Pro Normal",
+      "subfamily": "Regular",
+      "postscript": "TTNormsPro-Normal",
+      "weight": 450,
+      "style": "normal",
+      "variationAxes": [],
+      "identified": true
+    }
+  ],
+  "families": [
+    {
+      "family": ".",
+      "weights": [
+        400
+      ],
+      "variable": false,
+      "fileCount": 1,
+      "files": [
+        "TT_Norms_Pro_Mono_Regular.woff2"
+      ]
+    },
+    {
+      "family": "ABC Solar Display",
+      "weights": [
+        700
+      ],
+      "variable": false,
+      "fileCount": 1,
+      "files": [
+        "ABCSolarDisplay-Bold.woff2"
+      ]
+    },
+    {
+      "family": "TT Norms Pro",
+      "weights": [
+        450,
+        500,
+        600,
+        700
+      ],
+      "variable": false,
+      "fileCount": 4,
+      "files": [
+        "TT_Norms_Pro_Bold.woff2",
+        "TT_Norms_Pro_DemiBold.woff2",
+        "TT_Norms_Pro_Medium.woff2",
+        "TT_Norms_Pro_Normal.woff2"
+      ]
+    }
+  ],
+  "unidentified": [],
+  "meta": {
+    "generatedAt": "2026-06-19T05:28:46.365Z",
+    "tool": "fontkit"
+  }
+}

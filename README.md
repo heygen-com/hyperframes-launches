@@ -10,6 +10,7 @@ Source for HeyGen's HyperFrames launch videos. Each subdirectory is a standalone
 | Website → HyperFrames demo | [`website-to-hyperframes/`](./website-to-hyperframes) | Capture any site, generate a video from it. |
 | Timeline editor launch | [`timeline-launch/`](./timeline-launch) | HyperFrames timeline editor reveal. |
 | Variables launch | [`variables-launch/`](./variables-launch) | HyperFrames variables / template-parameters reveal. |
+| Cloud Render launch | [`cloud-render-launch/`](./cloud-render-launch) | Managed HeyGen Cloud Render announcement video. |
 
 ## Cloning
 

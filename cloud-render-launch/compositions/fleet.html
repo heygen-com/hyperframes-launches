@@ -1,0 +1,74 @@
+<template>
+<div id="flt-root" data-composition-id="fleet" data-width="1920" data-height="1080" data-duration="3.6">
+  <audio data-sfx="1" id="sfx-fleet-done" src="assets/sfx/chime-soft.mp3" data-start="2.5" data-duration="1.23" data-volume="0.7" data-track-index="97"></audio>
+  <audio data-sfx="1" id="sfx-fleet-0" src="assets/sfx/whoosh-morph.mp3" data-start="0.1" data-duration="0.97" data-track-index="81"></audio>
+  <div class="win">
+    <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+    <div class="con">
+      <div class="hd">HeyGen Cloud Render · 6 projects · <span class="dim">plan → renderChunk → assemble</span></div>
+      <div class="wrow"><span class="lab">w00 podcast</span><span class="rng">[0–239]</span><span class="trk"><i></i></span><span class="st">✓ done</span></div>
+      <div class="wrow"><span class="lab">w03 product</span><span class="rng">[240–479]</span><span class="trk"><i></i></span><span class="st">✓ done</span></div>
+      <div class="wrow"><span class="lab">w06 teaser</span><span class="rng">[480–719]</span><span class="trk"><i></i></span><span class="st">✓ done</span></div>
+      <div class="wrow"><span class="lab">w09 ad-cut</span><span class="rng">[720–959]</span><span class="trk"><i></i></span><span class="st">✓ done</span></div>
+      <div class="wrow"><span class="lab">w12 reel</span><span class="rng">[960–1199]</span><span class="trk"><i></i></span><span class="st">✓ done</span></div>
+      <div class="wrow"><span class="lab">w15 promo</span><span class="rng">[1200–1439]</span><span class="trk"><i></i></span><span class="st">✓ done</span></div>
+      <div class="ft dim">16 workers · seek→capture→encode · <span class="cy">idr</span> · assemble→<span class="cy">video_url</span></div>
+    </div>
+  </div>
+
+<style>
+  @font-face{font-family:'Spline Sans Mono';font-weight:400;font-display:block;src:url(fonts/SplineSansMono-normal-400-latin-53329b.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:500;font-display:block;src:url(fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');}
+  #flt-root{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;background:#F0EFE9;font-family:'Spline Sans Mono',monospace;}
+  #flt-root .win{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:83.3cqw;height:81cqh;background:#1D1F1F;border-radius:1.35cqw;box-shadow:0 2cqw 6cqw -2cqw rgba(20,20,18,.45);overflow:hidden;color:#FAFAFA;}
+  #flt-root .bar{position:absolute;top:1.4cqw;left:1.6cqw;display:flex;gap:.62cqw;}
+  #flt-root .dot{width:1.05cqw;height:1.05cqw;border-radius:50%;display:block;}
+  #flt-root .dot.r{background:#FF5F57;}#flt-root .dot.y{background:#FEBC2E;}#flt-root .dot.g{background:#28C840;}
+  /* centred + large terminal block */
+  #flt-root .con{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:auto;font-size:2.1cqw;line-height:1.6;color:#FAFAFA;}
+  #flt-root .dim{color:#71717A;}#flt-root .cy{color:#00E3FF;}
+  #flt-root .hd{margin-bottom:2.0cqw;font-size:2.0cqw;}
+  #flt-root .wrow{display:flex;align-items:center;gap:1.5cqw;margin-bottom:1.5cqw;white-space:nowrap;}
+  #flt-root .lab{width:17cqw;color:#EFEADD;}
+  #flt-root .rng{width:13cqw;color:#71717A;font-size:1.8cqw;}
+  #flt-root .trk{position:relative;width:37cqw;height:1.7cqw;background:#18181B;border-radius:.85cqw;overflow:hidden;}
+  #flt-root .trk i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#3CE6AC,#00E3FF);border-radius:.85cqw;}
+  #flt-root .st{width:10cqw;color:#3CE6AC;font-size:1.8cqw;opacity:0;}
+  #flt-root .ft{margin-top:1.8cqw;font-size:1.8cqw;}
+</style>
+
+<script>
+(function(){
+  const R=(document.currentScript&&document.currentScript.closest('#flt-root'))||document.querySelector('#flt-root');
+  if(!R||!window.gsap) return;
+  const fills=R.querySelectorAll('.trk i'),sts=R.querySelectorAll('.st'),rows=R.querySelectorAll('.wrow'),
+        win=R.querySelector('.win'),bar=R.querySelector('.bar'),hd=R.querySelector('.hd'),ft=R.querySelector('.ft'),
+        con=R.querySelector('.con');
+  window.__timelines=window.__timelines||{};
+  const tl=gsap.timeline({paused:true});
+  // start at the chat-window footprint (matches connect for the crossfade), then morph UP to full-screen
+  gsap.set(win,{width:1599.36,height:874.8,borderRadius:25.92});
+  gsap.set(rows,{opacity:0,x:-14});
+  gsap.set(fills,{width:'0%'});
+  gsap.set(sts,{opacity:0});                 // "✓ done" pre-filled in markup; revealed per-bar (seek-safe)
+  gsap.set([hd,ft],{opacity:0});
+  tl.to(win,{width:1920,height:1080,borderRadius:0,duration:.5,ease:'power3.inOut'},0.1);
+  tl.to(bar,{opacity:0,duration:.25,ease:'power2.in'},0.1);
+  tl.fromTo(hd,{opacity:0},{opacity:1,duration:.3,ease:'power2.out'},0.5);
+  // bars reveal ONE BY ONE — each row pops in, fills, then lands "✓ done"
+  const fdur=[.7,.65,.75,.6,.7,.65];
+  rows.forEach((row,i)=>{
+    const t=0.6+i*0.27;
+    tl.to(row,{opacity:1,x:0,duration:.3,ease:'power2.out'},t);
+    tl.fromTo(fills[i],{width:'0%'},{width:'100%',duration:fdur[i],ease:'power1.out'},t+.12);
+    tl.fromTo(sts[i],{opacity:0},{opacity:1,duration:.25,ease:'power2.out'},t+.12+fdur[i]);
+  });
+  tl.fromTo(ft,{opacity:0},{opacity:1,duration:.3,ease:'power2.out'},0.6+6*0.27);
+  // bars fade to a BARE full-screen dark before the seamless cut to finished
+  tl.to(con,{opacity:0,duration:.35,ease:'power2.in'},3.2);
+  tl.to({},{duration:.2},3.4);
+  window.__timelines["fleet"]=tl;
+})();
+</script>
+</div>
+</template>

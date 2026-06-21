@@ -1,0 +1,78 @@
+<template>
+<div id="pay-root" data-composition-id="payoff" data-width="1920" data-height="1080" data-duration="5.0">
+  <audio data-sfx="1" id="sfx-payoff-1" src="assets/sfx/pop.mp3" data-start="0.15" data-duration="0.27" data-track-index="85"></audio>
+  <audio data-sfx="1" id="sfx-payoff-2" src="assets/sfx/pop.mp3" data-start="0.25" data-duration="0.27" data-track-index="86"></audio>
+  <audio data-sfx="1" id="sfx-payoff-3" src="assets/sfx/pop.mp3" data-start="0.35" data-duration="0.27" data-track-index="87"></audio>
+  <audio data-sfx="1" id="sfx-payoff-4" src="assets/sfx/pop.mp3" data-start="0.45" data-duration="0.27" data-track-index="88"></audio>
+  <audio data-sfx="1" id="sfx-payoff-5" src="assets/sfx/pop.mp3" data-start="0.55" data-duration="0.27" data-track-index="89"></audio>
+  <audio data-sfx="1" id="sfx-payoff-6" src="assets/sfx/pop.mp3" data-start="0.65" data-duration="0.27" data-track-index="90"></audio>
+  <audio data-sfx="1" id="sfx-payoff-8" src="assets/sfx/whoosh-morph.mp3" data-start="3.25" data-duration="0.97" data-track-index="92"></audio>
+  <div class="grid">
+    <div class="t"><video src="assets/renders/spotify.mp4" muted playsinline id="pay-v1" data-start="0" data-duration="4.5" data-track-index="50"></video><span class="lab">podcast</span><span class="barfill"></span></div>
+    <div class="t"><video src="assets/renders/mcp.mp4"     muted playsinline id="pay-v2" data-start="0" data-duration="4.5" data-track-index="51"></video><span class="lab">product</span><span class="barfill"></span></div>
+    <div class="t"><video src="assets/renders/sfx.mp4"     muted playsinline id="pay-v3" data-start="0" data-duration="4.5" data-track-index="52"></video><span class="lab">teaser</span><span class="barfill"></span></div>
+    <div class="t"><video src="assets/renders/promo.mp4"   muted playsinline id="pay-v4" data-start="0" data-duration="4.5" data-track-index="53"></video><span class="lab">ad-cut</span><span class="barfill"></span></div>
+    <div class="t"><video src="assets/renders/outro.mp4"   muted playsinline id="pay-v5" data-start="0" data-duration="4.5" data-track-index="54"></video><span class="lab">reel</span><span class="barfill"></span></div>
+    <div class="t"><video src="assets/renders/framemd.mp4" muted playsinline id="pay-v6" data-start="0" data-duration="4.5" data-track-index="55"></video><span class="lab">promo</span><span class="barfill"></span></div>
+  </div>
+  <div class="logo"><img src="assets/hyperframes-dark.svg" alt="HyperFrames"><div class="cmd">hyperframes cloud render</div></div>
+  <img class="heygen" src="assets/heygen-logo.svg" alt="HeyGen">
+<style>
+  @font-face{font-family:'Spline Sans Mono';font-weight:500;font-display:block;src:url(fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');}
+  #pay-root{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;background:#F0EFE9;font-family:'Spline Sans Mono',monospace;}
+  #pay-root::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;background:radial-gradient(circle,rgba(38,36,30,.025) 1px,transparent 1px) 0 0/34px 34px;}
+  /* six real renders — clean 2-row × 3-col grid, max horizontal space, native 16:9 (no distortion) */
+  #pay-root .grid{position:absolute;left:3cqw;right:3cqw;top:50%;transform:translateY(-50%);
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1.5cqw;}
+  #pay-root .t{position:relative;aspect-ratio:16/9;border-radius:1cqw;overflow:hidden;background:#0D0D0F;
+    border:1px solid rgba(255,255,255,.06);box-shadow:0 1cqw 2.6cqw -1cqw rgba(0,0,0,.42);}
+  #pay-root .t video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+  #pay-root .t .lab{position:absolute;left:.9cqw;bottom:.85cqw;font-size:1.0cqw;color:#fff;z-index:2;
+    text-shadow:0 .12cqw .3cqw rgba(0,0,0,.7);}
+  #pay-root .t .barfill{position:absolute;left:0;right:0;bottom:0;height:.4cqw;z-index:2;
+    background:linear-gradient(90deg,#3CE6AC,#00E3FF);opacity:.92;}
+  /* HyperFrames product lockup reveals into the cleared centre column, then resolves to the HeyGen parent logo */
+  #pay-root .logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:4;
+    display:flex;flex-direction:column;align-items:center;gap:1.1cqw;text-align:center;}
+  #pay-root .logo img{width:22cqw;display:block;}
+  #pay-root .cmd{font-size:1.5cqw;color:#6B6B6B;}
+  /* aspect-ratio reserves the height box synchronously (the SVG has only a viewBox, no width/height,
+     so without this GSAP snapshots a 0-height translate at init → logo renders below centre) */
+  #pay-root .heygen{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5;width:20cqw;aspect-ratio:7778/4607;height:auto;display:block;}
+</style>
+<script>
+(function(){
+  const R=(document.currentScript&&document.currentScript.closest('#pay-root'))||document.querySelector('#pay-root');
+  if(!R||!window.gsap) return;
+  const cards=[...R.querySelectorAll('.t')];           // row-major: [TL,TM,TR, BL,BM,BR]
+  const cMid=[cards[1],cards[4]];                       // middle column — clears for the logo
+  const logo=R.querySelector('.logo'),heygen=R.querySelector('.heygen');
+  // cascade order — column sweep left → right (TL,BL, TM,BM, TR,BR)
+  const order=[0,3,1,4,2,5].map(i=>cards[i]);
+  window.__timelines=window.__timelines||{};
+  const tl=gsap.timeline({paused:true});
+  gsap.set(cards,{opacity:0,scale:.92,y:24,transformOrigin:'50% 50%'});
+  gsap.set(logo,{opacity:0,scale:.94});
+  gsap.set(heygen,{opacity:0,scale:.94});
+  order.forEach((el,i)=>{
+    tl.to(el,{opacity:1,scale:1,y:0,duration:.5,ease:'power3.out'},0.15+i*0.1);
+  });
+  // the two centre videos clear; the HyperFrames lockup reveals in the vacated centre column
+  tl.to(cMid,{opacity:0,scale:.92,duration:.45,ease:'power2.in',overwrite:'auto'},1.95);
+  tl.to(logo,{opacity:1,scale:1,duration:.5,ease:'power3.out'},2.15);
+  // ~1s later — brand resolves to the HeyGen parent logo via a ZOOM-THROUGH (Z-axis, never overlap):
+  // HF lockup accelerates toward the viewer + blurs out, hard cut at peak blur, HeyGen grows in from behind.
+  // Phase 1 — exit: HF pushes forward (scale up, blur in); opacity dims on a separate linear tween.
+  tl.to(logo,{scale:1.2,filter:'blur(10px)',duration:.2,ease:'power3.in'},3.25);
+  tl.to(logo,{opacity:.15,duration:.2,ease:'none'},3.25);
+  // Phase 2 — hard cut at peak velocity/blur: HF gone, HeyGen appears behind the focal plane (matched blur/opacity).
+  tl.set(logo,{opacity:0},3.45);
+  tl.set(heygen,{opacity:.15,scale:.75,filter:'blur(10px)'},3.45);
+  // Phase 3 — entry: HeyGen continues forward, growing into the focal plane and sharpening.
+  tl.to(heygen,{opacity:1,scale:1,filter:'blur(0px)',duration:.5,ease:'expo.out'},3.45);
+  tl.to({},{duration:.2},4.8);
+  window.__timelines["payoff"]=tl;
+})();
+</script>
+</div>
+</template>
