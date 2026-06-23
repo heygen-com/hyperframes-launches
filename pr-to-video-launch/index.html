@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920, height=1080">
+  <title>PR → Video Launch — full film</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <style>
+    html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#F0EFE9;}
+    #pr-to-video-launch{position:relative;width:1920px;height:1080px;overflow:hidden;background:#F0EFE9;}
+    #s-opener{position:absolute;inset:0;z-index:1;will-change:transform,opacity,filter;}
+    #s-prscroll{position:absolute;inset:0;z-index:2;will-change:transform,opacity,filter;}
+    #s-hard{position:absolute;inset:0;z-index:3;will-change:transform,opacity,filter;}
+    #s-summarize{position:absolute;inset:0;z-index:4;will-change:transform,opacity,filter;}
+    #s-useskill{position:absolute;inset:0;z-index:5;will-change:transform,opacity,filter;}
+    #s-fcode{position:absolute;inset:0;z-index:6;will-change:transform,opacity,filter;}
+    #s-fflow{position:absolute;inset:0;z-index:7;will-change:transform,opacity,filter;}
+    #s-fdisc{position:absolute;inset:0;z-index:8;will-change:transform,opacity,filter;}
+    #s-fcredits{position:absolute;inset:0;z-index:9;will-change:transform,opacity,filter;}
+    #s-cta{position:absolute;inset:0;z-index:10;will-change:transform,opacity,filter;}
+  </style>
+</head>
+<body>
+  <div id="pr-to-video-launch" data-composition-id="pr-to-video-launch" data-start="0" data-width="1920" data-height="1080" data-duration="30.0">
+    <audio id="bgm" src="assets/launch-music.mp3" data-start="0" data-duration="30.0" data-volume="0.5"></audio>
+
+    <!-- ── OPENING (0 – 16.1) ── -->
+    <div id="s-opener"    data-composition-id="opener"             data-composition-src="compositions/opener.html"             data-start="0"    data-duration="5.2" data-track-index="1"></div>
+    <div id="s-prscroll"  data-composition-id="pr-scroll"          data-composition-src="compositions/pr-scroll.html"          data-start="5.2"  data-duration="3.2" data-track-index="2"></div>
+    <div id="s-hard"      data-composition-id="hard-read"          data-composition-src="compositions/hard-read.html"          data-start="8.4"  data-duration="0.9" data-track-index="3"></div>
+    <div id="s-summarize" data-composition-id="summarize"          data-composition-src="compositions/summarize.html"          data-start="9.3"  data-duration="3.0" data-track-index="4"></div>
+    <div id="s-useskill"  data-composition-id="use-skill"          data-composition-src="compositions/use-skill.html"          data-start="12.3" data-duration="3.8" data-track-index="5"></div>
+
+    <!-- ── ACT 2: features — "show your code / feature / review / contributor" (16.1 – 25.6, ~9.5s) ── -->
+    <div id="s-fcode"     data-composition-id="feature-code"       data-composition-src="compositions/feature-code.html"       data-start="16.1" data-duration="2.4" data-track-index="6"></div>
+    <div id="s-fflow"     data-composition-id="feature-flow"       data-composition-src="compositions/feature-flow.html"       data-start="18.5" data-duration="2.5" data-track-index="7"></div>
+    <div id="s-fdisc"     data-composition-id="feature-discussion" data-composition-src="compositions/feature-discussion.html" data-start="21.0" data-duration="2.0" data-track-index="8"></div>
+    <div id="s-fcredits"  data-composition-id="feature-credits"    data-composition-src="compositions/feature-credits.html"    data-start="23.0" data-duration="2.6" data-track-index="9"></div>
+
+    <!-- ── CTA (25.6 – 30.0) ── (HyperFrames logo sign-off appends after, ffmpeg) -->
+    <div id="s-cta"       data-composition-id="cta-outro"          data-composition-src="compositions/cta.html"               data-start="25.6" data-duration="4.4" data-track-index="10"></div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const T = gsap.timeline({ paused: true });
+    T.set(['#s-prscroll','#s-hard','#s-summarize','#s-useskill','#s-fcode','#s-fflow','#s-fdisc','#s-fcredits','#s-cta'], { opacity: 0 }, 0);
+
+    const xfade = (oldSel, newSel, t, d) => {
+      T.to(oldSel, { opacity: 0, duration: d, ease: 'power1.inOut' }, t);
+      T.fromTo(newSel, { opacity: 0 }, { opacity: 1, duration: d, ease: 'power1.inOut' }, t);
+    };
+
+    // ① → ②  zoom-through into the PR link
+    T.to('#s-opener', { scale: 1.6, opacity: 0, filter: 'blur(8px)', duration: 0.4, ease: 'power2.in', transformOrigin: '66% 59%' }, 4.8);
+    T.set('#s-opener', { opacity: 0 }, 5.22);
+    T.set('#s-prscroll', { opacity: 1 }, 5.2);
+    T.fromTo('#s-prscroll', { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 5.15);
+
+    // opening seams
+    xfade('#s-prscroll',  '#s-hard',      8.4,  0.28);
+    xfade('#s-hard',      '#s-summarize', 9.3,  0.28);
+    xfade('#s-summarize', '#s-useskill',  12.3, 0.28);
+    // opening → Act 2 (thinking dissolves into the first feature)
+    xfade('#s-useskill',  '#s-fcode',     16.1, 0.35);
+    // feature seams (tight)
+    xfade('#s-fcode',     '#s-fflow',     18.5, 0.3);
+    xfade('#s-fflow',     '#s-fdisc',     21.0, 0.3);
+    xfade('#s-fdisc',     '#s-fcredits',  23.0, 0.3);
+    // Act 2 → CTA
+    xfade('#s-fcredits',  '#s-cta',       25.6, 0.35);
+
+    window.__timelines["pr-to-video-launch"] = T;
+  </script>
+</body>
+</html>

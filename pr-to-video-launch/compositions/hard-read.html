@@ -1,0 +1,26 @@
+<template>
+<div id="hr-root" data-composition-id="hard-read" data-width="1920" data-height="1080" data-duration="0.9">
+  <audio id="sfx-hr" data-sfx="1" data-volume="0.9" src="assets/sfx/swish.mp3" data-start="0.0" data-duration="0.4" data-track-index="80"></audio>
+  <div class="txt" id="hr-txt">Hard to read</div>
+<style>
+  @font-face{font-family:'Galaxie Copernicus';font-weight:400;font-display:block;src:url(../fonts/GalaxieCopernicus-Book.woff2) format('woff2');}
+  #hr-root{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;background:#1D1F1F;font-family:'Galaxie Copernicus',Georgia,serif;}
+  #hr-root .txt{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font-size:9.5cqw;letter-spacing:-.18cqw;color:#EFEADD;opacity:0;}
+  #hr-root .txt .dot{color:#D97757;}
+</style>
+<script>
+(function(){
+  const R=(document.currentScript&&document.currentScript.closest('#hr-root'))||document.querySelector('#hr-root');
+  if(!R||!window.gsap) return;
+  const txt=R.querySelector('#hr-txt');
+  window.__timelines=window.__timelines||{};
+  const tl=gsap.timeline({paused:true});
+  gsap.set(txt,{opacity:0,y:14});
+  tl.to({},{duration:.5},0.8);
+  tl.to("#hr-txt", { opacity: 1, duration: 0.28, ease: "power3.out" }, 0);
+  tl.to("#hr-txt", { y: 0, duration: 0.28, ease: "power3.out" }, 0);
+  window.__timelines["hard-read"]=tl;
+})();
+</script>
+</div>
+</template>

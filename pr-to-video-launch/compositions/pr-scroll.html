@@ -1,0 +1,150 @@
+<template>
+<div id="prs-root" data-composition-id="pr-scroll" data-width="1920" data-height="1080" data-duration="3.2">
+  <audio id="sfx-prs-whoosh" data-sfx="1" data-volume="0.9" src="assets/sfx/whoosh.mp3" data-start="0.0" data-duration="0.4" data-track-index="70"></audio>
+  <audio id="sfx-prs-flash" data-sfx="1" data-volume="0.9" src="assets/sfx/swish.mp3" data-start="0.7" data-duration="0.4" data-track-index="71"></audio>
+  <audio id="sfx-prs-whip" data-sfx="1" data-volume="0.9" src="assets/sfx/riser.mp3" data-start="1.2" data-duration="1.8" data-track-index="72"></audio>
+
+  <!-- LEFT: GitHub PR window, fully IN-FRAME -->
+  <div class="browser">
+    <div class="bbar">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <div class="addr"><svg viewBox="0 0 24 24" class="lock"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>github.com/heygen-com/hyperframes/pull/1635</div>
+    </div>
+    <div class="tabs" id="prs-tabs">
+      <span class="tab" data-t="conv">Conversation <b>38</b></span>
+      <span class="tab" data-t="comm">Commits <b>4</b></span>
+      <span class="tab" data-t="files">Files changed <b>629</b></span>
+    </div>
+    <div class="wbody">
+      <!-- phase A: review section -->
+      <div class="reviewview" id="prs-review">
+        <div class="rev"><img class="av" src="assets/avatar-james.png"/><b>jrusso1020</b> requested changes · 14 comments</div>
+        <div class="rev"><img class="av" src="assets/avatar-miguel.png"/><b>miguel-heygen</b> left 9 comments on 6 files</div>
+        <div class="rev"><img class="av" src="assets/avatar-water.png"/><b>WaterrrForever</b> pushed 4 commits</div>
+        <div class="rev"><img class="av" src="assets/avatar-james.png"/><b>jrusso1020</b> approved · 3 threads open</div>
+        <div class="rev"><img class="av" src="assets/avatar-miguel.png"/><b>miguel-heygen</b> resolved 5 conversations</div>
+        <div class="rev"><img class="av" src="assets/avatar-water.png"/><b>WaterrrForever</b> re-requested review</div>
+      </div>
+      <!-- phase B: files changed (whips through) -->
+      <div class="filesview" id="prs-filesview">
+        <div class="pageinner" id="prs-inner">
+          <div class="gf"><span class="cv">▾</span> skills/pr-to-video/SKILL.md <span class="pm"><span class="a">+212</span> <span class="d">−40</span></span></div>
+          <div class="gf"><span class="cv">▾</span> skills/pr-to-video/scripts/fetch-pr.mjs <span class="pm"><span class="a">+148</span> <span class="d">−0</span></span></div>
+          <div class="gf"><span class="cv">▾</span> skills/pr-to-video/scripts/ingest.mjs <span class="pm"><span class="a">+96</span> <span class="d">−0</span></span></div>
+          <div class="gf"><span class="cv">▾</span> skills/product-launch/SKILL.md <span class="pm"><span class="a">+96</span> <span class="d">−311</span></span></div>
+          <div class="gf"><span class="cv">▾</span> skills/product-launch/references/story-design.md <span class="pm"><span class="a">+40</span> <span class="d">−642</span></span></div>
+          <div class="gf"><span class="cv">▾</span> skills/faceless-explainer/SKILL.md <span class="pm"><span class="a">+58</span> <span class="d">−280</span></span></div>
+          <div class="gf"><span class="cv">▾</span> skills/faceless-explainer/references/story.md <span class="pm"><span class="a">+44</span> <span class="d">−980</span></span></div>
+          <div class="gf"><span class="cv">▾</span> skills/hyperframes-core/references/storyboard-format.md <span class="pm"><span class="a">+61</span> <span class="d">−120</span></span></div>
+          <div class="gf"><span class="cv">▾</span> skills/hyperframes-media/references/tts.md <span class="pm"><span class="a">+19</span> <span class="d">−3,402</span></span></div>
+          <div class="gf"><span class="cv">▾</span> skills/hyperframes-animation/references/blueprints.md <span class="pm"><span class="a">+30</span> <span class="d">−5,118</span></span></div>
+          <div class="gf"><span class="cv">▾</span> skills/hyperframes-creative/frame-presets/claude/FRAME.md <span class="pm"><span class="a">+402</span> <span class="d">−0</span></span></div>
+          <div class="gf"><span class="cv">▾</span> registry/blocks/code-diff/block.html <span class="pm"><span class="a">+140</span> <span class="d">−12</span></span></div>
+          <div class="gf"><span class="cv">▾</span> registry/blocks/code-typing/block.html <span class="pm"><span class="a">+96</span> <span class="d">−8</span></span></div>
+          <div class="gf"><span class="cv">▾</span> packages/cli/src/commands/init.ts <span class="pm"><span class="a">+24</span> <span class="d">−240</span></span></div>
+          <div class="gf"><span class="cv">▾</span> packages/engine/src/capture/scroll.ts <span class="pm"><span class="a">+12</span> <span class="d">−1,904</span></span></div>
+          <div class="gf"><span class="cv">▾</span> skills/hyperframes-animation/atoms/transitions.md <span class="pm"><span class="a">+8</span> <span class="d">−6,210</span></span></div>
+          <div class="gf"><span class="cv">▾</span> skills/hyperframes-media/voices/registry.json <span class="pm"><span class="d">−14,880</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: data callout -->
+  <div class="panel" id="prs-panel">
+    <div class="phead" id="prs-head">A thousand<br>slices of change.</div>
+    <div class="stat" id="prs-s1"><span class="snum" id="st-files"></span><span class="ncaret" id="cr1">▏</span><span class="slbl">files changed</span></div>
+    <div class="stat" id="prs-s2"><span class="snum" id="st-lines"></span><span class="ncaret" id="cr2">▏</span><span class="slbl">lines removed</span></div>
+    <div class="stat" id="prs-s3"><span class="snum" id="st-commits"></span><span class="ncaret" id="cr3">▏</span><span class="slbl">commits to read through</span></div>
+  </div>
+
+<style>
+  @font-face{font-family:'Hanken Grotesk';font-weight:400;font-display:block;src:url(../fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:500;font-display:block;src:url(../fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:600;font-display:block;src:url(../fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Galaxie Copernicus';font-weight:400;font-display:block;src:url(../fonts/GalaxieCopernicus-Book.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:400;font-display:block;src:url(../fonts/SplineSansMono-normal-400-latin-53329b.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:500;font-display:block;src:url(../fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');}
+  #prs-root{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;font-family:'Hanken Grotesk',system-ui,sans-serif;background:#F0EFE9;}
+  /* browser pinned fully in-frame on the left */
+  #prs-root .browser{position:absolute;left:2.6cqw;top:8cqh;width:53cqw;height:84cqh;background:#fff;border-radius:1.2cqw;overflow:hidden;transform-origin:50% 50%;
+    box-shadow:0 1.8cqw 5cqw -2cqw rgba(20,20,18,.4);will-change:transform,opacity;}
+  #prs-root .bbar{display:flex;align-items:center;gap:.55cqw;height:3.2cqw;padding:0 1.4cqw;background:#e9e6df;border-bottom:1px solid #d8d2c6;}
+  #prs-root .dot{width:.95cqw;height:.95cqw;border-radius:50%;}
+  #prs-root .dot.r{background:#FF5F57;}#prs-root .dot.y{background:#FEBC2E;}#prs-root .dot.g{background:#28C840;}
+  #prs-root .addr{flex:1;margin-left:1cqw;display:flex;align-items:center;gap:.45cqw;background:#fff;border:1px solid #d8d2c6;border-radius:.5cqw;height:1.95cqw;padding:0 .9cqw;font-family:'Spline Sans Mono',monospace;font-size:.92cqw;color:#3d3a34;}
+  #prs-root .addr .lock{width:.9cqw;height:.9cqw;fill:none;stroke:#6c6a64;stroke-width:1.8;}
+  #prs-root .tabs{display:flex;align-items:center;gap:1.6cqw;padding:1cqw 1.6cqw;border-bottom:1px solid #d0d7de;font-size:1.0cqw;color:#59636e;}
+  #prs-root .tab{transition:none;}#prs-root .tab b{color:#1f2328;}
+  #prs-root .tab.on{color:#1f2328;font-weight:600;box-shadow:inset 0 -2px 0 #fd8c73;padding-bottom:.4cqw;}
+  #prs-root .wbody{position:absolute;left:0;right:0;top:7.4cqw;bottom:0;overflow:hidden;}
+  /* review view */
+  #prs-root .reviewview{position:absolute;inset:0;padding:.6cqw 1.6cqw;}
+  #prs-root .rev{display:flex;align-items:center;gap:.9cqw;padding:1.05cqw .4cqw;border-bottom:1px solid #f0f0f0;font-size:1.05cqw;color:#3d3a34;opacity:0;}
+  #prs-root .rev b{color:#1f2328;font-weight:600;}
+  #prs-root .av{width:1.9cqw;height:1.9cqw;border-radius:50%;flex:0 0 auto;object-fit:cover;background:#ddd6c8;}
+  /* files view */
+  #prs-root .filesview{position:absolute;inset:0;opacity:0;}
+  #prs-root .pageinner{position:absolute;left:0;right:0;top:0;will-change:transform,filter;}
+  #prs-root .gf{display:flex;align-items:center;gap:.9cqw;padding:.92cqw 1.6cqw;border-bottom:1px solid #f0f0f0;font-family:'Spline Sans Mono',monospace;font-size:1.0cqw;color:#1f2328;}
+  #prs-root .gf .cv{color:#59636e;}#prs-root .gf .pm{margin-left:auto;}
+  #prs-root .gf .pm .a{color:#1a7f37;}#prs-root .gf .pm .d{color:#cf222e;}
+  /* right data panel — in-frame */
+  #prs-root .panel{position:absolute;left:60cqw;top:50%;margin-top:-17cqh;width:36cqw;}
+  #prs-root .phead{font-family:'Galaxie Copernicus',Georgia,serif;font-size:3.8cqw;line-height:1.04;letter-spacing:-.06cqw;color:#262624;margin-bottom:1.8cqw;opacity:0;}
+  #prs-root .stat{display:flex;align-items:baseline;gap:.6cqw;margin-bottom:.9cqw;border-top:1px solid #ddd6c8;padding-top:.9cqw;opacity:0;}
+  #prs-root .snum{font-family:'Spline Sans Mono',monospace;font-size:2.3cqw;font-weight:500;color:#D97757;line-height:1;}
+  #prs-root .ncaret{font-family:'Spline Sans Mono',monospace;font-size:2.1cqw;color:#D97757;margin:0 .5cqw 0 .1cqw;opacity:0;}
+  #prs-root .slbl{font-size:1.15cqw;color:#6c6a64;font-weight:500;}
+</style>
+
+<script>
+(function(){
+  const R=(document.currentScript&&document.currentScript.closest('#prs-root'))||document.querySelector('#prs-root');
+  if(!R||!window.gsap) return;
+  const br=R.querySelector('.browser'),inner=R.querySelector('#prs-inner'),files=R.querySelector('#prs-filesview'),
+        review=R.querySelector('#prs-review'),revs=R.querySelectorAll('#prs-review .rev'),tabs=R.querySelectorAll('#prs-tabs .tab'),
+        head=R.querySelector('#prs-head'),s1=R.querySelector('#prs-s1'),s2=R.querySelector('#prs-s2'),s3=R.querySelector('#prs-s3'),
+        innerRows=R.querySelector('#prs-inner');
+  window.__timelines=window.__timelines||{};
+  const tl=gsap.timeline({paused:true});
+  // clone file rows so the whip-through never runs dry
+  const rows=[...innerRows.children];for(let k=0;k<8;k++){rows.forEach(n=>innerRows.appendChild(n.cloneNode(true)));}
+  const reveal=(el,t)=>tl.fromTo(el,{opacity:0,y:14},{opacity:1,y:0,duration:.3,ease:'power3.out'},t);
+  const tabOn=(i,t)=>{tl.add(()=>{tabs.forEach(x=>x.classList.remove('on'));tabs[i].classList.add('on');},t);};
+  // type a number one char at a time, with a caret that hides when done
+  const typeNum=(numSel,carSel,str,t,dur)=>{
+    const el=R.querySelector(numSel),car=R.querySelector(carSel),o={p:0};el.textContent='';
+    tl.set(car,{opacity:1},t);
+    tl.to(o,{p:1,duration:dur,ease:'steps('+str.length+')',onUpdate(){el.textContent=str.slice(0,Math.round(o.p*str.length));}},t);
+    tl.to(car,{opacity:0,duration:.25,ease:'steps(1)',repeat:1,yoyo:true},t+dur);
+  };
+
+  gsap.set(br,{scale:1.04,opacity:0});gsap.set(inner,{y:0,filter:'blur(0px)'});gsap.set(files,{opacity:0});gsap.set(review,{opacity:1});
+  gsap.set([head,s1,s2,s3],{opacity:0});gsap.set(R.querySelectorAll('.ncaret'),{opacity:0});
+
+  // window pulls in (in-frame)
+  tl.to(br,{scale:1,opacity:1,duration:.4,ease:'power3.out'},0.0);
+
+  // PHASE A — review section flashes through (tabs flash too)
+  tabOn(0,0.25);
+  revs.forEach((r,i)=>tl.fromTo(r,{opacity:0,x:16},{opacity:1,x:0,duration:.18,ease:'power2.out'},0.3+i*0.12));
+  tabOn(1,0.95);
+  // PHASE B — switch to Files changed, whip through the diff
+  tabOn(2,1.15);
+  tl.to(review,{opacity:0,duration:.2},1.1);
+  tl.to(files,{opacity:1,duration:.2},1.15);
+  tl.to(inner,{y:-3600,duration:1.7,ease:'power2.in'},1.2);                 // fast whip
+  tl.fromTo(inner,{filter:'blur(0px)'},{filter:'blur(2px)',duration:1.1,ease:'power2.in'},1.5);
+
+  // RIGHT — headline + numbers typed one digit at a time (typewriter + caret)
+  reveal(head,0.5);
+  reveal(s1,1.2); typeNum('#st-files','#cr1','629',1.35,.45);
+  reveal(s2,1.75); typeNum('#st-lines','#cr2','87,291',1.9,.7);
+  reveal(s3,2.35); typeNum('#st-commits','#cr3','4',2.5,.2);
+  tl.to({},{duration:.2},3.0);
+  window.__timelines["pr-scroll"]=tl;
+})();
+</script>
+</div>
+</template>

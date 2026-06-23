@@ -1,0 +1,10 @@
+{
+  "name": "pr-to-video-launch",
+  "description": "PR -> Video skill launch \u2014 full film (opening -> features -> CTA).",
+  "duration": 30.0,
+  "resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "fps": 30
+}
