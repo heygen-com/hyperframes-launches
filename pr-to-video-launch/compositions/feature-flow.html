@@ -1,0 +1,196 @@
+<template>
+<div id="ff-root" data-composition-id="feature-flow" data-width="1920" data-height="1080" data-duration="2.5">
+
+  <div class="bg"></div>
+  <div class="title"><span class="ttext" id="ff-ttext"></span><span class="tcaret" id="ff-tcaret"></span></div>
+
+  <!-- Claude-styled video player -->
+  <div class="player">
+    <div class="pwin">
+      <div class="pbar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="ptitle">hyperframes-pr-1635.mp4</span>
+        <span class="pscene">scene 2 / 6</span>
+      </div>
+      <div class="screen">
+        <div class="vstage">
+          <!-- ═══ ORIGINAL: a PR's diff → storyboard scenes → a video ═══ -->
+          <div class="flow" id="ff-flow">
+            <!-- the diff (the PR's change) -->
+            <div class="diffcard" id="u-diff">
+              <div class="dch"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="dfname">PR #1635 · the diff</span></div>
+              <div class="dl"><span class="g">-</span><span class="rm">gh pr view --json files</span></div>
+              <div class="dl"><span class="p">+</span><span class="ad">gh api --paginate …/files</span></div>
+              <div class="dl"><span class="p">+</span><span class="ad">storyboard → frames → render</span></div>
+            </div>
+
+            <svg class="arrow a1" viewBox="0 0 120 40"><path d="M6 20 H104" /><path d="M92 9 L110 20 L92 31" /></svg>
+
+            <!-- storyboard scenes fanned out from the diff -->
+            <div class="strip" id="u-strip">
+              <div class="fc fc1"><span class="fct"></span><span class="fcn">01</span><span class="fccap"></span></div>
+              <div class="fc fc2"><span class="fct"></span><span class="fcn">02</span><span class="fccap"></span></div>
+              <div class="fc fc3"><span class="fct"></span><span class="fcn">03</span><span class="fccap"></span></div>
+              <div class="fc fc4"><span class="fct"></span><span class="fcn">04</span><span class="fccap"></span></div>
+              <div class="fc fc5"><span class="fct"></span><span class="fcn">05</span><span class="fccap"></span></div>
+              <div class="striplbl">storyboard · scene by scene</div>
+            </div>
+
+            <svg class="arrow a2" viewBox="0 0 120 40"><path d="M6 20 H104" /><path d="M92 9 L110 20 L92 31" /></svg>
+
+            <!-- the rendered video -->
+            <div class="vcard" id="u-video">
+              <div class="vplaywrap"><span class="vring"></span><svg class="vplay" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z" fill="#FAF9F5"/></svg></div>
+              <div class="vlbl">video.mp4</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pctrl">
+        <svg class="pplay" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z" fill="#D97757"/></svg>
+        <div class="ptrack"><i class="pfill" id="ff-pfill"></i><span class="pknob" id="ff-pknob"></span></div>
+        <span class="ptime" id="ff-ptime">0:07 / 0:32</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cap" id="ff-cap"><span class="cl1">that's the skill — <b>a GitHub PR → a code-change explainer</b></span></div>
+
+<style>
+  @font-face{font-family:'CodeBlackHF';font-weight:400;font-display:block;src:url(../fonts/ArchivoBlack-fs.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:500;font-display:block;src:url(../fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:600;font-display:block;src:url(../fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:400;font-display:block;src:url(../fonts/SplineSansMono-normal-400-latin-53329b.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:500;font-display:block;src:url(../fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');}
+
+  #ff-root{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;font-family:'Hanken Grotesk',system-ui,sans-serif;background:#F0EFE9;}
+  #ff-root .bg{position:absolute;inset:0;background:#F0EFE9;z-index:0;}
+  #ff-root .dot{width:1.0cqw;height:1.0cqw;border-radius:50%;display:block;flex:0 0 auto;}
+  #ff-root .dot.r{background:#FF5F57;}#ff-root .dot.y{background:#FEBC2E;}#ff-root .dot.g{background:#28C840;}
+
+  #ff-root .title{position:absolute;top:5cqh;left:0;right:0;z-index:5;display:flex;align-items:center;justify-content:center;gap:.45cqw;height:5.5cqw;}
+  #ff-root .ttext{font-family:'CodeBlackHF','Hanken Grotesk',system-ui,sans-serif;font-size:4.6cqw;color:#1D1F1F;line-height:1;letter-spacing:.02cqw;}
+  #ff-root .tcaret{display:inline-block;width:.34cqw;height:3.9cqw;background:#D97757;border-radius:.07cqw;}
+
+  #ff-root .player{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;}
+  #ff-root .pwin{position:relative;width:64cqw;margin-top:6cqh;background:#1D1F1F;border-radius:1.2cqw;overflow:hidden;box-shadow:0 2.4cqw 7cqw -2cqw rgba(20,20,18,.5);}
+  #ff-root .pbar{display:flex;align-items:center;gap:.62cqw;background:#1D1F1F;padding:1.05cqw 1.5cqw;}
+  #ff-root .ptitle{margin-left:.9cqw;font-family:'Spline Sans Mono',monospace;font-size:1.05cqw;color:#cfcabd;}
+  #ff-root .pscene{margin-left:auto;font-family:'Spline Sans Mono',monospace;font-size:.95cqw;color:#8C8B83;}
+  #ff-root .screen{position:relative;width:61cqw;height:34.3cqw;margin:0 1.5cqw;border-radius:.4cqw;overflow:hidden;background:#FAF9F5;}
+  #ff-root .vstage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform:scale(0.61);transform-origin:0 0;}
+  #ff-root .pctrl{display:flex;align-items:center;gap:1.2cqw;padding:1.2cqw 1.5cqw 1.4cqw;}
+  #ff-root .pplay{width:1.5cqw;height:1.5cqw;flex:0 0 auto;}
+  #ff-root .ptrack{position:relative;flex:1;height:.34cqw;background:rgba(255,255,255,.12);border-radius:9999px;}
+  #ff-root .pfill{position:absolute;left:0;top:0;height:100%;width:100%;background:#D97757;border-radius:9999px;transform:scaleX(0.22);transform-origin:left;}
+  #ff-root .pknob{position:absolute;left:22%;top:50%;width:1.0cqw;height:1.0cqw;margin:-.5cqw 0 0 -.5cqw;border-radius:50%;background:#F0EFE9;box-shadow:0 0 0 .2cqw rgba(217,119,87,.35);}
+  #ff-root .ptime{font-family:'Spline Sans Mono',monospace;font-size:1.0cqw;color:#9b988f;flex:0 0 auto;min-width:9cqw;text-align:right;}
+
+  /* ── the flow (pr-to-video output palette) ── */
+  #ff-root .flow{position:absolute;inset:0;background:#FAF9F5;font-family:'Spline Sans Mono',monospace;color:#141413;display:flex;align-items:center;justify-content:center;gap:38px;transform:scale(.84);}
+  #ff-root .diffcard{width:560px;background:#1A1B1A;border-radius:14px;overflow:hidden;box-shadow:0 8px 28px -10px rgba(20,20,19,.4);opacity:0;}
+  #ff-root .diffcard .dch{display:flex;align-items:center;gap:9px;background:#252320;padding:16px 22px;}
+  #ff-root .diffcard .dch .d{width:14px;height:14px;border-radius:50%;}
+  #ff-root .diffcard .dch .d.r{background:#cc5f57;}#ff-root .diffcard .dch .d.y{background:#d8a44a;}#ff-root .diffcard .dch .d.g{background:#5db872;}
+  #ff-root .diffcard .dfname{margin-left:14px;font-size:24px;color:#9c9485;}
+  #ff-root .diffcard .dl{display:flex;gap:18px;padding:6px 26px;font-size:26px;line-height:1.5;}
+  #ff-root .diffcard .dl .g{color:#c64545;}#ff-root .diffcard .dl .p{color:#5db872;}
+  #ff-root .diffcard .dl .rm{color:#b87d77;}#ff-root .diffcard .dl .ad{color:#9fc9a8;}
+  #ff-root .diffcard .dl:first-of-type{margin-top:18px;}#ff-root .diffcard .dl:last-of-type{margin-bottom:22px;}
+
+  #ff-root .arrow{width:120px;height:40px;flex:0 0 auto;opacity:0;}
+  #ff-root .arrow path{fill:none;stroke:#CC785C;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* storyboard filmstrip — uniform 16:9 panels, numbered, with a caption skeleton */
+  #ff-root .strip{position:relative;display:flex;gap:18px;align-items:flex-start;justify-content:center;}
+  #ff-root .strip .fc{position:relative;width:134px;background:#FFFFFF;border:1px solid rgba(20,20,19,.10);border-radius:13px;
+    box-shadow:0 10px 26px -12px rgba(20,20,19,.28);display:flex;flex-direction:column;gap:12px;padding:12px;opacity:0;}
+  /* 16:9 thumbnail */
+  #ff-root .strip .fct{position:relative;display:block;width:100%;height:62px;border-radius:8px;overflow:hidden;background:#EFE9DE;
+    box-shadow:inset 0 0 0 1px rgba(20,20,19,.06);}
+  /* a subtle mini-scene inside each thumbnail: a clay title bar + one content line */
+  #ff-root .strip .fct::before{content:"";position:absolute;left:11px;right:11px;top:11px;height:7px;border-radius:3px;background:rgba(217,119,87,.85);}
+  #ff-root .strip .fct::after{content:"";position:absolute;left:11px;right:30px;bottom:12px;height:6px;border-radius:3px;background:rgba(20,20,19,.14);}
+  /* per-scene tints (claude palette) */
+  #ff-root .strip .fc1 .fct{background:#ECD6CB;}
+  #ff-root .strip .fc2 .fct{background:#1D1F1F;}
+  #ff-root .strip .fc2 .fct::after{background:rgba(255,255,255,.26);}
+  #ff-root .strip .fc3 .fct{background:#D2E4D6;}
+  #ff-root .strip .fc4 .fct{background:#EEE0C6;}
+  #ff-root .strip .fc5 .fct{background:#DBD1E8;}
+  /* number chip — clean corner badge */
+  #ff-root .strip .fcn{position:absolute;top:8px;left:8px;z-index:2;font-family:'Spline Sans Mono',monospace;font-size:14px;font-weight:500;
+    color:#3a392f;background:rgba(250,249,245,.94);border-radius:6px;padding:0 6px;line-height:1.55;box-shadow:0 1px 3px rgba(20,20,19,.2);}
+  /* caption skeleton under the thumbnail — two tidy lines */
+  #ff-root .strip .fccap{position:relative;display:block;height:7px;width:82%;border-radius:4px;background:rgba(20,20,19,.17);margin-bottom:8px;}
+  #ff-root .strip .fccap::after{content:"";position:absolute;left:0;top:12px;height:6px;width:54%;border-radius:4px;background:rgba(20,20,19,.10);}
+  #ff-root .strip .striplbl{position:absolute;left:50%;bottom:-46px;transform:translateX(-50%);white-space:nowrap;font-size:22px;letter-spacing:.03em;color:#6b6459;}
+
+  #ff-root .vcard{width:420px;height:260px;background:#FAF9F5;border:1.5px solid #CC785C;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;box-shadow:0 10px 30px -10px rgba(204,120,92,.35);opacity:0;}
+  #ff-root .vcard .vplaywrap{position:relative;width:104px;height:104px;border-radius:50%;background:#CC785C;display:flex;align-items:center;justify-content:center;}
+  #ff-root .vcard .vplaywrap .vring{position:absolute;inset:0;border-radius:50%;border:3px solid #CC785C;opacity:0;}
+  #ff-root .vcard .vplay{width:46px;height:46px;margin-left:6px;}
+  #ff-root .vcard .vlbl{font-size:28px;color:#141413;}
+
+  #ff-root .cap{display:none;position:absolute;bottom:5.5cqh;left:0;right:0;text-align:center;z-index:4;}
+  #ff-root .cap span{font-family:'Spline Sans Mono',monospace;font-size:1.2cqw;font-weight:500;color:#3a392f;opacity:0;}
+  #ff-root .cap b{color:#D97757;font-weight:500;}
+</style>
+
+<script>
+(function(){
+  const R=(document.currentScript&&document.currentScript.closest('#ff-root'))||document.querySelector('#ff-root');
+  if(!R||!window.gsap) return;
+  const q=(s)=>R.querySelector(s), qa=(s)=>Array.from(R.querySelectorAll(s));
+  window.__timelines=window.__timelines||{};
+  const tl=gsap.timeline({paused:true});
+  const inner=gsap.timeline();
+
+  gsap.set(q('.pwin'),{opacity:0,scale:.62,y:10});
+  gsap.set(q('#ff-pfill'),{scaleX:0.22});
+  gsap.set(q('#ff-pknob'),{left:'22%'});
+  gsap.set(q('.cl1'),{opacity:0});
+  gsap.set(qa('.fc'),{opacity:0,y:20,scale:.85});
+  gsap.set(q('.striplbl'),{opacity:0});
+  gsap.set(q('.vring'),{opacity:0,scale:1});
+
+  // TITLE typewriter
+  const TITLE="SHOW YOUR FEATURE";
+  const tt=q('#ff-ttext'), tc=q('#ff-tcaret');
+  tt.textContent=''; gsap.set(tc,{opacity:1});
+  const o={n:0};
+  inner.to(o,{n:TITLE.length,duration:1.15,ease:'none',onUpdate(){tt.textContent=TITLE.slice(0,Math.round(o.n));}},0.3);
+  inner.to(tc,{opacity:0,duration:.4,ease:'steps(1)',repeat:9,yoyo:true},0.3);
+  inner.to(tc,{opacity:0,duration:.3,ease:'power2.in'},6.0);
+
+  // player opens
+  inner.fromTo(q('.pwin'),{opacity:0,scale:.62,y:10},{opacity:1,scale:1,y:0,duration:.6,ease:'power3.out'},0.15);
+  inner.to(q('.cl1'),{opacity:1,duration:.4},1.7);
+
+  // scrubber + timecode advance — fill scaleX AND knob left% share the same 22%→42%
+  inner.to(q('#ff-pfill'),{scaleX:0.42,duration:3.6,ease:'none'},1.9);
+  inner.to(q('#ff-pknob'),{left:'42%',duration:3.6,ease:'none'},1.9);
+  const t2={t:7};
+  inner.to(t2,{t:13,duration:3.6,ease:'none',onUpdate(){q('#ff-ptime').textContent='0:'+String(Math.floor(t2.t)).padStart(2,'0')+' / 0:32';}},1.9);
+
+  // ════════ the flow plays inside the screen ════════
+  // 1) the diff seats in
+  inner.fromTo(q('#u-diff'),{opacity:0,x:-30,scale:.95},{opacity:1,x:0,scale:1,duration:.5,ease:'power3.out'},2.0);
+  // 2) arrow 1 → and the storyboard scenes fan out
+  inner.fromTo(q('.a1'),{opacity:0,x:-10},{opacity:1,x:0,duration:.35,ease:'power2.out'},2.55);
+  inner.to(qa('.fc'),{opacity:1,y:0,scale:1,duration:.4,stagger:.1,ease:'back.out(1.6)'},2.7);
+  inner.to(q('.striplbl'),{opacity:1,duration:.4,ease:'power2.out'},3.0);
+  // 3) arrow 2 → the video lands
+  inner.fromTo(q('.a2'),{opacity:0,x:-10},{opacity:1,x:0,duration:.35,ease:'power2.out'},3.45);
+  inner.fromTo(q('#u-video'),{opacity:0,scale:.8,x:20},{opacity:1,scale:1,x:0,duration:.55,ease:'back.out(1.6)'},3.6);
+  // play-button ripple (finite)
+  inner.fromTo(q('.vring'),{opacity:.5,scale:1},{opacity:0,scale:1.8,duration:1.0,ease:'power2.out',repeat:1},4.1);
+  inner.to({},{duration:.3},6.1);
+
+  inner.timeScale(2.56);   // compressed: ~6.4s authored → ~2.5s
+  tl.add(inner,0);
+  window.__timelines["feature-flow"]=tl;
+})();
+</script>
+</div>
+</template>

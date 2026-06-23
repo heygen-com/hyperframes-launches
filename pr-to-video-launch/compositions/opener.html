@@ -1,0 +1,173 @@
+<template>
+<div id="op-root" data-composition-id="opener" data-width="1920" data-height="1080" data-duration="5.2">
+  <audio id="sfx-op-slide" data-sfx="1" data-volume="0.9" src="assets/sfx/whoosh-slide.mp3" data-start="0.0" data-duration="0.31" data-track-index="94"></audio>
+  <audio id="sfx-op-type" data-sfx="1" data-volume="0.9" src="assets/sfx/type.mp3" data-start="0.9" data-duration="1.47" data-track-index="60"></audio>
+  <audio id="sfx-op-paste" data-sfx="1" data-volume="0.9" src="assets/sfx/pop.mp3" data-start="2.7" data-duration="0.27" data-track-index="61"></audio>
+  <audio id="sfx-op-send" data-sfx="1" data-volume="0.9" src="assets/sfx/click.mp3" data-start="3.5" data-duration="0.27" data-track-index="62"></audio>
+  <audio id="sfx-op-morph" data-sfx="1" data-volume="0.9" src="assets/sfx/whoosh-morph.mp3" data-start="3.7" data-duration="0.5" data-track-index="63"></audio>
+  <audio id="sfx-op-click" data-sfx="1" data-volume="0.9" src="assets/sfx/click.mp3" data-start="6.0" data-duration="0.27" data-track-index="64"></audio>
+  <div class="win">
+    <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+    <div class="feed">
+      <div class="stack">
+        <div class="urow r-m1">Someone on our team just opened a PR for a new <b>pr-to-video</b> skill — can you review it?<a class="prlink">github.com/heygen-com/hyperframes/pull/1635</a></div>
+      </div>
+    </div>
+    <div class="composer">
+      <div class="chips">
+        <span class="chip"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2 19h20"/></svg>Local</span>
+        <span class="chip"><svg viewBox="0 0 24 24"><path d="M3 7.5A2 2 0 0 1 5 5.5h4.2l2 2.2H19a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>hyperframes</span>
+      </div>
+      <div class="inputbar">
+        <div class="tline"><span class="typed"></span><span class="caret">▏</span></div>
+        <span class="ret">↵</span>
+        <div class="pet"><video id="op-pet1" src="assets/pet-typing.mp4" muted playsinline data-start="0" data-duration="5.27" data-track-index="40"></video><video id="op-pet2" src="assets/pet-typing.mp4" muted playsinline data-start="5.27" data-duration="1.73" data-track-index="41"></video></div>
+      </div>
+      <div class="metarow">
+        <div class="ml"><span class="auto">Auto</span><span class="ico">＋</span></div>
+        <div class="mr"><span>Opus 4.8</span><span class="hi">High</span><span class="orb"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="ripple"></div>
+  <svg class="cursor" viewBox="0 0 28 28"><path d="M6 4 L6 23 L11 18 L14.5 25 L17.5 23.6 L14 17 L21 17 Z" fill="#1c1c1c" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+
+<style>
+  @font-face{font-family:'Hanken Grotesk';font-weight:400;font-display:block;src:url(../fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:500;font-display:block;src:url(../fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:600;font-display:block;src:url(../fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');}
+  #op-root{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;
+    font-family:'Hanken Grotesk',system-ui,sans-serif;background:#F0EFE9;}
+  #op-root .win{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:83.3cqw;height:81cqh;background:#1D1F1F;border-radius:1.35cqw;
+    box-shadow:0 2cqw 6cqw -2cqw rgba(20,20,18,.45);overflow:hidden;color:#EFEADD;}
+  #op-root .bar{position:absolute;top:1.4cqw;left:1.6cqw;display:flex;gap:.62cqw;}
+  #op-root .dot{width:1.05cqw;height:1.05cqw;border-radius:50%;display:block;}
+  #op-root .dot.r{background:#FF5F57;}#op-root .dot.y{background:#FEBC2E;}#op-root .dot.g{background:#28C840;}
+  #op-root .feed{position:absolute;left:3.4cqw;right:3.4cqw;top:6cqw;bottom:16.5cqw;overflow:hidden;}
+  #op-root .stack{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:1.6cqw;}
+  #op-root .urow{align-self:flex-end;max-width:70%;text-align:right;font-size:1.6cqw;font-weight:500;color:#EFEADD;line-height:1.4;}
+  #op-root .urow b{color:#fff;font-weight:700;}
+  #op-root .prlink{display:inline-block;margin-top:.6cqw;color:#D97757;text-decoration:underline;text-underline-offset:.18cqw;font-weight:600;}
+  #op-root .composer{position:absolute;left:3.4cqw;right:3.4cqw;bottom:3.4cqw;will-change:transform;}
+  #op-root .pet{position:absolute;right:3cqw;bottom:100%;width:7.6cqw;height:4.4cqw;pointer-events:none;}
+  #op-root .pet video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;
+    -webkit-mask-image:linear-gradient(to right,transparent 0,#000 3%,#000 98%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 8%,#000 98%,transparent 100%);
+    -webkit-mask-composite:source-in;
+    mask-image:linear-gradient(to right,transparent 0,#000 3%,#000 98%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 8%,#000 98%,transparent 100%);
+    mask-composite:intersect;}
+  #op-root .chips{display:flex;gap:.6cqw;margin-bottom:.9cqw;}
+  #op-root .chip{display:inline-flex;align-items:center;gap:.5cqw;background:#2C2C2B;color:#D7D4CA;font-size:.98cqw;font-weight:500;padding:.46cqw .82cqw;border-radius:.55cqw;}
+  #op-root .chip svg{width:1.1cqw;height:1.1cqw;stroke:#C9C6BC;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;display:block;}
+  #op-root .inputbar{position:relative;display:flex;align-items:center;background:#2C2C2B;border:1px solid #3a3a38;border-radius:.9cqw;min-height:3.3cqw;padding:.7cqw 1.2cqw;}
+  #op-root .tline{flex:1;min-width:0;padding-right:2.6cqw;white-space:pre-wrap;overflow-wrap:break-word;line-height:1.45;}
+  #op-root .typed{font-size:1.15cqw;font-weight:400;color:#E6E2D6;}
+  #op-root .typed .u{color:#9CC4E6;}
+  #op-root .caret{font-size:1.45cqw;color:#D97757;margin-left:.05cqw;}
+  #op-root .ret{position:absolute;right:1.1cqw;top:50%;transform:translateY(-50%);color:#6F6E66;font-size:1.2cqw;}
+  #op-root .cursor{position:absolute;width:5.5cqw;height:5.5cqw;z-index:30;opacity:0;pointer-events:none;filter:drop-shadow(0 .2cqw .35cqw rgba(0,0,0,.35));}
+  #op-root .ripple{position:absolute;width:5cqw;height:5cqw;border:0.28cqw solid rgba(217,119,87,.85);border-radius:50%;opacity:0;z-index:29;pointer-events:none;}
+  #op-root .metarow{display:flex;justify-content:space-between;align-items:center;margin-top:.85cqw;color:#7C7B73;font-size:1.0cqw;font-weight:500;}
+  #op-root .ml,#op-root .mr{display:flex;align-items:center;gap:1.0cqw;}
+  #op-root .auto{background:rgba(202,164,62,.16);color:#CAA43E;padding:.22cqw .7cqw;border-radius:.45cqw;font-size:.92cqw;}
+  #op-root .ico{color:#8C8B83;font-size:1.15cqw;}
+  #op-root .orb{width:1.25cqw;height:1.25cqw;border-radius:50%;box-sizing:border-box;border:0.17cqw solid rgba(96,148,214,0.26);border-top-color:#5A9BE6;}
+</style>
+
+<script>
+(function(){
+  const R=(document.currentScript&&document.currentScript.closest('#op-root'))||document.querySelector('#op-root');
+  if(!R||!window.gsap) return;
+  const GAP=30.72; // 1.6cqw @1920
+  const MSG="Someone on our team just opened a PR for a new pr-to-video skill — can you review it?";
+  const URL="github.com/heygen-com/hyperframes/pull/1635";
+  const typed=R.querySelector('.typed'),caret=R.querySelector('.caret'),
+        stack=R.querySelector('.stack'),m1=R.querySelector('.r-m1'),prlink=R.querySelector('.prlink'),
+        composer=R.querySelector('.composer'),cursor=R.querySelector('.cursor'),ripple=R.querySelector('.ripple'),
+        ret=R.querySelector('.ret'),win=R.querySelector('.win'),bar=R.querySelector('.bar');
+  window.__timelines=window.__timelines||{};
+  const tl=gsap.timeline({paused:true});
+
+  // start: window full-bleed, composer big + centered (the focused prompt box)
+  gsap.set(win,{width:1920,height:1080,borderRadius:0,boxShadow:'0 2cqw 6cqw -2cqw rgba(20,20,18,0)'});
+  gsap.set(bar,{opacity:0});
+  gsap.set(composer,{right:'auto',width:840,left:540,bottom:370,scale:1.85,transformOrigin:'50% 100%'});
+
+  // helper: element center in root px-space (handles the cqw scaling)
+  function ctr(el){const rb=R.getBoundingClientRect(),b=el.getBoundingClientRect(),s=(R.offsetWidth||1920)/(rb.width||1);return{x:(b.left+b.width/2-rb.left)*s,y:(b.top+b.height/2-rb.top)*s};}
+  const CUR=105.6; // 5.5cqw cursor
+
+  // measure ↵ at full-bleed + big composer (cursor taps it BEFORE the morph)
+  typed.textContent=MSG; const rcRet=ctr(ret); typed.textContent='';
+  const retX=rcRet.x-0.21*CUR, retY=rcRet.y-0.14*CUR;
+
+  // measure the PR link at the FINAL FLOATING window size — that's where the cursor clicks it,
+  // AFTER the morph (full-bleed → floating shifts the feed ~160px, so measuring at full-bleed misses)
+  gsap.set(win,{width:1599.36,height:874.8});
+  gsap.set(stack,{y:0}); gsap.set(m1,{opacity:1});
+  const dM1=m1.offsetHeight+GAP;
+  const rcLink=ctr(prlink);
+  const linkX=rcLink.x-0.21*CUR, linkY=rcLink.y-0.14*CUR;
+  // restore initial: window full-bleed, m1 clipped below the fold
+  gsap.set(win,{width:1920,height:1080});
+  gsap.set(stack,{y:dM1}); gsap.set(m1,{opacity:0});
+
+  // entry: composer parts cut in from the right
+  const chipsEl=R.querySelector('.chips'),inputEl=R.querySelector('.inputbar'),metaEl=R.querySelector('.metarow');
+  tl.fromTo(inputEl,{x:280,opacity:0},{x:0,opacity:1,duration:.55,ease:'power3.out'},0.02);
+  tl.fromTo(chipsEl,{x:340,opacity:0},{x:0,opacity:1,duration:.55,ease:'power3.out'},0.10);
+  tl.fromTo(metaEl,{x:340,opacity:0},{x:0,opacity:1,duration:.55,ease:'power3.out'},0.16);
+  gsap.set(R.querySelector('.orb'),{transformOrigin:'50% 50%'});
+  tl.to(R.querySelector('.orb'),{rotation:360,duration:1.0,ease:'none',repeat:4},0);
+
+  // caret: blink → solid while typing (a touch slower so it reads)
+  gsap.set(caret,{opacity:1});
+  tl.to(caret,{opacity:0,duration:.4,ease:'steps(1)',repeat:1,yoyo:true},0.1);
+  const obj={n:0};
+  tl.set(caret,{opacity:1},0.6);
+  tl.to(obj,{n:MSG.length,duration:1.5,ease:'none',onUpdate(){typed.textContent=MSG.slice(0,Math.round(obj.n));}},0.6);
+  tl.add(()=>{typed.innerHTML=MSG+' <span class="u">'+URL+'</span>';},2.1);
+
+  // cursor rises to ↵ and taps (send)
+  tl.fromTo(cursor,{left:retX,top:retY+300,opacity:0},{left:retX,top:retY,opacity:1,duration:.7,ease:'power3.out'},1.3);
+  tl.to(cursor,{scale:.84,duration:.1,ease:'power2.in',transformOrigin:'21% 14%'},2.3);
+  tl.to(cursor,{scale:1,duration:.18,ease:'power2.out',transformOrigin:'21% 14%'},2.4);
+  tl.fromTo(ret,{color:'#6F6E66'},{color:'#D97757',duration:.08,ease:'power1.in'},2.35);
+  tl.to(ret,{color:'#6F6E66',duration:.25},2.5);
+
+  // SEND: clear composer
+  tl.set(caret,{opacity:0},2.5);
+  tl.add(()=>{typed.textContent='';},2.5);
+
+  // MORPH: composer docks while window shrinks full-bleed → floating
+  const morph={p:0};
+  tl.to(morph,{p:1,duration:.55,ease:'power2.inOut',onUpdate(){
+    const p=morph.p,s=1.85-0.85*p,vw=1554-85.2*p,w=vw/s,W=1920-320.64*p;
+    composer.style.width=w+'px';composer.style.left=(W/2-w/2)+'px';
+    composer.style.bottom=(370-304.72*p)+'px';composer.style.transform='scale('+s+')';
+  }},2.55);
+  tl.to(win,{width:1599.36,height:874.8,borderRadius:25.92,boxShadow:'0 2cqw 6cqw -2cqw rgba(20,20,18,.45)',duration:.55,ease:'power2.inOut'},2.55);
+  tl.fromTo(bar,{opacity:0,x:-14},{opacity:1,x:0,duration:.3,ease:'power2.out'},2.85);
+  tl.to(chipsEl,{opacity:0,height:0,marginBottom:0,duration:.3,ease:'power2.in'},2.6);
+
+  // M1 (the ask + PR link) rises up from behind the docked prompt box
+  tl.fromTo(m1,{opacity:0},{opacity:1,duration:.3,ease:'power2.out'},3.2);
+  tl.to(stack,{y:0,duration:.45,ease:'power3.out'},3.2);
+
+  // CURSOR travels to the PR link and CLICKS it
+  tl.to(cursor,{left:linkX,top:linkY,duration:.6,ease:'power3.inOut'},3.5);
+  tl.to(cursor,{scale:.84,duration:.1,ease:'power2.in',transformOrigin:'21% 14%'},4.2);
+  tl.to(cursor,{scale:1,duration:.18,ease:'power2.out',transformOrigin:'21% 14%'},4.3);
+  tl.fromTo(prlink,{color:'#D97757'},{color:'#F2A98C',duration:.1},4.22);
+  tl.to(prlink,{color:'#D97757',duration:.3},4.42);
+  gsap.set(ripple,{left:rcLink.x,top:rcLink.y,xPercent:-50,yPercent:-50,scale:0,opacity:0});
+  tl.to(ripple,{scale:1.1,opacity:.5,duration:.2,ease:'power2.out'},4.22);
+  tl.to(ripple,{scale:1.9,opacity:0,duration:.32,ease:'power2.out'},4.42);
+
+  // hold (link armed) → index zooms through into the PR
+  tl.to({},{duration:.2},5.0);
+  window.__timelines["opener"]=tl;
+})();
+</script>
+</div>
+</template>
