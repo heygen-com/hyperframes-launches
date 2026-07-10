@@ -11,6 +11,7 @@ Source for HeyGen's HyperFrames launch videos. Each subdirectory is a standalone
 | Timeline editor launch | [`timeline-launch/`](./timeline-launch) | HyperFrames timeline editor reveal. |
 | Variables launch | [`variables-launch/`](./variables-launch) | HyperFrames variables / template-parameters reveal. |
 | Cloud Render launch | [`cloud-render-launch/`](./cloud-render-launch) | Managed HeyGen Cloud Render announcement video. |
+| Figma integration launch | [`figma-launch/`](./figma-launch) | Figma → HyperFrames integration launch film. |
 
 ## Cloning
 

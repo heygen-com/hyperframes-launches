@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Act 8 · Even motion works</title></head>
+<body>
+<template>
+  <div data-hf-id="hf-gmvz" id="act8-root" data-composition-id="act8" data-width="1080" data-height="1080" data-duration="2" style="position:relative; width:1080px; height:1080px; overflow:hidden;">
+    <style>
+      @font-face { font-family:'ABC Solar Display'; src:url('assets/fonts/ABCSolarDisplay-Bold.woff2') format('woff2'); font-weight:700; font-display:block; }
+
+      #act8-shade { position:absolute; inset:0;
+        background:linear-gradient(180deg, rgba(0,0,0,.5), rgba(0,0,0,.25) 40%, rgba(0,0,0,.55)); }
+      .act8-ln { position:absolute; left:0; right:0; line-height:1.1;
+        text-align:center; font-family:'ABC Solar Display', sans-serif; font-weight:700;
+        letter-spacing:-.015em; color:#fff; white-space:nowrap; will-change:transform; }
+      #act8-l1 { top:410px; font-size:100px; }
+      #act8-l2 { top:532px; font-size:84px; }
+      /* "motion" only: green with a light band that GSAP sweeps across (bg-clip text) */
+      #act8-l2 .hl { color:transparent;
+        background:linear-gradient(100deg, #5ef17c 0%, #5ef17c 38%, #eafff0 50%, #5ef17c 62%, #5ef17c 100%);
+        background-size:220% 100%; background-position:110% 0;
+        -webkit-background-clip:text; background-clip:text; }
+    </style>
+
+    <div data-hf-id="hf-5hg5" id="act8-shade"></div>
+    <div data-hf-id="hf-5ivh" class="act8-ln" id="act8-l1">And yes,</div>
+    <div data-hf-id="hf-c9t2" class="act8-ln" id="act8-l2">figma <span data-hf-id="hf-rcan" class="hl">motion</span> works</div>
+
+    <script>
+      (function () {
+        var tl = gsap.timeline({ paused: true });
+        tl.fromTo("#act8-l1", { x: 1150 }, { x: 0, duration: 0.5, ease: "power4.out" }, 0);
+        tl.fromTo("#act8-l2", { x: 1250 }, { x: 0, duration: 0.55, ease: "power4.out" }, 0.3);
+        // shimmer across "motion" once the line lands
+        tl.to("#act8-l2 .hl", { backgroundPosition: "-10% 0", duration: 0.65, ease: "power2.inOut" }, 0.95);
+        tl.to("#act8-l1", { x: -1250, duration: 0.32, ease: "power4.in" }, 1.68);
+        tl.to("#act8-l2", { x: -1250, duration: 0.3, ease: "power4.in" }, 1.7);
+        window.__timelines = window.__timelines || {};
+        window.__timelines["act8"] = tl;
+      })();
+    </script>
+  </div>
+</template>
+</body>
+</html>

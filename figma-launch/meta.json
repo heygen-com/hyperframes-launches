@@ -1,0 +1,10 @@
+{
+  "name": "figma-launch",
+  "description": "Figma integration launch film: real design files become live HyperFrames compositions.",
+  "duration": 64.05,
+  "resolution": {
+    "width": 1080,
+    "height": 1080
+  },
+  "fps": 30
+}

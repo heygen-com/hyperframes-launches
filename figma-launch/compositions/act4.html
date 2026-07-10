@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Act 4 · Introducing /figma</title></head>
+<body>
+<template>
+  <div data-hf-id="hf-4ol1" id="act4-root" data-composition-id="act4" data-width="1080" data-height="1080" data-duration="2.2" style="position:relative; width:1080px; height:1080px; overflow:hidden;">
+    <style>
+      @font-face { font-family:'ABC Solar Display'; src:url('assets/fonts/ABCSolarDisplay-Bold.woff2') format('woff2'); font-weight:700; font-display:block; }
+      @font-face { font-family:'TT Norms Mono'; src:url('assets/fonts/tt_norms_pro_mono_regular-webfont.woff2') format('woff2'); font-weight:400; font-display:block; }
+
+      #act4-shade { position:absolute; inset:0;
+        background:linear-gradient(180deg, rgba(0,0,0,.5), rgba(0,0,0,.25) 40%, rgba(0,0,0,.55)); }
+
+      /* "Introducing" — arrives huge and centered, then slides UP + scales DOWN and STAYS */
+      #act4-intro { position:absolute; left:0; right:0; top:466px; line-height:1.1;
+        text-align:center; font-family:'ABC Solar Display', sans-serif; font-weight:700;
+        font-size:132px; letter-spacing:-.015em; color:#fff; white-space:nowrap;
+        will-change:transform; }
+
+      /* the hero: /figma — giant mono, deck green */
+      #act4-skill { position:absolute; left:0; right:0; top:50%;
+        text-align:center; font-family:'TT Norms Mono', monospace;
+        font-size:190px; letter-spacing:-.01em; color:#5ef17c; white-space:nowrap;
+        will-change:transform; opacity:0; }
+    </style>
+
+    <div data-hf-id="hf-ub75" id="act4-shade"></div>
+    <div data-hf-id="hf-5daa" id="act4-intro">Introducing</div>
+    <div data-hf-id="hf-wgve" id="act4-skill">/figma</div>
+
+    <script>
+      (function () {
+        var tl = gsap.timeline({ paused: true });
+
+        // leftward cut-the-curve entry — answers "Until now" exiting left, mid-flight
+        tl.fromTo("#act4-intro",
+          { x: 1150 }, { x: 0, duration: 0.5, ease: "power4.out" }, 0);
+
+        // hold 0.5 → 1.0 (stillness before the reveal)
+
+        // "Introducing" slides UP + scales DOWN — stays on screen as the kicker
+        tl.to("#act4-intro", {
+          y: -350, scale: 0.42, transformOrigin: "50% 50%",
+          duration: 0.6, ease: "power3.inOut"
+        }, 0.8);
+
+        // /figma follows the same upward current, arriving into center as the hero
+        tl.fromTo("#act4-skill",
+          { y: -320, autoAlpha: 0, scale: 0.92 },
+          { y: -95, autoAlpha: 1, scale: 1, duration: 0.55, ease: "power3.out" }, 1.05);
+
+        // EXIT: both lines cut-the-curve LEFT into the Claude chat (act 5's composer
+        // elements answer from the right on the same current)
+        tl.to("#act4-skill", { x: -1250, duration: 0.3, ease: "power4.in" }, 1.9);
+        tl.to("#act4-intro", { x: -1250, duration: 0.3, ease: "power4.in" }, 1.94);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["act4"] = tl;
+      })();
+    </script>
+  </div>
+</template>
+</body>
+</html>

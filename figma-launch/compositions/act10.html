@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Act 10 · Try it yourself — install</title></head>
+<body>
+<template>
+  <div data-hf-id="hf-1gv9" id="act10-root" data-composition-id="act10" data-width="1080" data-height="1080" data-duration="3.3" style="position:relative; width:1080px; height:1080px; overflow:hidden;">
+    <style>
+      @font-face { font-family:'ABC Solar Display'; src:url('assets/fonts/ABCSolarDisplay-Bold.woff2') format('woff2'); font-weight:700; font-display:block; }
+      @font-face { font-family:'TT Norms Mono'; src:url('assets/fonts/tt_norms_pro_mono_regular-webfont.woff2') format('woff2'); font-weight:400; font-display:block; }
+
+      #act10-shade { position:absolute; inset:0;
+        background:linear-gradient(180deg, rgba(0,0,0,.5), rgba(0,0,0,.25) 40%, rgba(0,0,0,.55)); }
+      .act10-ln { position:absolute; left:0; right:0; text-align:center;
+        white-space:nowrap; will-change:transform; }
+      #act10-l1 { top:436px; font-family:'ABC Solar Display', sans-serif; font-weight:700;
+        font-size:72px; letter-spacing:-.015em; color:#fff; line-height:1.1; }
+      #act10-l2 { top:551px; font-family:'TT Norms Mono', monospace; font-weight:400;
+        font-size:50px; color:#5ef17c; line-height:1.2; }
+    </style>
+
+    <div data-hf-id="hf-di2g" id="act10-shade"></div>
+    <div data-hf-id="hf-7844" class="act10-ln" id="act10-l1">Try it yourself</div>
+    <div data-hf-id="hf-4sv7" class="act10-ln" id="act10-l2">npx hyperframes@latest skills</div>
+
+    <script>
+      (function () {
+        var tl = gsap.timeline({ paused: true });
+        // enters on the leftward current, mid-flight (answers the tail card's left exit)
+        tl.fromTo("#act10-l1", { x: 1150 }, { x: 0, duration: 0.5, ease: "power4.out" }, 0);
+        tl.fromTo("#act10-l2", { x: 1250 }, { x: 0, duration: 0.55, ease: "power4.out" }, 0.12);
+        // exit LEFT, mid-motion at the cut — the outro's wings answer from the right
+        // on the same vector (cut-the-curve over the SHARED bg pattern)
+        tl.to("#act10-l1", { x: -1250, duration: 0.32, ease: "power4.in" }, 2.98);
+        tl.to("#act10-l2", { x: -1250, duration: 0.3, ease: "power4.in" }, 3.0);
+        window.__timelines = window.__timelines || {};
+        window.__timelines["act10"] = tl;
+      })();
+    </script>
+  </div>
+</template>
+</body>
+</html>
