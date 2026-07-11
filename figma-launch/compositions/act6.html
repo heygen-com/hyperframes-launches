@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Act 6 · Figma — select the frames, copy the link</title></head>
+<body>
+<template>
+  <div data-hf-id="hf-3sd7" id="act6-root" data-composition-id="act6" data-width="1080" data-height="1080" data-duration="5.2" style="position:relative; width:1080px; height:1080px; overflow:hidden;">
+    <style>
+      #act6-root { font-family:Inter, 'Helvetica Neue', system-ui, sans-serif; }
+      #act6-ground { position:absolute; inset:0; background:#1E1E1E; }
+      #act6-stage { position:absolute; inset:0; will-change:transform; }
+
+      /* ── top toolbar ── */
+      .fg-topbar { position:absolute; left:0; right:0; top:0; height:56px; background:#2C2C2C;
+        display:flex; align-items:center; padding:0 16px; z-index:20;
+        border-bottom:1px solid #1a1a1a; }
+      .fg-topbar .menu { width:34px; height:34px; border-radius:6px; display:grid; place-items:center; }
+      .fg-topbar .menu svg { width:20px; height:20px; fill:#fff; }
+      .fg-tools { display:flex; align-items:center; gap:4px; margin-left:8px; }
+      .fg-tool { width:34px; height:34px; border-radius:6px; display:grid; place-items:center; color:#ccc; }
+      .fg-tool.on { background:#0D99FF; color:#fff; }
+      .fg-tool svg { width:17px; height:17px; fill:currentColor; }
+      .fg-fname { position:absolute; left:50%; transform:translateX(-50%); color:#ddd;
+        font-size:15px; font-weight:500; letter-spacing:.01em; display:flex; align-items:center; gap:8px; }
+      .fg-fname .chev { color:#888; font-size:11px; }
+      .fg-right { margin-left:auto; display:flex; align-items:center; gap:14px; }
+      .fg-av { width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,#8AA4B8,#4E6478);
+        border:2px solid #2C2C2C; }
+      .fg-share { background:#0D99FF; color:#fff; font-size:14px; font-weight:600;
+        padding:9px 18px; border-radius:7px; letter-spacing:.01em; }
+
+      /* ── left layers panel ── */
+      .fg-layers { position:absolute; left:0; top:56px; bottom:0; width:224px; background:#2C2C2C;
+        border-right:1px solid #1a1a1a; z-index:10; padding-top:14px; }
+      .fg-ltitle { color:#888; font-size:12px; font-weight:600; padding:0 16px 10px; }
+      .fg-lrow { display:flex; align-items:center; gap:8px; padding:7px 16px; color:#ccc; font-size:13.5px; }
+      .fg-lrow svg { width:13px; height:13px; fill:none; stroke:#999; stroke-width:1.5; flex:0 0 auto; }
+      .fg-lrow.child { padding-left:38px; }
+      .fg-lrow.parent { color:#fff; }
+      .fg-lrow.parent.sel { background:rgba(13,153,255,.28); }
+
+      /* ── canvas + frames ── */
+      .fg-canvas { position:absolute; left:224px; right:0; top:56px; bottom:0; overflow:hidden; }
+      .fg-framelabel { position:absolute; left:56px; top:378px; color:#9a9a9a; font-size:13px; }
+      .fg-framelabel.sel { color:#4FB8FF; }
+      .fg-parent { position:absolute; left:56px; top:400px; width:744px; height:170px;
+        box-sizing:border-box; background:#0f0f0f; border-radius:4px; padding:22px 20px 18px; }
+      .fg-shots { display:flex; gap:16px; }
+      .fg-shot { width:166px; height:94px; border-radius:3px; overflow:hidden; background:#FBFAF9;
+        outline:1px solid rgba(255,255,255,.08); }
+      .fg-shot img { width:100%; height:100%; object-fit:cover; display:block; }
+      .fg-shotname { color:#7a7a7a; font-size:11px; margin-top:8px; }
+
+      /* selection chrome (hidden until the click) */
+      .fg-selbox { position:absolute; left:52px; top:396px; width:752px; height:178px;
+        border:2px solid #0D99FF; opacity:0; pointer-events:none; }
+      .fg-selbox i { position:absolute; width:8px; height:8px; background:#fff;
+        border:1.5px solid #0D99FF; }
+      .fg-selbox .h1 { left:-5px; top:-5px; } .fg-selbox .h2 { right:-5px; top:-5px; }
+      .fg-selbox .h3 { left:-5px; bottom:-5px; } .fg-selbox .h4 { right:-5px; bottom:-5px; }
+      .fg-dims { position:absolute; left:50%; transform:translateX(-50%); bottom:-30px;
+        background:#0D99FF; color:#fff; font-size:11.5px; font-weight:500;
+        padding:3px 8px; border-radius:3px; white-space:nowrap; }
+
+      /* share dropdown */
+      .fg-drop { position:absolute; right:14px; top:60px; width:290px; background:#2C2C2C;
+        border:1px solid #444; border-radius:10px; padding:8px; z-index:30; opacity:0;
+        box-shadow:0 16px 40px rgba(0,0,0,.5); transform-origin:88% 0; }
+      .fg-droprow { display:flex; align-items:center; gap:10px; padding:10px 12px;
+        border-radius:6px; color:#eee; font-size:14px; }
+      .fg-droprow svg { width:16px; height:16px; fill:none; stroke:#ccc; stroke-width:1.6; }
+      .fg-droprow.hov { background:#0D99FF; }
+      .fg-droprow .k { margin-left:auto; color:#999; font-size:12px; }
+
+      /* toast */
+      .fg-toast { position:absolute; left:50%; bottom:56px; transform:translateX(-50%);
+        background:#1a1a1a; border:1px solid #3a3a3a; color:#fff; font-size:14.5px;
+        padding:12px 20px; border-radius:8px; z-index:40; opacity:0; white-space:nowrap;
+        box-shadow:0 12px 30px rgba(0,0,0,.5); }
+      .fg-toast .lk { color:#4FB8FF; }
+
+      /* cursor */
+      .fg-cursor { position:absolute; left:0; top:0; width:66px; height:66px; z-index:50; opacity:0;
+        pointer-events:none; filter:drop-shadow(0 3px 6px rgba(0,0,0,.45)); }
+    </style>
+
+    <div data-hf-id="hf-3gsd" id="act6-ground"></div>
+    <div data-hf-id="hf-1bgu" id="act6-stage">
+      <div data-hf-id="hf-wmse" class="fg-canvas">
+        <div data-hf-id="hf-bmmk" class="fg-framelabel" id="act6-flabel">app-flow</div>
+        <div data-hf-id="hf-0cdu" class="fg-parent">
+          <div data-hf-id="hf-8uth" class="fg-shots">
+            <div data-hf-id="hf-yeow"><div data-hf-id="hf-wszm" class="fg-shot"><img data-hf-id="hf-4fhv" src="assets/fig-f1.png" alt=""></div><div data-hf-id="hf-9ty2" class="fg-shotname">1 · Home</div></div>
+            <div data-hf-id="hf-y7yw"><div data-hf-id="hf-fw2u" class="fg-shot"><img data-hf-id="hf-2vc8" src="assets/fig-f2.png" alt=""></div><div data-hf-id="hf-jxsr" class="fg-shotname">2 · Describe</div></div>
+            <div data-hf-id="hf-x11t"><div data-hf-id="hf-gadv" class="fg-shot"><img data-hf-id="hf-9x69" src="assets/fig-f3.png" alt=""></div><div data-hf-id="hf-gaw4" class="fg-shotname">3 · Generate</div></div>
+            <div data-hf-id="hf-xfcu"><div data-hf-id="hf-goow" class="fg-shot"><img data-hf-id="hf-fb8m" src="assets/fig-f4.png" alt=""></div><div data-hf-id="hf-ddhx" class="fg-shotname">4 · Result</div></div>
+          </div>
+        </div>
+        <div data-hf-id="hf-nrmm" class="fg-selbox" id="act6-sel">
+          <i data-hf-id="hf-q2yd" class="h1"></i><i data-hf-id="hf-u12e" class="h2"></i><i data-hf-id="hf-xz6f" class="h3"></i><i data-hf-id="hf-1xag" class="h4"></i>
+          <div data-hf-id="hf-gqb3" class="fg-dims">2976 × 680</div>
+        </div>
+      </div>
+
+      <div data-hf-id="hf-dc1k" class="fg-layers">
+        <div data-hf-id="hf-rh5u" class="fg-ltitle">Layers</div>
+        <div data-hf-id="hf-plyl" class="fg-lrow parent" id="act6-lrow"><svg data-hf-id="hf-56oz" viewBox="0 0 16 16"><rect data-hf-id="hf-hh6o" x="2" y="2" width="12" height="12" rx="1" /></svg>app-flow</div>
+        <div data-hf-id="hf-l0wd" class="fg-lrow child"><svg data-hf-id="hf-wcv7" viewBox="0 0 16 16"><rect data-hf-id="hf-ntn7" x="2" y="3" width="12" height="10" rx="1" /></svg>1 · Home</div>
+        <div data-hf-id="hf-kmz0" class="fg-lrow child"><svg data-hf-id="hf-vyk6" viewBox="0 0 16 16"><rect data-hf-id="hf-45df" x="2" y="3" width="12" height="10" rx="1" /></svg>2 · Describe</div>
+        <div data-hf-id="hf-n9cf" class="fg-lrow child"><svg data-hf-id="hf-vk95" viewBox="0 0 16 16"><rect data-hf-id="hf-3r2e" x="2" y="3" width="12" height="10" rx="1" /></svg>3 · Generate</div>
+        <div data-hf-id="hf-o8xa" class="fg-lrow child"><svg data-hf-id="hf-v5y4" viewBox="0 0 16 16"><rect data-hf-id="hf-3crd" x="2" y="3" width="12" height="10" rx="1" /></svg>4 · Result</div>
+      </div>
+
+      <div data-hf-id="hf-wwpe" class="fg-topbar">
+        <div data-hf-id="hf-upnx" class="menu"><svg data-hf-id="hf-y9f5" viewBox="0 0 24 24"><path data-hf-id="hf-23tn" d="M12 2 3 7v10l9 5 9-5V7z" /></svg></div>
+        <div data-hf-id="hf-leeb" class="fg-tools">
+          <div data-hf-id="hf-bdc3" class="fg-tool on"><svg data-hf-id="hf-svtx" viewBox="0 0 24 24"><path data-hf-id="hf-6tdg" d="M6 3l12 9-6 1 3 6-3 1.4L9 14l-3 4z" /></svg></div>
+          <div data-hf-id="hf-hvao" class="fg-tool"><svg data-hf-id="hf-u2r0" viewBox="0 0 24 24"><rect data-hf-id="hf-ffrg" x="4" y="4" width="16" height="16" rx="1" /></svg></div>
+          <div data-hf-id="hf-w5fs" class="fg-tool"><svg data-hf-id="hf-tofz" viewBox="0 0 24 24"><path data-hf-id="hf-lf4r" d="M4 20L20 4M14 4h6v6" /></svg></div>
+        </div>
+        <div data-hf-id="hf-3v1l" class="fg-fname">AI Video Generator — Frames <span data-hf-id="hf-k6kh" class="chev">▾</span></div>
+        <div data-hf-id="hf-rjtg" class="fg-right">
+          <div data-hf-id="hf-bj77" class="fg-av"></div>
+          <div data-hf-id="hf-k0ak" class="fg-share" id="act6-share">Share</div>
+        </div>
+      </div>
+
+      <div data-hf-id="hf-u4ph" class="fg-drop" id="act6-drop">
+        <div data-hf-id="hf-gikc" class="fg-droprow" id="act6-copyrow">
+          <svg data-hf-id="hf-uvd2" viewBox="0 0 24 24"><path data-hf-id="hf-qcai" d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7" /></svg>
+          Copy link
+          <span data-hf-id="hf-ue1k" class="k">⌘L</span>
+        </div>
+        <div data-hf-id="hf-mkje" class="fg-droprow">
+          <svg data-hf-id="hf-uh21" viewBox="0 0 24 24"><rect data-hf-id="hf-uwav" x="3" y="5" width="18" height="14" rx="2" /><path data-hf-id="hf-k5fi" d="M3 9h18" /></svg>
+          Publish to Community
+        </div>
+      </div>
+
+      <div data-hf-id="hf-4ecb" class="fg-toast" id="act6-toast">Link copied — <span data-hf-id="hf-gbs4" class="lk">figma.com/xK9…</span></div>
+    </div>
+
+    <svg data-hf-id="hf-icuz" class="fg-cursor" id="act6-cursor" viewBox="0 0 28 28">
+      <path data-hf-id="hf-k12m" d="M6 4 L6 23 L11 18 L14.5 25 L17.5 23.6 L14 17 L21 17 Z" fill="#1c1c1c" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round" />
+    </svg>
+
+    <script>
+      (function () {
+        var tl = gsap.timeline({ paused: true });
+
+        // INVERSE ZOOM arrival (Z−): the Figma UI lands from large, decelerating
+        tl.fromTo("#act6-stage", { scale: 1.28 },
+          { scale: 1, duration: 0.6, ease: "expo.out", transformOrigin: "50% 46%" }, 0);
+
+        // cursor enters from bottom-right, tip toward the parent frame's label
+        tl.fromTo("#act6-cursor", { x: 980, y: 1140, opacity: 0 },
+          { x: 300, y: 428, opacity: 1, duration: 0.75, ease: "power3.out" }, 0.5);
+
+        // CLICK 1 · select the parent frame (1.35): tap + selection chrome + layer row lights
+        tl.to("#act6-cursor", { scale: .84, duration: .1, ease: "power2.in", transformOrigin: "21% 14%" }, 1.35);
+        tl.to("#act6-cursor", { scale: 1, duration: .18, ease: "power2.out", transformOrigin: "21% 14%", overwrite: "auto" }, 1.46);
+        tl.fromTo("#act6-sel", { autoAlpha: 0, scale: 1.015 },
+          { autoAlpha: 1, scale: 1, duration: 0.18, ease: "power2.out", transformOrigin: "50% 50%" }, 1.42);
+        tl.add(function () {}, 1.42);
+        tl.fromTo("#act6-lrow", { backgroundColor: "rgba(13,153,255,0)" },
+          { backgroundColor: "rgba(13,153,255,.28)", duration: 0.15 }, 1.42);
+        tl.to("#act6-flabel", { color: "#4FB8FF", duration: 0.15 }, 1.42);
+
+        // travel to Share (top right) — tip lands ON the button (tip offset ≈ 14,9)
+        tl.to("#act6-cursor", { x: 1010, y: 19, duration: 0.7, ease: "power3.inOut" }, 2.0);
+
+        // CLICK 2 · Share (2.8): button press + dropdown opens
+        tl.to("#act6-cursor", { scale: .84, duration: .1, ease: "power2.in", transformOrigin: "21% 14%" }, 2.8);
+        tl.to("#act6-cursor", { scale: 1, duration: .18, ease: "power2.out", transformOrigin: "21% 14%", overwrite: "auto" }, 2.91);
+        tl.fromTo("#act6-share", { scale: 1 }, { scale: .93, duration: .1, yoyo: true, repeat: 1,
+          ease: "power2.inOut", transformOrigin: "50% 50%" }, 2.8);
+        tl.fromTo("#act6-drop", { autoAlpha: 0, scaleY: .7 },
+          { autoAlpha: 1, scaleY: 1, duration: 0.22, ease: "power3.out" }, 2.95);
+
+        // travel down to Copy link, hover lights — tip on the row
+        tl.to("#act6-cursor", { x: 907, y: 77, duration: 0.4, ease: "power2.inOut" }, 3.3);
+        tl.add(function () {}, 3.55);
+        tl.fromTo("#act6-copyrow", { backgroundColor: "rgba(13,153,255,0)" },
+          { backgroundColor: "rgba(13,153,255,1)", duration: 0.12 }, 3.55);
+
+        // CLICK 3 · Copy link (3.8): dropdown closes, toast rises
+        tl.to("#act6-cursor", { scale: .84, duration: .1, ease: "power2.in", transformOrigin: "21% 14%" }, 3.8);
+        tl.to("#act6-cursor", { scale: 1, duration: .18, ease: "power2.out", transformOrigin: "21% 14%", overwrite: "auto" }, 3.91);
+        tl.to("#act6-drop", { autoAlpha: 0, scaleY: .85, duration: 0.16, ease: "power2.in" }, 3.95);
+        tl.fromTo("#act6-toast", { autoAlpha: 0, y: 18 },
+          { autoAlpha: 1, y: 0, duration: 0.3, ease: "power3.out" }, 4.1);
+
+        // cursor exits fully off the TOP of the frame — same upward vector the stage
+        // will spend; hold on the toast — "it's that simple"
+        tl.to("#act6-cursor", { y: -170, duration: 0.45, ease: "power2.in" }, 4.3);
+
+        // EXIT: upward cut-the-curve — the whole Figma stage leaves through the top,
+        // mid-motion at the cut; act 7's mask reveals answer on the same upward vector
+        tl.to("#act6-stage", { y: -1250, duration: 0.38, ease: "power4.in" }, 4.82);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["act6"] = tl;
+      })();
+    </script>
+  </div>
+</template>
+</body>
+</html>

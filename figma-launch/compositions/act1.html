@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Act 1 · Cold open + hero tweets</title></head>
+<body>
+<template>
+  <div data-hf-id="hf-c2xw" id="act1-root" data-composition-id="act1" data-width="1080" data-height="1080" data-duration="11.8" style="position:relative; width:1080px; height:1080px; overflow:hidden;">
+    <style>
+      @font-face { font-family:'TT Norms Pro'; src:url('assets/fonts/TT_Norms_Pro_Normal.woff2') format('woff2'); font-weight:400; font-display:block; }
+      @font-face { font-family:'TT Norms Pro'; src:url('assets/fonts/TT_Norms_Pro_Medium.woff2') format('woff2'); font-weight:500; font-display:block; }
+      @font-face { font-family:'TT Norms Pro'; src:url('assets/fonts/TT_Norms_Pro_Bold.woff2') format('woff2'); font-weight:700; font-display:block; }
+      @font-face { font-family:'TT Norms Mono'; src:url('assets/fonts/tt_norms_pro_mono_regular-webfont.woff2') format('woff2'); font-weight:400; font-display:block; }
+
+      #act1-root { font-family:'TT Norms Pro', sans-serif; }
+
+      /* full-bleed black ground (never on the comp root itself) */
+      #act1-ground { position:absolute; inset:0; background:#000; }
+
+      /* push wrapper — the Act-1-exit zoom scales this */
+      #act1-push { position:absolute; inset:0; will-change:transform; }
+
+      /* the pattern VIDEO lives in the master root (media rule) UNDER this act;
+         the black ground fades OUT to reveal it. This wrapper only carries the shade. */
+      #act1-bgwrap { position:absolute; inset:0; opacity:0; }
+      #act1-shade { position:absolute; inset:0;
+        background:linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.15) 40%, rgba(0,0,0,.5)); }
+
+      /* ── glass x-post cards ─────────────────────────────────────── */
+      .act1-card { position:absolute; left:30px; width:1020px; box-sizing:border-box;
+        border-radius:30px; padding:44px 50px 36px; will-change:transform; }
+      /* per-card top: each card vertically centered for ITS height (1080 − h)/2 */
+      #act1-card1 { top:301px; }
+      #act1-card2, #act1-card3 { top:327px; }
+      .act1-glassbg { position:absolute; inset:0; border-radius:30px;
+        border:1px solid rgba(190,255,205,.32);
+        background:linear-gradient(120deg, rgba(255,255,255,.10), rgba(255,255,255,.045) 45%, rgba(180,240,200,.06));
+        backdrop-filter:blur(26px) saturate(1.15); -webkit-backdrop-filter:blur(26px) saturate(1.15);
+        box-shadow:inset 0 1px 0 rgba(255,255,255,.22), 0 30px 70px rgba(0,0,0,.45);
+        opacity:0; }
+      .act1-cardin { position:relative; }
+
+      .act1-head { display:flex; align-items:center; gap:20px; height:74px; }
+      .act1-av { width:74px; height:74px; border-radius:50%; flex:0 0 auto; }
+      .act1-who { flex:1; min-width:0; line-height:1.15; }
+      .act1-name { font-weight:700; font-size:30px; color:#fff; }
+      .act1-handle { font-size:26px; color:rgba(245,246,244,.5); }
+      .act1-xlogo { width:38px; height:38px; fill:#fff; opacity:.9; flex:0 0 auto; }
+
+      .act1-body { margin-top:24px; font-size:38px; line-height:1.38; font-weight:400;
+        color:#f5f6f4; letter-spacing:-.005em; }
+      .act1-body .ln { display:block; }
+      .act1-body b { font-weight:700; color:#fff; }
+
+      .act1-meta { margin-top:21px; font-size:24px; color:rgba(245,246,244,.5); }
+      .act1-meta b { color:rgba(245,246,244,.72); font-weight:700; }
+      .act1-row { display:flex; gap:90px; margin-top:21px; padding-top:19px;
+        border-top:1px solid rgba(255,255,255,.12); color:rgba(245,246,244,.5); font-size:24px; }
+      .act1-row .it { display:flex; align-items:center; gap:12px; }
+      .act1-row svg { width:29px; height:29px; fill:none; stroke:currentColor; stroke-width:1.8; }
+
+      /* card 1: the docking card — chrome starts hidden, line 1 is the carrier */
+      #act1-card1 { transform-origin:0 0; }
+      #act1-card1 .act1-head, #act1-rest,
+      #act1-card1 .act1-meta, #act1-card1 .act1-row { opacity:0; }
+
+      /* line 1 of card 1: mask wrapper + slider (the cold-open reveal) */
+      #act1-l1 { display:block; white-space:nowrap; }
+      #act1-l1mask { display:inline-block; overflow:hidden; vertical-align:top; }
+      #act1-l1slide { display:inline-block; }
+      #act1-but { display:inline-block; margin-left:9px; white-space:nowrap; }
+      #act1-but .bt { display:inline-block; opacity:0; }
+
+      /* card 3: the green selection highlight animates over the bold phrase —
+         hands the motif to act 2's zoom-flash highlights */
+      .hlwrap { position:relative; display:inline-block; padding:2px 10px 5px; margin-left:-10px; }
+      .hlwrap b, .hlwrap .hlt { position:relative; z-index:1; color:#fff; font-weight:400; }
+      .hlfill { position:absolute; inset:0; border-radius:8px;
+        background:linear-gradient(90deg, rgba(94,241,124,.42), rgba(79,214,255,.30));
+        transform:scaleX(0); transform-origin:0 50%; }
+
+      /* shimmer sweep (fires with each card's dimensional pop) */
+      .act1-shine { position:absolute; inset:0; border-radius:30px; overflow:hidden;
+        pointer-events:none; z-index:5; }
+      .act1-shine i { position:absolute; top:-25%; bottom:-25%; left:0; width:240px;
+        background:linear-gradient(105deg, transparent, rgba(255,255,255,.15), transparent);
+        transform:translateX(-320px); display:block; }
+
+      /* cards 2 + 3 start fully off-frame right */
+      #act1-card2, #act1-card3 { transform:translateX(1400px); }
+    </style>
+
+    <div data-hf-id="hf-inmk" id="act1-ground"></div>
+
+    <div data-hf-id="hf-7xn1" id="act1-push">
+      <div data-hf-id="hf-szjk" id="act1-bgwrap">
+        <div data-hf-id="hf-2qq0" id="act1-shade"></div>
+      </div>
+
+      <!-- CARD 1 · @founder_ish — the cold-open line IS this card's first body line -->
+      <div data-hf-id="hf-c1wj" class="act1-card" id="act1-card1">
+        <div data-hf-id="hf-k5nj" class="act1-glassbg" id="act1-c1glass"></div>
+        <div data-hf-id="hf-395t" class="act1-cardin">
+          <div data-hf-id="hf-m40w" class="act1-head">
+            <div data-hf-id="hf-33g3" class="act1-av" style="background:linear-gradient(135deg,#B8A08A,#7A6A58)"></div>
+            <div data-hf-id="hf-arw6" class="act1-who">
+              <div data-hf-id="hf-03l4" class="act1-name">Frustrated Founder</div>
+              <div data-hf-id="hf-gv98" class="act1-handle">@frustrated_founder</div>
+            </div>
+            <svg data-hf-id="hf-xv6r" class="act1-xlogo" viewBox="0 0 24 24"><path data-hf-id="hf-dexf" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
+          </div>
+          <div data-hf-id="hf-s5a6" class="act1-body">
+            <span data-hf-id="hf-l5l4" class="ln" id="act1-l1"><span data-hf-id="hf-exop" id="act1-l1mask"><span data-hf-id="hf-zkin" id="act1-l1slide">hyperframes is genuinely great</span></span><span data-hf-id="hf-xa4d" id="act1-but"><span data-hf-id="hf-tw9f" class="bt">b</span><span data-hf-id="hf-ljtu" class="bt">u</span><span data-hf-id="hf-l5it" class="bt">t</span></span></span>
+            <span data-hf-id="hf-affn" class="ln" id="act1-rest"><span data-hf-id="hf-v2qt" class="hlwrap"><span data-hf-id="hf-jpmf" class="hlfill" id="act1-hl1"></span><span data-hf-id="hf-3swv" class="hlt">it can't use my actual designs.</span></span> why would I ship a launch video that doesn't look like my product?</span>
+          </div>
+          <div data-hf-id="hf-ha9b" class="act1-meta">9:41 AM · Jun 30, 2026 · <b data-hf-id="hf-hpzt">214K</b> Views</div>
+          <div data-hf-id="hf-sq92" class="act1-row">
+            <span data-hf-id="hf-ko2o" class="it"><svg data-hf-id="hf-y9f5" viewBox="0 0 24 24"><path data-hf-id="hf-vo0j" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.4-4 8-9 8-1.5 0-2.9-.3-4.1-.9L3 20l1.1-3.6C3.4 15.1 3 13.6 3 12c0-4.4 4-8 9-8s9 3.6 9 8z" /></svg>482</span>
+            <span data-hf-id="hf-n2wp" class="it"><svg data-hf-id="hf-svtx" viewBox="0 0 24 24"><path data-hf-id="hf-nh2l" d="M17 2l4 4-4 4M21 6H8a4 4 0 0 0-4 4v1M7 22l-4-4 4-4M3 18h13a4 4 0 0 0 4-4v-1" /></svg>1.1K</span>
+            <span data-hf-id="hf-dw7f" class="it"><svg data-hf-id="hf-u2r0" viewBox="0 0 24 24"><path data-hf-id="hf-ujle" d="M12 21s-7.5-4.6-9.7-9C.8 8.9 2.4 5.6 5.5 5c1.9-.4 3.9.4 5 2 .6.9.9 1.6 1.5 1.6s.9-.7 1.5-1.6c1.1-1.6 3.1-2.4 5-2 3.1.6 4.7 3.9 3.2 7-2.2 4.4-9.7 9-9.7 9z" /></svg>6.4K</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2 · @designwilla -->
+      <div data-hf-id="hf-3e0o" class="act1-card" id="act1-card2">
+        <div data-hf-id="hf-ty9q" class="act1-glassbg" style="opacity:1;"></div>
+        <div data-hf-id="hf-tao4" class="act1-shine" id="act1-shine2"><i data-hf-id="hf-wt6k"></i></div>
+        <div data-hf-id="hf-6wc5" class="act1-cardin">
+          <div data-hf-id="hf-86vs" class="act1-head">
+            <div data-hf-id="hf-42ea" class="act1-av" style="background:linear-gradient(135deg,#6C8EA4,#3D5666)"></div>
+            <div data-hf-id="hf-zo62" class="act1-who">
+              <div data-hf-id="hf-tq46" class="act1-name">Design Perfectionist</div>
+              <div data-hf-id="hf-35b1" class="act1-handle">@pixel_perfectionist</div>
+            </div>
+            <svg data-hf-id="hf-mp7n" class="act1-xlogo" viewBox="0 0 24 24"><path data-hf-id="hf-8sab" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
+          </div>
+          <div data-hf-id="hf-8nlx" class="act1-body">
+            cool tool. still <span data-hf-id="hf-w2na" class="hlwrap"><span data-hf-id="hf-b2qa" class="hlfill" id="act1-hl2a"></span><span data-hf-id="hf-m2na" class="hlt">couldn't get it to</span></span> <span data-hf-id="hf-w9nw" class="hlwrap"><span data-hf-id="hf-b1qk" class="hlfill" id="act1-hl2"></span><span data-hf-id="hf-m7nl" class="hlt">match what we built in Figma</span></span> without babysitting every frame.
+          </div>
+          <div data-hf-id="hf-sqjc" class="act1-meta">2:17 PM · Jul 1, 2026 · <b data-hf-id="hf-gegi">88K</b> Views</div>
+          <div data-hf-id="hf-ktii" class="act1-row">
+            <span data-hf-id="hf-1or6" class="it"><svg data-hf-id="hf-tofz" viewBox="0 0 24 24"><path data-hf-id="hf-m5yr" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.4-4 8-9 8-1.5 0-2.9-.3-4.1-.9L3 20l1.1-3.6C3.4 15.1 3 13.6 3 12c0-4.4 4-8 9-8s9 3.6 9 8z" /></svg>167</span>
+            <span data-hf-id="hf-gkvw" class="it"><svg data-hf-id="hf-uvd2" viewBox="0 0 24 24"><path data-hf-id="hf-nwtd" d="M17 2l4 4-4 4M21 6H8a4 4 0 0 0-4 4v1M7 22l-4-4 4-4M3 18h13a4 4 0 0 0 4-4v-1" /></svg>640</span>
+            <span data-hf-id="hf-i3fu" class="it"><svg data-hf-id="hf-uh21" viewBox="0 0 24 24"><path data-hf-id="hf-y452" d="M12 21s-7.5-4.6-9.7-9C.8 8.9 2.4 5.6 5.5 5c1.9-.4 3.9.4 5 2 .6.9.9 1.6 1.5 1.6s.9-.7 1.5-1.6c1.1-1.6 3.1-2.4 5-2 3.1.6 4.7 3.9 3.2 7-2.2 4.4-9.7 9-9.7 9z" /></svg>2.9K</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3 · @shipfast_sam — the push-in target -->
+      <div data-hf-id="hf-45oh" class="act1-card" id="act1-card3">
+        <div data-hf-id="hf-7ijm" class="act1-glassbg" style="opacity:1;"></div>
+        <div data-hf-id="hf-8398" class="act1-cardin">
+          <div data-hf-id="hf-6zyp" class="act1-head">
+            <div data-hf-id="hf-b5jq" class="act1-av" style="background:linear-gradient(135deg,#A47C6C,#66463D)"></div>
+            <div data-hf-id="hf-02h3" class="act1-who">
+              <div data-hf-id="hf-06ka" class="act1-name">Motion Enjoyer</div>
+              <div data-hf-id="hf-s8z8" class="act1-handle">@motion_enjoyer</div>
+            </div>
+            <svg data-hf-id="hf-mawm" class="act1-xlogo" viewBox="0 0 24 24"><path data-hf-id="hf-8dza" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
+          </div>
+          <div data-hf-id="hf-tx6d" class="act1-body" id="act1-c3body">
+            <span data-hf-id="hf-l70w" class="ln">love the motion. hate that it keeps</span>
+            <span data-hf-id="hf-smev" class="ln"><span data-hf-id="hf-xqr5" class="hlwrap"><span data-hf-id="hf-gzsu" class="hlfill" id="act1-hl3"></span><b data-hf-id="hf-hr3w">inventing a UI we don't have.</b></span></span>
+          </div>
+          <div data-hf-id="hf-emso" class="act1-meta">11:03 PM · Jul 2, 2026 · <b data-hf-id="hf-iwve">301K</b> Views</div>
+          <div data-hf-id="hf-l7tj" class="act1-row">
+            <span data-hf-id="hf-9gyq" class="it"><svg data-hf-id="hf-vnz4" viewBox="0 0 24 24"><path data-hf-id="hf-lrnq" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.4-4 8-9 8-1.5 0-2.9-.3-4.1-.9L3 20l1.1-3.6C3.4 15.1 3 13.6 3 12c0-4.4 4-8 9-8s9 3.6 9 8z" /></svg>93</span>
+            <span data-hf-id="hf-aqnq" class="it"><svg data-hf-id="hf-v9o3" viewBox="0 0 24 24"><path data-hf-id="hf-p3qg" d="M17 2l4 4-4 4M21 6H8a4 4 0 0 0-4 4v1M7 22l-4-4 4-4M3 18h13a4 4 0 0 0 4-4v-1" /></svg>512</span>
+            <span data-hf-id="hf-pi59" class="it"><svg data-hf-id="hf-q3oq" viewBox="0 0 24 24"><path data-hf-id="hf-yig3" d="M12 21s-7.5-4.6-9.7-9C.8 8.9 2.4 5.6 5.5 5c1.9-.4 3.9.4 5 2 .6.9.9 1.6 1.5 1.6s.9-.7 1.5-1.6c1.1-1.6 3.1-2.4 5-2 3.1.6 4.7 3.9 3.2 7-2.2 4.4-9.7 9-9.7 9z" /></svg>2.2K</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var tl = gsap.timeline({ paused: true });
+
+        var card1 = "#act1-card1";
+        var K = 1.5; // cold-open zoom: 38px body renders at ~57px on the square frame
+
+        // Geometry stash — computed ONCE, at the first render of the t=0 set,
+        // while card 1 is still untransformed (function-based values evaluate
+        // lazily, after fonts are loaded; plain build-time measuring would race
+        // the font load and land the dock off-target).
+        var S = null;
+        function measure() {
+          var cardEl = document.getElementById("act1-card1");
+          var lineEl = document.getElementById("act1-l1mask");
+          var butEl  = document.getElementById("act1-but");
+          var c = cardEl.getBoundingClientRect();
+          var r = lineEl.getBoundingClientRect();
+          var pcx = r.left + r.width / 2;
+          var pcy = r.top + r.height / 2;
+          S = {
+            // cold pose 1: line A alone, centered at (960, 505)
+            dx1: 540 - c.left - K * (pcx - c.left),
+            dy1: 500 - c.top  - K * (pcy - c.top),
+            // cold pose 2: after "but" joins, recenter the grown line
+            butW: butEl.getBoundingClientRect().width + 9
+          };
+          S.dx2 = S.dx1 - (K * S.butW) / 2;
+          return S;
+        }
+
+        // ── 0.0 · cold pose (black void, card chrome hidden by CSS) ──
+        tl.set(card1, {
+          x: function () { return (S || measure()).dx1; },
+          y: function () { return S.dy1; },
+          scale: K,
+          transformOrigin: "0px 0px"
+        }, 0);
+
+        // ── 0.15–1.05 · "hyperframes is genuinely great" slides in R→L inside its mask ──
+        tl.fromTo("#act1-l1slide", { xPercent: 105 }, { xPercent: 0, duration: 0.9, ease: "power4.out" }, 0.15);
+        // breath: 1.05 → 1.8 (stillness before the turn)
+
+        // ── 1.8–2.6 · line nudges left as "but" cascades in R→L, letter by letter ──
+        tl.to(card1, { x: function () { return S.dx2; }, duration: 0.7, ease: "power2.inOut" }, 1.8);
+        tl.fromTo("#act1-but .bt",
+          { x: 130, autoAlpha: 0 },
+          { x: 0, autoAlpha: 1, duration: 0.55, ease: "power4.out", stagger: 0.14 }, 1.85);
+        // the turn lands: 2.6 → 3.5 hold
+
+        // ── 3.5–4.2 · THE DOCK — card travels to identity; the world fades up around the line ──
+        tl.to(card1, { x: 0, y: 0, scale: 1, duration: 0.7, ease: "power3.inOut" }, 3.5);
+        tl.fromTo("#act1-bgwrap", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.65, ease: "power2.out" }, 3.55);
+        // ground fades OUT to reveal the master-level pattern video beneath this act
+        tl.to("#act1-ground", { autoAlpha: 0, duration: 0.65, ease: "power2.out" }, 3.5);
+        tl.fromTo("#act1-c1glass", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.55, ease: "power2.out" }, 3.6);
+        tl.fromTo("#act1-card1 .act1-head",
+          { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "power3.out" }, 3.78);
+        tl.fromTo("#act1-rest",
+          { autoAlpha: 0, y: 14 },
+          { autoAlpha: 1, y: 0, duration: 0.5, ease: "power3.out" }, 3.88);
+        tl.fromTo("#act1-card1 .act1-meta",
+          { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: "power3.out" }, 4.05);
+        tl.fromTo("#act1-card1 .act1-row",
+          { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: "power3.out" }, 4.15);
+        // ── dimensional pop, card 1 (0.1s after the dock lands @4.2) ──
+        // steep cubic scale — fast, long smooth tail; rotation slower + smoother.
+        // right side leans toward camera (rotationY, per-element perspective — no 3D ancestors)
+        tl.set("#act1-card1", { transformPerspective: 1100, transformOrigin: "50% 50%" }, 4.29);
+        tl.to("#act1-card1", { scale: 1.045, duration: 0.9, ease: "expo.out" }, 4.3);
+        tl.to("#act1-card1", { rotationY: -7, rotationX: 6, duration: 1.35, ease: "power2.out" }, 4.3);
+        tl.fromTo("#act1-shine1 i", { x: -320 }, { x: 1340, duration: 0.85, ease: "power2.out" }, 4.32);
+
+        // read hold on card 1 (extended +0.5)
+
+        // ── 5.5 · card 1 → card 2 (cut-the-curve LEFT, ZERO OVERLAP:
+        //    outgoing is fully off-frame before the incoming shows) ──
+        tl.to("#act1-card1", { x: -1400, duration: 0.42, ease: "power4.in" }, 6.5);
+        tl.set("#act1-card1", { autoAlpha: 0 }, 6.93); // hard guarantee: gone (incl. shadow)
+        tl.fromTo("#act1-card2", { x: 1400 }, { x: 0, duration: 0.5, ease: "power4.out" }, 6.94);
+
+        // ── dimensional pop, card 2 (0.1s after it lands @6.94) ──
+        tl.set("#act1-card2", { transformPerspective: 1100, transformOrigin: "50% 50%" }, 7.53);
+        tl.to("#act1-card2", { scale: 1.045, duration: 0.9, ease: "expo.out" }, 7.54);
+        tl.to("#act1-card2", { rotationY: -7, rotationX: 6, duration: 1.35, ease: "power2.out" }, 7.54);
+        tl.fromTo("#act1-shine2 i", { x: -320 }, { x: 1340, duration: 0.85, ease: "power2.out" }, 7.56);
+
+        // read hold on card 2 (extended +0.5)
+
+        // ── 7.3 · card 2 → card 3, same grammar ──
+        tl.to("#act1-card2", { x: -1400, duration: 0.42, ease: "power4.in" }, 9.3);
+        tl.set("#act1-card2", { autoAlpha: 0 }, 9.73);
+        tl.fromTo("#act1-card3", { x: 1400 }, { x: 0, duration: 0.5, ease: "power4.out" }, 9.74);
+
+        // half-beat hold on card 3: 7.97 → 8.35
+
+        // ── 8.35 → 9.0 · PUSH IN (Z+, reserved vector) — into card 3's body text; Act 2 picks up mid-zoom ──
+        // highlight sweeps: each card's key phrase gets selected while it's on screen
+        tl.fromTo("#act1-hl1", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, 4.6);
+        // card 2: two-stage selection — "couldn't get it to" first, THEN the Figma phrase
+        tl.fromTo("#act1-hl2a", { scaleX: 0 }, { scaleX: 1, duration: 0.55, ease: "power2.inOut" }, 7.7);
+        tl.fromTo("#act1-hl2", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 8.35);
+        tl.fromTo("#act1-hl3", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power2.inOut" }, 10.35);
+
+        tl.set("#act1-card3", { transformOrigin: "50% 50%" }, 11.3);
+        tl.fromTo("#act1-card3", { scale: 1, autoAlpha: 1 },
+          { scale: 0.78, autoAlpha: 0, duration: 0.42, ease: "power3.in", immediateRender: false }, 11.35);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["act1"] = tl;
+      })();
+    </script>
+  </div>
+</template>
+</body>
+</html>

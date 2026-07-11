@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Act 7 · Never been easier</title></head>
+<body>
+<template>
+  <div data-hf-id="hf-1yxa" id="act7-root" data-composition-id="act7" data-width="1080" data-height="1080" data-duration="3" style="position:relative; width:1080px; height:1080px; overflow:hidden;">
+    <style>
+      @font-face { font-family:'ABC Solar Display'; src:url('assets/fonts/ABCSolarDisplay-Bold.woff2') format('woff2'); font-weight:700; font-display:block; }
+
+      #act7-shade { position:absolute; inset:0;
+        background:linear-gradient(180deg, rgba(0,0,0,.5), rgba(0,0,0,.25) 40%, rgba(0,0,0,.55)); }
+      .act7-ln { position:absolute; left:0; right:0; text-align:center; line-height:1.12;
+        overflow:hidden; padding-bottom:6px; }
+      .act7-ln .in { display:inline-block; font-family:'ABC Solar Display', sans-serif;
+        font-weight:700; font-size:88px; letter-spacing:-.015em; color:#fff;
+        white-space:nowrap; will-change:transform; }
+      #act7-l1 { top:390px; }
+      #act7-l2 { top:489px; }
+      #act7-l3 { top:588px; }
+      #act7-l3 .hl { color:#5ef17c; }
+    </style>
+
+    <div data-hf-id="hf-m762" id="act7-shade"></div>
+    <div data-hf-id="hf-zy3k" class="act7-ln" id="act7-l1"><span data-hf-id="hf-lp93" class="in">Making videos</span></div>
+    <div data-hf-id="hf-tw7i" class="act7-ln" id="act7-l2"><span data-hf-id="hf-yf9g" class="in">from your designs</span></div>
+    <div data-hf-id="hf-vp6l" class="act7-ln" id="act7-l3"><span data-hf-id="hf-s030" class="in">has <span data-hf-id="hf-21f8" class="hl">never been easier.</span></span></div>
+
+    <script>
+      (function () {
+        var tl = gsap.timeline({ paused: true });
+        // UPWARD MASK REVEAL — answers act 6's upward exit; each line rises into its mask
+        tl.fromTo("#act7-l1 .in", { yPercent: 112 }, { yPercent: 0, duration: 0.55, ease: "power4.out" }, 0);
+        tl.fromTo("#act7-l2 .in", { yPercent: 112 }, { yPercent: 0, duration: 0.6, ease: "power4.out" }, 0.1);
+        tl.fromTo("#act7-l3 .in", { yPercent: 112 }, { yPercent: 0, duration: 0.65, ease: "power4.out" }, 0.2);
+        // exit left, mid-motion at the cut
+        tl.to("#act7-l1", { x: -1250, duration: 0.34, ease: "power4.in" }, 2.66);
+        tl.to("#act7-l2", { x: -1250, duration: 0.32, ease: "power4.in" }, 2.68);
+        tl.to("#act7-l3", { x: -1250, duration: 0.3, ease: "power4.in" }, 2.7);
+        window.__timelines = window.__timelines || {};
+        window.__timelines["act7"] = tl;
+      })();
+    </script>
+  </div>
+</template>
+</body>
+</html>

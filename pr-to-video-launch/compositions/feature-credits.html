@@ -1,0 +1,154 @@
+<template>
+<div id="cr-root" data-composition-id="feature-credits" data-width="1920" data-height="1080" data-duration="2.6">
+
+  <div class="bg"></div>
+  <div class="title"><span class="ttext" id="cr-ttext"></span><span class="tcaret" id="cr-tcaret"></span></div>
+
+  <div class="player">
+    <div class="pwin">
+      <div class="pbar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="ptitle">hyperframes-pr-1635.mp4</span>
+        <span class="pscene">scene 6 / 6</span>
+      </div>
+      <div class="screen">
+        <div class="vstage">
+          <div class="cr">
+            <!-- group labels -->
+            <div class="glab" style="left:270px">COMMITTED</div>
+            <div class="glab" style="left:850px">REVIEWED</div>
+            <div class="glab ag" style="left:1560px">BUILT WITH</div>
+            <!-- connector -->
+            <div class="path" id="cr-path"></div>
+            <!-- chips: author | reviewers | agents -->
+            <div class="chip" style="left:270px"><div class="av" style="background-image:url(../assets/avatars/waterrr.png)"><span class="ring"></span></div><div class="nm">WaterrrForever</div><div class="rl">author · 11 commits</div></div>
+            <div class="chip" style="left:600px"><div class="av" style="background-image:url(../assets/avatars/jrusso1020.png)"><span class="ring"></span></div><div class="nm">jrusso1020</div><div class="rl">reviewer</div></div>
+            <div class="chip" style="left:850px"><div class="av" style="background-image:url(../assets/avatars/miguel.png)"><span class="ring"></span></div><div class="nm">miguel-heygen</div><div class="rl">reviewer</div></div>
+            <div class="chip" style="left:1100px"><div class="av" style="background-image:url(../assets/avatars/miga.png)"><span class="ring"></span></div><div class="nm">miga-heygen</div><div class="rl">reviewer</div></div>
+            <div class="chip" style="left:1450px"><div class="av ag" style="background-image:url(../assets/avatars/claude.png)"><span class="ring"></span></div><div class="nm">Claude</div><div class="rl ag">co-authored · 11</div></div>
+            <div class="chip" style="left:1680px"><div class="av ag" style="background-image:url(../assets/avatars/codex.png)"><span class="ring"></span></div><div class="nm">Codex</div><div class="rl ag">pair</div></div>
+            <!-- sign-off -->
+            <div class="signoff" id="cr-sign">PR #1635 · heygen-com/hyperframes<span class="rdy">✓ ready to merge</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="pctrl">
+        <svg class="pplay" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z" fill="#D97757"/></svg>
+        <div class="ptrack"><i class="pfill" id="cr-pfill"></i><span class="pknob" id="cr-pknob"></span></div>
+        <span class="ptime" id="cr-ptime">0:30 / 0:32</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cap" id="cr-cap"><span class="cl1">shipped by 4 humans + 2 agents · <b>Claude &amp; Codex</b></span></div>
+
+<style>
+  @font-face{font-family:'CodeBlackHF';font-weight:400;font-display:block;src:url(../fonts/ArchivoBlack-fs.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:500;font-display:block;src:url(../fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:600;font-display:block;src:url(../fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:400;font-display:block;src:url(../fonts/SplineSansMono-normal-400-latin-53329b.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:500;font-display:block;src:url(../fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');}
+
+  #cr-root{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;font-family:'Hanken Grotesk',system-ui,sans-serif;background:#F0EFE9;}
+  #cr-root .bg{position:absolute;inset:0;background:#F0EFE9;z-index:0;}
+  #cr-root .dot{width:1.0cqw;height:1.0cqw;border-radius:50%;display:block;flex:0 0 auto;}
+  #cr-root .dot.r{background:#FF5F57;}#cr-root .dot.y{background:#FEBC2E;}#cr-root .dot.g{background:#28C840;}
+
+  #cr-root .title{position:absolute;top:5cqh;left:0;right:0;z-index:5;display:flex;align-items:center;justify-content:center;gap:.45cqw;height:5.5cqw;}
+  #cr-root .ttext{font-family:'CodeBlackHF','Hanken Grotesk',system-ui,sans-serif;font-size:4.6cqw;color:#1D1F1F;line-height:1;letter-spacing:.02cqw;}
+  #cr-root .tcaret{display:inline-block;width:.34cqw;height:3.9cqw;background:#D97757;border-radius:.07cqw;}
+
+  #cr-root .player{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;}
+  #cr-root .pwin{position:relative;width:64cqw;margin-top:6cqh;background:#1D1F1F;border-radius:1.2cqw;overflow:hidden;box-shadow:0 2.4cqw 7cqw -2cqw rgba(20,20,18,.5);}
+  #cr-root .pbar{display:flex;align-items:center;gap:.62cqw;background:#1D1F1F;padding:1.05cqw 1.5cqw;}
+  #cr-root .ptitle{margin-left:.9cqw;font-family:'Spline Sans Mono',monospace;font-size:1.05cqw;color:#cfcabd;}
+  #cr-root .pscene{margin-left:auto;font-family:'Spline Sans Mono',monospace;font-size:.95cqw;color:#8C8B83;}
+  #cr-root .screen{position:relative;width:61cqw;height:34.3cqw;margin:0 1.5cqw;border-radius:.4cqw;overflow:hidden;background:#FAF9F5;}
+  #cr-root .vstage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform:scale(0.61);transform-origin:0 0;}
+  #cr-root .pctrl{display:flex;align-items:center;gap:1.2cqw;padding:1.2cqw 1.5cqw 1.4cqw;}
+  #cr-root .pplay{width:1.5cqw;height:1.5cqw;flex:0 0 auto;}
+  #cr-root .ptrack{position:relative;flex:1;height:.34cqw;background:rgba(255,255,255,.12);border-radius:9999px;}
+  #cr-root .pfill{position:absolute;left:0;top:0;height:100%;width:100%;background:#D97757;border-radius:9999px;transform:scaleX(0.86);transform-origin:left;}
+  #cr-root .pknob{position:absolute;left:86%;top:50%;width:1.0cqw;height:1.0cqw;margin:-.5cqw 0 0 -.5cqw;border-radius:50%;background:#F0EFE9;box-shadow:0 0 0 .2cqw rgba(217,119,87,.35);}
+  #cr-root .ptime{font-family:'Spline Sans Mono',monospace;font-size:1.0cqw;color:#9b988f;flex:0 0 auto;min-width:9cqw;text-align:right;}
+
+  /* ── the credits roster (inside the screen, pr-1635 output palette) ── */
+  #cr-root .cr{position:absolute;inset:0;background:#FAF9F5;font-family:'Spline Sans Mono',monospace;color:#141413;}
+  #cr-root .cr .glab{position:absolute;top:300px;transform:translateX(-50%);font-size:22px;font-weight:500;letter-spacing:3px;color:#8C8B83;opacity:0;white-space:nowrap;}
+  #cr-root .cr .glab.ag{color:#CC785C;}
+  #cr-root .cr .path{position:absolute;left:270px;top:438px;width:1410px;height:0;border-top:2px dashed rgba(204,120,92,.4);transform:scaleX(0);transform-origin:left center;}
+  #cr-root .cr .chip{position:absolute;top:362px;width:320px;margin-left:-160px;display:flex;flex-direction:column;align-items:center;}
+  #cr-root .cr .av{position:relative;width:150px;height:150px;border-radius:50%;background-size:cover;background-position:center;background-color:#e7e2d6;box-shadow:0 0 0 3px rgba(20,20,19,.14),0 12px 30px -12px rgba(20,20,19,.3);opacity:0;}
+  #cr-root .cr .av.ag{box-shadow:0 0 0 4px #CC785C,0 12px 30px -12px rgba(204,120,92,.4);}
+  #cr-root .cr .av .ring{position:absolute;inset:-7px;border-radius:50%;border:4px solid #CC785C;opacity:0;}
+  #cr-root .cr .nm{margin-top:22px;font-weight:500;font-size:24px;color:#1D1F1F;white-space:nowrap;opacity:0;}
+  #cr-root .cr .rl{margin-top:7px;font-size:20px;color:#8C8B83;white-space:nowrap;opacity:0;}
+  #cr-root .cr .rl.ag{color:#bf7a5e;}
+  #cr-root .cr .signoff{position:absolute;left:50%;transform:translateX(-50%);top:830px;font-size:24px;color:#8C8B83;white-space:nowrap;opacity:0;}
+  #cr-root .cr .signoff .rdy{color:#4F9D5B;margin-left:28px;}
+
+  #cr-root .cap{display:none;position:absolute;bottom:5.5cqh;left:0;right:0;text-align:center;z-index:4;}
+  #cr-root .cap span{font-family:'Spline Sans Mono',monospace;font-size:1.2cqw;font-weight:500;color:#3a392f;opacity:0;}
+  #cr-root .cap b{color:#D97757;font-weight:500;}
+</style>
+
+<script>
+(function(){
+  const R=(document.currentScript&&document.currentScript.closest('#cr-root'))||document.querySelector('#cr-root');
+  if(!R||!window.gsap) return;
+  const q=(s)=>R.querySelector(s), qa=(s)=>Array.from(R.querySelectorAll(s));
+  window.__timelines=window.__timelines||{};
+  const tl=gsap.timeline({paused:true});
+  const inner=gsap.timeline();
+
+  const avs=qa('.cr .av'), rings=qa('.cr .ring'), nms=qa('.cr .nm'), rls=qa('.cr .rl');
+
+  gsap.set(q('.pwin'),{opacity:0,scale:.62,y:10});
+  gsap.set(q('#cr-pfill'),{scaleX:0.86});
+  gsap.set(q('#cr-pknob'),{left:'86%'});
+  gsap.set(q('.cl1'),{opacity:0});
+  gsap.set(avs,{scale:.55,opacity:0,transformOrigin:'50% 50%'});
+  gsap.set(rings,{scale:.5,opacity:0});
+  gsap.set([nms,rls].flat(),{opacity:0,y:10});
+  gsap.set(qa('.cr .glab'),{opacity:0,y:8});
+  gsap.set(q('#cr-path'),{scaleX:0});
+  gsap.set(q('#cr-sign'),{opacity:0,y:8});
+
+  // TITLE typewriter
+  const TITLE="SHOW YOUR CONTRIBUTOR";
+  const tt=q('#cr-ttext'), tc=q('#cr-tcaret');
+  tt.textContent=''; gsap.set(tc,{opacity:1});
+  const o={n:0};
+  inner.to(o,{n:TITLE.length,duration:1.0,ease:'none',onUpdate(){tt.textContent=TITLE.slice(0,Math.round(o.n));}},0.3);
+  inner.to(tc,{opacity:0,duration:.4,ease:'steps(1)',repeat:7,yoyo:true},0.3);
+  inner.to(tc,{opacity:0,duration:.3,ease:'power2.in'},6.1);
+
+  // player opens
+  inner.fromTo(q('.pwin'),{opacity:0,scale:.62,y:10},{opacity:1,scale:1,y:0,duration:.6,ease:'power3.out'},0.15);
+  inner.to(q('.cl1'),{opacity:1,duration:.4},1.7);
+  // scrubber nudges to the end (scene 6/6 of 0:32)
+  inner.to(q('#cr-pfill'),{scaleX:0.98,duration:3.4,ease:'none'},1.9);
+  inner.to(q('#cr-pknob'),{left:'98%',duration:3.4,ease:'none'},1.9);
+  const t2={t:30};
+  inner.to(t2,{t:32,duration:3.4,ease:'none',onUpdate(){q('#cr-ptime').textContent='0:'+String(Math.floor(t2.t)).padStart(2,'0')+' / 0:32';}},1.9);
+
+  // ════════ the roster plays inside the screen ════════
+  inner.to(qa('.cr .glab'),{opacity:1,y:0,duration:.4,stagger:.12,ease:'power3.out'},1.95);
+  inner.to(q('#cr-path'),{scaleX:1,duration:1.2,ease:'power2.inOut'},2.0);
+  avs.forEach((av,i)=>{
+    const t=2.05+i*0.16;
+    inner.to(av,{scale:1,opacity:1,duration:.45,ease:'back.out(1.7)'},t);
+    inner.fromTo(rings[i],{scale:.5,opacity:.6},{scale:1.35,opacity:0,duration:.7,ease:'power2.out'},t);
+    inner.to(nms[i],{opacity:1,y:0,duration:.35,ease:'power3.out'},t+.14);
+    inner.to(rls[i],{opacity:1,y:0,duration:.35,ease:'power3.out'},t+.24);
+  });
+  inner.to(q('#cr-sign'),{opacity:1,y:0,duration:.5,ease:'power3.out'},3.9);
+  inner.to({},{duration:.3},6.3);
+
+  inner.timeScale(2.54);   // compressed: ~6.6s authored → ~2.6s
+  tl.add(inner,0);
+  window.__timelines["feature-credits"]=tl;
+})();
+</script>
+</div>
+</template>

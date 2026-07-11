@@ -9,9 +9,11 @@ Source for HeyGen's HyperFrames launch videos. Each subdirectory is a standalone
 | HF HeyGen × Stripe | [`HF-heygen-stripe/`](./HF-heygen-stripe) | [Watch](https://hyperframes.dev/p/ece1b109-6ae9-44b9-8c8a-4f498f7e15bb) |
 | Claude paper launch | [`claude-paper-launch/`](./claude-paper-launch) | [Watch](https://hyperframes.dev/p/c78e47ad-ca68-40d5-9cea-311e3e41c6ad) |
 | Cloud Render launch | [`cloud-render-launch/`](./cloud-render-launch) | [Watch](https://hyperframes.dev/p/c1277090-93ff-4ae7-83dd-ca8edaa8f649) |
+| Figma integration launch | [`figma-launch/`](./figma-launch) | [Watch](https://hyperframes.dev/p/6e5a4b6a-4a3a-476f-b99b-d40b398e5348) |
 | Frame.md storyboard launch | [`frame-md-launch-storyboard/`](./frame-md-launch-storyboard) | [Watch](https://hyperframes.dev/p/50fa17c1-a655-43a5-b432-97348c187f1a) |
 | HyperFrames launch | [`hyperframes-launch/`](./hyperframes-launch) | [Watch](https://hyperframes.dev/p/fd42aee4-146f-49a6-93f6-73f8033c64b2) |
 | Inspector launch | [`inspector-launch/`](./inspector-launch) | [Watch](https://hyperframes.dev/p/0ebdb1bf-d831-4abd-993d-0132ab181107) |
+| PR-to-video launch | [`pr-to-video-launch/`](./pr-to-video-launch) | [Watch](https://hyperframes.dev/p/e10d7855-1f99-4010-a475-af1c5d0cfe42) |
 | SFX music launch | [`sfx-music-launch/`](./sfx-music-launch) | [Watch](https://hyperframes.dev/p/116d9116-46d2-49e6-8b43-4345f4d6e83c) |
 | SpaceX launch | [`spacex-launch/`](./spacex-launch) | [Watch](https://hyperframes.dev/p/799113c4-12e7-4331-9843-8e58829af06f) |
 | Texture launch video | [`texture-launch-video/`](./texture-launch-video) | [Watch](https://hyperframes.dev/p/dfba472f-abed-4b91-89c1-7381e12c0c92) |

@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Figma → HyperFrames Launch — Contact Sheet v2 (HeyGen devs aesthetic)</title>
+  <style>
+    @font-face{font-family:'ABC Solar Display';font-weight:700;src:url(fonts/ABCSolarDisplay-Bold.woff2) format('woff2');}
+    @font-face{font-family:'TT Norms Pro';font-weight:400;src:url(fonts/TT_Norms_Pro_Normal.woff2) format('woff2');}
+    @font-face{font-family:'TT Norms Pro';font-weight:500;src:url(fonts/TT_Norms_Pro_Medium.woff2) format('woff2');}
+    @font-face{font-family:'TT Norms Pro';font-weight:700;src:url(fonts/TT_Norms_Pro_Bold.woff2) format('woff2');}
+    @font-face{font-family:'TT Norms Mono';font-weight:400;src:url(fonts/tt_norms_pro_mono_regular-webfont.woff2) format('woff2');}
+
+    :root {
+      --bg:#141414; --line:rgba(255,255,255,.12); --muted:#858585;
+      /* film atoms (HeyGen devs slide system) */
+      --ink:#f5f6f4; --ink-2:rgba(245,246,244,.72); --ink-3:rgba(245,246,244,.5);
+      --green:#5ef17c; --cyan:#4fd6ff; --pink:#e9a0f0; --chip-bg:rgba(10,12,11,.78);
+      --glass-line:rgba(190,255,205,.32);
+      /* "their app" (seedance-apps-flow / HeyGen product, light) */
+      --hg-ink:#232833; --hg-bg:#FBFAF9; --hg-panel:#F1F0EE; --hg-blue:#DEF0F8; --hg-blue2:#EDF6FB;
+      /* the BAD recreation drift */
+      --bad-teal:#17A2A2; --bad-purple:#6A4FD8; --bad-bg:#F2FBFA;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:#f2f2f2;
+      font-family:"TT Norms Pro", Inter, ui-sans-serif, system-ui, sans-serif; }
+
+    .sheet { padding:28px 32px 44px; }
+    .header { display:flex; justify-content:space-between; align-items:end; gap:24px;
+      margin-bottom:24px; border-bottom:1px solid var(--line); padding-bottom:18px; }
+    h1 { margin:0; font-size:28px; line-height:1; font-weight:700; font-family:'ABC Solar Display',sans-serif; letter-spacing:-.01em; }
+    .dek { margin:8px 0 0; max-width:920px; color:#bcbcbc; font-size:14px; line-height:1.45; }
+    .tag { color:#0c0e0d; background:var(--green); border-radius:999px; padding:8px 12px;
+      font-size:12px; font-weight:700; white-space:nowrap; }
+    .actbar { margin:26px 0 12px; display:flex; align-items:baseline; gap:12px;
+      color:#e6e6e6; font-size:15px; font-weight:700; }
+    .actbar::before { content:""; width:26px; height:2px; background:var(--green); align-self:center; }
+    .actbar span { color:var(--muted); font-weight:400; font-size:12px; }
+
+    .grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:22px; }
+    .cell { min-width:0; }
+    .label { display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+      margin-bottom:8px; color:var(--muted); font-size:13px; font-weight:700; }
+    .label span:last-child { color:#c8c8c8; font-weight:400; font-size:11px; text-align:right; }
+    .note { margin:9px 0 0; color:#a8a8a8; font-size:12px; line-height:1.35; }
+    .note b { color:#d8d8d8; }
+    .ttag { display:inline-block; margin-top:7px; padding:2px 8px; border-radius:5px;
+      background:rgba(94,241,124,.1); border:1px solid rgba(94,241,124,.28); color:#8fe8a4;
+      font-family:"TT Norms Mono", monospace; font-size:10.5px; letter-spacing:.04em; }
+
+    .frame { position:relative; aspect-ratio:16/9; overflow:hidden;
+      background:#000; border:1px solid rgba(255,255,255,.16);
+      container-type:inline-size; color:var(--ink); }
+    .frame .bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .frame .bg.flip { transform:scaleX(-1); }
+    .frame .shade { position:absolute; inset:0;
+      background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.15) 40%,rgba(0,0,0,.5)); }
+
+    .eyebrow { position:absolute; left:7.3cqw; top:8cqw; display:flex; align-items:center; gap:1cqw;
+      font-family:'TT Norms Mono',monospace; font-size:1.35cqw; letter-spacing:.22em;
+      text-transform:uppercase; color:var(--green); z-index:5; }
+    .eyebrow::before { content:""; width:2.3cqw; height:2px; background:var(--green); }
+
+    /* ── glass card ─────────────────────────────────────────────── */
+    .glass { position:relative; border-radius:2cqw; border:1px solid var(--glass-line);
+      background:linear-gradient(120deg,rgba(255,255,255,.10),rgba(255,255,255,.045) 45%,rgba(180,240,200,.06));
+      backdrop-filter:blur(14px) saturate(1.15); -webkit-backdrop-filter:blur(14px) saturate(1.15);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.22), 0 1.6cqw 3.6cqw rgba(0,0,0,.45); }
+
+    /* ── X post card (dark mode, glass) ─────────────────────────── */
+    .xpost { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+      width:60cqw; padding:2.8cqw 3.2cqw 2.2cqw; z-index:4; }
+    .xhead { display:flex; align-items:center; gap:1.6cqw; }
+    .xav { width:5cqw; height:5cqw; border-radius:50%; flex:0 0 auto; }
+    .xwho { flex:1; min-width:0; line-height:1.15; }
+    .xname { font-weight:700; font-size:1.9cqw; color:#fff; }
+    .xhandle { font-size:1.7cqw; color:var(--ink-3); }
+    .xlogo { width:2.5cqw; height:2.5cqw; fill:#fff; flex:0 0 auto; opacity:.9; }
+    .xbody { margin-top:1.6cqw; font-size:2.45cqw; line-height:1.38; color:var(--ink); letter-spacing:-.005em; font-weight:400; }
+    .xbody b { font-weight:700; color:#fff; }
+    .xmeta { margin-top:1.7cqw; font-size:1.55cqw; color:var(--ink-3); }
+    .xmeta b { color:var(--ink-2); }
+    .xrow { display:flex; gap:6.5cqw; margin-top:1.5cqw; padding-top:1.4cqw;
+      border-top:1px solid rgba(255,255,255,.12); color:var(--ink-3); font-size:1.6cqw; }
+    .xrow svg { width:2cqw; height:2cqw; fill:none; stroke:currentColor; stroke-width:1.8;
+      vertical-align:-.35cqw; margin-right:.6cqw; }
+
+    /* ── cold-open type beats ────────────────────────────────────── */
+    .coldopen { position:absolute; inset:0; background:#000; display:grid; place-items:center; }
+    .coldline { font-size:4.7cqw; font-weight:500; color:#fff; letter-spacing:-.01em; white-space:nowrap; }
+    .coldline .but { display:inline-block; }
+    .coldline .but i { font-style:normal; display:inline-block; }
+
+    /* ── zoom-flash frames = the REAL x-post card, zoomed ────────── */
+    .xzoom { position:absolute; inset:0; }
+    .xzoom .bgz { position:absolute; inset:-8%; width:116%; height:116%; object-fit:cover;
+      filter:blur(1.6cqw) brightness(.85) saturate(1.1); }
+    .xzoom .bgz.flip { transform:scaleX(-1); }
+    .xzoom .zpanel { position:absolute; inset:0;
+      background:linear-gradient(120deg,rgba(255,255,255,.14),rgba(255,255,255,.06) 45%,rgba(180,240,200,.08));
+      box-shadow:inset 0 2px 0 rgba(255,255,255,.18); }
+    .zbody { position:absolute; white-space:nowrap; font-size:6.4cqw; font-weight:400;
+      color:var(--ink); letter-spacing:-.008em; line-height:1.42; }
+    .hlbox { background:linear-gradient(90deg, rgba(94,241,124,.42), rgba(79,214,255,.30));
+      border-radius:.9cqw; padding:.1cqw 1cqw .35cqw; color:#fff; }
+    .zmeta { position:absolute; white-space:nowrap; font-size:4.2cqw; color:var(--ink-3); }
+    .zmeta b { color:var(--ink-2); }
+    .zrow { position:absolute; white-space:nowrap; display:flex; gap:16cqw;
+      color:var(--ink-3); font-size:4.4cqw; align-items:center; }
+    .zrow svg { width:5.2cqw; height:5.2cqw; fill:none; stroke:currentColor; stroke-width:1.8;
+      vertical-align:-1cqw; margin-right:1.6cqw; }
+
+    /* ── ABC Solar display beats ─────────────────────────────────── */
+    .h1beat { position:absolute; inset:0; display:grid; place-items:center; text-align:center;
+      font-family:'ABC Solar Display',sans-serif; font-weight:700;
+      font-size:5.6cqw; line-height:1.06; letter-spacing:-.015em; color:#fff; padding:0 8cqw; z-index:4; }
+    .h1beat .hl { color:var(--green); }
+    .h1word { position:absolute; inset:0; display:grid; place-items:center;
+      font-family:'ABC Solar Display',sans-serif; font-weight:700; font-size:13cqw;
+      letter-spacing:-.015em; color:#fff; z-index:4; }
+    .h1word .dot { color:var(--green); }
+
+    /* ── agent terminal = glass window, dark mono chips ──────────── */
+    .twin { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+      width:80cqw; height:76cqh; padding:2cqw 2.4cqw; color:var(--ink-2);
+      font-size:2cqw; line-height:1.5; z-index:4; }
+    .tdots { display:flex; gap:.9cqw; margin-bottom:1.6cqw; align-items:center; }
+    .tdots i { width:1.25cqw; height:1.25cqw; border-radius:50%; background:rgba(255,255,255,.25); }
+    .tdots .ttl { margin-left:1.2cqw; font-family:'TT Norms Mono',monospace; font-size:1.35cqw;
+      letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); }
+    .tuser { color:#fff; font-weight:500; }
+    .tuser .pfx { color:var(--green); font-family:'TT Norms Mono',monospace; }
+    .tagent { color:var(--ink-2); margin-top:1.2cqw; }
+    .tagent .aname { color:var(--green); }
+    .tmono { font-family:'TT Norms Mono',monospace; font-size:1.75cqw; }
+    .tfind { font-family:'TT Norms Mono',monospace; font-size:1.68cqw; line-height:1.8; color:var(--green); }
+    .tfind .k { color:var(--ink-3); }
+    .tfind .hex { color:var(--cyan); }
+    .tfind .pk { color:var(--pink); }
+    .think { display:inline-block; color:var(--ink-3); font-family:'TT Norms Mono',monospace; font-size:1.7cqw; }
+    .think i { display:inline-block; width:.8cqw; height:.8cqw; border-radius:50%;
+      background:var(--green); margin-right:.5cqw; opacity:.4; }
+    .composer { position:absolute; left:2.4cqw; right:2.4cqw; bottom:1.9cqw;
+      background:var(--chip-bg); border-radius:1.1cqw; padding:1.4cqw 1.7cqw; color:var(--ink);
+      font-size:1.9cqw; }
+    .composer .ph { opacity:.4; }
+    .caret { display:inline-block; width:.22cqw; height:2.1cqw; background:var(--green);
+      vertical-align:-.4cqw; margin-left:.2cqw; }
+    .thumbrow { display:flex; gap:1.1cqw; margin-bottom:1.2cqw; }
+    .thumb { width:8.4cqw; aspect-ratio:16/10; border-radius:.7cqw; overflow:hidden;
+      border:1px solid rgba(255,255,255,.2); position:relative; background:var(--hg-bg); }
+    .thumb .tb-side { position:absolute; left:0; top:0; bottom:0; width:18%; background:var(--hg-ink); }
+    .thumb .tb-blk { position:absolute; border-radius:.35cqw; background:var(--hg-blue); }
+    .link { color:var(--cyan); text-decoration:underline; font-family:'TT Norms Mono',monospace; }
+    .chip { display:inline-block; padding:.15cqw 1cqw .25cqw; border-radius:.6cqw;
+      background:var(--chip-bg); border:1px solid rgba(94,241,124,.4);
+      color:var(--green); font-family:'TT Norms Mono',monospace; font-size:1.75cqw; }
+
+    /* ── mini app screens ("their app" — HeyGen product, light) ──── */
+    .appmini { position:absolute; border-radius:1.3cqw; overflow:hidden;
+      background:var(--hg-bg); border:1px solid rgba(255,255,255,.25);
+      font-family:'TT Norms Pro',sans-serif;
+      box-shadow:0 1.6cqw 3.6cqw rgba(0,0,0,.55); }
+    .am-side { position:absolute; left:0; top:0; bottom:0; width:14%; background:var(--hg-ink); }
+    .am-side i { display:block; width:44%; height:4.5%; margin:14% auto 0; border-radius:99px; background:rgba(255,255,255,.22); }
+    .am-body { position:absolute; left:14%; right:0; top:0; bottom:0; padding:6% 7%; }
+    .am-h { font-family:'ABC Solar Display',sans-serif; font-weight:700; color:var(--hg-ink); font-size:2.3cqw; letter-spacing:-.02em; }
+    .am-sub { color:#8A8F99; font-size:1.5cqw; margin-top:.6cqw; }
+    .am-steps { display:flex; gap:1cqw; margin-top:1.6cqw; }
+    .am-steps i { flex:1; height:1cqw; border-radius:99px; background:#E7E6E2; }
+    .am-steps i.on { background:var(--hg-ink); }
+    .am-orb { position:absolute; right:8%; bottom:10%; width:34%; aspect-ratio:1;
+      border-radius:50%; background:url(assets/orb-bg.png) center/cover; }
+    .am-cta { position:absolute; left:9.5%; bottom:12%; padding:1.1cqw 2.4cqw; border-radius:1cqw;
+      background:var(--hg-ink); color:#fff; font-weight:500; font-size:1.6cqw; }
+    /* the BAD drift */
+    .appmini.bad { background:var(--bad-bg); border-radius:0; font-family:Arial, Helvetica, sans-serif; }
+    .appmini.bad .am-side { background:var(--bad-purple); }
+    .appmini.bad .am-h { color:var(--bad-teal); font-family:Arial, Helvetica, sans-serif; }
+    .appmini.bad .am-steps i.on { background:var(--bad-teal); }
+    .appmini.bad .am-orb { background:linear-gradient(135deg, var(--bad-teal), var(--bad-purple)); border-radius:8%; }
+    .appmini.bad .am-cta { background:var(--bad-teal); border-radius:0; font-weight:700; }
+    .badge { position:absolute; z-index:12; padding:.5cqw 1.4cqw; border-radius:.6cqw;
+      font-family:'TT Norms Mono',monospace; font-size:1.5cqw; letter-spacing:.05em; }
+    .badge.no  { background:rgba(60,18,18,.85); color:#f0a3a3; border:1px solid rgba(240,120,120,.4); }
+    .badge.yes { background:rgba(12,42,20,.85); color:var(--green); border:1px solid rgba(94,241,124,.4); }
+
+    /* ── cursor (white for dark ground) ──────────────────────────── */
+    .cur { position:absolute; width:7cqw; height:7cqw; z-index:9;
+      filter:drop-shadow(0 2px 4px rgba(0,0,0,.55)); }
+
+    /* ── payoff montage placeholders ─────────────────────────────── */
+    .recph { position:absolute; inset:0; background:#0b0c0c; display:grid; place-items:center; }
+    .recph .box { text-align:center; color:var(--ink-3); }
+    .recph .box .t1 { font-family:'TT Norms Mono',monospace; font-size:2.3cqw; color:var(--ink-2);
+      border:1.5px dashed rgba(94,241,124,.35); border-radius:1.2cqw; padding:2.2cqw 3.4cqw; line-height:1.6; }
+    .recph .box .t2 { margin-top:1.5cqw; font-size:1.7cqw; }
+    .recdot { position:absolute; left:3cqw; top:2.6cqw; display:flex; align-items:center; gap:1cqw;
+      color:#ff6b6b; font-family:'TT Norms Mono',monospace; font-size:1.85cqw; }
+    .recdot i { width:1.4cqw; height:1.4cqw; border-radius:50%; background:#ff6b6b; }
+    .promptflash { position:absolute; left:50%; bottom:6.5cqw; transform:translateX(-50%);
+      background:var(--chip-bg); border:1px solid rgba(255,255,255,.14); color:var(--ink);
+      border-radius:1cqw; padding:1.2cqw 2.1cqw; font-size:2cqw; white-space:nowrap;
+      box-shadow:0 1cqw 2.4cqw rgba(0,0,0,.6); }
+    .promptflash .pfx { color:var(--green); font-family:'TT Norms Mono',monospace; }
+
+    /* ── thesis / outro ──────────────────────────────────────────── */
+    .thesis { position:absolute; inset:0; display:grid; place-items:center; text-align:center; z-index:4; }
+    .thesis .t1 { font-family:'ABC Solar Display',sans-serif; font-weight:700; font-size:6.2cqw;
+      letter-spacing:-.015em; color:#fff; line-height:1.04; }
+    .thesis .t1 .hl { color:var(--green); }
+    .thesis .t2 { margin-top:1.8cqw; font-size:2.4cqw; font-weight:400; color:var(--ink-2); }
+    .bigchip { display:inline-block; margin-top:3cqw; padding:1.2cqw 2.8cqw; border-radius:1.1cqw;
+      background:var(--chip-bg); border:1px solid rgba(94,241,124,.4);
+      color:var(--green); font-family:'TT Norms Mono',monospace; font-size:3cqw; }
+    .lockup img { height:4.6cqw; display:block; margin:0 auto; filter:brightness(0) invert(1); }
+    .lockup .by { margin-top:2cqw; display:flex; align-items:center; justify-content:center; gap:1.2cqw;
+      color:var(--ink-3); font-size:1.6cqw; }
+    .lockup .by img { height:2.4cqw; margin:0; opacity:.85; }
+  </style>
+</head>
+<body>
+<div class="sheet">
+  <div class="header">
+    <div>
+      <h1>Figma → HyperFrames Launch — Contact Sheet v2</h1>
+      <p class="dek">Restyled to the <b>HeyGen-for-Developers slide system</b> (2026-07-08 deck): black
+        photographic frames + shade, glass cards, ABC Solar Display headlines, TT Norms Pro/Mono,
+        green <b style="color:#5ef17c">#5ef17c</b> / cyan / pink accents. Real brand fonts throughout —
+        including the app minis. Silent, ~49s. "Their app" = seedance-apps-flow. NO FAIL BEAT — the chat is one
+        clean /figma run with good outputs only. Act REC frames = placeholders for Jake's
+        Figma recordings.</p>
+    </div>
+    <div class="tag">1920×1080 · ~49s · 7 acts</div>
+  </div>
+
+  <!-- ═══ ACT 1 · COLD OPEN + HERO TWEETS ═══ -->
+  <div class="actbar">Act 1 · Cold open + hero tweets <span>0.0–9.0s · type beat becomes tweet 1 · leftward current</span></div>
+  <div class="grid">
+
+    <div class="cell">
+      <div class="label"><span>00a · COLD OPEN — THE LINE</span><span>sec-coldopen · 0.0–1.8s</span></div>
+      <div class="frame">
+        <div class="coldopen">
+          <div class="coldline">hyperframes is genuinely great</div>
+        </div>
+      </div>
+      <p class="note"><b>Mask-reveals right-to-left</b> (wipe unveils the line toward the left),
+        lands centered on pure black, holds a breath. Reads as a compliment… for now.</p>
+      <span class="ttag">mask reveal R→L · black void</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>00b · "…but"</span><span>sec-coldopen · 1.8–3.5s</span></div>
+      <div class="frame">
+        <div class="coldopen">
+          <div class="coldline">hyperframes is genuinely great <span class="but">bu<i style="opacity:.45; transform:translateX(1.2cqw);">t</i></span></div>
+        </div>
+      </div>
+      <p class="note">The line <b>shifts smoothly left</b> (nudge curve) to make room while
+        <b>"but" slides in letter-by-letter, right-to-left</b> from frame right (shown mid-flight:
+        last letter still traveling). The turn lands in one word.</p>
+      <span class="ttag">nudge left + letter cascade R→L</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>00c · SEAM NOTE</span><span>cold open → tweet 1</span></div>
+      <div class="frame" style="background:#1d1d1d; border-style:dashed;">
+        <div style="position:absolute; inset:0; display:grid; place-items:center; text-align:center; color:#5a5a5a; font-size:2.3cqw; font-weight:500; padding:0 6cqw; line-height:1.5;">the line IS tweet 1's opening words —<br>it docks into the glass card as the bg fades up</div>
+      </div>
+      <p class="note">Carrier seam: "hyperframes is genuinely great but" <b>shrinks/docks into the
+        x-post card body</b> as the photographic ground + card chrome fade up around it — the
+        sentence completes itself inside the tweet ("…it can't use my actual designs.").</p>
+      <span class="ttag">carrier: the sentence itself</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>01 · TWEET 1</span><span>sec-tweets · 3.5–5.5s</span></div>
+      <div class="frame">
+        <img class="bg" src="assets/bg-141-264.png" alt=""><div class="shade"></div>
+        <div class="eyebrow">the internet has notes</div>
+        <div class="xpost glass">
+          <div class="xhead">
+            <div class="xav" style="background:linear-gradient(135deg,#B8A08A,#7A6A58)"></div>
+            <div class="xwho"><div class="xname">Marcus Vela</div><div class="xhandle">@founder_ish</div></div>
+            <svg class="xlogo" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </div>
+          <div class="xbody">hyperframes is genuinely great but it can't use my actual designs. why would I ship a launch video that doesn't look like my product?</div>
+          <div class="xmeta">9:41 AM · Jun 30, 2026 · <b>214K</b> Views</div>
+          <div class="xrow">
+            <span><svg viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.4-4 8-9 8-1.5 0-2.9-.3-4.1-.9L3 20l1.1-3.6C3.4 15.1 3 13.6 3 12c0-4.4 4-8 9-8s9 3.6 9 8z"/></svg>482</span>
+            <span><svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M21 6H8a4 4 0 0 0-4 4v1M7 22l-4-4 4-4M3 18h13a4 4 0 0 0 4-4v-1"/></svg>1.1K</span>
+            <span><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.7-9C.8 8.9 2.4 5.6 5.5 5c1.9-.4 3.9.4 5 2 .6.9.9 1.6 1.5 1.6s.9-.7 1.5-1.6c1.1-1.6 3.1-2.4 5-2 3.1.6 4.7 3.9 3.2 7-2.2 4.4-9.7 9-9.7 9z"/></svg>6.4K</span>
+          </div>
+        </div>
+      </div>
+      <p class="note">The cold-open line docks into this card's body as chrome + photographic
+        ground fade up; the sentence finishes itself in place. Mono eyebrow sets the segment
+        label, deck-style.</p>
+      <span class="ttag">x-post glass · docked carrier entry</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>02 · TWEET 2</span><span>sec-tweets · 5.5–7.3s</span></div>
+      <div class="frame">
+        <img class="bg" src="assets/bg-141-264.png" alt=""><div class="shade"></div>
+        <div class="xpost glass">
+          <div class="xhead">
+            <div class="xav" style="background:linear-gradient(135deg,#6C8EA4,#3D5666)"></div>
+            <div class="xwho"><div class="xname">Willa Chen</div><div class="xhandle">@designwilla</div></div>
+            <svg class="xlogo" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </div>
+          <div class="xbody">cool tool. still couldn't get it to match what we built in Figma without babysitting every frame.</div>
+          <div class="xmeta">2:17 PM · Jul 1, 2026 · <b>88K</b> Views</div>
+          <div class="xrow">
+            <span><svg viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.4-4 8-9 8-1.5 0-2.9-.3-4.1-.9L3 20l1.1-3.6C3.4 15.1 3 13.6 3 12c0-4.4 4-8 9-8s9 3.6 9 8z"/></svg>167</span>
+            <span><svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M21 6H8a4 4 0 0 0-4 4v1M7 22l-4-4 4-4M3 18h13a4 4 0 0 0 4-4v-1"/></svg>640</span>
+            <span><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.7-9C.8 8.9 2.4 5.6 5.5 5c1.9-.4 3.9.4 5 2 .6.9.9 1.6 1.5 1.6s.9-.7 1.5-1.6c1.1-1.6 3.1-2.4 5-2 3.1.6 4.7 3.9 3.2 7-2.2 4.4-9.7 9-9.7 9z"/></svg>2.9K</span>
+          </div>
+        </div>
+      </div>
+      <p class="note">Same slot, new voice — card 1 cuts out left as card 2 enters left, mid-motion
+        both sides. Background holds still; only the cards trade.</p>
+      <span class="ttag">cut-the-curve LEFT</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>03 · TWEET 3 → PUSH IN</span><span>sec-tweets · 7.3–9.0s</span></div>
+      <div class="frame">
+        <img class="bg" src="assets/bg-141-264.png" alt=""><div class="shade"></div>
+        <div class="xpost glass" style="transform:translate(-50%,-50%) scale(1.35); transform-origin:48% 58%;">
+          <div class="xhead">
+            <div class="xav" style="background:linear-gradient(135deg,#A47C6C,#66463D)"></div>
+            <div class="xwho"><div class="xname">Sam Okafor</div><div class="xhandle">@shipfast_sam</div></div>
+            <svg class="xlogo" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </div>
+          <div class="xbody">love the motion. hate that it keeps <b>inventing a UI we don't have.</b></div>
+          <div class="xmeta">11:03 PM · Jul 2, 2026 · <b>301K</b> Views</div>
+        </div>
+      </div>
+      <p class="note">Half-beat hold, then the camera <b>pushes INTO the body text</b> (Z-forward,
+        reserved vector) — the zoom becomes Act 2's crop. Scale grows through the cut.</p>
+      <span class="ttag">zoom-through (Z+) into Act 2</span>
+    </div>
+  </div>
+
+  <!-- ═══ ACT 2 · ZOOM FLASH (real x-post, zoomed) ═══ -->
+  <div class="actbar">Act 2 · Zoom-flash montage <span>9.0–13.0s · hard cuts ~0.55s → accelerating · INSIDE the real card</span></div>
+  <div class="grid">
+
+    <div class="cell">
+      <div class="label"><span>04 · FLASH — BRAND</span><span>sec-flash · 9.0–9.55s</span></div>
+      <div class="frame">
+        <div class="xzoom">
+          <img class="bgz" src="assets/bg-141-264.png" alt="">
+          <div class="zpanel"></div>
+          <div class="zbody" style="left:-28cqw; top:6cqw;">render came back wrong for the third time.</div>
+          <div class="zbody" style="left:-10cqw; top:16.5cqw;"><span class="hlbox">Didn't accurately create my brand.</span></div>
+          <div class="zbody" style="left:-16cqw; top:27cqw; opacity:.75;">honestly gave up after that. our green is</div>
+          <div class="zmeta" style="left:-6cqw; top:39cqw;">, 2026 · <b>118K</b> Views</div>
+        </div>
+      </div>
+      <p class="note">Not abstract text — we're <b>inside the real glass card</b>: blurred deck bg
+        behind the glass, card body type at zoom scale, meta line cropped at the bottom. The
+        primary line carries a <b>selection-style green highlight box</b>.</p>
+      <span class="ttag">real x-post zoomed · hlbox · hard cut</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>05 · FLASH — UI</span><span>sec-flash · 9.55–10.1s</span></div>
+      <div class="frame">
+        <div class="xzoom">
+          <img class="bgz flip" src="assets/bg-141-278.png" alt="">
+          <div class="zpanel"></div>
+          <div class="zbody" style="left:-20cqw; top:4cqw; opacity:.75;">the layout was close-ish but it just</div>
+          <div class="zbody" style="left:-4cqw; top:14.5cqw;"><span class="hlbox">Didn't accurately use my UI.</span></div>
+          <div class="zbody" style="left:-26cqw; top:25cqw; opacity:.75;">the buttons weren't even our buttons lol</div>
+          <div class="zrow" style="left:2cqw; top:37.5cqw;">
+            <span><svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M21 6H8a4 4 0 0 0-4 4v1M7 22l-4-4 4-4M3 18h13a4 4 0 0 0 4-4v-1"/></svg>326</span>
+            <span><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.7-9C.8 8.9 2.4 5.6 5.5 5c1.9-.4 3.9.4 5 2 .6.9.9 1.6 1.5 1.6s.9-.7 1.5-1.6c1.1-1.6 3.1-2.4 5-2 3.1.6 4.7 3.9 3.2 7-2.2 4.4-9.7 9-9.7 9z"/></svg>2.2K</span>
+          </div>
+        </div>
+      </div>
+      <p class="note">Different tweet, different crop: this one lands on the <b>action row</b>
+        (repost/like icons oversized at the frame bottom) — unmistakably X, per Jake's mock.
+        Flipped bg so consecutive flashes don't twin.</p>
+      <span class="ttag">crop variety · action row visible</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>06 · FLASH — SCREENSHOTS + ECHOES</span><span>sec-flash · 10.1–13.0s</span></div>
+      <div class="frame">
+        <div class="xzoom">
+          <img class="bgz" src="assets/bg-141-264.png" alt="">
+          <div class="zpanel"></div>
+          <div class="zbody" style="left:-14cqw; top:3cqw; font-size:5cqw; opacity:.75;">what was even the point. it</div>
+          <div class="zbody" style="left:-30cqw; top:11.5cqw; font-size:5cqw;"><span class="hlbox">Didn't accurately use the screenshots of our app that I gave it.</span></div>
+          <div class="zbody" style="left:-6cqw; top:20cqw; font-size:5cqw; opacity:.75;">like I attached them for a reason</div>
+          <div class="zmeta" style="left:-10cqw; top:31cqw; font-size:3.4cqw;">11:03 PM · Jul 2, 2026 · <b>301K</b> Views</div>
+          <div class="zrow" style="left:0cqw; top:39cqw; font-size:3.6cqw;">
+            <span><svg style="width:4.2cqw; height:4.2cqw;" viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.4-4 8-9 8-1.5 0-2.9-.3-4.1-.9L3 20l1.1-3.6C3.4 15.1 3 13.6 3 12c0-4.4 4-8 9-8s9 3.6 9 8z"/></svg>93</span>
+            <span><svg style="width:4.2cqw; height:4.2cqw;" viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M21 6H8a4 4 0 0 0-4 4v1M7 22l-4-4 4-4M3 18h13a4 4 0 0 0 4-4v-1"/></svg>512</span>
+          </div>
+        </div>
+      </div>
+      <p class="note">Third hero line (longest — slightly wider zoom to fit), then 3–4
+        <b>sub-0.3s echo re-crops</b> of the same cards tightening on "Didn't accurately" —
+        accelerating cuts sell "this came up A LOT."</p>
+      <span class="ttag">echo flashes · accelerando</span>
+    </div>
+  </div>
+
+  <!-- ═══ ACT 3 · UNTIL NOW ═══ -->
+  <div class="actbar">Act 3 · "Until now" → Introducing /figma <span>AS BUILT: 11.9–17.4s · leftward cuts · upward reveal</span></div>
+  <div class="grid">
+
+    <div class="cell">
+      <div class="label"><span>07 · "UNTIL NOW"</span><span>sec-act3 · 11.9–13.9s</span></div>
+      <div class="frame">
+        <img class="bg flip" src="assets/bg-141-278.png" alt=""><div class="shade"></div>
+        <div class="h1word" style="font-size:9cqw;">Until now</div>
+      </div>
+      <p class="note">Big centered ABC Solar over the animated pattern (video bg continues from
+        Act 1). Enters leftward mid-flight out of the flash ladder; exits leftward into
+        "Introducing".</p>
+      <span class="ttag">cut-the-curve LEFT in + out</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>08 · "INTRODUCING"</span><span>sec-act4 · 13.9–14.9s</span></div>
+      <div class="frame">
+        <img class="bg flip" src="assets/bg-141-278.png" alt=""><div class="shade"></div>
+        <div class="h1word" style="font-size:8cqw;">Introducing</div>
+      </div>
+      <p class="note">Arrives huge and centered on the leftward current, holds a beat — then
+        <b>slides UP and scales DOWN</b> (stays on screen as the kicker, never exits).</p>
+      <span class="ttag">nudge up + scale down · stays</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>09 · /figma REVEAL</span><span>sec-act4 · 14.9–17.4s</span></div>
+      <div class="frame">
+        <img class="bg flip" src="assets/bg-141-278.png" alt=""><div class="shade"></div>
+        <div style="position:absolute; left:0; right:0; top:16cqw; text-align:center; font-family:'Hanken Grotesk',sans-serif; font-weight:700; font-size:3.2cqw; color:#fff;">Introducing</div>
+        <div style="position:absolute; left:0; right:0; top:40%; text-align:center; font-family:'Spline Sans Mono',monospace; font-size:11cqw; color:#5ef17c;">/figma</div>
+      </div>
+      <p class="note">The skill name IS the invocation: giant mono <b style="color:#8fe8a4">/figma</b>
+        follows the same upward current into center — the hero frame of the film. Kicker holds
+        small above. (Sheet uses stand-in fonts; comp uses ABC Solar + TT Norms Mono.)</p>
+      <span class="ttag">upward arrival · green spent on the name</span>
+    </div>
+  </div>
+
+  <!-- ═══ ACT 4 · CHAT: THE FAIL ═══ -->
+  <div class="actbar">Act 5 · The /figma run — Claude Code <span>17.4–24.4s · sfx-launch terminal grammar (big prompt box → tap ↵ → morph dock → thinking → findings) · pixel pet · GOOD outputs only</span></div>
+  <div class="grid">
+
+    <div class="cell">
+      <div class="label"><span>09 · THE ASK</span><span>sec-act5 · 17.4–21.0s</span></div>
+      <div class="frame">
+        <img class="bg" src="assets/bg-141-264.png" alt=""><div class="shade"></div>
+        <div class="twin glass">
+          <div class="tdots"><i></i><i></i><i></i><span class="ttl">claude code</span></div>
+          <div class="composer" style="bottom:auto; position:relative; left:0; right:0; margin-top:.6cqw;">
+            <span class="chip">/figma</span> <span class="link">figma.com/design/xK9…/AI-Video-Generator</span><br>
+            rebuild these frames as our launch video<span class="caret"></span>
+          </div>
+        </div>
+        <svg class="cur" style="left:60%; top:28%;" viewBox="0 0 28 28"><path d="M6 4 L6 23 L11 18 L14.5 25 L17.5 23.6 L14 17 L21 17 Z" fill="#fff" stroke="#1c1c1c" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      </div>
+      <p class="note">Straight to the good path: big centered prompt box (sfx terminal grammar),
+        the <b style="color:#8fe8a4">/figma</b> chip pops green as it's typed, Figma link pastes
+        as a pill. Cursor rises and taps ↵.</p>
+      <span class="ttag">big-box typing · chip pop · tap ↵</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>10 · SEND → THINKING</span><span>sec-act5 · 21.0–22.4s</span></div>
+      <div class="frame">
+        <img class="bg" src="assets/bg-141-264.png" alt=""><div class="shade"></div>
+        <div class="twin glass">
+          <div class="tdots"><i></i><i></i><i></i><span class="ttl">agent</span></div>
+          <div class="tuser"><span class="pfx">&gt;</span> /figma · figma.com/design/xK9… · rebuild these frames as our launch video</div>
+          <div class="tagent" style="margin-top:2cqw;"><span class="think"><i></i><i style="opacity:.7"></i><i style="opacity:1"></i>&nbsp; thinking…</span></div>
+          <div class="composer"><span class="ph">Reply…</span></div>
+        </div>
+      </div>
+      <p class="note">Message commits to the log; thinking dots pulse green. UI life carries the beat
+        — no idle wobble.</p>
+      <span class="ttag">sequenced UI life</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>11 · THE AGENT SEES</span><span>sec-act5 · 22.4–24.4s</span></div>
+      <div class="frame">
+        <img class="bg" src="assets/bg-141-264.png" alt=""><div class="shade"></div>
+        <div class="twin glass" style="height:82cqh;">
+          <div class="tdots"><i></i><i></i><i></i><span class="ttl">claude code</span></div>
+          <div class="tuser tmono" style="font-size:1.65cqw; opacity:.7;"><span class="pfx">&gt;</span> /figma · figma.com/design/xK9…</div>
+          <div class="tfind" style="margin-top:1.3cqw;">
+            <span class="k">Reading Figma file…</span> 4 frames found.<br>
+            <span class="k">Brand tokens →</span> <span class="hex">#232833</span> · <span class="hex">#FBFAF9</span> · <span class="hex">#DEF0F8</span><br>
+            <span class="k">Type →</span> <span class="pk">ABC Solar Display / TT Norms Pro</span><br>
+            <span class="k">Components →</span> sidebar, orb-bg, cursor.svg <span class="k">(exact geometry, frozen)</span><br>
+            <span class="k">Frames read as STATES →</span> rebuilding the flow as live DOM…
+          </div>
+        </div>
+      </div>
+      <p class="note">The emotional core: findings <b>stream line-by-line</b> — real hexes cyan,
+        type pink, keys dim. The agent visibly SEES the design. No fail, no retry — /figma just
+        works.</p>
+      <span class="ttag">streaming findings · real values</span>
+    </div>
+  </div>
+
+  <!-- ═══ ACT 5 · CHAT: THE FIX ═══ -->
+  <div class="actbar">Act 6 · The outputs <span>24.4s → · GOOD outputs only — the faithful rebuild arrives</span></div>
+  <div class="grid">
+
+    <div class="cell">
+      <div class="label"><span>12 · REBUILDING</span><span>sec-act6 · TBD</span></div>
+      <div class="frame">
+        <img class="bg" src="assets/bg-141-264.png" alt=""><div class="shade"></div>
+        <div class="twin glass">
+          <div class="tdots"><i></i><i></i><i></i><span class="ttl">claude code</span></div>
+          <div class="tfind" style="margin-top:1.3cqw; opacity:.55;">
+            <span class="k">Frames read as STATES →</span> rebuilding the flow as live DOM…
+          </div>
+          <div class="tagent" style="margin-top:2cqw;"><span class="aname">●</span> Done. Every hex, every radius — straight from your file.</div>
+        </div>
+      </div>
+      <p class="note">Short beat: the closing agent line lands, then the window gives way to the
+        output — the film's proof moment.</p>
+      <span class="ttag">stillness before the reveal</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>13 · OUTPUT ARRIVES</span><span>sec-act6 · TBD</span></div>
+      <div class="frame">
+        <img class="bg" src="assets/bg-141-264.png" alt=""><div class="shade"></div>
+        <div class="appmini" style="left:50%; top:50%; transform:translate(-50%,-50%); width:74cqw; height:46cqw; position:absolute;">
+          <div class="am-side"><i></i><i></i><i></i><i></i></div>
+          <div class="am-body">
+            <div class="am-h" style="font-size:3.6cqw;">AI Video Generator</div>
+            <div class="am-sub" style="font-size:2cqw;">Step 1 of 4 · Describe your video</div>
+            <div class="am-steps" style="margin-top:2.4cqw;"><i class="on"></i><i></i><i></i><i></i></div>
+            <div class="am-cta" style="font-size:2.2cqw; padding:1.4cqw 3.2cqw;">Generate</div>
+          </div>
+          <div class="am-orb"></div>
+        </div>
+        <div class="badge yes" style="right:3cqw; bottom:3cqw;">gate-green · from the real file</div>
+      </div>
+      <p class="note">The rebuilt screen <b>ARRIVES full-frame via inverse zoom</b> (Z−, the
+        arrival vector) — the actual seedance-apps-flow comp at build time, pixel-faithful.
+        Stillness 0.5s on the match.</p>
+      <span class="ttag">inverse zoom (Z−) arrival · real comp</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>14 · OUTPUTS PLAY</span><span>sec-act6 · TBD</span></div>
+      <div class="frame">
+        <img class="bg" src="assets/bg-141-264.png" alt=""><div class="shade"></div>
+        <div class="appmini" style="left:14cqw; top:22%; width:60cqw; height:37cqw; position:absolute;">
+          <div class="am-side"><i></i><i></i><i></i></div>
+          <div class="am-body">
+            <div class="am-h" style="font-size:2.8cqw;">AI Video Generator</div>
+            <div class="am-sub" style="font-size:1.6cqw;">Step 2 of 4 · Pick a style</div>
+            <div class="am-steps" style="margin-top:1.8cqw;"><i class="on"></i><i class="on"></i><i></i><i></i></div>
+            <div class="am-cta" style="font-size:1.8cqw; padding:1.1cqw 2.6cqw;">Continue</div>
+          </div>
+          <div class="am-orb"></div>
+        </div>
+      </div>
+      <p class="note">The rebuilt flow PLAYS — screens advance leftward (the current) like the real
+        seedance comp: states, not slides. This runs straight into the payoff montage.</p>
+      <span class="ttag">sequenced UI life · leftward</span>
+    </div>
+  </div>
+
+  <!-- ═══ ACT 6 · PAYOFF MONTAGE (PLACEHOLDERS) ═══ -->
+  <div class="actbar">Act 6 · Payoff montage <span>38.0–45.0s · ~1.1s/beat · REC frames = Jake's recordings (PLACEHOLDER)</span></div>
+  <div class="grid">
+
+    <div class="cell">
+      <div class="label"><span>15 · MOTION</span><span>sec-payoff · 38.0–40.3s</span></div>
+      <div class="frame">
+        <div class="recph">
+          <div class="recdot"><i></i>REC</div>
+          <div class="box">
+            <div class="t1">SCREEN RECORDING<br>Figma Motion — timeline panel, scrub/play</div>
+            <div class="t2">placeholder · Jake provides</div>
+          </div>
+          <div class="promptflash"><span class="pfx">&gt;</span> add this animation to the intro</div>
+        </div>
+      </div>
+      <p class="note">Beat = REC flash → composer one-liner flash → the motion playing inside an HF
+        comp. No how-to energy: flash, prompt, result, next.</p>
+      <span class="ttag">REC placeholder · leftward current</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>16 · COMPONENTS</span><span>sec-payoff · 40.3–42.6s</span></div>
+      <div class="frame">
+        <div class="recph">
+          <div class="recdot"><i></i>REC</div>
+          <div class="box">
+            <div class="t1">SCREEN RECORDING<br>Figma — component frame selected, layers hover</div>
+            <div class="t2">placeholder · Jake provides</div>
+          </div>
+          <div class="promptflash"><span class="pfx">&gt;</span> use our real pricing card here</div>
+        </div>
+      </div>
+      <p class="note">Result beat shows the same component live as HTML in a comp — geometry exact,
+        colors as <span style="font-family:'TT Norms Mono',monospace; font-size:11px;">var(--brand-*)</span>.</p>
+      <span class="ttag">REC placeholder</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>17 · STORYBOARD</span><span>sec-payoff · 42.6–45.0s</span></div>
+      <div class="frame">
+        <div class="recph">
+          <div class="recdot"><i></i>REC</div>
+          <div class="box">
+            <div class="t1">SCREEN RECORDING<br>Figma — cursor sweeps a storyboard row of frames</div>
+            <div class="t2">placeholder · Jake provides</div>
+          </div>
+          <div class="promptflash"><span class="pfx">&gt;</span> make this storyboard a video</div>
+        </div>
+      </div>
+      <p class="note">Last result <b>zooms-through into Act 7</b> — the storyboard's frames animating
+        as one continuous move become "their launch video."</p>
+      <span class="ttag">zoom-through (Z+) into outro</span>
+    </div>
+  </div>
+
+  <!-- ═══ ACT 7 · THESIS + OUTRO ═══ -->
+  <div class="actbar">Act 7 · Thesis + outro <span>45.0–49.0s · upward vector · deck headline + lockup</span></div>
+  <div class="grid">
+
+    <div class="cell">
+      <div class="label"><span>18 · "THEIR VIDEO" ENDS</span><span>sec-outro · 45.0–46.2s</span></div>
+      <div class="frame" style="background:var(--hg-ink);">
+        <div style="position:absolute; inset:0; display:grid; place-items:center; text-align:center;">
+          <div>
+            <div style="width:16cqw; height:16cqw; margin:0 auto; border-radius:50%; background:url(assets/orb-bg.png) center/cover;"></div>
+            <div style="margin-top:2.4cqw; color:#fff; font-family:'ABC Solar Display',sans-serif; font-weight:700; font-size:3.6cqw; letter-spacing:-.02em;">AI Video Generator</div>
+            <div style="margin-top:.8cqw; color:#9AA1AC; font-size:1.9cqw;">the last 3 seconds of the video they built</div>
+          </div>
+        </div>
+      </div>
+      <p class="note">The supposed launch video's closing frames — their product ink, their orb,
+        their (real) type. Proof-of-payoff before our thesis.</p>
+      <span class="ttag">their brand, not ours</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>19 · THESIS</span><span>sec-outro · 46.2–48.0s</span></div>
+      <div class="frame">
+        <img class="bg flip" src="assets/bg-141-278.png" alt=""><div class="shade"></div>
+        <div class="thesis">
+          <div>
+            <div class="t1">HyperFrames now<br><span class="hl">speaks Figma.</span></div>
+            <div class="t2">What you built for your product is how you launch it.</div>
+          </div>
+        </div>
+      </div>
+      <p class="note">Deck h1 register: ABC Solar white + green highlight line. Rises in on the
+        <b>upward vector</b> (reserved: elevation), waterfall on the two lines.</p>
+      <span class="ttag">upward · waterfall</span>
+    </div>
+
+    <div class="cell">
+      <div class="label"><span>20 · /figma + LOCKUP</span><span>sec-outro · 48.0–49.0s</span></div>
+      <div class="frame">
+        <img class="bg flip" src="assets/bg-141-278.png" alt=""><div class="shade"></div>
+        <div class="thesis">
+          <div class="lockup">
+            <img src="assets/hyperframes-logo-dark.svg" alt="HyperFrames">
+            <div><span class="bigchip">/figma</span></div>
+            <div class="by"><span>by</span><img src="assets/heygen-logo.svg" alt="HeyGen" style="filter:brightness(0) invert(1);"></div>
+          </div>
+        </div>
+      </div>
+      <p class="note">HyperFrames wordmark (forced white, deck-style) over the mono
+        <b style="color:#8fe8a4">/figma</b> chip — the one takeaway. HeyGen sign-off small, like the
+        deck's footer. End on black.</p>
+      <span class="ttag">outro · end</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

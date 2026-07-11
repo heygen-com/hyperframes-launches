@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, height=1080">
+  <title>Figma → HyperFrames Launch — full film</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/CustomEase.min.js"></script>
+  <style>
+    html, body {
+      margin: 0; width: 1080px; height: 1080px; overflow: hidden;
+      background: #000; /* film ground is black — exposed seam edges stay seamless */
+    }
+    #figma-launch {
+      position: relative; width: 1080px; height: 1080px; overflow: hidden;
+      background: #000;
+    }
+    /* brand-pattern bg: ONE per-act encode, each a single full pass at its own speed
+       (no looping, no mid-act restarts); sits under the acts on z 0 */
+    .bgvid { position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; z-index: 0; }
+    #output-vid { position: absolute; left: 60px; top: 270px; width: 960px; height: 540px;
+      object-fit: cover; z-index: 7; border-radius: 22px;
+      box-shadow: 0 32px 90px -30px rgba(0,0,0,.75); }
+    /* the tail card: last 0.5s of "their video" + the Motion end card appended (above act 9's shade) */
+    #tail-vid { position: absolute; left: 60px; top: 270px;
+      width: 960px; height: 540px; object-fit: cover; z-index: 12; border-radius: 22px;
+      box-shadow: 0 32px 90px -30px rgba(0,0,0,.75); }
+    /* every act fills the frame; z-index orders the seams (later act = on top) */
+    #sec-act1 { position: absolute; inset: 0; z-index: 1; will-change: transform, opacity; }
+    #sec-act2 { position: absolute; inset: 0; z-index: 2; will-change: transform, opacity; }
+    #sec-act3 { position: absolute; inset: 0; z-index: 3; will-change: transform, opacity; }
+    #sec-act4 { position: absolute; inset: 0; z-index: 4; will-change: transform, opacity; }
+    #sec-act5 { position: absolute; inset: 0; z-index: 5; will-change: transform, opacity; }
+    #sec-act6 { position: absolute; inset: 0; z-index: 8; will-change: transform, opacity; }
+    #sec-act7 { position: absolute; inset: 0; z-index: 9; will-change: transform, opacity; }
+    #sec-act8 { position: absolute; inset: 0; z-index: 10; will-change: transform, opacity; }
+    #sec-act9 { position: absolute; inset: 0; z-index: 11; will-change: transform, opacity; }
+    #sec-act10 { position: absolute; inset: 0; z-index: 13; will-change: transform, opacity; }
+    #sec-act11 { position: absolute; inset: 0; z-index: 14; will-change: transform, opacity; }
+  </style>
+</head>
+<body>
+  <div data-hf-id="hf-xymq" id="figma-launch" data-composition-id="figma-launch" data-start="0" data-width="1080" data-height="1080" data-duration="64.05">
+    <!-- ACT 1 · COLD OPEN + HERO TWEETS (0 → 11.8) — bg: one 8.4s pass -->
+    <video data-hf-id="hf-1lkw" id="bg-act1" class="bgvid" src="assets/bg-act1.mp4" muted data-start="3.4" data-duration="8.38" data-track-index="0" data-volume="0"></video>
+    <div data-hf-id="hf-heff" id="sec-act1" data-composition-id="act1" data-composition-src="compositions/act1.html" data-start="0" data-duration="11.8" data-track-index="1"></div>
+
+    <!-- ACT 2 · ZOOM LADDER (11.8 → 14.7) — own blurred stills, no bg video -->
+    <div data-hf-id="hf-zy56" id="sec-act2" data-composition-id="act2" data-composition-src="compositions/act2.html" data-start="11.8" data-duration="2.9" data-track-index="2"></div>
+
+    <!-- ACT 3 · "UNTIL NOW" (14.7 → 15.8) + ACT 4 · INTRODUCING /figma (15.8 → 17.7) — bg: one 3.0s pass -->
+    <video data-hf-id="hf-eh1r" id="bg-act34" class="bgvid" src="assets/bg-act34.mp4" muted data-start="14.7" data-duration="3.3" data-track-index="0" data-volume="0"></video>
+    <div data-hf-id="hf-1vf3" id="sec-act3" data-composition-id="act3" data-composition-src="compositions/act3.html" data-start="14.7" data-duration="1.1" data-track-index="3"></div>
+    <div data-hf-id="hf-mttb" id="sec-act4" data-composition-id="act4" data-composition-src="compositions/act4.html" data-start="15.8" data-duration="2.2" data-track-index="4"></div>
+
+    <!-- ACT 5 · CLAUDE /figma RUN (18.0 → 35.95, incl. output card) — bg: one 14.45s pass from the dock reveal -->
+    <video data-hf-id="hf-pomp" id="bg-act5" class="bgvid" src="assets/bg-act5.mp4" muted data-start="21.5" data-duration="14.45" data-track-index="0" data-volume="0"></video>
+    <video data-hf-id="hf-s3h8" id="output-vid" src="assets/first-output.mp4" muted data-start="25.95" data-duration="10.0" data-track-index="7" data-volume="0"></video>
+    <div data-hf-id="hf-scq8" id="sec-act5" data-composition-id="act5" data-composition-src="compositions/act5.html" data-start="18.0" data-duration="17.95" data-track-index="5"></div>
+
+    <!-- ACT 6 · FIGMA UI (35.95 → 41.15) — opaque, no bg video -->
+    <div data-hf-id="hf-v01d" id="sec-act6" data-composition-id="act6" data-composition-src="compositions/act6.html" data-start="35.95" data-duration="5.2" data-track-index="9"></div>
+
+    <!-- ACT 7 + 8 · TEXT BEATS (41.15 → 46.15) — bg: one 5.0s pass -->
+    <video data-hf-id="hf-70er" id="bg-act78" class="bgvid" src="assets/bg-act78.mp4" muted data-start="41.15" data-duration="5.0" data-track-index="0" data-volume="0"></video>
+    <div data-hf-id="hf-mkk4" id="sec-act7" data-composition-id="act7" data-composition-src="compositions/act7.html" data-start="41.15" data-duration="3" data-track-index="10"></div>
+    <div data-hf-id="hf-vy6q" id="sec-act8" data-composition-id="act8" data-composition-src="compositions/act8.html" data-start="44.15" data-duration="2" data-track-index="11"></div>
+
+    <!-- ACT 9 · MOTION PROMPT + PAYOFF TAIL (46.15 → 55.85) — bg: one 9.7s pass -->
+    <video data-hf-id="hf-7hmb" id="bg-act9" class="bgvid" src="assets/bg-act9.mp4" muted data-start="46.15" data-duration="9.7" data-track-index="0" data-volume="0"></video>
+    <div data-hf-id="hf-e6u6" id="sec-act9" data-composition-id="act9" data-composition-src="compositions/act9.html" data-start="46.15" data-duration="9.7" data-track-index="12"></div>
+    <video data-hf-id="hf-qyw1" id="tail-vid" src="assets/motion-output.mp4" muted data-start="52.95" data-duration="2.9" data-track-index="14" data-volume="0"></video>
+
+    <!-- CLICK SFX · one clip per cursor click (unique id + track so they can overlap) -->
+    <audio data-hf-id="hf-sk01" id="sfx-click-1" src="assets/sfx-click.mp3" data-start="21.42" data-duration="0.648" data-track-index="15" data-volume="0.4"></audio>
+    <audio data-hf-id="hf-sk02" id="sfx-click-2" src="assets/sfx-click.mp3" data-start="37.30" data-duration="0.648" data-track-index="16" data-volume="0.4"></audio>
+    <audio data-hf-id="hf-sk03" id="sfx-click-3" src="assets/sfx-click.mp3" data-start="38.75" data-duration="0.648" data-track-index="17" data-volume="0.4"></audio>
+    <audio data-hf-id="hf-sk04" id="sfx-click-4" src="assets/sfx-click.mp3" data-start="39.75" data-duration="0.648" data-track-index="18" data-volume="0.4"></audio>
+    <audio data-hf-id="hf-sk05" id="sfx-click-5" src="assets/sfx-click.mp3" data-start="49.65" data-duration="0.648" data-track-index="19" data-volume="0.4"></audio>
+    <audio data-hf-id="hf-z8jr" id="sfx-click-6" src="assets/sfx-click.mp3" data-start="59.85" data-duration="0.648" data-track-index="22" data-volume="0.4"></audio>
+    <audio data-hf-id="hf-75ni" id="sfx-click-7" src="assets/sfx-click.mp3" data-start="62.04" data-duration="0.648" data-track-index="23" data-volume="0.4"></audio>
+
+    <!-- ACT 10 + 11 · install beat + logo outro share ONE 8.2s bg pass (55.85 → 64.05) -->
+    <video data-hf-id="hf-6sdv" id="bg-act1011" class="bgvid" src="assets/bg-act1011.mp4" muted data-start="55.85" data-duration="8.2" data-track-index="0" data-volume="0"></video>
+    <div data-hf-id="hf-1yk9" id="sec-act10" data-composition-id="act10" data-composition-src="compositions/act10.html" data-start="55.85" data-duration="3.3" data-track-index="20"></div>
+
+    <!-- ACT 11 · LOGO OUTRO (59.15 → 64.05) — shade over the shared pattern, dark square port of hyperframes-logo-outro -->
+    <div data-hf-id="hf-1kfv" id="sec-act11" data-composition-id="act11" data-composition-src="compositions/act11.html" data-start="59.15" data-duration="4.9" data-track-index="21"></div>
+  </div>
+
+  <script>
+    // Master timeline: paused; carries only the two output-card seam tweens.
+    window.__timelines = window.__timelines || {};
+    (function () {
+      var T = gsap.timeline({ paused: true });
+      // SEAM · act5 window ZOOM-THROUGHS off (push) → output card keeps growing into
+      // the focal plane, already playing (Z sign matches: both sides growing)
+      if (document.getElementById("output-vid")) {
+        T.set("#output-vid", { transformOrigin: "50% 50%" }, 0);
+        T.fromTo("#output-vid", { scale: 0.75, opacity: 0.15 },
+          { scale: 1, opacity: 1, duration: 0.5, ease: "expo.out" }, 25.95);
+      }
+      // SEAM · act9 window ZOOM-THROUGHS off (push) → tail card grows in, PLAYING
+      if (document.getElementById("tail-vid")) {
+        T.set("#tail-vid", { transformOrigin: "50% 50%" }, 0);
+        T.fromTo("#tail-vid", { scale: 0.75, opacity: 0.15 },
+          { scale: 1, opacity: 1, duration: 0.5, ease: "expo.out" }, 52.95);
+        // SEAM · tail card exits LEFT mid-motion at 55.85 → install beat enters leftward
+        T.to("#tail-vid", { x: -1300, duration: 0.35, ease: "power4.in" }, 55.5);
+      }
+      window.__timelines["figma-launch"] = T;
+    })();
+  </script>
+</body>
+</html>

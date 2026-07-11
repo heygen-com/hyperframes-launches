@@ -1,0 +1,118 @@
+<template>
+<div id="cta-outro" data-composition-id="cta-outro" data-width="1920" data-height="1080" data-duration="4.4">
+  <audio id="sfx-cta-logo"  data-sfx="1" data-volume="0.9" src="assets/sfx/chime-soft.mp3"   data-start="0.0"  data-duration="0.6" data-track-index="90"></audio>
+  <audio id="sfx-cta-htype" data-sfx="1" data-volume="0.9" src="assets/sfx/type.mp3"          data-start="0.3"  data-duration="0.95" data-track-index="91"></audio>
+  <audio id="sfx-cta-morph" data-sfx="1" data-volume="0.9" src="assets/sfx/whoosh-morph.mp3"  data-start="1.5"  data-duration="0.55" data-track-index="92"></audio>
+  <audio id="sfx-cta-slide" data-sfx="1" data-volume="0.9" src="assets/sfx/whoosh-slide.mp3"  data-start="1.75" data-duration="0.45" data-track-index="93"></audio>
+  <audio id="sfx-cta-ctype" data-sfx="1" data-volume="0.9" src="assets/sfx/type.mp3"          data-start="2.2"  data-duration="0.55" data-track-index="94"></audio>
+  <audio id="sfx-cta-paste" data-sfx="1" data-volume="0.9" src="assets/sfx/pop.mp3"           data-start="2.85" data-duration="0.3" data-track-index="95"></audio>
+
+  <div class="topgroup" id="cta-top">
+    <div class="gh" id="cta-gh">
+      <svg viewBox="0 0 98 96" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.014 7.822 5.014 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z" fill="currentColor"/></svg>
+    </div>
+    <div class="headrow" id="cta-headrow">
+      <span class="head" id="cta-head"><span id="cta-h1"></span><span class="accent" id="cta-h2"></span><span id="cta-h3"></span></span><span class="hcaret" id="cta-hcaret">▏</span>
+    </div>
+  </div>
+
+  <div class="composer" id="cta-composer">
+    <div class="chips"><span class="chip">Local</span><span class="chip">hyperframes</span></div>
+    <div class="inputbar">
+      <div class="tline"><span class="cmd" id="cta-cmd"></span><span class="url" id="cta-url"></span><span class="caret" id="cta-caret">▏</span><span class="ph" id="cta-ph">Reply to Claude…</span></div>
+      <span class="ret" id="cta-ret">↵</span>
+    </div>
+    <div class="metarow"><div class="ml"><span class="auto">Auto</span><span class="ico">＋</span></div><div class="mr"><span>Opus 4.8</span><span class="hi">High</span><span class="orb"></span></div></div>
+  </div>
+
+<style>
+  @font-face{font-family:'Hanken Grotesk';font-weight:400;font-display:block;src:url(../fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:500;font-display:block;src:url(../fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:600;font-display:block;src:url(../fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:700;font-display:block;src:url(../fonts/HankenGrotesk-normal-700-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:400;font-display:block;src:url(../fonts/SplineSansMono-normal-400-latin-53329b.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:500;font-display:block;src:url(../fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');}
+  #cta-outro{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;font-family:'Hanken Grotesk',system-ui,sans-serif;background:#F0EFE9;color:#1D1F1F;}
+  #cta-outro .topgroup{position:absolute;inset:0;will-change:transform;}
+  #cta-outro .gh{position:absolute;left:50%;top:22cqh;width:4.4cqw;height:4.4cqw;color:#1D1F1F;}
+  #cta-outro .gh svg{width:100%;height:100%;display:block;}
+  #cta-outro .headrow{position:absolute;top:33cqh;left:50%;display:flex;justify-content:flex-start;align-items:baseline;white-space:nowrap;}
+  #cta-outro .head{display:inline-block;white-space:nowrap;font-weight:700;font-size:5.0cqw;letter-spacing:-.03em;line-height:1;color:#1D1F1F;}
+  #cta-outro .head .accent{color:#D97757;}
+  #cta-outro .hcaret{font-weight:400;font-size:5.0cqw;line-height:1;color:#D97757;margin-left:.04cqw;}
+  #cta-outro .composer{position:absolute;left:50%;bottom:19cqh;transform:translateX(-50%);width:62cqw;will-change:transform,opacity;}
+  #cta-outro .chips{display:flex;gap:.6cqw;margin-bottom:.95cqw;}
+  #cta-outro .chip{background:#2C2C2B;color:#D7D4CA;font-size:1.0cqw;font-weight:500;padding:.5cqw .9cqw;border-radius:.6cqw;}
+  #cta-outro .inputbar{position:relative;display:flex;align-items:center;background:#2C2C2B;border:1px solid #3a3a38;border-radius:1.0cqw;min-height:4.0cqw;padding:.95cqw 1.4cqw;
+    box-shadow:0 0 0 .13cqw rgba(217,119,87,.55), 0 1.6cqw 4cqw -1cqw rgba(20,20,18,.22);}
+  #cta-outro .tline{flex:1;min-width:0;padding-right:2.8cqw;white-space:pre-wrap;line-height:1.45;position:relative;}
+  #cta-outro .cmd{font-family:'Spline Sans Mono',monospace;font-size:1.3cqw;color:#E6E2D6;}
+  #cta-outro .url{font-family:'Spline Sans Mono',monospace;font-size:1.3cqw;color:#9CC4E6;display:inline-block;border-radius:.25cqw;padding:0 .12cqw;}
+  #cta-outro .ph{font-family:'Hanken Grotesk',sans-serif;font-size:1.35cqw;color:#6F6E66;position:absolute;left:0;top:50%;transform:translateY(-50%);}
+  #cta-outro .caret{font-size:1.7cqw;color:#D97757;margin-left:.04cqw;}
+  #cta-outro .ret{position:absolute;right:1.2cqw;top:50%;transform:translateY(-50%);color:#6F6E66;font-size:1.4cqw;}
+  #cta-outro .metarow{display:flex;justify-content:space-between;align-items:center;margin-top:.95cqw;color:#7C7B73;font-size:1.05cqw;font-weight:500;}
+  #cta-outro .ml,#cta-outro .mr{display:flex;align-items:center;gap:1.1cqw;}
+  #cta-outro .auto{background:rgba(202,164,62,.16);color:#CAA43E;padding:.24cqw .75cqw;border-radius:.5cqw;font-size:.96cqw;}
+  #cta-outro .ico{color:#8C8B83;}#cta-outro .mr .hi{color:#9A998F;}
+  #cta-outro .orb{width:1.3cqw;height:1.3cqw;border-radius:50%;box-sizing:border-box;border:.18cqw solid rgba(96,148,214,.26);border-top-color:#5A9BE6;}
+</style>
+<script>
+(function(){
+  const R = document.querySelector('#cta-outro');
+  if(!R || !window.gsap) return;
+  const top=R.querySelector('#cta-top'), gh=R.querySelector('#cta-gh'),
+        headrow=R.querySelector('#cta-headrow'), headEl=R.querySelector('#cta-head'),
+        h1=R.querySelector('#cta-h1'), h2=R.querySelector('#cta-h2'), h3=R.querySelector('#cta-h3'),
+        hcaret=R.querySelector('#cta-hcaret'),
+        composer=R.querySelector('#cta-composer'), cmd=R.querySelector('#cta-cmd'),
+        url=R.querySelector('#cta-url'), caret=R.querySelector('#cta-caret'),
+        ph=R.querySelector('#cta-ph'), ret=R.querySelector('#cta-ret'), orb=R.querySelector('.orb');
+  window.__timelines = window.__timelines || {};
+
+  const S1="Create your ", S2="PR video", S3=" today";
+  const CMD="use pr-to-video ";
+  const URL="https://github.com/your-org/your-repo/pull/42";
+
+  h1.textContent=''; h2.textContent=''; h3.textContent='';
+  const tl = gsap.timeline({paused:true});
+
+  gsap.set(top,{scale:1.18, y:206, transformOrigin:'50% 50%'});
+  gsap.set(gh,{xPercent:-50, yPercent:-50, opacity:0, scale:.96, transformOrigin:'50% 50%'});
+  gsap.set(headrow,{xPercent:-50});
+  gsap.set(hcaret,{opacity:1});
+  gsap.set(composer,{opacity:0, y:44});
+  gsap.set(caret,{opacity:1}); gsap.set(ph,{opacity:1}); gsap.set(orb,{transformOrigin:'50% 50%'});
+  gsap.set(url,{backgroundColor:'rgba(217,119,87,0)'});
+  cmd.textContent=''; url.textContent='';
+
+  tl.to(orb,{rotation:360,duration:1,ease:'none',repeat:4},0);
+  tl.to(gh,{opacity:1,scale:1,duration:.6,ease:'power2.out'},0.0);
+  tl.to(hcaret,{opacity:0,duration:.3,ease:'steps(1)',repeat:1,yoyo:true},0.05);
+  const o={n:0}; const TOT=S1.length+S2.length+S3.length;
+  tl.set(hcaret,{opacity:1},0.3);
+  tl.to(o,{n:TOT,duration:.95,ease:'none',onUpdate(){
+    const n=Math.round(o.n);
+    h1.textContent=S1.slice(0,Math.min(n,S1.length));
+    h2.textContent=S2.slice(0,Math.max(0,Math.min(n-S1.length,S2.length)));
+    h3.textContent=S3.slice(0,Math.max(0,Math.min(n-S1.length-S2.length,S3.length)));
+  }},0.3);
+  tl.to(top,{scale:1, y:0, duration:.55, ease:'power3.inOut'},1.5);
+  tl.to(hcaret,{opacity:0,duration:.2,ease:'power1.out'},1.5);
+  tl.to(composer,{opacity:1, y:0, duration:.5, ease:'power3.out'},1.75);
+  tl.to(ph,{opacity:0,duration:.12},2.15);
+  const c={n:0};
+  tl.to(c,{n:CMD.length,duration:.55,ease:'none',onUpdate(){cmd.textContent=CMD.slice(0,Math.round(c.n));}},2.2);
+  tl.add(()=>{url.textContent=URL;},2.85);
+  tl.fromTo(url,{backgroundColor:'rgba(217,119,87,0.36)'},{backgroundColor:'rgba(217,119,87,0)',duration:.5,ease:'power2.out'},2.85);
+  tl.fromTo(url,{scale:1.07},{scale:1,duration:.3,ease:'power3.out',transformOrigin:'left center'},2.85);
+  tl.to(caret,{opacity:0,duration:.4,ease:'steps(1)',repeat:5,yoyo:true},3.15);
+  tl.to(ret,{color:'#D97757',scale:1.18,duration:.16,ease:'back.out(2)',transformOrigin:'50% 50%'},3.25);
+  tl.to(ret,{scale:1,duration:.28,ease:'power2.out'},3.42);
+  tl.to({},{duration:.5},3.9);
+
+  window.__timelines["cta-outro"]=tl;
+})();
+</script>
+</div>
+</template>

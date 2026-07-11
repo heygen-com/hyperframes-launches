@@ -1,0 +1,198 @@
+<template>
+<div id="fd-root" data-composition-id="feature-discussion" data-width="1920" data-height="1080" data-duration="2.0">
+
+  <div class="bg"></div>
+  <div class="title"><span class="ttext" id="fd-ttext"></span><span class="tcaret" id="fd-tcaret"></span></div>
+
+  <div class="player">
+    <div class="pwin">
+      <div class="pbar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="ptitle">hyperframes-pr-1635.mp4</span>
+        <span class="pscene">scene 5 / 6</span>
+      </div>
+      <div class="screen">
+        <div class="vstage">
+          <div class="cv">
+            <div class="card">
+              <div class="chead">
+                <span class="cl"><span class="d">◆</span> #1635 · Conversation</span>
+                <span class="cr">4 reviewers · 1 author</span>
+              </div>
+              <div class="thread">
+                <div class="crow" id="fd-r1">
+                  <div class="av av-ghas"></div>
+                  <div class="cmid"><div class="nl"><span class="cname">CodeQL</span><span class="badge b-sec">security · bot</span></div><div class="ctext">12 high-severity alerts · TOCTOU race + HTML injection</div></div>
+                  <div class="pillwrap"><span class="pill open blk" id="fd-p1o"><span class="dot">●</span> blocking</span><span class="pill done" id="fd-p1d"><span class="ck">✓</span> resolved</span></div>
+                </div>
+                <div class="crow" id="fd-r2">
+                  <div class="av av-jrusso"></div>
+                  <div class="cmid"><div class="nl"><span class="cname">jrusso1020</span><span class="badge b-chg">changes requested</span></div><div class="ctext">CodeQL required check failing — blocks approve</div></div>
+                  <div class="pillwrap"><span class="pill open" id="fd-p2o"><span class="dot">●</span> changes</span><span class="pill done" id="fd-p2d"><span class="ck">✓</span> resolved</span></div>
+                </div>
+                <div class="crow" id="fd-r3">
+                  <div class="av av-miguel"></div>
+                  <div class="cmid"><div class="nl"><span class="cname">miguel-heygen</span><span class="badge b-rev">re-review</span></div><div class="ctext">TOCTOU + sanitization in captions.mjs across 3 skills</div></div>
+                  <div class="pillwrap"><span class="pill open" id="fd-p3o"><span class="dot">●</span> open</span><span class="pill done" id="fd-p3d"><span class="ck">✓</span> resolved</span></div>
+                </div>
+                <div class="crow" id="fd-r4">
+                  <div class="av av-miga"></div>
+                  <div class="cmid"><div class="nl"><span class="cname">miga-heygen</span><span class="badge b-rev">review</span></div><div class="ctext">major refactor · 630 files — verifying each commit</div></div>
+                  <div class="pillwrap"><span class="pill open" id="fd-p4o"><span class="dot">●</span> reviewing</span><span class="pill done" id="fd-p4d"><span class="ck">✓</span> resolved</span></div>
+                </div>
+                <div class="crow author" id="fd-r5">
+                  <div class="av av-waterrr"></div>
+                  <div class="cmid"><div class="nl"><span class="cname">WaterrrForever</span><span class="badge b-author">author</span></div><div class="ctext">pushed cfdc213 · cb6de92 · e882ce9 — fixpoint sanitize + atomic writes</div></div>
+                  <div class="pillwrap"><span class="pill push" id="fd-p5"><span class="pl">✚</span> pushed</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="merge" id="fd-merge"><span class="mk">✓</span> all conversations resolved · <b>ready to merge</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="pctrl">
+        <svg class="pplay" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z" fill="#D97757"/></svg>
+        <div class="ptrack"><i class="pfill" id="fd-pfill"></i><span class="pknob" id="fd-pknob"></span></div>
+        <span class="ptime" id="fd-ptime">0:24 / 0:32</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cap" id="fd-cap"><span class="cl1">raised by many · resolved in the open · <b>fix → verify → merge</b></span></div>
+
+<style>
+  @font-face{font-family:'CodeBlackHF';font-weight:400;font-display:block;src:url(../fonts/ArchivoBlack-fs.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:500;font-display:block;src:url(../fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:600;font-display:block;src:url(../fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:400;font-display:block;src:url(../fonts/SplineSansMono-normal-400-latin-53329b.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:500;font-display:block;src:url(../fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');}
+
+  #fd-root{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;font-family:'Hanken Grotesk',system-ui,sans-serif;background:#F0EFE9;}
+  #fd-root .bg{position:absolute;inset:0;background:#F0EFE9;z-index:0;}
+  #fd-root .dot{width:1.0cqw;height:1.0cqw;border-radius:50%;display:block;flex:0 0 auto;}
+  #fd-root .dot.r{background:#FF5F57;}#fd-root .dot.y{background:#FEBC2E;}#fd-root .dot.g{background:#28C840;}
+
+  #fd-root .title{position:absolute;top:5cqh;left:0;right:0;z-index:5;display:flex;align-items:center;justify-content:center;gap:.45cqw;height:5.5cqw;}
+  #fd-root .ttext{font-family:'CodeBlackHF','Hanken Grotesk',system-ui,sans-serif;font-size:4.6cqw;color:#1D1F1F;line-height:1;letter-spacing:.02cqw;}
+  #fd-root .tcaret{display:inline-block;width:.34cqw;height:3.9cqw;background:#D97757;border-radius:.07cqw;}
+
+  #fd-root .player{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;}
+  #fd-root .pwin{position:relative;width:64cqw;margin-top:6cqh;background:#1D1F1F;border-radius:1.2cqw;overflow:hidden;box-shadow:0 2.4cqw 7cqw -2cqw rgba(20,20,18,.5);}
+  #fd-root .pbar{display:flex;align-items:center;gap:.62cqw;background:#1D1F1F;padding:1.05cqw 1.5cqw;}
+  #fd-root .ptitle{margin-left:.9cqw;font-family:'Spline Sans Mono',monospace;font-size:1.05cqw;color:#cfcabd;}
+  #fd-root .pscene{margin-left:auto;font-family:'Spline Sans Mono',monospace;font-size:.95cqw;color:#8C8B83;}
+  #fd-root .screen{position:relative;width:61cqw;height:34.3cqw;margin:0 1.5cqw;border-radius:.4cqw;overflow:hidden;background:#FAF9F5;}
+  #fd-root .vstage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform:scale(0.61);transform-origin:0 0;}
+  #fd-root .pctrl{display:flex;align-items:center;gap:1.2cqw;padding:1.2cqw 1.5cqw 1.4cqw;}
+  #fd-root .pplay{width:1.5cqw;height:1.5cqw;flex:0 0 auto;}
+  #fd-root .ptrack{position:relative;flex:1;height:.34cqw;background:rgba(255,255,255,.12);border-radius:9999px;}
+  #fd-root .pfill{position:absolute;left:0;top:0;height:100%;width:100%;background:#D97757;border-radius:9999px;transform:scaleX(0.66);transform-origin:left;}
+  #fd-root .pknob{position:absolute;left:66%;top:50%;width:1.0cqw;height:1.0cqw;margin:-.5cqw 0 0 -.5cqw;border-radius:50%;background:#F0EFE9;box-shadow:0 0 0 .2cqw rgba(217,119,87,.35);}
+  #fd-root .ptime{font-family:'Spline Sans Mono',monospace;font-size:1.0cqw;color:#9b988f;flex:0 0 auto;min-width:9cqw;text-align:right;}
+
+  /* ── conversation (inside the screen, 1920×1080 vstage) ── */
+  #fd-root .cv{position:absolute;inset:0;background:#FAF9F5;}
+  #fd-root .card{position:absolute;left:60px;right:60px;top:70px;height:760px;border:1px solid rgba(20,20,19,.12);border-radius:18px;background:rgba(236,227,212,.32);overflow:hidden;opacity:0;}
+  #fd-root .chead{display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 30px;border-bottom:1px solid rgba(20,20,19,.1);font-family:'Spline Sans Mono',monospace;opacity:0;}
+  #fd-root .chead .cl{font-size:24px;color:#3a392f;font-weight:500;}
+  #fd-root .chead .cl .d{color:#D97757;}
+  #fd-root .chead .cr{font-size:20px;color:#8C8B83;}
+  #fd-root .thread{position:relative;padding:26px 26px;}
+  #fd-root .crow{position:relative;display:flex;align-items:center;gap:24px;height:104px;margin-bottom:14px;padding:0 26px;background:#FAF8F2;border:1px solid rgba(20,20,19,.14);border-radius:13px;}
+  #fd-root .crow:last-child{margin-bottom:0;}
+  #fd-root .crow.author{background:rgba(217,119,87,.08);border-color:rgba(217,119,87,.38);}
+  #fd-root .av{flex:0 0 auto;width:62px;height:62px;border-radius:50%;background-color:#ECE3D4;background-size:cover;background-position:center;border:1px solid rgba(20,20,19,.12);}
+  #fd-root .av-ghas{background-image:url(../assets/avatars/ghas.png);background-color:#161616;}
+  #fd-root .av-jrusso{background-image:url(../assets/avatars/jrusso1020.png);}
+  #fd-root .av-miguel{background-image:url(../assets/avatars/miguel.png);}
+  #fd-root .av-miga{background-image:url(../assets/avatars/miga.png);}
+  #fd-root .av-waterrr{background-image:url(../assets/avatars/waterrr.png);}
+  #fd-root .cmid{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:9px;}
+  #fd-root .nl{display:flex;align-items:center;gap:13px;}
+  #fd-root .cname{font-size:27px;font-weight:600;color:#1D1F1F;line-height:1;white-space:nowrap;}
+  #fd-root .ctext{font-family:'Spline Sans Mono',monospace;font-size:18px;color:#6b6a61;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #fd-root .badge{font-family:'Spline Sans Mono',monospace;font-size:15px;font-weight:500;padding:4px 11px;border-radius:7px;border:1px solid;white-space:nowrap;line-height:1;}
+  #fd-root .b-sec{background:rgba(214,69,69,.12);color:#B23A3A;border-color:rgba(214,69,69,.35);}
+  #fd-root .b-chg{background:rgba(193,122,60,.14);color:#9C5A1F;border-color:rgba(193,122,60,.35);}
+  #fd-root .b-rev{background:rgba(20,20,19,.06);color:#6b6a61;border-color:rgba(20,20,19,.14);}
+  #fd-root .b-author{background:rgba(217,119,87,.14);color:#B4502F;border-color:rgba(217,119,87,.42);}
+  #fd-root .pillwrap{position:relative;flex:0 0 auto;width:190px;height:40px;}
+  #fd-root .pill{position:absolute;right:0;top:50%;transform:translateY(-50%);display:inline-flex;align-items:center;gap:7px;font-family:'Spline Sans Mono',monospace;font-size:17px;font-weight:500;padding:7px 14px;border-radius:9px;border:1px solid;white-space:nowrap;line-height:1;}
+  #fd-root .pill.open{background:rgba(193,122,60,.12);color:#9C5A1F;border-color:rgba(193,122,60,.32);}
+  #fd-root .pill.open .dot{color:#C77C3C;font-size:15px;}
+  #fd-root .pill.open.blk{background:rgba(214,69,69,.12);color:#B23A3A;border-color:rgba(214,69,69,.35);}
+  #fd-root .pill.open.blk .dot{color:#D64545;}
+  #fd-root .pill.done{background:rgba(79,157,91,.16);color:#2f6b3d;border-color:rgba(79,157,91,.5);}
+  #fd-root .pill.done .ck{color:#4F9D5B;}
+  #fd-root .pill.push{background:rgba(217,119,87,.14);color:#B4502F;border-color:rgba(217,119,87,.45);}
+  #fd-root .pill.push .pl{color:#D97757;}
+  #fd-root .merge{position:absolute;left:50%;transform:translateX(-50%);top:880px;display:inline-flex;align-items:center;gap:11px;font-family:'Spline Sans Mono',monospace;font-size:30px;font-weight:500;color:#2f6b3d;background:rgba(79,157,91,.14);border:1px solid rgba(79,157,91,.5);border-radius:13px;padding:15px 30px;opacity:0;}
+  #fd-root .merge .mk{color:#4F9D5B;font-size:31px;}
+  #fd-root .merge b{color:#2f6b3d;font-weight:600;}
+
+  #fd-root .cap{display:none;position:absolute;bottom:5.5cqh;left:0;right:0;text-align:center;z-index:4;}
+  #fd-root .cap span{font-family:'Spline Sans Mono',monospace;font-size:1.18cqw;font-weight:500;color:#3a392f;opacity:0;}
+  #fd-root .cap b{color:#D97757;font-weight:500;}
+</style>
+
+<script>
+(function(){
+  const R=(document.currentScript&&document.currentScript.closest('#fd-root'))||document.querySelector('#fd-root');
+  if(!R||!window.gsap) return;
+  const q=(s)=>R.querySelector(s), qa=(s)=>Array.from(R.querySelectorAll(s));
+  window.__timelines=window.__timelines||{};
+  const tl=gsap.timeline({paused:true});
+  const inner=gsap.timeline();   // outer: title + player + scrubber (real-time)
+  const disc=gsap.timeline();    // the conversation content (1× authored), run at 2×
+
+  // ── initial state ──
+  gsap.set(q('.pwin'),{opacity:0,scale:.62,y:10});
+  gsap.set(q('#fd-pfill'),{scaleX:0.66});
+  gsap.set(q('#fd-pknob'),{left:'66%'});
+  gsap.set(q('.cl1'),{opacity:0});
+  gsap.set(q('.card'),{opacity:0});
+  gsap.set(q('.chead'),{opacity:0});
+  gsap.set(qa('.crow'),{opacity:0,scale:.96,y:14});
+  gsap.set(['#fd-p1d','#fd-p2d','#fd-p3d','#fd-p4d'],{opacity:0,scale:.8});
+  gsap.set(q('#fd-merge'),{opacity:0,scale:.85,y:10});
+
+  // ── outer: title + player + scrubber ──
+  const TITLE="SHOW YOUR REVIEW";
+  const tt=q('#fd-ttext'), tc=q('#fd-tcaret');
+  tt.textContent=''; gsap.set(tc,{opacity:1});
+  const o={n:0};
+  inner.to(o,{n:TITLE.length,duration:.9,ease:'none',onUpdate(){tt.textContent=TITLE.slice(0,Math.round(o.n));}},0.2);
+  inner.to(tc,{opacity:0,duration:.35,ease:'steps(1)',repeat:5,yoyo:true},0.2);
+  inner.to(tc,{opacity:0,duration:.25,ease:'power2.in'},3.6);
+  inner.fromTo(q('.pwin'),{opacity:0,scale:.62,y:10},{opacity:1,scale:1,y:0,duration:.5,ease:'power3.out'},0.1);
+  inner.to(q('.cl1'),{opacity:1,duration:.35},1.2);
+  inner.to(q('#fd-pfill'),{scaleX:0.80,duration:3.2,ease:'none'},0.6);
+  inner.to(q('#fd-pknob'),{left:'80%',duration:3.2,ease:'none'},0.6);
+  const t2={t:24};
+  inner.to(t2,{t:27,duration:3.2,ease:'none',onUpdate(){q('#fd-ptime').textContent='0:'+String(Math.floor(t2.t)).padStart(2,'0')+' / 0:32';}},0.6);
+
+  // ── the conversation (authored at 1×, played at 2× inside the screen) ──
+  disc.to(q('.card'),{opacity:1,duration:.5,ease:'power2.out'},0.5);
+  disc.to(q('.chead'),{opacity:1,duration:.4,ease:'power2.out'},0.9);
+  ['#fd-r1','#fd-r2','#fd-r3','#fd-r4'].forEach((sel,i)=>{
+    disc.fromTo(q(sel),{opacity:0,scale:.96,y:14},{opacity:1,scale:1,y:0,duration:.42,ease:'back.out(1.5)'},1.4+i*0.4);
+  });
+  disc.fromTo(q('#fd-r5'),{opacity:0,scale:.96,y:18},{opacity:1,scale:1,y:0,duration:.5,ease:'back.out(1.6)'},3.4);
+  [['#fd-p4o','#fd-p4d'],['#fd-p3o','#fd-p3d'],['#fd-p2o','#fd-p2d'],['#fd-p1o','#fd-p1d']].forEach((pair,i)=>{
+    const t=4.2+i*0.28;
+    disc.to(q(pair[0]),{opacity:0,duration:.2,ease:'power2.in'},t);
+    disc.fromTo(q(pair[1]),{opacity:0,scale:.8},{opacity:1,scale:1,duration:.32,ease:'back.out(1.7)'},t+.04);
+  });
+  disc.to(q('#fd-merge'),{opacity:1,scale:1,y:0,duration:.55,ease:'back.out(1.6)'},5.9);
+  disc.timeScale(2);
+  inner.add(disc,0);
+
+  inner.to({},{duration:.2},3.9);
+  inner.timeScale(2.05);   // compressed: ~4.1s authored → ~2.0s
+  tl.add(inner,0);
+  window.__timelines["feature-discussion"]=tl;
+})();
+</script>
+</div>
+</template>

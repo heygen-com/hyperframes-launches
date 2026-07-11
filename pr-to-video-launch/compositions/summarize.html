@@ -1,0 +1,100 @@
+<template>
+<div id="sm-root" data-composition-id="summarize" data-width="1920" data-height="1080" data-duration="3.0">
+  <audio id="sfx-sm-type" data-sfx="1" data-volume="0.9" src="assets/sfx/type.mp3" data-start="0.0" data-duration="0.8" data-track-index="83"></audio>
+  <audio id="sfx-sm-send" data-sfx="1" data-volume="0.9" src="assets/sfx/click.mp3" data-start="0.85" data-duration="0.27" data-track-index="84"></audio>
+  <audio id="sfx-sm-still" data-sfx="1" data-volume="0.9" src="assets/sfx/swish.mp3" data-start="2.2" data-duration="0.4" data-track-index="82"></audio>
+  <div class="win">
+    <div class="feed" id="sm-feed">
+      <div class="rinner" id="sm-inner">
+        <div class="al headl"><span class="mk">✳</span>Here's the summary:</div>
+        <div class="al h">## TL;DR</div>
+        <div class="al">Three video skills now share one script-driven engine — less duplication, one place to fix bugs.</div>
+        <div class="al h">## What moved</div>
+        <div class="al">- product-launch, pr-to-video, faceless-explainer → one fetch / build-frame / audio / caption / assemble pipeline.</div>
+        <div class="al">- each SKILL.md slimmed; the inline step logic now lives in shared scripts.</div>
+        <div class="al">- story / tts / blueprints references trimmed where the engine owns the flow.</div>
+        <div class="al h">## By the numbers</div>
+        <div class="al">- 629 files touched, +8,322 / −87,291.</div>
+        <div class="al">- the −87,291 is mostly moved, not deleted; net behaviour unchanged.</div>
+        <div class="al">- 4 commits, each a coherent slice.</div>
+        <div class="al h">## New surface</div>
+        <div class="al">- a claude frame preset (FRAME.md + caption-skin.html).</div>
+        <div class="al">- code-diff / code-typing / code-morph registry blocks for code beats.</div>
+        <div class="al">- a shared audio engine: TTS + BGM lookup + SFX + duration sync.</div>
+        <div class="al h">## Behaviour changes</div>
+        <div class="al">- pr-to-video ingests via gh → a synthetic capture package; no website capture.</div>
+        <div class="al">- product-launch keeps capture but delegates audio + captions to the engine.</div>
+        <div class="al">- faceless-explainer drops its bespoke audio path entirely.</div>
+        <div class="al h">## Risks to check</div>
+        <div class="al">- the shared audio engine is a single point of failure for all three skills.</div>
+        <div class="al">- verify no skill lost a reference in the move.</div>
+      </div>
+    </div>
+    <div class="composer" id="sm-composer">
+      <div class="chips"><span class="chip">Local</span><span class="chip">hyperframes</span></div>
+      <div class="inputbar"><div class="tline"><span class="typed" id="sm-typed"></span><span class="caret" id="sm-caret">▏</span></div><span class="ret">↵</span></div>
+      <div class="metarow"><div class="ml"><span class="auto">Auto</span><span class="ico">＋</span></div><div class="mr"><span>Opus 4.8</span><span class="hi">High</span><span class="orb"></span></div></div>
+    </div>
+    <div class="veil" id="sm-veil"></div>
+    <div class="still" id="sm-still">Still too long</div>
+  </div>
+<style>
+  @font-face{font-family:'Hanken Grotesk';font-weight:400;font-display:block;src:url(../fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:500;font-display:block;src:url(../fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:600;font-display:block;src:url(../fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:400;font-display:block;src:url(../fonts/SplineSansMono-normal-400-latin-53329b.woff2) format('woff2');}
+  @font-face{font-family:'Galaxie Copernicus';font-weight:400;font-display:block;src:url(../fonts/GalaxieCopernicus-Book.woff2) format('woff2');}
+  #sm-root{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;font-family:'Hanken Grotesk',system-ui,sans-serif;background:#F0EFE9;}
+  #sm-root .win{position:absolute;inset:0;background:#1D1F1F;overflow:hidden;color:#EFEADD;}
+  #sm-root .feed{position:absolute;left:6cqw;right:8cqw;top:6cqw;bottom:6cqw;overflow:hidden;opacity:0;}
+  #sm-root .rinner{position:absolute;left:0;right:0;top:0;will-change:transform;}
+  #sm-root .al{font-size:1.55cqw;line-height:1.7;color:#cfcabd;margin:0 0 .6cqw;}
+  #sm-root .al.headl{display:flex;align-items:center;gap:.7cqw;color:#D8D4C8;font-weight:500;margin-bottom:1.1cqw;font-size:1.65cqw;}
+  #sm-root .al.headl .mk{color:#D97757;font-size:1.65cqw;}
+  #sm-root .al.h{color:#E8A55A;font-weight:600;margin-top:1.2cqw;font-family:'Spline Sans Mono',monospace;font-size:1.4cqw;}
+  #sm-root .composer{position:absolute;left:540px;width:840px;bottom:370px;transform:scale(1.85);transform-origin:50% 100%;will-change:transform;}
+  #sm-root .chips{display:flex;gap:.6cqw;margin-bottom:.9cqw;}
+  #sm-root .chip{background:#2C2C2B;color:#D7D4CA;font-size:.98cqw;font-weight:500;padding:.46cqw .82cqw;border-radius:.55cqw;}
+  #sm-root .inputbar{position:relative;display:flex;align-items:center;background:#2C2C2B;border:1px solid #3a3a38;border-radius:.9cqw;min-height:3.3cqw;padding:.7cqw 1.2cqw;box-shadow:0 0 0 .12cqw rgba(217,119,87,.5);}
+  #sm-root .tline{flex:1;min-width:0;padding-right:2.6cqw;white-space:pre-wrap;line-height:1.45;}
+  #sm-root .typed{font-family:'Spline Sans Mono',monospace;font-size:1.1cqw;color:#E6E2D6;}
+  #sm-root .caret{font-size:1.45cqw;color:#D97757;margin-left:.05cqw;}
+  #sm-root .ret{position:absolute;right:1.1cqw;top:50%;transform:translateY(-50%);color:#6F6E66;font-size:1.2cqw;}
+  #sm-root .metarow{display:flex;justify-content:space-between;align-items:center;margin-top:.85cqw;color:#7C7B73;font-size:1.0cqw;font-weight:500;}
+  #sm-root .ml,#sm-root .mr{display:flex;align-items:center;gap:1.0cqw;}
+  #sm-root .auto{background:rgba(202,164,62,.16);color:#CAA43E;padding:.22cqw .7cqw;border-radius:.45cqw;font-size:.92cqw;}
+  #sm-root .ico{color:#8C8B83;}#sm-root .mr .hi{color:#9A998F;}
+  #sm-root .orb{width:1.25cqw;height:1.25cqw;border-radius:50%;box-sizing:border-box;border:0.17cqw solid rgba(96,148,214,0.26);border-top-color:#5A9BE6;}
+  #sm-root .veil{position:absolute;inset:0;background:#1D1F1F;opacity:0;}
+  #sm-root .still{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font-family:'Galaxie Copernicus',Georgia,serif;font-size:9cqw;letter-spacing:-.18cqw;color:#EFEADD;opacity:0;}
+</style>
+<script>
+(function(){
+  const R=(document.currentScript&&document.currentScript.closest('#sm-root'))||document.querySelector('#sm-root');
+  if(!R||!window.gsap) return;
+  const typed=R.querySelector('#sm-typed'),caret=R.querySelector('#sm-caret'),composer=R.querySelector('#sm-composer'),
+        feed=R.querySelector('#sm-feed'),inner=R.querySelector('#sm-inner'),
+        veil=R.querySelector('#sm-veil'),still=R.querySelector('#sm-still');
+  window.__timelines=window.__timelines||{};
+  const tl=gsap.timeline({paused:true});
+  const dist=Math.max(0,inner.offsetHeight-feed.offsetHeight+30);
+  gsap.set(caret,{opacity:1});gsap.set(R.querySelector('.orb'),{transformOrigin:'50% 50%'});
+  gsap.set(feed,{opacity:0});gsap.set(inner,{y:0});gsap.set(veil,{opacity:0});gsap.set(still,{opacity:0,y:14});typed.textContent='';
+  tl.to(R.querySelector('.orb'),{rotation:360,duration:1,ease:'none',repeat:2},0);
+  // ① fast type
+  const CMD="summarize this PR";const o={n:0};
+  tl.to(o,{n:CMD.length,duration:.8,ease:'none',onUpdate(){typed.textContent=CMD.slice(0,Math.round(o.n));}},0.0);
+  // ② send → composer flies up, summary walls in + fast scroll
+  tl.set(caret,{opacity:0},0.82);
+  tl.to(composer,{y:-44,opacity:0,duration:.32,ease:'power2.in'},0.85);
+  tl.to(feed,{opacity:1,duration:.25,ease:'power1.out'},0.92);
+  tl.fromTo(inner,{y:0},{y:-dist,duration:1.25,ease:'power1.in'},1.0);
+  // ③ "Still too long" — same serif treatment as the diff card
+  tl.to(veil,{opacity:1,duration:.3,ease:'power2.in'},2.2);
+  tl.to(still,{opacity:1,y:0,duration:.32,ease:'power3.out'},2.32);
+  tl.to({},{duration:.4},2.6);
+  window.__timelines["summarize"]=tl;
+})();
+</script>
+</div>
+</template>

@@ -1,0 +1,139 @@
+<template>
+<div id="fc-root" data-composition-id="feature-code" data-width="1920" data-height="1080" data-duration="2.4">
+  <div class="bg"></div>
+  <div class="title"><span class="ttext" id="fc-ttext"></span><span class="tcaret" id="fc-tcaret"></span></div>
+
+  <div class="player">
+    <div class="pwin">
+      <div class="pbar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="ptitle">hyperframes-pr-1635.mp4</span>
+        <span class="pscene">scene 1 / 6</span>
+      </div>
+      <div class="screen">
+        <div class="vstage">
+          <div class="codeview">
+            <div class="cfile"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="cfn">skills/pr-to-video/scripts/<b>fetch-pr.mjs</b></span><span class="cdelta">+164 −0</span></div>
+            <div class="codebody">
+              <div class="codeinner" id="fc-inner">
+                <div class="cl"><span class="ln">5</span><span class="ct"><span class="kw">function</span> <span class="fn">ghTry</span>(args) {</span></div>
+                <div class="cl"><span class="ln">6</span><span class="ct">  <span class="kw">try</span> {</span></div>
+                <div class="cl"><span class="ln">7</span><span class="ct">    <span class="kw">const</span> out = <span class="fn">execFileSync</span>(<span class="str">"gh"</span>, args, { encoding: <span class="str">"utf8"</span> });</span></div>
+                <div class="cl"><span class="ln">8</span><span class="ct">    <span class="kw">return</span> { ok: <span class="kw">true</span>, stdout: out };</span></div>
+                <div class="cl"><span class="ln">9</span><span class="ct">  } <span class="kw">catch</span> (e) { <span class="kw">return</span> { ok: <span class="kw">false</span>, stderr: e.stderr }; }</span></div>
+                <div class="cl"><span class="ln">10</span><span class="ct">}</span></div>
+                <div class="cl"><span class="ln">11</span><span class="ct"></span></div>
+                <div class="cl"><span class="ln">12</span><span class="ct"><span class="kw">const</span> view = <span class="fn">ghTry</span>([<span class="str">"pr"</span>, <span class="str">"view"</span>, prRef, <span class="str">"--json"</span>, FIELDS]);</span></div>
+                <div class="cl"><span class="ln">13</span><span class="ct"></span></div>
+                <div class="cl key"><span class="ln">14</span><span class="ct">  <span class="cm">// complete the files list — the truncation fix</span></span></div>
+                <div class="cl key"><span class="ln">15</span><span class="ct"><span class="kw">const</span> files = <span class="fn">ghTry</span>([<span class="str">"api"</span>, <span class="str">"--paginate"</span>,</span></div>
+                <div class="cl key"><span class="ln">16</span><span class="ct">  <span class="str">`repos/${owner}/${repo}/pulls/${number}/files`</span>]);</span></div>
+                <div class="cl"><span class="ln">17</span><span class="ct"></span></div>
+                <div class="cl"><span class="ln">18</span><span class="ct"><span class="kw">if</span> (files.ok) pr.files = <span class="fn">parseNDJSON</span>(files.stdout);</span></div>
+              </div>
+              <div class="hlband" id="fc-band"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pctrl">
+        <svg class="pplay" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z" fill="#D97757"/></svg>
+        <div class="ptrack"><i class="pfill" id="fc-pfill"></i><span class="pknob" id="fc-pknob"></span></div>
+        <span class="ptime" id="fc-ptime">0:02 / 0:32</span>
+      </div>
+    </div>
+  </div>
+
+<style>
+  @font-face{font-family:'CodeBlackHF';font-weight:400;font-display:block;src:url(../fonts/ArchivoBlack-fs.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:500;font-display:block;src:url(../fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:600;font-display:block;src:url(../fonts/HankenGrotesk-normal-600-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:400;font-display:block;src:url(../fonts/SplineSansMono-normal-400-latin-53329b.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:500;font-display:block;src:url(../fonts/SplineSansMono-normal-500-latin-53329b.woff2) format('woff2');}
+
+  #fc-root{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;font-family:'Hanken Grotesk',system-ui,sans-serif;background:#F0EFE9;}
+  #fc-root .bg{position:absolute;inset:0;background:#F0EFE9;z-index:0;}
+  #fc-root .dot{width:1.0cqw;height:1.0cqw;border-radius:50%;display:block;flex:0 0 auto;}
+  #fc-root .dot.r{background:#FF5F57;}#fc-root .dot.y{background:#FEBC2E;}#fc-root .dot.g{background:#28C840;}
+
+  #fc-root .title{position:absolute;top:5cqh;left:0;right:0;z-index:5;display:flex;align-items:center;justify-content:center;gap:.45cqw;height:5.5cqw;}
+  #fc-root .ttext{font-family:'CodeBlackHF','Hanken Grotesk',system-ui,sans-serif;font-size:4.6cqw;color:#1D1F1F;line-height:1;letter-spacing:.02cqw;}
+  #fc-root .tcaret{display:inline-block;width:.34cqw;height:3.9cqw;background:#D97757;border-radius:.07cqw;}
+
+  #fc-root .player{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;}
+  #fc-root .pwin{position:relative;width:64cqw;margin-top:6cqh;background:#1D1F1F;border-radius:1.2cqw;overflow:hidden;box-shadow:0 2.4cqw 7cqw -2cqw rgba(20,20,18,.5);}
+  #fc-root .pbar{display:flex;align-items:center;gap:.62cqw;background:#1D1F1F;padding:1.05cqw 1.5cqw;}
+  #fc-root .ptitle{margin-left:.9cqw;font-family:'Spline Sans Mono',monospace;font-size:1.05cqw;color:#cfcabd;}
+  #fc-root .pscene{margin-left:auto;font-family:'Spline Sans Mono',monospace;font-size:.95cqw;color:#8C8B83;}
+  #fc-root .screen{position:relative;width:61cqw;height:34.3cqw;margin:0 1.5cqw;border-radius:.4cqw;overflow:hidden;background:#1A1B1A;}
+  #fc-root .vstage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform:scale(0.61);transform-origin:0 0;}
+  #fc-root .pctrl{display:flex;align-items:center;gap:1.2cqw;padding:1.2cqw 1.5cqw 1.4cqw;}
+  #fc-root .pplay{width:1.5cqw;height:1.5cqw;flex:0 0 auto;}
+  #fc-root .ptrack{position:relative;flex:1;height:.34cqw;background:rgba(255,255,255,.12);border-radius:9999px;}
+  #fc-root .pfill{position:absolute;left:0;top:0;height:100%;width:100%;background:#D97757;border-radius:9999px;transform:scaleX(0.05);transform-origin:left;}
+  #fc-root .pknob{position:absolute;left:5%;top:50%;width:1.0cqw;height:1.0cqw;margin:-.5cqw 0 0 -.5cqw;border-radius:50%;background:#F0EFE9;box-shadow:0 0 0 .2cqw rgba(217,119,87,.35);}
+  #fc-root .ptime{font-family:'Spline Sans Mono',monospace;font-size:1.0cqw;color:#9b988f;flex:0 0 auto;min-width:9cqw;text-align:right;}
+
+  /* ── the code editor (inside the screen, 1920×1080 vstage) ── */
+  #fc-root .codeview{position:absolute;inset:0;background:#1A1B1A;font-family:'Spline Sans Mono',monospace;}
+  #fc-root .cfile{display:flex;align-items:center;gap:14px;background:#252320;padding:26px 40px;}
+  #fc-root .cfile .d{width:20px;height:20px;border-radius:50%;}
+  #fc-root .cfile .d.r{background:#FF5F57;}#fc-root .cfile .d.y{background:#FEBC2E;}#fc-root .cfile .d.g{background:#28C840;}
+  #fc-root .cfile .cfn{margin-left:18px;font-size:28px;color:#9c9485;}
+  #fc-root .cfile .cfn b{color:#F5EFE6;font-weight:500;}
+  #fc-root .cfile .cdelta{margin-left:auto;font-size:26px;color:#5DB872;}
+  #fc-root .codebody{position:relative;padding:34px 0 0;}
+  #fc-root .codeinner{padding:0 54px;font-size:33px;line-height:62px;}
+  #fc-root .cl{display:flex;gap:34px;white-space:pre;color:#cfcabd;}
+  #fc-root .cl .ln{width:54px;text-align:right;color:#5e5d56;flex:0 0 auto;}
+  #fc-root .hlband{position:absolute;left:24px;right:24px;height:198px;border-radius:10px;background:rgba(217,119,87,.13);border-left:7px solid #D97757;opacity:0;}
+  #fc-root .kw{color:#D97757;}#fc-root .str{color:#5DB8A6;}#fc-root .fn{color:#E0C9A6;}#fc-root .cm{color:#6F6E66;font-style:italic;}
+</style>
+
+<script>
+(function(){
+  const R=(document.currentScript&&document.currentScript.closest('#fc-root'))||document.querySelector('#fc-root');
+  if(!R||!window.gsap) return;
+  const q=(s)=>R.querySelector(s), qa=(s)=>Array.from(R.querySelectorAll(s));
+  window.__timelines=window.__timelines||{};
+  const tl=gsap.timeline({paused:true});
+  const inner=gsap.timeline();   // authored ~4.8s, played back compressed
+
+  gsap.set(q('.pwin'),{opacity:0,scale:.62,y:10});
+  gsap.set(q('#fc-pfill'),{scaleX:0.05});
+  gsap.set(q('#fc-pknob'),{left:'5%'});
+  gsap.set(q('.codeview'),{opacity:0});
+  gsap.set(q('#fc-band'),{opacity:0});
+
+  // TITLE typewriter
+  const TITLE="SHOW YOUR CODE";
+  const tt=q('#fc-ttext'), tc=q('#fc-tcaret');
+  tt.textContent=''; gsap.set(tc,{opacity:1});
+  const o={n:0};
+  inner.to(o,{n:TITLE.length,duration:1.15,ease:'none',onUpdate(){tt.textContent=TITLE.slice(0,Math.round(o.n));}},0.3);
+  inner.to(tc,{opacity:0,duration:.4,ease:'steps(1)',repeat:9,yoyo:true},0.3);
+  inner.to(tc,{opacity:0,duration:.3,ease:'power2.in'},4.5);
+
+  // player opens, code reveals
+  inner.fromTo(q('.pwin'),{opacity:0,scale:.62,y:10},{opacity:1,scale:1,y:0,duration:.6,ease:'power3.out'},0.15);
+  inner.to(q('.codeview'),{opacity:1,duration:.45,ease:'power2.out'},1.0);
+
+  // scrubber inches forward (scene 1 of 6)
+  inner.to(q('#fc-pfill'),{scaleX:0.11,duration:3.2,ease:'none'},1.4);
+  inner.to(q('#fc-pknob'),{left:'11%',duration:3.2,ease:'none'},1.4);
+  const t2={t:2};
+  inner.to(t2,{t:5,duration:3.2,ease:'none',onUpdate(){q('#fc-ptime').textContent='0:'+String(Math.floor(t2.t)).padStart(2,'0')+' / 0:32';}},1.4);
+
+  // highlight the truncation-fix lines (key)
+  inner.set(q('#fc-band'),{top:'622px'},2.4);   // sits over lines 14–16
+  inner.to(qa('.cl:not(.key)'),{opacity:.32,duration:.4,ease:'power2.out'},2.45);
+  inner.to(q('#fc-band'),{opacity:1,duration:.4,ease:'power2.out'},2.5);
+  inner.to({},{duration:.6},4.6);
+
+  inner.timeScale(2.0);   // compressed: ~4.8s authored → ~2.4s
+  tl.add(inner,0);
+  window.__timelines["feature-code"]=tl;
+})();
+</script>
+</div>
+</template>

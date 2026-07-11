@@ -1,0 +1,94 @@
+<template>
+<div id="us-root" data-composition-id="use-skill" data-width="1920" data-height="1080" data-duration="3.8">
+  <audio id="sfx-us-type" data-sfx="1" data-volume="0.9" src="assets/sfx/type.mp3" data-start="0.4" data-duration="1.4" data-track-index="86"></audio>
+  <audio id="sfx-us-send" data-sfx="1" data-volume="0.9" src="assets/sfx/click.mp3" data-start="2.0" data-duration="0.27" data-track-index="87"></audio>
+  <audio id="sfx-us-think" data-sfx="1" data-volume="0.9" src="assets/sfx/riser-build.mp3" data-start="2.4" data-duration="1.2" data-track-index="88"></audio>
+  <div class="win">
+    <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="wtitle">claude — ~/hyperframes</span></div>
+    <div class="feed">
+      <div class="stack" id="us-stack">
+        <div class="urow" id="us-cmd">use pr-to-video to make a video for this pr</div>
+        <div class="arow" id="us-out">
+          <div class="think" id="us-think"><span class="ast">✳</span><span class="tt">thinking…</span></div>
+          <div class="ol" id="us-l0"><span class="mk">⏺</span><span class="dim">Reading PR #1635 · 629 files · 4 commits</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="composer" id="us-composer">
+      <div class="chips"><span class="chip">Local</span><span class="chip">hyperframes</span></div>
+      <div class="inputbar"><div class="tline"><span class="typed" id="us-typed"></span><span class="caret" id="us-caret">▏</span><span class="ph" id="us-ph">Reply to Claude…</span></div><span class="ret">↵</span></div>
+      <div class="metarow"><div class="ml"><span class="auto">Auto</span><span class="ico">＋</span></div><div class="mr"><span>Opus 4.8</span><span class="hi">High</span><span class="orb"></span></div></div>
+    </div>
+  </div>
+<style>
+  @font-face{font-family:'Hanken Grotesk';font-weight:400;font-display:block;src:url(../fonts/HankenGrotesk-normal-400-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Hanken Grotesk';font-weight:500;font-display:block;src:url(../fonts/HankenGrotesk-normal-500-latin-fe1634.woff2) format('woff2');}
+  @font-face{font-family:'Spline Sans Mono';font-weight:400;font-display:block;src:url(../fonts/SplineSansMono-normal-400-latin-53329b.woff2) format('woff2');}
+  #us-root{position:absolute;inset:0;width:1920px;height:1080px;container-type:size;font-family:'Hanken Grotesk',system-ui,sans-serif;background:#F0EFE9;}
+  #us-root .win{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:83.3cqw;height:81cqh;background:#1D1F1F;border-radius:1.35cqw;overflow:hidden;color:#EFEADD;box-shadow:0 2cqw 6cqw -2cqw rgba(20,20,18,.45);}
+  #us-root .bar{position:absolute;top:1.4cqw;left:1.6cqw;display:flex;align-items:center;gap:.62cqw;z-index:5;}
+  #us-root .dot{width:1.05cqw;height:1.05cqw;border-radius:50%;}
+  #us-root .dot.r{background:#FF5F57;}#us-root .dot.y{background:#FEBC2E;}#us-root .dot.g{background:#28C840;}
+  #us-root .wtitle{margin-left:.9cqw;font-family:'Spline Sans Mono',monospace;font-size:1.0cqw;color:#8C8B83;}
+  #us-root .feed{position:absolute;left:3.4cqw;right:3.4cqw;top:5.5cqw;bottom:16.5cqw;overflow:hidden;}
+  #us-root .stack{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:1.4cqw;}
+  #us-root .urow{align-self:flex-end;max-width:74%;text-align:right;font-family:'Spline Sans Mono',monospace;font-size:1.35cqw;color:#E6E2D6;line-height:1.4;opacity:0;}
+  #us-root .arow{align-self:flex-start;max-width:88%;}
+  #us-root .think{display:flex;align-items:center;gap:.7cqw;color:#8C8B83;font-size:1.4cqw;margin-bottom:1.0cqw;opacity:0;}
+  #us-root .think .ast{color:#D97757;font-size:1.6cqw;display:inline-block;}
+  #us-root .ol{display:flex;align-items:flex-start;gap:.7cqw;font-size:1.45cqw;line-height:1.45;color:#d8d4c8;opacity:0;}
+  #us-root .ol .mk{color:#D97757;font-weight:700;}#us-root .ol .dim{color:#A09D96;}
+  #us-root .composer{position:absolute;left:3.4cqw;right:3.4cqw;bottom:3.4cqw;}
+  #us-root .chips{display:flex;gap:.6cqw;margin-bottom:.9cqw;}
+  #us-root .chip{background:#2C2C2B;color:#D7D4CA;font-size:.98cqw;font-weight:500;padding:.46cqw .82cqw;border-radius:.55cqw;}
+  #us-root .inputbar{position:relative;display:flex;align-items:center;background:#2C2C2B;border:1px solid #3a3a38;border-radius:.9cqw;min-height:3.3cqw;padding:.7cqw 1.2cqw;box-shadow:0 0 0 .12cqw rgba(217,119,87,.45);}
+  #us-root .tline{flex:1;min-width:0;padding-right:2.6cqw;white-space:pre-wrap;line-height:1.45;position:relative;}
+  #us-root .typed{font-family:'Spline Sans Mono',monospace;font-size:1.1cqw;color:#E6E2D6;}
+  #us-root .ph{font-size:1.15cqw;color:#6F6E66;position:absolute;left:0;top:50%;transform:translateY(-50%);}
+  #us-root .caret{font-size:1.45cqw;color:#D97757;margin-left:.05cqw;}
+  #us-root .ret{position:absolute;right:1.1cqw;top:50%;transform:translateY(-50%);color:#6F6E66;font-size:1.2cqw;}
+  #us-root .metarow{display:flex;justify-content:space-between;align-items:center;margin-top:.85cqw;color:#7C7B73;font-size:1.0cqw;font-weight:500;}
+  #us-root .ml,#us-root .mr{display:flex;align-items:center;gap:1.0cqw;}
+  #us-root .auto{background:rgba(202,164,62,.16);color:#CAA43E;padding:.22cqw .7cqw;border-radius:.45cqw;font-size:.92cqw;}
+  #us-root .ico{color:#8C8B83;}#us-root .mr .hi{color:#9A998F;}
+  #us-root .orb{width:1.25cqw;height:1.25cqw;border-radius:50%;box-sizing:border-box;border:0.17cqw solid rgba(96,148,214,0.26);border-top-color:#5A9BE6;}
+</style>
+<script>
+(function(){
+  const R=(document.currentScript&&document.currentScript.closest('#us-root'))||document.querySelector('#us-root');
+  if(!R||!window.gsap) return;
+  const GAP=26.88;
+  const CMD="use pr-to-video to make a video for this pr";
+  const typed=R.querySelector('#us-typed'),caret=R.querySelector('#us-caret'),ph=R.querySelector('#us-ph'),
+        stack=R.querySelector('#us-stack'),cmd=R.querySelector('#us-cmd'),out=R.querySelector('#us-out'),
+        think=R.querySelector('#us-think'),ast=R.querySelector('#us-think .ast'),l0=R.querySelector('#us-l0');
+  window.__timelines=window.__timelines||{};
+  const tl=gsap.timeline({paused:true});
+  const dCmd=cmd.offsetHeight+GAP, dOut=out.offsetHeight+GAP;
+  gsap.set(stack,{y:dCmd+dOut});         // cmd + out start clipped below the fold
+  gsap.set([cmd,think,l0],{opacity:0});
+  gsap.set(ph,{opacity:1});gsap.set(caret,{opacity:1});
+  gsap.set(R.querySelector('.orb'),{transformOrigin:'50% 50%'});gsap.set(ast,{transformOrigin:'50% 50%'});typed.textContent='';
+  tl.to(R.querySelector('.orb'),{rotation:360,duration:1,ease:'none',repeat:3},0);
+  // type the command
+  tl.to(caret,{opacity:0,duration:.5,ease:'steps(1)',repeat:1,yoyo:true},0.1);
+  tl.set(ph,{opacity:0},0.4);tl.set(caret,{opacity:1},0.4);
+  const o={n:0};
+  tl.to(o,{n:CMD.length,duration:1.4,ease:'none',onUpdate(){typed.textContent=CMD.slice(0,Math.round(o.n));}},0.4);
+  // send → command rises into the feed
+  tl.set(caret,{opacity:0},2.0);
+  tl.add(()=>{typed.textContent='';ph.style.opacity='1';},2.0);
+  tl.fromTo(cmd,{opacity:0},{opacity:1,duration:.3,ease:'power2.out'},2.05);
+  tl.to(stack,{y:dOut,duration:.4,ease:'power3.out'},2.05);
+  // Claude thinking
+  tl.fromTo(out,{opacity:0},{opacity:1,duration:.2},2.45);
+  tl.to(stack,{y:0,duration:.4,ease:'power3.out'},2.5);
+  tl.fromTo(think,{opacity:0,y:8},{opacity:1,y:0,duration:.3,ease:'power2.out'},2.5);
+  tl.to(ast,{rotation:360,duration:1.0,ease:'none',repeat:1},2.5);
+  tl.fromTo(l0,{opacity:0,y:10},{opacity:1,y:0,duration:.35,ease:'power3.out'},3.0);
+  tl.to({},{duration:.2},3.6);
+  window.__timelines["use-skill"]=tl;
+})();
+</script>
+</div>
+</template>

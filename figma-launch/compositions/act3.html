@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Act 3 · Until now</title></head>
+<body>
+<template>
+  <div data-hf-id="hf-ww8h" id="act3-root" data-composition-id="act3" data-width="1080" data-height="1080" data-duration="1.1" style="position:relative; width:1080px; height:1080px; overflow:hidden;">
+    <style>
+      @font-face { font-family:'ABC Solar Display'; src:url('assets/fonts/ABCSolarDisplay-Bold.woff2') format('woff2'); font-weight:700; font-display:block; }
+
+      #act3-ground { position:absolute; inset:0; background:#000; }
+      #act3-shade { position:absolute; inset:0; opacity:0;
+        background:linear-gradient(180deg, rgba(0,0,0,.5), rgba(0,0,0,.25) 40%, rgba(0,0,0,.55)); }
+      #act3-line { position:absolute; left:0; right:0; top:455px; line-height:1.1;
+        text-align:center; font-family:'ABC Solar Display', sans-serif; font-weight:700;
+        font-size:150px; letter-spacing:-.015em; color:#fff; will-change:transform;
+        white-space:nowrap; }
+    </style>
+
+    <div data-hf-id="hf-0b5m" id="act3-ground"></div>
+    <div data-hf-id="hf-hhmu" id="act3-shade"></div>
+    <div data-hf-id="hf-nilr" id="act3-line">Until now</div>
+
+    <script>
+      (function () {
+        var tl = gsap.timeline({ paused: true });
+
+        // leftward cut-the-curve entry: mid-flight from frame right, answering the
+        // last flash's leftward exit (same axis, same direction, matched speed)
+        // black ground fades out as the line lands — the pattern video (master level,
+        // under this act) takes over as the ground
+        tl.to("#act3-ground", { autoAlpha: 0, duration: 0.45, ease: "power2.out" }, 0.1);
+        tl.fromTo("#act3-shade", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.45, ease: "power2.out" }, 0.1);
+
+        tl.fromTo("#act3-line",
+          { x: 1150, autoAlpha: 1 },
+          { x: 0, duration: 0.5, ease: "power4.out" }, 0);
+
+        // exit: leftward cut-the-curve into Act 4's "Introducing" — off-frame by 2.0
+        tl.to("#act3-line", { x: -1250, duration: 0.3, ease: "power4.in" }, 0.8);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["act3"] = tl;
+      })();
+    </script>
+  </div>
+</template>
+</body>
+</html>
