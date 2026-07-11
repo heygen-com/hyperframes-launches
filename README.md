@@ -6,7 +6,7 @@ Source for HeyGen's HyperFrames launch videos. Each subdirectory is a standalone
 
 | Launch | Directory | Public video |
 | --- | --- | --- |
-| HF HeyGen × Stripe | [`HF-heygen-stripe/`](./HF-heygen-stripe) | [Watch](https://hyperframes.dev/p/39fd89a4-831a-454c-83ec-eac0c5d0a79f) |
+| HF HeyGen × Stripe | [`HF-heygen-stripe/`](./HF-heygen-stripe) | [Watch](https://hyperframes.dev/p/ece1b109-6ae9-44b9-8c8a-4f498f7e15bb) |
 | Claude paper launch | [`claude-paper-launch/`](./claude-paper-launch) | [Watch](https://hyperframes.dev/p/c78e47ad-ca68-40d5-9cea-311e3e41c6ad) |
 | Cloud Render launch | [`cloud-render-launch/`](./cloud-render-launch) | [Watch](https://hyperframes.dev/p/c1277090-93ff-4ae7-83dd-ca8edaa8f649) |
 | Frame.md storyboard launch | [`frame-md-launch-storyboard/`](./frame-md-launch-storyboard) | [Watch](https://hyperframes.dev/p/50fa17c1-a655-43a5-b432-97348c187f1a) |
