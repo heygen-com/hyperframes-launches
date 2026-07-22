@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>k3-promo</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      body { font-family: "Inter", "Helvetica Neue", Arial, sans-serif; }
+      .mono { font-family: "JetBrains Mono", "IBM Plex Mono", Menlo, monospace; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      .clip { position: absolute; inset: 0; overflow: hidden; }
+      .fill { position: absolute; inset: 0; }
+      .abs { position: absolute; }
+
+      .bigtitle {
+        color: #d8d8da;
+        text-shadow: 1.2px 0 rgba(255,70,70,0.10), -1.2px 0 rgba(90,210,255,0.10);
+        font-weight: 400;
+      }
+      .typespan { position: absolute; white-space: nowrap; line-height: 1; display: inline-block; width: max-content; }
+
+      /* ---------- ruler strips / furniture ---------- */
+      .strip { position: absolute; }
+      .strip i { position: absolute; background: #cfcfd2; opacity: 0.9; }
+      .strip b { position: absolute; background: #b9b9bc; opacity: 0.7; }
+      .qmark .sq { position: absolute; width: 13px; height: 13px; background: #b9b9bc; }
+      .qmark .lv { position: absolute; width: 1.5px; height: 20px; background: #9a9a9e; }
+      .qmark .lh { position: absolute; width: 20px; height: 1.5px; background: #9a9a9e; }
+      .plusm { position: absolute; width: 25px; height: 25px; opacity: 0.5; }
+      .plusm i { position: absolute; background: #cfcfd2; }
+      .fdash { position: absolute; height: 2px; background: #8f8f8b; }
+
+      /* ---------- OPEN card ---------- */
+      #openwrap { position: absolute; inset: 0; }
+      .obrace { position: absolute; color: #dcdcde; font-weight: 300; line-height: 1; white-space: pre; }
+      #opentext, #openmid, #openrem { color: #d8d8da; font-weight: 400; }
+      #openrem { color: #98989c; }
+
+      /* ---------- scene A ---------- */
+      #azoom { position: absolute; inset: 0; }
+      .afield { position: absolute; inset: 0;
+        -webkit-mask-image: radial-gradient(ellipse 64% 70% at 50% 50%, #000 52%, transparent 100%);
+        mask-image: radial-gradient(ellipse 64% 70% at 50% 50%, #000 52%, transparent 100%);
+      }
+      .alat { position: absolute; inset: -120px; opacity: 0; }
+      .gsq { position: absolute; }
+      .agrp { position: absolute; left: 755px; top: 444px; width: 467px; height: 185px; }
+      .aselrect { position: absolute; inset: 0; overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.22);
+      }
+      /* ghost stroke lanes inside the title box: "/" diagonals with dashes
+         that glide down-left along each lane (measured from ref) */
+      .glane { position: absolute; top: -80px; width: 2px; height: 360px;
+        transform-origin: 50% 50%; transform: rotate(27deg); }
+      .glane i { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+      .glane b { position: absolute; left: -0.5px; width: 3px; height: 13px; opacity: 0; }
+      .blk .oline { position: absolute; inset: 0; border: 1px solid rgba(255,255,255,0.55); opacity: 0; }
+      .blk .oline i { position: absolute; width: 5px; height: 5px; background: #d8d8d6; }
+      .agrp .ch { position: absolute; width: 13px; height: 13px; background: #d8d8da; }
+      .aline { position: absolute; white-space: nowrap; line-height: 1; width: max-content; }
+      .pill {
+        position: absolute;
+        border: 1.5px solid #dcdcde;
+        color: #dcdcde;
+        background: rgba(2,2,2,0.88);
+        font-size: 26px;
+        font-weight: 500;
+        letter-spacing: 0.2px;
+        line-height: 1;
+        padding: 10px 14px 9px;
+        white-space: nowrap;
+      }
+      .pill .hstrip { position: absolute; left: 0; top: calc(100% + 7px); height: 13px; width: 104%; overflow: hidden; }
+      .pill .hstrip > div {
+        position: absolute; left: 0; top: 0; height: 100%; width: 200%;
+        background: repeating-linear-gradient(115deg, #c9c9c6 0 2px, transparent 2px 8px);
+        opacity: 0.9;
+      }
+
+      /* ---------- ghost columns ---------- */
+      #ghostinner { position: absolute; inset: 0; opacity: 0; }
+      .gcol { position: absolute; top: 0; width: 30px; height: 1080px; }
+      .gcell { position: absolute; left: 0; width: 30px; border-radius: 3px; background: #101010; }
+
+      /* ---------- scene B ---------- */
+      #bcluster { position: absolute; left: 390px; top: 240px; width: 700px; height: 700px; }
+      #btitle { font-size: 90px; letter-spacing: -1px; white-space: nowrap; position: absolute; left: 0; top: 0; }
+      #bstack { position: absolute; left: 77px; top: 164px; }
+      #bstack .pill { position: absolute; left: 0; }
+
+      /* ---------- scene C (layout measured from this video's f220) ---------- */
+      #cpanel { position: absolute; inset: 0; }
+      .cline { position: absolute; top: -60px; width: 2.5px; height: 1250px; background: #2e2e2e; }
+      #ctab {
+        position: absolute; left: 467px; top: 117px; width: 250px; height: 130px;
+        background: #1c1c1c; display: flex; align-items: center; justify-content: center;
+      }
+      #ctab span { font-size: 42px; letter-spacing: 3px; color: #d8d8da; }
+      #cicons { position: absolute; left: 1147px; top: 133px; width: 230px; height: 85px; }
+      #cliverow { position: absolute; left: 470px; top: 322px; width: 1000px; height: 52px; }
+      #cliverow .dot { position: absolute; left: 2px; top: 14px; width: 23px; height: 23px; border-radius: 50%; background: #0dbc8a; }
+      #cliverow .lv { position: absolute; left: 34px; top: 0; font-size: 47px; color: #92918a; }
+      #cliverow .bid { position: absolute; left: 427px; top: 0; font-size: 47px; color: #cd7c74; }
+      #cliverow .ask { position: absolute; left: 687px; top: 0; font-size: 47px; color: #89cfba; }
+      #cbars { position: absolute; left: 467px; top: 443px; width: 700px; height: 700px; }
+      .cbar { position: absolute; left: 0; height: 38px; width: 660px; transform-origin: left center; }
+      .cbar .pale { position: absolute; inset: 0;
+        background: linear-gradient(90deg, rgba(233,229,224,0.95), rgba(206,199,193,0.6));
+      }
+
+      /* ---------- flash ---------- */
+      #flashwhite { position: absolute; inset: 0; background: #fbfbfd; mix-blend-mode: difference; }
+
+      /* ---------- scene D/E ---------- */
+      #deinner { position: absolute; inset: 0; }
+      .pin { position: absolute; width: 30px; height: 254px; transform-origin: 50% 100%; }
+      .pin .stem { position: absolute; left: 10.5px; bottom: 0; width: 9px; height: 226px; background: #9c9c98; transform-origin: 50% 100%; }
+      .pin .head { position: absolute; left: 1px; width: 28px; height: 28px; border-radius: 50%; background: #b5b5b1;
+        top: 0; box-shadow: 0 0 6px rgba(255,255,255,0.35); }
+      /* helix pins: 3D corkscrew row about the horizontal axis y=534
+         (measured: omega 2.405 rad/s, k +0.00343 rad/px, A 84px,
+         perspective f~4100px at screen center) */
+      #epins { position: absolute; inset: 0; perspective: 4100px; perspective-origin: 50% 50%; }
+      .hpin { position: absolute; width: 12px; height: 184px; top: 442px; }
+      .hpin .rod { position: absolute; left: 4.25px; top: 8px; width: 3.5px; height: 168px; background: #4a4a4b; }
+      .hpin .da, .hpin .db { position: absolute; left: 2.5px; width: 7px; height: 7px; border-radius: 50%; background: #57575a; }
+      .hpin .da { top: 4.5px; } .hpin .db { bottom: 4.5px; }
+      .hatchline { position: absolute; width: 2px; background: #4a4a4a; transform-origin: 50% 100%; }
+      .tickbox { position: absolute; border: 1px solid #565656; overflow: hidden;
+        background-color: #010101;
+        background-image: linear-gradient(100deg, rgba(255,255,255,0.010), rgba(255,255,255,0.018) 45%, rgba(255,255,255,0.006));
+      }
+      /* hatch: "/" diagonals 48deg above horizontal (CSS gradient axis 132deg),
+         stroke 1.5px, horizontal pitch 88px (axis pitch 65.4), #252525 */
+      .tickbox .bhatch { position: absolute; inset: -30px;
+        background: repeating-linear-gradient(132deg, #252525 0 1.5px, transparent 1.5px 65.4px);
+      }
+      .tickbox .txt {
+        position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+        color: #e4e4e6; white-space: nowrap;
+      }
+      .cornerhandles i { position: absolute; width: 13px; height: 13px; background: #e6e6e6; }
+      .cornerhandles em { position: absolute; width: 7px; height: 7px; background: #cfcfcc; }
+      #ordergrp { left: 454px; top: 350px; width: 1010px; height: 379px; border-color: #5a5a5a; }
+      /* D box hatch: horizontal pitch 161px (axis 119.6), #303030 */
+      #ordergrp .bhatch { background: repeating-linear-gradient(132deg, #303030 0 1.5px, transparent 1.5px 119.6px); }
+      #mktgrp { left: 130px; top: 437px; width: 520px; height: 183px; }
+      #astgrp { left: 1260px; top: 437px; width: 520px; height: 183px; }
+      .dropline { position: absolute; top: 622px; width: 2px; height: 95px; background: #cfcfcc; transform-origin: top center; }
+      .gappin { position: absolute; width: 12px; }
+      .gappin .st { position: absolute; left: 5px; top: 6px; bottom: 6px; width: 2px; background: #9d9d99; }
+      .gappin .d1, .gappin .d2 { position: absolute; left: 1px; width: 10px; height: 10px; border-radius: 50%; background: #b3b3af; }
+      .gappin .d1 { top: 0; } .gappin .d2 { bottom: 0; }
+
+      /* ---------- scene F/G ---------- */
+      #fgwrap { position: absolute; inset: 0; }
+      .fgbrace { position: absolute; color: #dcdcde; font-weight: 300; line-height: 1; white-space: pre; }
+      #fstem { position: absolute; left: 958px; top: 0; width: 3px; height: 330px; background: #bdbdb9; transform-origin: top center; }
+
+      /* ---------- scene H/I ---------- */
+      #hcanvas { position: absolute; left: 0px; top: 200px; }
+      #hbox { position: absolute; left: 400px; top: 265px; width: 1150px; height: 385px; border: 1px solid #6a6a6a; }
+      #hboxhatch { position: absolute; inset: 0; overflow: hidden; }
+      #iwordmark, .iglow { position: absolute; left: 801px; top: 482px; width: 318px; height: 115px; }
+      /* K3 lockup inside the measured 318x115 wordmark box: official Kimi
+         icon (svgl vector, untouched geometry) + typeset "K3" (original
+         typesetting in the composition's grotesque) */
+      .wmic { position: absolute; left: 23px; top: 0; width: 115px; height: 115px; }
+      .wmk3 { position: absolute; white-space: nowrap; line-height: 1; font-weight: 500; }
+      #iglow1 { filter: blur(4px) brightness(1.5); transform: scale(1.02); }
+      #iglow2 { filter: blur(22px) brightness(2.1); transform: scale(1.12); }
+      #iglow3 { filter: blur(52px) brightness(2.2); transform: scale(1.34); }
+      .idash { position: absolute; top: 538px; width: 30px; height: 3px; background: #a9a9ac; }
+
+      /* ---------- grade ---------- */
+      #gradelines { position: absolute; inset: 0;
+        background: repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0 1px, transparent 1px 3px);
+      }
+      #gradevig { position: absolute; inset: 0;
+        background: radial-gradient(ellipse 76% 80% at 50% 50%, transparent 58%, rgba(0,0,0,0.28) 100%);
+      }
+      #gradenoise { position: absolute; inset: 0; opacity: 0.012;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>");
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-g748" id="root" data-composition-id="main" data-start="0" data-duration="16.4667" data-width="1920" data-height="1080">
+      <div data-hf-id="hf-rif6" class="fill" style="background:#010101"></div>
+
+      <!-- ghost order-book columns (behind scenes B & C) -->
+      <section data-hf-id="hf-izkx" id="ghostcols" class="clip" data-start="4.583" data-duration="2.767" data-track-index="1">
+        <div data-hf-id="hf-dql2" id="ghostinner"></div>
+      </section>
+
+      <!-- SCENE A : node field -->
+      <section data-hf-id="hf-7u09" id="sceneA" class="clip" data-start="0.75" data-duration="3.87" data-track-index="2">
+        <div data-hf-id="hf-rwzf" id="azoom">
+          <div data-hf-id="hf-s2qe" id="afield" class="afield">
+            <div data-hf-id="hf-752m" id="alat" class="alat"></div>
+            <div data-hf-id="hf-o7uy" id="asquares"></div>
+          </div>
+          <div data-hf-id="hf-9b4a" id="atitlegrp" class="agrp">
+            <div data-hf-id="hf-heu2" id="aselrect" class="aselrect"></div>
+            <div data-hf-id="hf-zalo" class="ch" style="left:-7px;top:-7px"></div>
+            <div data-hf-id="hf-3g17" class="ch" style="right:-7px;top:-7px"></div>
+            <div data-hf-id="hf-7nvi" class="ch" style="left:-7px;bottom:-7px"></div>
+            <div data-hf-id="hf-d57j" class="ch" style="right:-7px;bottom:-7px"></div>
+            <div data-hf-id="hf-al3n" id="aline1" class="aline bigtitle"><span data-hf-id="hf-d546" id="aw1">Every</span><span data-hf-id="hf-myjg" id="aw2"> token</span></div>
+            <div data-hf-id="hf-pgl5" id="aline2" class="aline bigtitle">of context</div>
+          </div>
+          <div data-hf-id="hf-it5n" id="apwrap" style="position:absolute; inset:0; opacity:0;">
+            <div data-hf-id="hf-pi2a" id="afieldp" class="afield">
+              <div data-hf-id="hf-yfp6" id="alatp" class="alat"></div>
+              <div data-hf-id="hf-xqi6" id="asquaresp"></div>
+            </div>
+            <div data-hf-id="hf-lyjy" id="atitlegrpp" class="agrp">
+              <div data-hf-id="hf-9y8a" id="aselrectp" class="aselrect" style="border-color: rgba(171,132,207,0.75);"></div>
+              <div data-hf-id="hf-63s4" class="ch" style="left:-7px;top:-7px;background:#ab84cf"></div>
+              <div data-hf-id="hf-84w9" class="ch" style="right:-7px;top:-7px;background:#ab84cf"></div>
+              <div data-hf-id="hf-1na6" class="ch" style="left:-7px;bottom:-7px;background:#ab84cf"></div>
+              <div data-hf-id="hf-h1j1" class="ch" style="right:-7px;bottom:-7px;background:#ab84cf"></div>
+              <div data-hf-id="hf-8cwh" id="aline1p" class="aline" style="color:#ab84cf"><span data-hf-id="hf-uhsw">Every</span><span data-hf-id="hf-ekol"> token</span></div>
+              <div data-hf-id="hf-0vrd" id="aline2p" class="aline" style="color:#ab84cf">of context</div>
+            </div>
+          </div>
+        </div>
+        <!-- pills sit OUTSIDE the zoom layer: measured orbit keyframes are
+             screen-space; the ref constellation shrink is applied explicitly -->
+        <div data-hf-id="hf-zob2" id="apills" style="position:absolute; inset:0;"></div>
+        <div data-hf-id="hf-gmdx" id="afurn">
+          <div data-hf-id="hf-hwdd" class="strip" id="stripAL"></div>
+          <div data-hf-id="hf-0o73" class="strip" id="stripAR"></div>
+        </div>
+      </section>
+
+      <!-- SCENE B -->
+      <section data-hf-id="hf-d6v5" id="sceneB" class="clip" data-start="4.563" data-duration="1.29" data-track-index="3">
+        <div data-hf-id="hf-pnzp" id="bcluster">
+          <div data-hf-id="hf-c9kr" id="btitle" class="bigtitle">One model</div>
+          <div data-hf-id="hf-pm2j" id="bstack"></div>
+        </div>
+      </section>
+
+      <!-- SCENE C -->
+      <section data-hf-id="hf-hldm" id="sceneC" class="clip" data-start="5.433" data-duration="1.917" data-track-index="4">
+        <div data-hf-id="hf-zhxy" id="cpanel">
+          <div data-hf-id="hf-b7jh" class="cline" style="left:403px"></div>
+          <div data-hf-id="hf-hsej" class="cline" style="left:1442px"></div>
+          <div data-hf-id="hf-y74p" id="ctab"><span data-hf-id="hf-c1ed" class="mono">DECODE</span></div>
+          <div data-hf-id="hf-o8m6" id="cicons">
+            <svg data-hf-id="hf-087c" width="230" height="85" viewBox="0 0 230 85" fill="none">
+              <g data-hf-id="hf-wpwa" stroke="#b9b9b5" stroke-width="6">
+                <line data-hf-id="hf-8tu2" x1="10" y1="66" x2="10" y2="40" />
+                <line data-hf-id="hf-gk3u" x1="28" y1="66" x2="28" y2="22" />
+                <line data-hf-id="hf-jhwf" x1="46" y1="66" x2="46" y2="49" />
+              </g>
+              <circle data-hf-id="hf-rgvf" cx="63" cy="64" r="4" fill="#b9b9b5" />
+              <path data-hf-id="hf-4zga" d="M150 66 L173 35 L191 51 L216 20 L216 66 Z" fill="rgba(185,185,181,0.28)" />
+              <path data-hf-id="hf-rxac" d="M150 66 L173 35 L191 51 L216 20" stroke="#b9b9b5" stroke-width="5" stroke-linejoin="round" fill="none" />
+            </svg>
+          </div>
+          <div data-hf-id="hf-ny8k" id="cliverow" class="mono">
+            <div data-hf-id="hf-lu65" class="dot"></div>
+            <div data-hf-id="hf-wyow" class="lv">Live</div>
+            <div data-hf-id="hf-y25x" class="bid">↑ 6.3x</div>
+            <div data-hf-id="hf-pgs4" class="ask">↓ 25% cost</div>
+          </div>
+          <div data-hf-id="hf-hdgq" id="cbars"></div>
+          <div data-hf-id="hf-javt" id="cqmarks"></div>
+        </div>
+      </section>
+
+      <!-- SCENE D+E -->
+      <section data-hf-id="hf-4b8z" id="sceneDE" class="clip" data-start="7.35" data-duration="3.943" data-track-index="2">
+        <div data-hf-id="hf-8sd0" id="deinner">
+          <div data-hf-id="hf-9e9n" id="dpins"></div>
+          <div data-hf-id="hf-kwuu" id="epins"></div>
+          <div data-hf-id="hf-fgm5" id="ordergrp" class="tickbox cornerhandles">
+            <div data-hf-id="hf-8xfx" class="bhatch" id="ohatchwrap"></div>
+            <i data-hf-id="hf-imge" style="left:-26px;top:-26px"></i><em data-hf-id="hf-ci5l" style="left:-9px;top:-9px"></em>
+            <i data-hf-id="hf-8g8l" style="right:-26px;top:-26px"></i><em data-hf-id="hf-buao" style="right:-9px;top:-9px"></em>
+            <i data-hf-id="hf-qgly" style="left:-26px;bottom:-26px"></i><em data-hf-id="hf-c9ud" style="left:-9px;bottom:-9px"></em>
+            <i data-hf-id="hf-2i7b" style="right:-26px;bottom:-26px"></i><em data-hf-id="hf-qkaq" style="right:-9px;bottom:-9px"></em>
+            <div data-hf-id="hf-ufyf" class="txt bigtitle" id="otxt"><span data-hf-id="hf-wpo1" id="ow1"></span><span data-hf-id="hf-0ns2" id="ow2"></span></div>
+          </div>
+          <div data-hf-id="hf-hunh" id="mktgrp" class="tickbox cornerhandles">
+            <div data-hf-id="hf-n2vg" class="bhatch"></div>
+            <i data-hf-id="hf-b3py" style="left:-20px;top:-20px"></i><em data-hf-id="hf-xtot" style="left:-7px;top:-7px"></em>
+            <i data-hf-id="hf-3t9x" style="right:-20px;top:-20px"></i><em data-hf-id="hf-g8og" style="right:-7px;top:-7px"></em>
+            <i data-hf-id="hf-qghm" style="left:-20px;bottom:-20px"></i><em data-hf-id="hf-6uf9" style="left:-7px;bottom:-7px"></em>
+            <i data-hf-id="hf-66hj" style="right:-20px;bottom:-20px"></i><em data-hf-id="hf-7d8y" style="right:-7px;bottom:-7px"></em>
+            <div data-hf-id="hf-w88t" class="txt">Every token</div>
+          </div>
+          <div data-hf-id="hf-gitt" id="astgrp" class="tickbox cornerhandles">
+            <div data-hf-id="hf-7w4k" class="bhatch"></div>
+            <i data-hf-id="hf-vomy" style="left:-20px;top:-20px"></i><em data-hf-id="hf-9mf5" style="left:-7px;top:-7px"></em>
+            <i data-hf-id="hf-vgo9" style="right:-20px;top:-20px"></i><em data-hf-id="hf-ww5k" style="right:-7px;top:-7px"></em>
+            <i data-hf-id="hf-976m" style="left:-20px;bottom:-20px"></i><em data-hf-id="hf-xsk9" style="left:-7px;bottom:-7px"></em>
+            <i data-hf-id="hf-cy8n" style="right:-20px;bottom:-20px"></i><em data-hf-id="hf-p1xy" style="right:-7px;bottom:-7px"></em>
+            <div data-hf-id="hf-du2f" class="txt">Every task</div>
+          </div>
+          <div data-hf-id="hf-4z5f" class="dropline" id="dl1" style="left:389px"></div>
+          <div data-hf-id="hf-ictm" class="dropline" id="dl2" style="left:958px"></div>
+          <div data-hf-id="hf-uqyx" class="dropline" id="dl3" style="left:1519px"></div>
+          <div data-hf-id="hf-upm1" class="fdash" id="ddashL" style="left:318px;top:537px;width:40px"></div>
+          <div data-hf-id="hf-wnkb" class="fdash" id="ddashR" style="left:1562px;top:537px;width:40px"></div>
+        </div>
+      </section>
+
+      <!-- furniture for scenes D/E -->
+      <section data-hf-id="hf-lsuh" id="furnDE" class="clip" data-start="7.35" data-duration="3.943" data-track-index="7">
+        <div data-hf-id="hf-kxm2" class="strip" id="stripDL"></div>
+        <div data-hf-id="hf-bp18" class="strip" id="stripDR"></div>
+        <div data-hf-id="hf-0jqx" id="deqmarks"></div>
+      </section>
+
+      <!-- inversion flash: 2 frames (f220, f221) -->
+      <section data-hf-id="hf-u73w" id="flash" class="clip" data-start="7.3333" data-duration="0.058" data-track-index="8">
+        <div data-hf-id="hf-uc7s" id="flashwhite"></div>
+      </section>
+
+      <!-- SCENE F+G : brace card -->
+      <section data-hf-id="hf-2t3d" id="sceneFG" class="clip" data-start="11.233" data-duration="2.467" data-track-index="3">
+        <div data-hf-id="hf-zwgw" id="fgwrap">
+          <div data-hf-id="hf-8g0e" id="fstem"></div>
+          <div data-hf-id="hf-xvbo" class="fgbrace" id="fgbl">{</div>
+          <div data-hf-id="hf-tiks" class="fgbrace" id="fgbr">}</div>
+          <span data-hf-id="hf-gl3j" class="typespan bigtitle" id="fw1">One</span>
+          <span data-hf-id="hf-h7kl" class="typespan bigtitle" id="fw2">model</span>
+          <span data-hf-id="hf-rbmw" class="typespan bigtitle" id="gw1">K3.</span>
+          <span data-hf-id="hf-s93d" class="typespan bigtitle" id="gw2">Now</span>
+          <span data-hf-id="hf-i9ng" class="typespan bigtitle" id="gw3">Open</span>
+          <div data-hf-id="hf-hcyy" id="ffurn">
+            <div data-hf-id="hf-uvgb" class="fdash" id="fd1" style="left:197px;top:537px;width:42px"></div>
+            <div data-hf-id="hf-q6e6" class="fdash" id="fd2" style="left:1680px;top:537px;width:42px"></div>
+            <div data-hf-id="hf-wt2k" class="strip" id="stripFL"></div>
+            <div data-hf-id="hf-7s1m" class="strip" id="stripFR"></div>
+          </div>
+          <div data-hf-id="hf-bnpn" id="gfurn">
+            <div data-hf-id="hf-kk5j" class="strip" id="stripGL"></div>
+            <div data-hf-id="hf-ez4p" class="strip" id="stripGR"></div>
+            <div data-hf-id="hf-pngd" id="gqmarks"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCENE H+I : glitch dissolve -> K3 wordmark -->
+      <section data-hf-id="hf-hnmc" id="sceneHI" class="clip" data-start="13.7" data-duration="2.7667" data-track-index="2">
+        <div data-hf-id="hf-0pnf" id="gfurn2">
+          <div data-hf-id="hf-1o33" class="strip" id="stripG2L"></div>
+          <div data-hf-id="hf-ey9d" class="strip" id="stripG2R"></div>
+          <div data-hf-id="hf-df4b" id="g2qmarks"></div>
+        </div>
+        <div data-hf-id="hf-omp2" id="hbox">
+          <div data-hf-id="hf-5tmo" id="hboxhatch"></div>
+          <i data-hf-id="hf-gogn" class="abs" style="left:-24px;top:-24px;width:12px;height:12px;background:#e6e6e6"></i>
+          <i data-hf-id="hf-uiue" class="abs" style="left:-9px;top:-9px;width:7px;height:7px;background:#cfcfcc"></i>
+          <i data-hf-id="hf-6yne" class="abs" style="right:-24px;top:-24px;width:12px;height:12px;background:#e6e6e6"></i>
+          <i data-hf-id="hf-xnqn" class="abs" style="right:-9px;top:-9px;width:7px;height:7px;background:#cfcfcc"></i>
+          <i data-hf-id="hf-p67l" class="abs" style="left:-24px;bottom:-24px;width:12px;height:12px;background:#e6e6e6"></i>
+          <i data-hf-id="hf-0ujy" class="abs" style="left:-9px;bottom:-9px;width:7px;height:7px;background:#cfcfcc"></i>
+          <i data-hf-id="hf-g4ke" class="abs" style="right:-24px;bottom:-24px;width:12px;height:12px;background:#e6e6e6"></i>
+          <i data-hf-id="hf-hx0l" class="abs" style="right:-9px;bottom:-9px;width:7px;height:7px;background:#cfcfcc"></i>
+        </div>
+        <canvas data-hf-id="hf-31f3" id="hcanvas" width="1920" height="560"></canvas>
+        <div data-hf-id="hf-mjhh" id="iglow3" class="iglow"></div>
+        <div data-hf-id="hf-lrto" id="iglow2" class="iglow"></div>
+        <div data-hf-id="hf-ufpj" id="iglow1" class="iglow"></div>
+        <div data-hf-id="hf-1tel" id="iwordmark"></div>
+        <div data-hf-id="hf-swv1" id="ifurn">
+          <div data-hf-id="hf-4nbd" class="strip" id="stripIL"></div>
+          <div data-hf-id="hf-6ac7" class="strip" id="stripIR"></div>
+          <div data-hf-id="hf-qhh3" id="iqmarks"></div>
+        </div>
+        <div data-hf-id="hf-428p" class="idash" id="idashL" style="left:718px"></div>
+        <div data-hf-id="hf-y5wo" class="idash" id="idashR" style="left:1172px"></div>
+      </section>
+
+      <!-- OPEN brace card (top layer at start) -->
+      <section data-hf-id="hf-vu77" id="opencard" class="clip" data-start="0" data-duration="1.12" data-track-index="9">
+        <div data-hf-id="hf-ww6p" id="openwrap">
+          <div data-hf-id="hf-tqpb" class="strip" id="stripOL"></div>
+          <div data-hf-id="hf-70vl" class="strip" id="stripOR"></div>
+          <div data-hf-id="hf-yr7c" class="obrace" id="obl">{</div>
+          <div data-hf-id="hf-6x5c" class="obrace" id="obr">}</div>
+          <span data-hf-id="hf-pgsq" class="typespan" id="opentext"><span data-hf-id="hf-kdbk" id="ot1">Open Frontier</span><span data-hf-id="hf-z0mr" id="ot2"> Intelligence</span></span>
+          <span data-hf-id="hf-nwll" class="typespan" id="openmid">en Frontier Intelligen</span>
+          <span data-hf-id="hf-zkdc" class="typespan" id="openrem">ier</span>
+        </div>
+      </section>
+
+      <!-- vignette sits BELOW the invert flash (ref white frames are uniform) -->
+      <section data-hf-id="hf-0x05" id="gradeunder" class="clip" data-start="0" data-duration="16.4667" data-track-index="6">
+        <div data-hf-id="hf-dc8w" id="gradevig"></div>
+      </section>
+
+      <!-- grade -->
+      <section data-hf-id="hf-eol2" id="grade" class="clip" data-start="0" data-duration="16.4667" data-track-index="10">
+        <div data-hf-id="hf-g9hn" id="gradelines"></div>
+        <div data-hf-id="hf-7rb0" id="gradenoise"></div>
+      </section>
+    </div>
+
+    <script>
+      /* ================= deterministic PRNG ================= */
+      function mulberry32(a) {
+        return function () {
+          a |= 0; a = (a + 0x6D2B79F5) | 0;
+          let t = Math.imul(a ^ (a >>> 15), 1 | a);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+      const rnd = mulberry32(1337);
+      const pick = (arr, r) => arr[Math.floor((r || rnd)() * arr.length)];
+      const range = (a, b, r) => a + (r || rnd)() * (b - a);
+      const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+      /* ================= type calibration =================
+         Measure real ink metrics of the system font so cap-height and
+         baseline land exactly on the reference pixel measurements. */
+      const mctx = document.createElement("canvas").getContext("2d");
+      function inkMetrics(weight, family, probe) {
+        mctx.font = weight + " 100px " + family;
+        const m = mctx.measureText(probe);
+        return {
+          capAsc: m.actualBoundingBoxAscent / 100,     // ink above baseline / fontSize
+          desc: m.actualBoundingBoxDescent / 100,
+          fbAsc: m.fontBoundingBoxAscent / 100,
+          fbDesc: m.fontBoundingBoxDescent / 100,
+          w: m.width / 100,
+        };
+      }
+      const FAM = '"Inter", "Helvetica Neue", Arial, sans-serif';
+      let capM = inkMetrics(400, FAM, "H");           // cap ink (refreshed on font load)
+      let braceM = inkMetrics(300, FAM, "{");         // brace ink
+      // place a .typespan so its cap-top sits at capTop with cap height capH
+      function setType(el, capH, capTop, opts) {
+        const fs = capH / capM.capAsc;
+        el.style.fontSize = fs + "px";
+        el.style.lineHeight = "1";
+        // with line-height:1 the box is fs tall; baseline sits at
+        // leading/2 + fbAsc where leading = 1 - (fbAsc+fbDesc)
+        const baseInBox = fs * ((1 - (capM.fbAsc + capM.fbDesc)) / 2 + capM.fbAsc);
+        const baselineY = capTop + capH;
+        el.style.top = (baselineY - baseInBox) + "px";
+        if (opts.left !== undefined) el.style.left = opts.left + "px";
+        if (opts.ls !== undefined) el.style.letterSpacing = opts.ls + "px";
+        return { fs: fs, baselineY: baselineY };
+      }
+      function setBrace(el, inkH, inkTop, inkLeft) {
+        const total = braceM.capAsc + braceM.desc;
+        const fs2 = inkH / total;
+        el.style.fontSize = fs2 + "px";
+        const baseInBox = fs2 * ((1 - (braceM.fbAsc + braceM.fbDesc)) / 2 + braceM.fbAsc);
+        const baselineY = inkTop + fs2 * braceM.capAsc;
+        el.style.top = (baselineY - baseInBox) + "px";
+        // land the INK left edge exactly on inkLeft
+        mctx.font = "300 " + fs2 + "px " + FAM;
+        const mm = mctx.measureText(el.textContent);
+        const inkOff = -mm.actualBoundingBoxLeft;      // ink starts this far right of the pen
+        el.style.left = (inkLeft - inkOff) + "px";
+        return fs2;
+      }
+      // squeeze a positioned span to an exact target ink width (ref font is
+      // narrower than the renderer's Inter; uniform scaleX matches geometry)
+      function fitW(el, targetW, originCenter) {
+        // canvas-metric based (DOM rects are polluted by build-time ancestor
+        // transforms and by layout clamping of absolutely-positioned boxes)
+        const fs = parseFloat(el.style.fontSize) || parseFloat(getComputedStyle(el).fontSize) || 16;
+        const weight = el.classList.contains("obrace") || el.classList.contains("fgbrace") ? 300 : 400;
+        mctx.font = weight + " " + fs + "px " + FAM;
+        if (mctx.letterSpacing !== undefined) mctx.letterSpacing = (parseFloat(el.style.letterSpacing) || 0) + "px";
+        const nat = mctx.measureText(el.textContent).width;
+        if (mctx.letterSpacing !== undefined) mctx.letterSpacing = "0px";
+        if (!nat) return 1;
+        const s = targetW / nat;
+        el.style.transformOrigin = originCenter ? "50% 50%" : "0 50%";
+        el.style.transform = "scaleX(" + s + ")";
+        return s;
+      }
+      // K3 semantic swap: the hard-coded ink-width targets were measured off
+      // the JTX reference strings. Keep each element's measured squeeze and
+      // let the width follow the new string: W = W_measured * nat(new)/nat(old)
+      // at the element's own font size / letter-spacing.
+      function swapW(oldTarget, newStr, oldStr, fs, ls, weight) {
+        mctx.font = (weight || 400) + " " + fs + "px " + FAM;
+        if (mctx.letterSpacing !== undefined) mctx.letterSpacing = (ls || 0) + "px";
+        const w = oldTarget * mctx.measureText(newStr).width / mctx.measureText(oldStr).width;
+        if (mctx.letterSpacing !== undefined) mctx.letterSpacing = "0px";
+        return w;
+      }
+
+      /* ================= furniture builders ================= */
+      function makeStrip(id, x, y, w, h, n) {
+        const el = document.getElementById(id);
+        el.style.left = x + "px"; el.style.top = y + "px";
+        el.style.width = w + "px"; el.style.height = h + "px";
+        const pitch = w / (n - 1);
+        for (let i = 0; i < n; i++) {
+          const t = document.createElement("i");
+          const tall = i % 2 === 0;
+          t.style.left = (i * pitch) + "px";
+          t.style.width = "2px";
+          t.style.height = (tall ? h : h * 0.45) + "px";
+          t.style.top = (tall ? 0 : h * 0.28) + "px";
+          el.appendChild(t);
+          if (i < n - 1) {
+            const d = document.createElement("b");
+            d.style.left = (i * pitch + pitch / 2 - 1) + "px";
+            d.style.width = "2px"; d.style.height = "2px";
+            d.style.top = (h * 0.55) + "px";
+            el.appendChild(d);
+          }
+        }
+      }
+      function makeQmarks(hostId, pts) {
+        // pts: [cx, cy, fx, fy] fx/fy = outward direction (-1 left/up, +1 right/down)
+        const host = document.getElementById(hostId);
+        pts.forEach(function (p) {
+          const g = document.createElement("div");
+          g.className = "qmark";
+          const sq = document.createElement("div"); sq.className = "sq";
+          sq.style.left = (p[0] - 6.5) + "px"; sq.style.top = (p[1] - 6.5) + "px";
+          const lv = document.createElement("div"); lv.className = "lv";
+          lv.style.left = (p[0] - 6.5 + (p[2] > 0 ? 16 : -11)) + "px";
+          lv.style.top = (p[1] - 6.5 + (p[3] > 0 ? 17 : -28)) + "px";
+          const lh = document.createElement("div"); lh.className = "lh";
+          lh.style.left = (p[0] - 6.5 + (p[2] > 0 ? 20 : -27)) + "px";
+          lh.style.top = (p[1] - 6.5 + (p[3] > 0 ? 16 : -10)) + "px";
+          g.appendChild(sq); g.appendChild(lv); g.appendChild(lh);
+          host.appendChild(g);
+        });
+      }
+      function makePlusses(hostId, pts, size, op) {
+        const host = document.getElementById(hostId);
+        pts.forEach(function (p) {
+          const g = document.createElement("div");
+          g.className = "plusm";
+          g.style.left = (p[0] - size / 2) + "px"; g.style.top = (p[1] - size / 2) + "px";
+          g.style.width = size + "px"; g.style.height = size + "px";
+          g.style.opacity = op;
+          const v = document.createElement("i");
+          v.style.left = (size / 2 - 0.5) + "px"; v.style.top = "0"; v.style.width = "1px"; v.style.height = size + "px";
+          const h = document.createElement("i");
+          h.style.top = (size / 2 - 0.5) + "px"; h.style.left = "0"; h.style.height = "1px"; h.style.width = size + "px";
+          g.appendChild(v); g.appendChild(h);
+          host.appendChild(g);
+        });
+      }
+
+      /* ================= OPEN card ================= */
+      makeStrip("stripOL", 32, 528, 257, 23, 19);
+      makeStrip("stripOR", 1627, 528, 257, 23, 19);
+      const OB_H = 117, OB_TOP = 485;
+      const obl = document.getElementById("obl"), obr = document.getElementById("obr");
+      const openEl = document.getElementById("opentext");
+      const midEl = document.getElementById("openmid"), remEl = document.getElementById("openrem");
+      // remnant widths derived from the 698px target by glyph-width ratio
+      // (ratios are font-stable, so timeline offsets can be baked once)
+      mctx.font = "400 100px " + FAM;
+      const wFullRef = mctx.measureText("Open Frontier Intelligence").width;
+      const midW = 698 * mctx.measureText("en Frontier Intelligen").width / wFullRef;
+      const remW = 698 * mctx.measureText("ier").width / wFullRef;
+      // K3 swap: the headline is longer than the JTX one but lives in the same
+      // 698px brace box — shrink the cap height so the scaleX squeeze stays at
+      // the measured value, and keep the measured optical center (508.5+70/2).
+      const OPEN_CAP = 70 * mctx.measureText("Stocks on Solana").width / wFullRef;
+      const OPEN_TOP = 543.5 - OPEN_CAP / 2;
+      midEl.style.left = (960 - midW / 2) + "px";
+      remEl.style.left = (960 - remW / 2) + "px";
+      // brace x-offsets (from their type-in position) for the two un-type states
+      const bGapMid = midW / 2 + 68, bGapRem = remW / 2 + 52;
+      const oblMidX = (960 - bGapMid - 37) - 511, obrMidX = (960 + bGapMid) - 1371;
+      const oblRemX = (960 - bGapRem - 37) - 511, obrRemX = (960 + bGapRem) - 1371;
+
+      /* ================= scene A field ================= */
+      const GS = 94;                       // measured lattice pitch (unscaled)
+      const snap = (v) => Math.round(v / GS) * GS;
+      const HATCH = "repeating-linear-gradient(45deg, #d8d8d5 0 2px, transparent 2px 9px)";
+      const GLITCH =
+        "repeating-linear-gradient(0deg, #e0e0de 0 9px, transparent 9px 15px)," +
+        "repeating-linear-gradient(90deg, #e0e0de 0 13px, transparent 13px 22px)";
+      const SCAN = "repeating-linear-gradient(0deg, #e4e4e2 0 3px, rgba(228,228,226,0.38) 3px 6px)";
+      function latCSS(alpha, purple) {
+        const c = purple ? "rgba(159,120,220," + alpha + ")" : "rgba(255,255,255," + alpha + ")";
+        return "repeating-linear-gradient(0deg, " + c + " 0 1px, transparent 1px " + GS + "px)," +
+               "repeating-linear-gradient(90deg, " + c + " 0 1px, transparent 1px " + GS + "px)";
+      }
+      document.getElementById("alat").style.background = latCSS(0.105, false);
+      document.getElementById("alatp").style.background = latCSS(0.28, true);
+
+      // perimeter-ring sampler (measured layout: columns x 460-680 / 1150-1530,
+      // rows y<260 / y>850; x<440 and x>1560 cleared; center quadrants empty)
+      function ringSnap(r) {
+        for (let tries = 0; tries < 60; tries++) {
+          const x = snap(range(430, 1500, r)), y = snap(range(0, 940, r));
+          const cx = x + 47, cy = y + 47;
+          if (cx < 455 || cx > 1560) continue;
+          if (cx <= 690 || cx >= 1140 || cy <= 265 || cy >= 845) return [x, y];
+        }
+        return [564, 94];
+      }
+      // build the field twice (white + purple clone) with identical layout
+      function buildField(hostId, purple, seed) {
+        const host = document.getElementById(hostId);
+        const r = mulberry32(seed);
+        const refs = { blinkers: [], born: [] };
+        const col = {
+          solid: purple ? "#9d78c8" : "#c6c6c3",
+          line: purple ? "rgba(171,132,207,0.55)" : "rgba(255,255,255,0.30)",
+          dot: purple ? "rgba(171,132,207,0.75)" : "rgba(255,255,255,0.30)",
+          plus: purple ? "rgba(171,132,207,0.85)" : "rgba(255,255,255,0.42)",
+          cap: purple ? "#9d78c8" : "#a6a6a3",
+        };
+        function el(cls) { const d = document.createElement("div"); d.className = cls; host.appendChild(d); return d; }
+        // brighter lattice patch cells (reduced: outlined-box budget is 7 total)
+        for (let i = 0; i < 3; i++) {
+          const d = el("gsq");
+          const rc0 = ringSnap(r);
+          d.style.left = rc0[0] + "px";
+          d.style.top = rc0[1] + "px";
+          d.style.width = d.style.height = GS + "px";
+          d.style.border = "1px solid " + col.line;
+          refs.born.push([d, "early"]);
+        }
+        // pinwheel / notched glyphs (~4 in ref scene A; replaces dot-matrix class)
+        for (let i = 0; i < 4; i++) {
+          const d = el("gsq");
+          const rc1 = ringSnap(r);
+          d.style.left = (rc1[0] + 10) + "px"; d.style.top = (rc1[1] + 10) + "px";
+          d.style.width = d.style.height = (GS - 20) + "px";
+          const cc = col.cap;
+          const flip = r() < 0.5;
+          d.style.background =
+            "linear-gradient(" + cc + "," + cc + ") " + (flip ? "0 0" : "100% 0") + "/50% 50% no-repeat," +
+            "linear-gradient(" + cc + "," + cc + ") " + (flip ? "100% 100%" : "0 100%") + "/50% 50% no-repeat";
+          refs.born.push([d, "mid"]);
+        }
+        // plus marks at intersections
+        for (let i = 0; i < 14; i++) {
+          const d = el("gsq");
+          const s = 9;
+          const rc2 = ringSnap(r);
+          d.style.left = (rc2[0] + 47 - s / 2) + "px";
+          d.style.top = (rc2[1] + 47 - s / 2) + "px";
+          d.style.width = d.style.height = s + "px";
+          d.style.background =
+            "linear-gradient(" + col.plus + "," + col.plus + ") " + (s / 2 - 0.5) + "px 0/1px " + s + "px no-repeat," +
+            "linear-gradient(" + col.plus + "," + col.plus + ") 0 " + (s / 2 - 0.5) + "px/" + s + "px 1px no-repeat";
+          refs.born.push([d, "mid"]);
+        }
+        // tiny dots
+        for (let i = 0; i < 12; i++) {
+          const d = el("gsq");
+          const rc3 = ringSnap(r);
+          d.style.left = (rc3[0] + 45.5) + "px";
+          d.style.top = (rc3[1] + 45.5) + "px";
+          d.style.width = d.style.height = "3px";
+          d.style.background = col.dot;
+          refs.born.push([d, "mid"]);
+        }
+        // purple flecks (present in both layers; brighter in purple layer)
+        for (let i = 0; i < 6; i++) {
+          const d = el("gsq");
+          const rc4 = ringSnap(r);
+          d.style.left = (rc4[0] + 47 + range(-20, 20, r)) + "px";
+          d.style.top = (rc4[1] + 47 + range(-16, 16, r)) + "px";
+          const s = range(5, 10, r);
+          d.style.width = d.style.height = s + "px";
+          d.style.background = purple ? "#8a63b0" : "#6b468a";
+          refs.born.push([d, "mid"]);
+        }
+        // outline cells with corner ticks (ref scene A holds ~7 outlined
+        // corner-handle boxes at pulse peaks; one adjacent pair kept)
+        function outlineCell(x, y) {
+          const d = el("gsq");
+          d.style.left = (x + 4) + "px"; d.style.top = (y + 4) + "px";
+          d.style.width = d.style.height = (GS - 8) + "px";
+          d.style.border = "1px solid " + (purple ? "rgba(171,132,207,0.7)" : "rgba(255,255,255,0.42)");
+          [[0, 0], [1, 0], [0, 1], [1, 1]].forEach(function (c) {
+            const k = document.createElement("div");
+            k.style.position = "absolute";
+            k.style.width = "5px"; k.style.height = "5px";
+            k.style.background = purple ? "#ab84cf" : "#b5b5b2";
+            k.style.left = c[0] ? "auto" : "-2px"; k.style.right = c[0] ? "-2px" : "auto";
+            k.style.top = c[1] ? "auto" : "-2px"; k.style.bottom = c[1] ? "-2px" : "auto";
+            d.appendChild(k);
+          });
+          refs.born.push([d, "early"]);
+        }
+        for (let i = 0; i < 4; i++) {
+          const rc = ringSnap(r);
+          outlineCell(rc[0], rc[1]);
+          if (i === 0) outlineCell(rc[0] + GS, rc[1]);
+        }
+        // flicker texture squares: reference places them on a rectangular
+        // lattice RING around the title (measured: cols x=564/1410, rows
+        // y=94/940 in field coords) and ignites them in clockwise order.
+        RING_CELLS.forEach(function (rc) {
+          const d = el("gsq blk");
+          d.style.left = (rc[0] + 8) + "px"; d.style.top = (rc[1] + 8) + "px";
+          d.style.width = d.style.height = (GS - 16) + "px";
+          d.style.opacity = "0";
+          const ol = document.createElement("div");
+          ol.className = "oline";
+          if (purple) ol.style.borderColor = "rgba(171,132,207,0.8)";
+          [[0, 0], [1, 0], [0, 1], [1, 1]].forEach(function (c) {
+            const k = document.createElement("i");
+            if (purple) k.style.background = "#ab84cf";
+            k.style.left = c[0] ? "auto" : "-2px"; k.style.right = c[0] ? "-2px" : "auto";
+            k.style.top = c[1] ? "auto" : "-2px"; k.style.bottom = c[1] ? "-2px" : "auto";
+            ol.appendChild(k);
+          });
+          d.appendChild(ol);
+          refs.blinkers.push(d);
+        });
+        return refs;
+      }
+      // ring cell origins (field coords, lattice-snapped); ~40% of slots are
+      // jittered one cell off the ring and ~15% dropped so the silhouette
+      // stays organic like the reference, not a clean rectangle
+      const RING_CELLS = (function () {
+        const rj = mulberry32(3131);
+        const cells = [];
+        function put(x, y, px, py) {
+          if (rj() < 0.15) return;
+          if (rj() < 0.4) { x += px * 94 * (rj() < 0.5 ? 1 : -1); y += py * 94 * (rj() < 0.5 ? 1 : -1); }
+          cells.push([x, y]);
+        }
+        for (let x = 564; x <= 1410; x += 94) { put(x, 94, 0, 1); put(x, 940, 0, 1); }
+        for (let y = 188; y <= 846; y += 94) { put(564, y, 1, 0); put(1410, y, 1, 0); }
+        [[658, 188], [1316, 188], [658, 846], [1316, 846],
+         [470, 470], [1504, 376], [470, 752], [1504, 658]].forEach(function (p) { cells.push(p); });
+        return cells;
+      })();
+      // texture-state CSS per palette (flurry states cycle through these);
+      // "whiteCap" caps fills at ~luma 165 — ref caps texture brightness
+      // outside the n50-60 entry pulse (events at t >= 2.2 use it)
+      function pinBG(c) {
+        return "linear-gradient(" + c + "," + c + ") 0 0/50% 50% no-repeat, " +
+               "linear-gradient(" + c + "," + c + ") 100% 100%/50% 50% no-repeat";
+      }
+      const BLK_BG = {
+        white: { solid: "#dfdfdd", scan: SCAN, hatch: HATCH, pin: pinBG("#dfdfdd") },
+        whiteCap: {
+          solid: "#a5a5a2",
+          scan: "repeating-linear-gradient(0deg, #a5a5a2 0 3px, rgba(165,165,162,0.38) 3px 6px)",
+          hatch: "repeating-linear-gradient(45deg, #a09e9b 0 2px, transparent 2px 9px)",
+          pin: pinBG("#a5a5a2"),
+        },
+        purple: {
+          solid: "#9d78c8",
+          scan: "repeating-linear-gradient(0deg, #a586cc 0 3px, rgba(165,134,204,0.35) 3px 6px)",
+          hatch: "repeating-linear-gradient(45deg, #9d78c8 0 2px, transparent 2px 9px)",
+          pin: pinBG("#9d78c8"),
+        },
+      };
+      const fieldW = buildField("asquares", false, 4242);
+      const fieldP = buildField("asquaresp", true, 4242);
+
+      // birth times: squares from top-right first (0.78), rest 0.95-1.45
+      const rB = mulberry32(777);
+      const births = [];
+      fieldW.born.forEach(function (pair, i) {
+        const d = pair[0];
+        const x = parseFloat(d.style.left), y = parseFloat(d.style.top);
+        const nearTR = (x > 1000 && y < 500);
+        const t = pair[1] === "early"
+          ? (nearTR ? range(0.78, 0.95, rB) : range(0.95, 1.45, rB))
+          : range(1.0, 1.42, rB);
+        births.push(t);
+      });
+      // clockwise ring ignition schedule (measured: two arms 180deg apart,
+      // one lap ~28f; per visit a 2-4-state flurry at 1-2f steps; active
+      // spurts 1.0-2.2s and 2.63-3.2s, silent afterwards)
+      const rR = mulberry32(9091);
+      const T_REV = 0.9333;
+      const SPURTS = [[1.0, 2.2], [2.633, 3.2]];
+      // no glitch/dot-matrix state: class absent in ref scene A (swapped for
+      // pinwheel); scanline-fill concurrency <= 2: hold states favor hatch
+      const KINDS_MID = ["solid", "pin", "outline", "solid", "scan", "hatch"];
+      const KINDS_HOLD = ["hatch", "hatch", "outline", "solid", "pin", "hatch"];
+      const ringSched = RING_CELLS.map(function (rc) {
+        const cx = rc[0] + 47, cy = rc[1] + 47;
+        let prog = Math.atan2(cy - 540, cx - 960) / (2 * Math.PI);
+        prog = (prog + 1) % 1;                     // 0..1 clockwise
+        const ev = [];
+        // birth: ~half the cells hold a texture before the sweep starts
+        // (entry pulse n50-60 is the bright peak of the ref envelope)
+        ev.push([0.9 + rR() * 0.6, rR() < 0.5 ? "empty" : pick(KINDS_HOLD, rR), 0.55 + rR() * 0.45]);
+        const passes = [];
+        for (let m = 0; m < 10; m++) {
+          const tp = 0.62 + (prog + m * 0.5) * T_REV;
+          if (SPURTS.some(function (s) { return tp >= s[0] && tp <= s[1]; })) passes.push(tp);
+        }
+        passes.forEach(function (tp, pi) {
+          if (rR() < 0.35 && pi !== passes.length - 1) return;   // arm skips some cells
+          let t = tp + rR() * 0.04;
+          const nCh = 2 + Math.floor(rR() * 3);
+          for (let k2 = 0; k2 < nCh; k2++) {
+            const last = k2 === nCh - 1;
+            let kind;
+            if (last) {
+              const lastPass = pi === passes.length - 1;
+              kind = rR() < (lastPass ? 0.55 : 0.72) ? "empty" : pick(KINDS_HOLD, rR);
+            } else {
+              kind = pick(KINDS_MID, rR);
+            }
+            ev.push([t, kind, 0.55 + rR() * 0.45]);
+            t += 0.0333 * (1 + Math.floor(rR() * 2));
+          }
+        });
+        ev.sort(function (a2, b2) { return a2[0] - b2[0]; });
+        return ev;
+      });
+
+      /* title-box ghost lanes + marching dashes: faint "/" strokes at
+         ~100px pitch; bright 13px dashes glide DOWN-LEFT along each lane
+         at ~61px/s, ~11f per pass, lane cycle 14f, lanes staggered
+         (measured from reference kymographs) */
+      function buildLanes(hostId, purple) {
+        const host = document.getElementById(hostId);
+        const arr = [];
+        for (let l = 0; l < 7; l++) {
+          const lane = document.createElement("div");
+          lane.className = "glane";
+          lane.style.left = (-60 + l * 100) + "px";
+          const line = document.createElement("i");
+          line.style.background = purple ? "rgba(171,132,207,0.22)" : "rgba(255,255,255,0.10)";
+          lane.appendChild(line);
+          const ds = [];
+          for (let j = 0; j < 3; j++) {
+            const b = document.createElement("b");
+            b.style.background = purple ? "rgba(171,132,207,0.78)" : "rgba(224,224,228,0.6)";
+            lane.appendChild(b); ds.push(b);
+          }
+          host.appendChild(lane);
+          arr.push({ l: l, dashes: ds });
+        }
+        return arr;
+      }
+      const lanesW = buildLanes("aselrect", false);
+      const lanesP = buildLanes("aselrectp", true);
+      function frac(v) { return v - Math.floor(v); }
+      function boxDashes(t) {
+        const on = t >= 1.75 && t <= 4.63;
+        [lanesW, lanesP].forEach(function (set) {
+          set.forEach(function (L) {
+            const C = 0.4667, G = 0.3667;
+            const u = (t - 1.75) / C + L.l * 0.214;
+            const c = Math.floor(u), tau = frac(u) * C;
+            L.dashes.forEach(function (b, j) {
+              if (!on || tau > G) { b.style.opacity = "0"; return; }
+              const h = mulberry32((L.l * 131) ^ (c * 7919) ^ 0x77)();
+              const y0 = 20 + h * 60 + j * 95;
+              const a = Math.min(1, tau / 0.0667, (G - tau) / 0.1);
+              b.style.opacity = a.toFixed(3);
+              b.style.transform = "translateY(" + (y0 + 61.5 * tau).toFixed(1) + "px)";
+            });
+          });
+        });
+      }
+
+      /* scene-A title placement happens in calibrateType() */
+      makeStrip("stripAL", 157, 530, 139, 15, 19);
+      makeStrip("stripAR", 1626, 530, 139, 15, 19);
+
+      /* scene A pills — continuous clockwise orbit around the title
+         (measured: center (985,540), pentagon stations, total sweep ~+128deg
+         over 1.7-4.5s, U-shaped speed: mirrored expo eases with minimum
+         ~13 deg/s at t~3.25s; NO discrete relocations) */
+      // K3 capabilities ride the measured JTX pill tracks 1:1
+      // (longest label takes the longest measured track, ex-"Jupiter route")
+      const PILLS = ["Agentic", "Delta Attention", "1M Context", "Vision", "Coding"];
+      const PBIRTH = [1.483, 1.483, 1.483, 1.567, 1.633];
+      // measured position keyframes (t, cx, cy) per pill (OCR track fits)
+      const PILL_KF = [
+        [[1.70, 570, 367], [2.30, 817, 154], [3.00, 946, 139], [4.00, 1089, 171], [4.50, 1287, 375]],   // Agentic (ex-RFQ track)
+        [[2.30, 1316, 266], [3.00, 1373, 373], [4.00, 1396, 494], [4.50, 1257, 729]],                    // Delta Attention (ex-Jupiter route)
+        [[1.70, 737, 815], [2.30, 580, 547], [3.00, 585, 435], [4.00, 674, 328], [4.50, 910, 218]],      // 1M Context (ex-AMM Pool)
+        [[1.70, 1172, 831], [2.30, 860, 879], [3.00, 752, 825], [4.00, 665, 737], [4.50, 594, 472]],     // Vision (ex-CLOB)
+        [[2.00, 1399, 668], [2.30, 1364, 769], [3.00, 1254, 848], [4.00, 1086, 891], [4.50, 769, 832]],  // Coding (ex-propAMM)
+      ];
+      // scene-B stack slot centers (flight targets on exit; ref waterfall)
+      const PILL_EXIT_Y = [884, 428, 655, 768, 541];
+      const ORB_CX = 985, ORB_CY = 540;
+      // shared angular sweep (deg, cumulative from t=1.70):
+      // omega(t) = 139.9*exp(-(t-1.7)/0.3906)+10.1 deg/s arriving (halving
+      // ~0.33s), mirrored expo departing from the t=3.25 minimum
+      function orbTheta(t) {
+        if (t <= 3.25) return 54.65 * (1 - Math.exp(-(t - 1.7) / 0.3906)) + 10.1 * (t - 1.7);
+        return 69.27 + 0.7934 * (Math.exp((t - 3.25) / 0.3005) - 1) + 10.56 * (t - 3.25);
+      }
+      // convert keyframes to (t, angleDeg unwrapped clockwise-from-12, radius)
+      const pillTracks = PILL_KF.map(function (kfs) {
+        let prev = null;
+        return kfs.map(function (k) {
+          let a = Math.atan2(k[1] - ORB_CX, ORB_CY - k[2]) * 180 / Math.PI;
+          if (a < 0) a += 360;
+          if (prev !== null) { while (a < prev) a += 360; }
+          prev = a;
+          const dx = k[1] - ORB_CX, dy = k[2] - ORB_CY;
+          return [k[0], a, Math.sqrt(dx * dx + dy * dy)];
+        });
+      });
+      const apills = document.getElementById("apills");
+      const pillEls = PILLS.map(function (label) {
+        const p = document.createElement("div");
+        p.className = "pill";
+        p.innerHTML = label + '<div class="hstrip"><div></div></div>';
+        p.style.left = "0px"; p.style.top = "0px";
+        p.style.transformOrigin = "50% 50%";
+        apills.appendChild(p);
+        return p;
+      });
+      const pillDims = pillEls.map(function () { return [140, 48]; });
+      function measurePills() {
+        pillEls.forEach(function (p, i) {
+          pillDims[i] = [p.offsetWidth || 140, p.offsetHeight || 48];
+        });
+      }
+      function orbitPills(t) {
+        if (t < 1.4 || t > 4.6) return;
+        const th = orbTheta(t);
+        const f = Math.floor(t * 30 + 1e-4);
+        pillEls.forEach(function (p, i) {
+          if (t < PBIRTH[i] - 0.001) return;
+          const trk = pillTracks[i];
+          let a, r;
+          if (t <= trk[0][0]) {                       // pre-first-keyframe: same law
+            a = trk[0][1] - (orbTheta(trk[0][0]) - th);
+            r = trk[0][2];
+          } else if (t >= trk[trk.length - 1][0]) {   // post-last: continue law + radius drift
+            const kl = trk[trk.length - 1], kp = trk[trk.length - 2];
+            const dth = orbTheta(kl[0]) - orbTheta(kp[0]);
+            a = kl[1] + (th - orbTheta(kl[0]));
+            r = kl[2] + (kl[2] - kp[2]) * (th - orbTheta(kl[0])) / dth;
+          } else {
+            let k = 0;
+            while (trk[k + 1][0] < t) k++;
+            const t0 = orbTheta(trk[k][0]), t1 = orbTheta(trk[k + 1][0]);
+            const w = (th - t0) / (t1 - t0);
+            a = trk[k][1] + (trk[k + 1][1] - trk[k][1]) * w;
+            r = trk[k][2] + (trk[k + 1][2] - trk[k][2]) * w;
+          }
+          const rad = a * Math.PI / 180;
+          let cx = ORB_CX + r * Math.sin(rad);
+          let cy = ORB_CY - r * Math.cos(rad);
+          // 1-frame jolt at exactly v90 (3.00s): +9px along travel direction
+          if (f === 90) { cx += 9 * Math.cos(rad); cy += 9 * Math.sin(rad); }
+          // exit flight from 4.53s: break orbit, accelerate toward the B stack
+          if (t > 4.53) {
+            const u = t - 4.53;
+            const tx = 500 - cx, ty = PILL_EXIT_Y[i] - cy;
+            const dn = Math.max(1, Math.sqrt(tx * tx + ty * ty));
+            const D = 18000 * u * u;
+            cx += tx / dn * D; cy += ty / dn * D;
+          }
+          // scale: in 79%->100% over 0.4s from birth, then -3.2%/s shrink from 2.0s
+          const eIn = clamp((t - PBIRTH[i]) / 0.4, 0, 1);
+          const s = (0.79 + 0.21 * (1 - Math.pow(1 - eIn, 2))) * (1 - 0.08 * clamp((t - 2.0) / 2.5, 0, 1));
+          p.style.left = (cx - pillDims[i][0] / 2).toFixed(1) + "px";
+          p.style.top = (cy - pillDims[i][1] / 2).toFixed(1) + "px";
+          p.style.transform = "scale(" + s.toFixed(4) + ")";
+        });
+      }
+
+      /* ================= ghost columns ================= */
+      const ghost = document.getElementById("ghostinner");
+      for (let c = 0; c < 42; c++) {
+        const colEl = document.createElement("div");
+        colEl.className = "gcol";
+        colEl.style.left = (c * 46) + "px";
+        colEl.style.opacity = String(range(0.3, 1));
+        let y = -Math.floor(range(0, 26));
+        while (y < 1080) {
+          const h = pick([18, 22, 26, 30]);
+          if (rnd() < 0.6) {
+            const cell = document.createElement("div");
+            cell.className = "gcell";
+            cell.style.top = y + "px"; cell.style.height = h + "px";
+            cell.style.opacity = String(range(0.3, 1));
+            colEl.appendChild(cell);
+          }
+          y += h + 6;
+        }
+        ghost.appendChild(colEl);
+      }
+
+      /* ================= scene B stack =================
+         (ref landing: 113px pitch, centers y 428/541/655/768/884) */
+      const STACK = ["Delta Attention", "Coding", "1M Context", "Vision", "Agentic"];
+      const STACK_TOPS = [0, 113, 227, 340, 456];
+      const bstack = document.getElementById("bstack");
+      const stackEls = STACK.map(function (label, i) {
+        const p = document.createElement("div");
+        p.className = "pill";
+        p.innerHTML = label + '<div class="hstrip"><div></div></div>';
+        p.style.top = STACK_TOPS[i] + "px";
+        bstack.appendChild(p);
+        return p;
+      });
+
+      /* ================= scene C bars (16 accent + 2 teal at the bottom) ===== */
+      // Kimi accent (single knob): DECODE bars shift from the JTX red family
+      // to Kimi blue (derived from the official mark's #027aff, luma-matched
+      // to the measured originals). Everything else keeps the JTX palette.
+      const KIMI_BAR = { brightL: "#3f74bf", brightR: "#102a52", dimL: "#254a7e", dimR: "#0a1830" };
+      const cbars = document.getElementById("cbars");
+      const barEls = [], barPales = [], barInit = [];
+      for (let i = 0; i < 18; i++) {
+        const b = document.createElement("div");
+        b.className = "cbar";
+        b.style.top = (i * 38) + "px";
+        if (i >= 16) {
+          b.style.background = "linear-gradient(90deg, #1a8a6a, #0b3d2e)";
+        } else {
+          const bright = [3, 8, 13].indexOf(i) >= 0;
+          const l = bright ? KIMI_BAR.brightL : KIMI_BAR.dimL;
+          const r0 = bright ? KIMI_BAR.brightR : KIMI_BAR.dimR;
+          b.style.background = "linear-gradient(90deg, " + l + ", " + r0 + ")";
+        }
+        const pale = document.createElement("div");
+        pale.className = "pale";
+        b.appendChild(pale);
+        cbars.appendChild(b);
+        barEls.push(b); barPales.push(pale);
+        barInit.push(range(0.42, 1));
+      }
+      makeQmarks("cqmarks", [[310, 275, -1, -1], [1490, 275, 1, -1], [310, 805, -1, 1], [1490, 805, 1, 1]]);
+
+      /* ============ scene D+E traveling pin waves (measured) ============
+         D bottom wave: T=39f (1.30s), lambda≈2250px, crest travels LEFT
+         at ~58px/f (direct crest tracking f243-f273: x1803 -> x75);
+         pins pitch ~71px, stem 226px, pivot ~y1085; stem height AND lean
+         undulate — flat (~87deg) near troughs, tall upright at crests.
+         E ticker row: same grammar at T=43f (1.433s); two-dot pins,
+         pitch ~41px, pivot on the bottom dot, full flat sweeps, no
+         height modulation. Both rows are one linked ripple: per-pin
+         phase = k*x. */
+      const rP = mulberry32(6060);
+      const dpinHost = document.getElementById("dpins");
+      const dpins = [];
+      for (let i = 0; i < 28; i++) {
+        const x = -34 + i * 71 + range(-4, 4, rP);
+        const p = document.createElement("div");
+        p.className = "pin";
+        p.innerHTML = '<div class="stem"></div><div class="head"></div>';
+        p.style.left = x + "px";
+        p.style.bottom = "-5px";
+        dpinHost.appendChild(p);
+        dpins.push({ el: p, stem: p.querySelector(".stem"), head: p.querySelector(".head"),
+                     x: x + 15, jit: range(-0.12, 0.12, rP) });
+      }
+      /* scene E helix row (measured): ~73 pins, dx 26.3px, axis y=534,
+         each pin a 168px chord of a corkscrew rotating about the x-axis:
+         phi(x,t) = 2.405*t + 0.00343*x + C (phi = 1.33 + 0.00343x at t=9.6s);
+         CSS rotateX(phi - 90deg) under perspective 4100px at screen center
+         reproduces both the endpoint schedule (half-height 84*|sin phi|) and
+         the lean law dx(bottom-top) = -0.040*(x-960)*cos(phi). */
+      const epinHost = document.getElementById("epins");
+      const hpins = [];
+      for (let i = 0; i < 73; i++) {
+        const x = 5 + i * 26.3;
+        const g = document.createElement("div");
+        g.className = "hpin";
+        g.innerHTML = '<div class="rod"></div><div class="da"></div><div class="db"></div>';
+        g.style.left = (x - 6) + "px";
+        epinHost.appendChild(g);
+        hpins.push({ el: g, rod: g.querySelector(".rod"), x: x, near: null });
+      }
+      const HX_C = 1.33 - 2.405 * 9.6;   // phase constant
+      function helixPins(t) {
+        if (t < 8.85 || t > 11.35) return;
+        for (let i = 0; i < hpins.length; i++) {
+          const p = hpins[i];
+          const phi = 2.405 * t + 0.00343 * p.x + HX_C;
+          const th = (phi - Math.PI / 2) * 57.29578;
+          p.el.style.transform = "rotateX(" + th.toFixed(2) + "deg)";
+          const near = Math.cos(phi) > 0;
+          if (near !== p.near) {   // near-side shading: rod luma +~10%
+            p.near = near;
+            p.rod.style.background = near ? "#515152" : "#454546";
+          }
+        }
+      }
+      const WAVE_K = 2 * Math.PI / 2250;
+      function waveSide(u, x) {
+        // which way a pin group falls this cycle: spatially coherent,
+        // varies per cycle, flips only at crests (lean==0) so it is smooth
+        const cyc = Math.floor((u - Math.PI / 2) / (2 * Math.PI));
+        return Math.sin(cyc * 2.4 + x * 0.00185 + 0.9) >= 0 ? 1 : -1;
+      }
+      function wavePins(t) {
+        if (t >= 7.34 && t <= 9.5) {
+          const w = 2 * Math.PI / 1.30;
+          // ref entry: pins rise near-uniformly first, then the traveling
+          // modulation fades in (~7.6-8.1s)
+          const e = clamp((t - 7.36) / 0.4, 0, 1);
+          const rise = 1 - Math.pow(1 - e, 2);
+          const mEnv = clamp((t - 7.58) / 0.5, 0, 1);
+          dpins.forEach(function (p) {
+            const u = w * (t - 7.35) + WAVE_K * p.x - 0.79 + p.jit;
+            const h = 0.5 + 0.5 * Math.sin(u);
+            const hEff = 1 + (h - 1) * mEnv;
+            const s = (0.16 + 0.84 * Math.pow(hEff, 0.75)) * (0.10 + 0.90 * rise);
+            const lean = waveSide(u, p.x) * 87 * Math.pow(1 - hEff, 1.15) * Math.pow(mEnv, 1.3);
+            p.el.style.transform = "rotate(" + lean.toFixed(2) + "deg)";
+            p.stem.style.transform = "scaleY(" + s.toFixed(4) + ")";
+            p.head.style.transform = "translateY(" + (226 * (1 - s)).toFixed(1) + "px)";
+          });
+        }
+      }
+
+      /* box hatch glide (measured): pattern translates +x continuously.
+         D box (local px/frame): v = 10 + 30*exp(-(f-229)/7) for f 229-263,
+         0 for f 263-285; then the E-window shared schedule
+         v_screen = 4.4 - 0.045*(f-285) resumes (local = screen/0.493 once
+         the box has morphed to E-box2 scale). box1 shares that schedule;
+         box3 runs -6*exp(-(f-286)/6) until f299 then +1.9 px/f decaying. */
+      const ohatchEl = document.getElementById("ohatchwrap");
+      const mhatchEl = document.getElementById("mktgrp").querySelector(".bhatch");
+      const ahatchEl = document.getElementById("astgrp").querySelector(".bhatch");
+      function hatchGlide(t) {
+        if (t < 7.3 || t > 11.3) return;
+        const f = t * 30;
+        let X;
+        if (f <= 229) X = 0;
+        else if (f <= 263) X = 10 * (f - 229) + 210 * (1 - Math.exp(-(f - 229) / 7));
+        else if (f < 285) X = 548.4;
+        else { const u = Math.min(f - 285, 97.8); X = 548.4 + (4.4 * u - 0.0225 * u * u) / 0.493; }
+        ohatchEl.style.backgroundPosition = X.toFixed(2) + "px 0px";
+        let Xm = 0;
+        if (f >= 285) { const u = Math.min(f - 285, 97.8); Xm = 4.4 * u - 0.0225 * u * u; }
+        mhatchEl.style.backgroundPosition = Xm.toFixed(2) + "px 0px";
+        let Xa = 0;
+        if (f >= 286) {
+          if (f <= 299) Xa = -36 * (1 - Math.exp(-(f - 286) / 6));
+          else { const u = Math.min(f - 300, 95); Xa = -31.88 + 1.9 * u - 0.01 * u * u; }
+        }
+        ahatchEl.style.backgroundPosition = Xa.toFixed(2) + "px 0px";
+      }
+
+      /* D text: per-character spans so the wide->tight tracking settle can be
+         animated with per-glyph x transforms (lint-clean, sub-pixel). */
+      const oChars = [];
+      (function () {
+        const w1 = document.getElementById("ow1"), w2 = document.getElementById("ow2");
+        "Every".split("").forEach(function (c) {
+          const s = document.createElement("span");
+          s.style.display = "inline-block";
+          s.textContent = c;
+          w1.appendChild(s); oChars.push(s);
+        });
+        " modality".split("").forEach(function (c) {
+          const s = document.createElement("span");
+          s.style.display = "inline-block";
+          if (c === " ") { s.innerHTML = "&nbsp;"; } else { s.textContent = c; }
+          w2.appendChild(s); oChars.push(s);
+        });
+      })();
+
+      /* furniture D/E */
+      makeStrip("stripDL", 75, 533, 125, 15, 19);
+      makeStrip("stripDR", 1700, 533, 125, 15, 19);
+      makeQmarks("deqmarks", [[205, 215, -1, -1], [1720, 215, 1, -1], [205, 870, -1, 1], [1720, 870, 1, 1]]);
+      makePlusses("deqmarks", [[75, 100], [1845, 100], [75, 970], [1845, 970]], 25, 0.5);
+
+      /* ================= scene F/G card ================= */
+      const FGB_H = 119, FGB_TOP = 480;
+      const fgbl = document.getElementById("fgbl"), fgbr = document.getElementById("fgbr");
+      const CARD_CAP = 108, CARD_TOP = 478;
+      /* measured JTX card geometry: F run 566..1351 ("One"=246, gap 46,
+         "platform"=493), G run 509..1416 ("JTX."=260, gap 55, "Now"=298,
+         gap 49, "Live"=245). K3 words keep each measured squeeze; each run
+         re-centers on its measured run center (958.5 / 962.5). Word widths
+         are font-dependent, so the layout is computed in calibrateType();
+         the G triple is shared with the dissolve raster via G_RASTER. */
+      let G_RASTER = null;
+      makeStrip("stripFL", 239, 532, 85, 12, 13);
+      makeStrip("stripFR", 1595, 532, 85, 12, 13);
+      makeStrip("stripGL", 240, 534, 120, 12, 17);
+      makeStrip("stripGR", 1559, 534, 120, 12, 17);
+      makeQmarks("gqmarks", [[343, 265, -1, -1], [1575, 265, 1, -1], [343, 813, -1, 1], [1575, 813, 1, 1]]);
+      makePlusses("gqmarks", [[252, 178], [1668, 178], [252, 898], [1668, 898]], 22, 0.4);
+
+      /* scene H furniture copy + I furniture */
+      makeStrip("stripG2L", 240, 534, 120, 12, 17);
+      makeStrip("stripG2R", 1559, 534, 120, 12, 17);
+      makeQmarks("g2qmarks", [[343, 265, -1, -1], [1575, 265, 1, -1], [343, 813, -1, 1], [1575, 813, 1, 1]]);
+      makePlusses("g2qmarks", [[252, 178], [1668, 178], [252, 898], [1668, 898]], 22, 0.4);
+      makeStrip("stripIL", 306, 535, 109, 9, 15);
+      makeStrip("stripIR", 1504, 535, 109, 9, 15);
+      makeQmarks("iqmarks", [[400, 290, -1, -1], [1520, 290, 1, -1], [400, 780, -1, 1], [1520, 780, 1, 1]]);
+      makePlusses("iqmarks", [[300, 205], [1615, 205], [300, 875], [1615, 875]], 25, 0.45);
+
+      /* H wirebox hatch */
+      const hboxhatch = document.getElementById("hboxhatch");
+      for (let k = 0; k < 6; k++) {
+        const ln = document.createElement("div");
+        ln.className = "hatchline";
+        ln.style.left = (-40 + k * 230) + "px";
+        ln.style.bottom = "-50px";
+        ln.style.height = "540px";
+        ln.style.transform = "rotate(26deg)";
+        hboxhatch.appendChild(ln);
+      }
+
+      /* ================= K3 wordmark lockup =================
+         Official Kimi icon (vector via media-use resolve, svgl kimi-icon —
+         geometry untouched, monochrome usage: square recolored to the film
+         gray, K knocked out to the stage black, dot keeps Kimi blue) plus
+         "K3" typeset fresh in the composition's grotesque (pill weight 500).
+         Same 318x115 box, same glow-clone mechanics. */
+      const WM_ICON = [
+        // rounded-square plate
+        "M503 114.333v280c0 60.711-49.29 110-110 110H113c-60.711 0-110-49.289-110-110v-280c0-60.71 49.289-110 110-110h280c60.71 0 110 49.29 110 110z",
+        // accent dot
+        "M342.065 189.759c1.886-2.42 3.541-4.63 5.289-6.77.81-1.007.74-1.771-.046-2.824-7.58-9.965-8.298-21.028-3.935-32.254 3.275-8.448 10.52-12.406 19.373-13.25 5.52-.521 10.936.046 15.959 2.73 6.596 3.53 10.438 8.912 11.688 16.341.995 5.926.81 11.712-.868 17.452-2.974 10.161-10.277 15.427-20.287 16.758-8.31 1.11-16.734 1.25-25.113 1.817-.648.046-1.308 0-2.06 0z",
+        // K glyph (knockout)
+        "M321.512 144.254h-50.064l-39.637 90.384h-56.036v-89.99H131v232.868h44.787v-98.103h78.973c13.598 0 26.015-7.927 31.744-20.252v118.355h44.787v-98.103c0-23.342-18.239-42.97-41.523-44.671v-.116h-24.593a45.577 45.577 0 0026.884-24.534l29.453-65.838z",
+      ];
+      function wmMark(plate, txt, dot) {
+        return '<svg class="wmic" viewBox="0 0 512 512" fill-rule="evenodd" clip-rule="evenodd">' +
+          '<path d="' + WM_ICON[0] + '" fill="' + plate + '"/>' +
+          '<path d="' + WM_ICON[1] + '" fill="' + dot + '"/>' +
+          '<path d="' + WM_ICON[2] + '" fill="#010101"/>' +
+          '</svg><span class="wmk3" style="color:' + txt + '">K3</span>';
+      }
+      document.getElementById("iwordmark").innerHTML = wmMark("#dadade", "#dadade", "#027aff");
+      document.getElementById("iglow1").innerHTML = wmMark("#e6e6e9", "#e6e6e9", "#2b8bff");
+      document.getElementById("iglow2").innerHTML = wmMark("#ffffff", "#ffffff", "#4d9dff");
+      document.getElementById("iglow3").innerHTML = wmMark("#ffffff", "#ffffff", "#4d9dff");
+
+      /* ============ H canvas: scramble dissolve (measured mechanism) ============
+         Glyph strokes dilated ~8-16px with a probabilistic soft edge, filled
+         with dense 1-2px scanline-textured noise (vertical period ~3px);
+         stroke cores saturate to white; noise field is temporally coherent
+         (evolves over ~7 frames, not re-seeded); plus an additive grainy
+         glow band fixed at y=540 (FWHM 35px, x ~240-1686). All pure
+         functions of the frame index — deterministic and seek-safe. */
+      const CV = document.getElementById("hcanvas");
+      const cvx = CV.getContext("2d");
+      // offscreen raster of the card lockup (font-dependent, rebuilt on font load)
+      const off = document.createElement("canvas");
+      off.width = 1920;off.height = 1080;
+      const ox = off.getContext("2d");
+      const DIS = { X0: 232, Y0: 430, W: 1460, H: 222, mask: null, dist: null };
+      function rebuildDissolveField() {
+        ox.clearRect(0, 0, 1920, 1080);
+        ox.fillStyle = "#fff";
+        const fsT = CARD_CAP / capM.capAsc;
+        ox.textBaseline = "alphabetic";
+        const base = CARD_TOP + CARD_CAP;
+        (G_RASTER || []).forEach(function (w) {
+          ox.save();
+          ox.font = "400 " + fsT + "px " + FAM;
+          if (ox.letterSpacing !== undefined) ox.letterSpacing = "-2.5px";
+          const nat = ox.measureText(w[0]).width;
+          ox.translate(w[1], 0);
+          ox.scale(w[2] / nat, 1);
+          ox.fillText(w[0], 0, base);
+          ox.restore();
+        });
+        const total = braceM.capAsc + braceM.desc;
+        const fsB = FGB_H / total;
+        ox.font = "300 " + fsB + "px " + FAM;
+        const bBase = FGB_TOP + fsB * braceM.capAsc;
+        const mL = ox.measureText("{");
+        ox.fillText("{", 400 + mL.actualBoundingBoxLeft, bBase);
+        const mR = ox.measureText("}");
+        ox.fillText("}", 1469 + mR.actualBoundingBoxLeft, bBase);
+        // region mask + chamfer distance transform (3-4, i.e. px*3)
+        const img = ox.getImageData(DIS.X0, DIS.Y0, DIS.W, DIS.H);
+        const W = DIS.W, H = DIS.H, n = W * H;
+        const mask = new Uint8Array(n);
+        const dist = new Int16Array(n);
+        for (let i = 0; i < n; i++) {
+          mask[i] = img.data[i * 4 + 3];
+          dist[i] = mask[i] > 120 ? 0 : 3000;
+        }
+        for (let y = 0; y < H; y++) {
+          for (let x = 0; x < W; x++) {
+            const i = y * W + x;
+            let d = dist[i];
+            if (x > 0 && dist[i - 1] + 3 < d) d = dist[i - 1] + 3;
+            if (y > 0) {
+              if (dist[i - W] + 3 < d) d = dist[i - W] + 3;
+              if (x > 0 && dist[i - W - 1] + 4 < d) d = dist[i - W - 1] + 4;
+              if (x < W - 1 && dist[i - W + 1] + 4 < d) d = dist[i - W + 1] + 4;
+            }
+            dist[i] = d;
+          }
+        }
+        for (let y = H - 1; y >= 0; y--) {
+          for (let x = W - 1; x >= 0; x--) {
+            const i = y * W + x;
+            let d = dist[i];
+            if (x < W - 1 && dist[i + 1] + 3 < d) d = dist[i + 1] + 3;
+            if (y < H - 1) {
+              if (dist[i + W] + 3 < d) d = dist[i + W] + 3;
+              if (x < W - 1 && dist[i + W + 1] + 4 < d) d = dist[i + W + 1] + 4;
+              if (x > 0 && dist[i + W - 1] + 4 < d) d = dist[i + W - 1] + 4;
+            }
+            dist[i] = d;
+          }
+        }
+        DIS.mask = mask; DIS.dist = dist;
+      }
+      // deterministic pixel hash
+      function h01(a, b, c) {
+        let h = Math.imul(a + 374761, 0x9E3779B1) ^ Math.imul(b + 668265, 0x85EBCA6B) ^ Math.imul(c + 951274, 0xC2B2AE35);
+        h = Math.imul(h ^ (h >>> 16), 0x27D4EB2F);
+        h = (h ^ (h >>> 15)) >>> 0;
+        return h / 4294967296;
+      }
+      // lit-probability by distance band [d<1, <4, <8, <16, <24, bg] per frame
+      const DIS_TAB = [
+        [412, [0.97, 0.88, 0.74, 0.34, 0.06, 0.010]],
+        [414, [0.97, 0.88, 0.84, 0.56, 0.19, 0.033]],
+        [425, [0.94, 0.83, 0.80, 0.54, 0.21, 0.033]],
+        [435, [0.87, 0.77, 0.74, 0.51, 0.23, 0.036]],
+        [441, [0.83, 0.735, 0.70, 0.49, 0.24, 0.036]],
+        [442, [0.76, 0.66, 0.61, 0.41, 0.19, 0.036]],
+        [443, [0.60, 0.47, 0.37, 0.23, 0.10, 0.030]],
+      ];
+      function bandP(f) {
+        if (f <= DIS_TAB[0][0]) return DIS_TAB[0][1];
+        for (let i = 0; i < DIS_TAB.length - 1; i++) {
+          if (f <= DIS_TAB[i + 1][0]) {
+            const a = DIS_TAB[i], b = DIS_TAB[i + 1];
+            const w = (f - a[0]) / (b[0] - a[0]);
+            return a[1].map(function (v, j) { return v + (b[1][j] - v) * w; });
+          }
+        }
+        return DIS_TAB[DIS_TAB.length - 1][1];
+      }
+      // streak envelope (appears f416, full f420-436, dead f440)
+      function streakEnv(f) {
+        if (f < 416 || f > 439) return 0;
+        if (f < 420) return 0.42 + 0.145 * (f - 416);
+        if (f <= 436) return 1;
+        return f === 437 ? 0.58 : (f === 438 ? 0.33 : 0.125);
+      }
+
+      /* ============ type calibration (sync now + on webfont arrival) ============
+         The renderer aliases the body font to a bundled webfont that loads
+         asynchronously; all metric-derived styling is centralized here and
+         re-applied when document.fonts.ready resolves, so measured geometry
+         (cap heights, ink widths, brace positions) holds in the final render. */
+      function calibrateType() {
+        capM = inkMetrics(400, FAM, "H");
+        braceM = inkMetrics(300, FAM, "{");
+        // OPEN card (cap re-fit for the longer K3 headline, same 698px box)
+        setBrace(obl, OB_H, OB_TOP, 511);
+        setBrace(obr, OB_H, OB_TOP, 1371);
+        setType(openEl, OPEN_CAP, OPEN_TOP, { left: 613, ls: -1.6 });
+        fitW(openEl, 698, false);
+        setType(midEl, OPEN_CAP, OPEN_TOP, { ls: -1.6 });
+        setType(remEl, OPEN_CAP, OPEN_TOP, { ls: -1.6 });
+        midEl.style.left = (960 - midW / 2) + "px";
+        remEl.style.left = (960 - remW / 2) + "px";
+        fitW(midEl, midW, false);
+        fitW(remEl, remW, false);
+        // scene-A title (cap 46.3 unscaled; group is at 755,444); 381/414
+        // were the measured "Every Solana"/"liquidity source" ink widths —
+        // keep each squeeze, re-center the K3 strings on the measured x=989
+        const fsA = 46.3 / capM.capAsc;
+        [["aline1", 381, 479, "Every Solana"], ["aline2", 414, 540.9, "liquidity source"],
+         ["aline1p", 381, 479, "Every Solana"], ["aline2p", 414, 540.9, "liquidity source"]].forEach(function (t) {
+          const el = document.getElementById(t[0]);
+          setType(el, 46.3, t[2], { ls: -0.8 });
+          el.style.top = (parseFloat(el.style.top) - 444) + "px";
+          const W = swapW(t[1], el.textContent, t[3], fsA, -0.8);
+          fitW(el, W, false);
+          el.style.left = (989 - 755 - W / 2) + "px";
+        });
+        // B title (396 was "One book"'s measured ink width)
+        fitW(document.getElementById("btitle"), swapW(396, "One model", "One book", 90, -1), false);
+        // D "Every order" glyph run: font size + centered squeeze
+        // (per-char inline-blocks: kerning-free, so sum char advances)
+        const otxt = document.getElementById("otxt");
+        const ofs = 97 / capM.capAsc;
+        otxt.style.fontSize = ofs + "px";
+        otxt.style.letterSpacing = "-2.5px";
+        mctx.font = "400 " + ofs + "px " + FAM;
+        // natRun stays summed over "Every order": 663px was that string's
+        // measured ink target, so 663/natRun is the measured squeeze — the
+        // longer "Every modality" rides it and widens inside the 1010px box
+        let natRun = 0;
+        "Every order".split("").forEach(function (c) {
+          natRun += mctx.measureText(c === " " ? " " : c).width - 2.5;
+        });
+        otxt.style.transformOrigin = "50% 50%";
+        otxt.style.transform = "scaleX(" + (663 / natRun) + ")";
+        // ticker texts (395 was measured off the JTX string per box — keep
+        // the squeeze, let the K3 strings set their own width)
+        [["mktgrp", "Every market"], ["astgrp", "Every asset"]].forEach(function (pair) {
+          const t = document.getElementById(pair[0]).querySelector(".txt");
+          const fsz = 50 / capM.capAsc;
+          t.style.fontSize = fsz + "px";
+          mctx.font = "400 " + fsz + "px " + FAM;
+          const natOld = mctx.measureText(pair[1]).width;
+          t.style.transformOrigin = "50% 50%";
+          t.style.transform = "scaleX(" + (395 / natOld) + ")";
+        });
+        // F/G card words + braces (see G_RASTER note for measured geometry)
+        setBrace(fgbl, FGB_H, FGB_TOP, 400);
+        setBrace(fgbr, FGB_H, FGB_TOP, 1469);
+        const fsC = CARD_CAP / capM.capAsc;
+        const wModel = swapW(493, "model", "platform", fsC, -2.5);
+        const wK3 = swapW(260, "K3.", "JTX.", fsC, -2.5);
+        const wOpen = swapW(245, "Open", "Live", fsC, -2.5);
+        const fStart = 958.5 - (246 + 46 + wModel) / 2;
+        const gStart = 962.5 - (wK3 + 55 + 298 + 49 + wOpen) / 2;
+        G_RASTER = [["K3.", gStart, wK3], ["Now", gStart + wK3 + 55, 298],
+                    ["Open", gStart + wK3 + 55 + 298 + 49, wOpen]];
+        [["fw1", fStart, 246], ["fw2", fStart + 246 + 46, wModel],
+         ["gw1", G_RASTER[0][1], wK3], ["gw2", G_RASTER[1][1], 298], ["gw3", G_RASTER[2][1], wOpen]
+        ].forEach(function (w) {
+          const el = document.getElementById(w[0]);
+          setType(el, CARD_CAP, CARD_TOP, { left: w[1], ls: -2.5 });
+          fitW(el, w[2], false);
+        });
+        // K3 wordmark type (all four glow-clone layers share the lockup)
+        document.querySelectorAll(".wmk3").forEach(function (s) {
+          setType(s, 78, 18.5, { left: 162, ls: -2.5 });
+          fitW(s, 132, false);
+        });
+        // dissolve source raster + distance field follow the same metrics
+        rebuildDissolveField();
+        // pill boxes re-measured (orbit centers -> top/left need width/height)
+        measurePills();
+      }
+      calibrateType();
+      if (document.fonts) {
+        if (document.fonts.ready) document.fonts.ready.then(function () { calibrateType(); });
+        // the capture engine injects its bundled webfonts AFTER initial load;
+        // re-calibrate whenever a font batch finishes loading
+        document.fonts.addEventListener("loadingdone", function () { calibrateType(); });
+      }
+
+      function drawDissolve(t) {
+        cvx.clearRect(0, 0, 1920, 560);
+        if (t < 13.699 || t > 15.2 || !DIS.mask) return;
+        const f = Math.floor(t * 30 + 1e-4);
+        if (f > 455) return;
+        const W = DIS.W, H = DIS.H;
+        const img = cvx.createImageData(W, H);
+        const px8 = img.data;
+        const pB = bandP(f);
+        const ep = Math.floor(f / 7), fr = (f % 7) / 7;
+        const scramble = f >= 412;
+        const dust = f >= 444;
+        const dustBase = dust ? (f === 444 ? 0.40 : 0.32 * Math.max(0, (455 - f)) / 10) : 0;
+        const sEnv = streakEnv(f);
+        // streak x-extent retracts ~60px/side while dying
+        const sxL = f >= 437 ? 240 + (f - 436) * 18 : 240;
+        const sxR = f >= 437 ? 1686 - (f - 436) * 18 : 1686;
+        for (let y = 0; y < H; y++) {
+          const py = DIS.Y0 + y;
+          const rb = py % 3;                       // scanline banding, period 3px
+          const dyS = py - 540;
+          const gY = sEnv > 0 && dyS > -46 && dyS < 46 ? Math.exp(-dyS * dyS / 441.6) : 0;
+          for (let x = 0; x < W; x++) {
+            const i = y * W + x;
+            const pxx = DIS.X0 + x;
+            const a = DIS.mask[i];
+            const d = DIS.dist[i] / 3;
+            let v = 0;
+            if (!scramble) {
+              if (a > 10) v = 214 * a / 255;       // crisp text (pre-effect)
+            } else {
+              const cx = (pxx / 3) | 0;            // 3x1 px noise cells (micro-streaks)
+              const nz = h01(cx, py, ep) * (1 - fr) + h01(cx, py, ep + 1) * fr;
+              let P;
+              if (dust) {
+                P = d < 24 ? dustBase * (1 - 0.28 * d / 24) : 0.03 * Math.max(0, 455 - f) / 10;
+              } else {
+                const bi = d < 1 ? 0 : d < 4 ? 1 : d < 8 ? 2 : d < 16 ? 3 : d < 24 ? 4 : 5;
+                P = pB[bi];
+                if (bi === 5 && (pxx < 402 || pxx > 1548)) P = 0;   // sprinkle only inside box
+                // scanline banding: gentle on the core, strong on the fringe
+                P *= bi < 2 ? (rb === 0 ? 1.1 : rb === 1 ? 1.0 : 0.8)
+                            : (rb === 0 ? 1.4 : rb === 1 ? 1.05 : 0.58);
+                if (P > 0.985) P = 0.985;
+              }
+              if (nz < P) {
+                const nb = h01(cx * 3 + 911, py + 377, ep);
+                v = dust ? 150 + 80 * nb
+                         : (d <= 1.6 ? 255 : 128 + 96 * nb);   // cores clip white
+              } else if (!dust && d <= 10) {
+                v = 44 + 12 * nz;                  // pinholes lifted by bloom
+              }
+            }
+            // additive grainy glow band at the text midline (static, y=540)
+            if (gY > 0 && pxx > sxL - 8 && pxx < sxR + 8) {
+              let xp = 1;
+              if (pxx < sxL + 60) xp = Math.max(0, (pxx - sxL + 8) / 68);
+              else if (pxx > sxR - 36) xp = Math.max(0, (sxR + 8 - pxx) / 44);
+              if (xp > 0) {
+                const cs = ((pxx / 3) | 0) + 4096;
+                const ng = h01(cs, py, ep) * (1 - fr) + h01(cs, py, ep + 1) * fr;
+                const gm = ng < 0.91 ? (0.85 + 1.15 * ng) : (3.2 + 2.2 * (ng - 0.91) / 0.09);
+                v += 20 * sEnv * gY * xp * gm;
+                if (v > 255) v = 255;
+              }
+            }
+            const o = i * 4;
+            if (v >= 40) {
+              px8[o] = px8[o + 1] = px8[o + 2] = v | 0; px8[o + 3] = 255;
+            } else if (v > 0.8) {
+              px8[o] = px8[o + 1] = px8[o + 2] = 40; px8[o + 3] = (v * 6.375) | 0;
+            }
+          }
+        }
+        cvx.putImageData(img, DIS.X0, DIS.Y0 - 200);
+      }
+
+      /* ================= TIMELINE ================= */
+      window.__timelines = window.__timelines || {};
+      gsap.set(".sq", { x: -23, y: 66 });
+      // scoped to qmarks: the C-panel "Live" label also carries .lv and must
+      // stay on the measured stats row (y327 — see NOTES; replica.mp4 state)
+      gsap.set(".qmark .lv", { x: -23, y: 66 });
+      gsap.set(".lh", { x: -23, y: 66 });
+      gsap.set(".plusm", { x: -23, y: 66 });
+      const tl = gsap.timeline({ paused: true });
+
+      /* ----- frame driver: spans whole film so any seek repaints -----
+         (canvas dissolve + pin waves + helix + pill orbit + hatch glide +
+         title-box dashes are all pure functions of tl.time() —
+         deterministic and seek-safe) */
+      const proxy = { u: 0 };
+      tl.to(proxy, {
+        u: 1, duration: 16.46, ease: "none",
+        onUpdate: function () {
+          const tt = tl.time();
+          drawDissolve(tt); wavePins(tt); helixPins(tt);
+          orbitPills(tt); hatchGlide(tt); boxDashes(tt);
+        },
+      }, 0.001);
+
+      /* ----- OPEN card ----- */
+      tl.set(["#openmid", "#openrem"], { autoAlpha: 0 }, 0);
+      tl.set(["#ot1", "#ot2"], { autoAlpha: 0 }, 0);
+      tl.set("#ot1", { autoAlpha: 1 }, 0.0333);
+      tl.set("#ot2", { autoAlpha: 1 }, 0.0663);
+      // un-type
+      tl.set("#opentext", { autoAlpha: 0 }, 0.9333);
+      tl.set("#openmid", { autoAlpha: 1 }, 0.9333);
+      tl.set("#obl", { x: oblMidX }, 0.9333);
+      tl.set("#obr", { x: obrMidX }, 0.9333);
+      tl.set("#openmid", { autoAlpha: 0 }, 0.9663);
+      tl.set("#openrem", { autoAlpha: 0.75 }, 0.9663);
+      tl.set("#obl", { x: oblRemX }, 0.9663);
+      tl.set("#obr", { x: obrRemX }, 0.9663);
+      tl.to(["#obl", "#obr", "#openrem"], { autoAlpha: 0, duration: 0.07, ease: "power1.in" }, 1.0);
+      tl.to("#obl", { x: oblRemX + 24, duration: 0.07 }, 1.0);
+      tl.to("#obr", { x: obrRemX - 24, duration: 0.07 }, 1.0);
+      tl.to(["#stripOL", "#stripOR"], { autoAlpha: 0, duration: 0.12 }, 0.95);
+
+      /* ----- scene A ----- */
+      tl.fromTo("#azoom", { scale: 1.07 }, { scale: 0.9417, duration: 3.667, ease: "none" }, 0.933);
+      // field build-in
+      tl.set("#alat", { opacity: 0 }, 0.75);
+      tl.to("#alat", { opacity: 1, duration: 0.4, ease: "power1.inOut" }, 1.0);
+      tl.set("#alatp", { opacity: 1 }, 0.75);
+      // field-energy envelope (measured, field only — labels/title stay 1.0):
+      // 1.0 (n<=60) -> 0.35 @n72 -> 0.60 @n84 -> linear decay to 0.08 @n127
+      tl.set(["#afield", "#afieldp"], { opacity: 1 }, 0.75);
+      tl.to(["#afield", "#afieldp"], { opacity: 0.35, duration: 0.4333, ease: "power1.inOut" }, 1.9667);
+      tl.to(["#afield", "#afieldp"], { opacity: 0.60, duration: 0.4, ease: "power1.inOut" }, 2.4);
+      tl.to(["#afield", "#afieldp"], { opacity: 0.08, duration: 1.4333, ease: "none" }, 2.8);
+      tl.to(["#afield", "#afieldp"], { opacity: 0.02, duration: 0.3, ease: "none" }, 4.2333);
+      // from n~95 surviving white-field elements hue-shift to dark purple
+      // (flipped while the purple clone covers the layer)
+      tl.set("#afield", { filter: "brightness(0.5) sepia(1) hue-rotate(215deg) saturate(2.2)" }, 3.5);
+      fieldW.born.forEach(function (pair, i) {
+        tl.set(pair[0], { autoAlpha: 0 }, 0.75);
+        tl.set(fieldP.born[i][0], { autoAlpha: 0 }, 0.75);
+        tl.set(pair[0], { autoAlpha: 1 }, births[i]);
+        tl.set(fieldP.born[i][0], { autoAlpha: 1 }, births[i]);
+      });
+      ringSched.forEach(function (ev, i) {
+        const dW = fieldW.blinkers[i], dP = fieldP.blinkers[i];
+        const olW = dW.querySelector(".oline"), olP = dP.querySelector(".oline");
+        ev.forEach(function (e) {
+          const t = e[0], kind = e[1];
+          const al = kind === "empty" ? 0 : e[2];
+          // texture fills capped at ~luma 165 outside the n50-60 entry pulse
+          const palW = t < 2.2 ? BLK_BG.white : BLK_BG.whiteCap;
+          const bgW = (kind === "outline" || kind === "empty") ? "none" : palW[kind];
+          const bgP = (kind === "outline" || kind === "empty") ? "none" : BLK_BG.purple[kind];
+          tl.set(dW, { opacity: al, background: bgW }, t);
+          tl.set(dP, { opacity: al, background: bgP }, t);
+          tl.set(olW, { opacity: kind === "outline" ? 1 : 0 }, t);
+          tl.set(olP, { opacity: kind === "outline" ? 1 : 0 }, t);
+        });
+      });
+      // selection rect + corner squares
+      tl.set(["#atitlegrp", "#atitlegrpp"], { autoAlpha: 0 }, 0.75);
+      tl.set(["#aline1", "#aline2", "#aline1p", "#aline2p"], { autoAlpha: 0 }, 0.75);
+      tl.to("#atitlegrp", { autoAlpha: 1, duration: 0.06, ease: "power1.out" }, 1.73);
+      tl.set("#atitlegrpp", { autoAlpha: 1 }, 1.79);
+      // title word-by-word (f54/f55/f56)
+      tl.set("#aw1", { autoAlpha: 0 }, 0.75);
+      tl.set("#aw2", { autoAlpha: 0 }, 0.75);
+      tl.set(["#aw1"], { autoAlpha: 1 }, 1.8);
+      tl.set(["#aw2"], { autoAlpha: 1 }, 1.8330);
+      tl.set(["#aline1"], { autoAlpha: 1 }, 1.8);
+      tl.set(["#aline2"], { autoAlpha: 1 }, 1.8663);
+      tl.set(["#aline1p"], { autoAlpha: 1 }, 1.8);
+      tl.set(["#aline2p"], { autoAlpha: 1 }, 1.8663);
+      // purple phase (clone crossfade)
+      tl.to("#apwrap", { opacity: 1, duration: 0.2, ease: "power1.inOut" }, 3.03);
+      tl.to("#apwrap", { opacity: 0, duration: 0.17, ease: "power1.inOut" }, 3.83);
+      // pill pops (position + scale driven per-frame by orbitPills())
+      pillEls.forEach(function (p, i) {
+        tl.set(p, { autoAlpha: 0 }, 0.75);
+        tl.set(p, { autoAlpha: 1 }, PBIRTH[i]);
+      });
+      // pill hatch scroll
+      document.querySelectorAll("#apills .hstrip > div, #bstack .hstrip > div").forEach(function (s) {
+        tl.fromTo(s, { x: 0 }, { x: -44, duration: 3.6, ease: "none" }, 0.933);
+      });
+      // A exit: NO global fade (ref keeps title/labels full-white); ruler
+      // strips retire, then a hard 2-frame black dip at n137-138 before B
+      tl.to("#afurn", { autoAlpha: 0, duration: 0.18, ease: "power1.in" }, 4.35);
+      tl.set("#afurn", { autoAlpha: 0 }, 4.5333);
+      tl.set(["#azoom", "#apills", "#afurn"], { autoAlpha: 0 }, 4.5667);
+
+      /* ----- ghost columns ----- */
+      tl.to("#ghostinner", { opacity: 0.9, duration: 0.55, ease: "power1.inOut" }, 4.683);
+
+      /* ----- scene B ----- */
+      tl.set("#btitle", { autoAlpha: 0 }, 4.563);
+      tl.set("#btitle", { autoAlpha: 1 }, 4.6333);
+      tl.fromTo("#bcluster", { x: 190 }, { x: 0, duration: 0.577, ease: "power2.out" }, 4.653);
+      stackEls.forEach(function (p, i) {
+        tl.set(p, { autoAlpha: 0 }, 4.563);
+        tl.set(p, { autoAlpha: 1 }, 4.6333 + i * 0.0333);   // ref waterfall: 1f apart
+      });
+      tl.to("#bcluster", { autoAlpha: 0, duration: 0.3, ease: "power1.in" }, 5.463);
+
+      /* ----- scene C ----- */
+      tl.set(["#ctab", "#cicons", "#cliverow"], { autoAlpha: 0 }, 5.433);
+      tl.to("#ctab", { autoAlpha: 1, duration: 0.1 }, 5.5);
+      tl.to("#cicons", { autoAlpha: 1, duration: 0.1 }, 5.533);
+      tl.to("#cliverow", { autoAlpha: 1, duration: 0.14 }, 5.6);
+      barEls.forEach(function (b, i) {
+        tl.fromTo(b, { scaleX: 0 }, { scaleX: barInit[i], duration: 0.34, ease: "power2.out" }, 5.663 + i * 0.028);
+      });
+      barPales.forEach(function (p, i) {
+        tl.set(p, { opacity: 1 }, 5.433);
+        tl.to(p, { opacity: 0, duration: 0.42, ease: "power1.inOut" }, 5.83 + i * 0.022);
+      });
+      for (let t = 6.16; t < 7.32; t += 0.1333) {
+        for (let j = 0; j < 5; j++) {
+          const bi = Math.floor(rnd() * barEls.length);
+          tl.to(barEls[bi], { scaleX: range(0.4, 1), duration: 0.09, ease: "power1.out" }, t);
+        }
+      }
+      tl.fromTo("#cpanel", { x: 18, y: 27 }, { x: -17.5, y: -27, duration: 1.417, ease: "none" }, 5.933);
+
+      /* ----- scene D -----
+         (pin wave is driven per-frame by wavePins(); heads peek over the
+         bottom edge at clip start via its entry envelope) */
+      // wireframe box pops small, grows to final; hatch draws on
+      tl.set("#ordergrp", { autoAlpha: 0 }, 7.35);
+      tl.set(["#ow1", "#ow2"], { autoAlpha: 0 }, 7.35);
+      tl.set(["#ddashL", "#ddashR"], { autoAlpha: 0 }, 7.35);
+      tl.set("#ordergrp", { autoAlpha: 1 }, 7.4);
+      tl.fromTo("#ordergrp", { scale: 0.7, x: -85, y: -55 }, { scale: 1, x: 0, y: 0, duration: 0.23, ease: "power2.out" }, 7.4);
+      // hatch present from first box frame, contrast ramps over ~10f (measured)
+      tl.set("#ohatchwrap", { opacity: 0 }, 7.35);
+      tl.to("#ohatchwrap", { opacity: 1, duration: 0.33, ease: "power1.inOut" }, 7.4);
+      tl.set("#ow1", { autoAlpha: 1 }, 7.5333);
+      tl.set("#ow2", { autoAlpha: 1 }, 7.5663);
+      // wide -> tight tracking settle via per-glyph x transforms
+      oChars.forEach(function (s, i) {
+        // same 21px tracking spread, symmetric about the run center
+        // ((len-1)/2 == 5 for the original 11-glyph "Every order")
+        const off = (i - (oChars.length - 1) / 2) * 21;
+        tl.set(s, { x: off }, 7.35);
+        tl.to(s, { x: 0, duration: 0.43, ease: "power2.out" }, 7.5663);
+      });
+      tl.set(["#ddashL", "#ddashR"], { autoAlpha: 0.85 }, 7.6);
+
+      /* ----- D -> E ----- */
+      tl.to("#ordergrp", { scale: 0.493, x: 4, y: -11, duration: 0.55, ease: "power3.out" }, 9.103);
+      tl.to("#dpins", { autoAlpha: 0, duration: 0.28 }, 9.15);
+      tl.set(["#mktgrp", "#astgrp"], { autoAlpha: 0 }, 7.35);
+      tl.fromTo("#mktgrp", { autoAlpha: 0, x: -700, y: 600, scale: 2.6 },
+        { autoAlpha: 1, x: 0, y: 0, scale: 1, duration: 0.55, ease: "power3.out" }, 9.133);
+      tl.fromTo("#astgrp", { autoAlpha: 0, x: 700, y: 600, scale: 2.6 },
+        { autoAlpha: 1, x: 0, y: 0, scale: 1, duration: 0.55, ease: "power3.out" }, 9.18);
+      tl.set("#epins", { autoAlpha: 0 }, 7.35);
+      // helix already rotating during the box fly-in (ref: visible from ~9.0s)
+      tl.to("#epins", { autoAlpha: 1, duration: 0.2 }, 9.0);
+      ["#dl1", "#dl2", "#dl3"].forEach(function (id, i) {
+        tl.set(id, { autoAlpha: 0, scaleY: 0 }, 7.35);
+        tl.to(id, { autoAlpha: 0.9, scaleY: 1, duration: 0.3, ease: "power2.out" }, 10.653 + i * 0.09);
+      });
+      tl.to(["#deinner", "#furnDE .strip", "#deqmarks"], { autoAlpha: 0, duration: 0.13, ease: "power1.in" }, 11.193);
+
+      /* ----- scene F ----- */
+      tl.set(["#fw1", "#fw2", "#gw1", "#gw2", "#gw3"], { autoAlpha: 0 }, 11.233);
+      tl.set(["#fgbl", "#fgbr"], { autoAlpha: 0 }, 11.233);
+      tl.set("#ffurn", { autoAlpha: 0 }, 11.233);
+      tl.set("#gfurn", { autoAlpha: 0 }, 11.233);
+      tl.set("#fstem", { autoAlpha: 0 }, 11.233);
+      // braces pop close together, widen to F positions (x offsets vs G-final CSS pos)
+      tl.set(["#fgbl", "#fgbr"], { autoAlpha: 1 }, 11.333);
+      tl.fromTo("#fgbl", { x: 380 }, { x: 50, duration: 0.34, ease: "power2.out" }, 11.333);
+      tl.fromTo("#fgbr", { x: -369 }, { x: -39, duration: 0.34, ease: "power2.out" }, 11.333);
+      tl.set("#fstem", { autoAlpha: 0.9 }, 11.333);
+      tl.fromTo("#fstem", { scaleY: 1 }, { scaleY: 0, duration: 0.5, ease: "power2.out" }, 11.333);
+      tl.set("#fstem", { autoAlpha: 0 }, 11.85);
+      tl.set("#fw1", { autoAlpha: 1 }, 11.4);
+      tl.set("#fw2", { autoAlpha: 1 }, 11.533);
+      tl.set("#ffurn", { autoAlpha: 1 }, 11.633);
+
+      /* ----- F -> G retype ----- */
+      tl.set(["#fw1", "#fw2"], { autoAlpha: 0 }, 12.717);
+      tl.to("#fgbl", { x: 0, duration: 0.233, ease: "power2.out" }, 12.717);
+      tl.to("#fgbr", { x: 0, duration: 0.233, ease: "power2.out" }, 12.717);
+      tl.set("#gw1", { autoAlpha: 1 }, 12.7297);
+      tl.set("#gw2", { autoAlpha: 1 }, 12.7663);
+      tl.set("#gw3", { autoAlpha: 1 }, 12.7997);
+      tl.set("#ffurn", { autoAlpha: 0 }, 12.717);
+      tl.set("#gfurn", { autoAlpha: 1 }, 12.7297);
+
+      /* ----- scene H : glitch dissolve -----
+         (scramble blob + static y=540 glow band are canvas-drawn by
+         drawDissolve(); the old scanning bar is gone — ref has none) */
+      tl.set("#hbox", {
+        autoAlpha: 0,
+        x: -23,
+        y: 66
+      }, 13.7);
+      document.querySelectorAll("#hboxhatch .hatchline").forEach(function (ln) {
+        tl.set(ln, { autoAlpha: 0 }, 13.7);
+      });
+      tl.set("#hbox", { autoAlpha: 1 }, 13.74);
+      tl.fromTo("#hbox", { scale: 0.94 }, { scale: 1, duration: 0.12, ease: "power2.out" }, 13.74);
+      // ruler strips vanish at the scramble switch: ref band rows x240-360
+      // carry only the grainy glow, no static ticks (measured f416-439)
+      tl.set(["#stripG2L", "#stripG2R"], { autoAlpha: 0 }, 13.7333);
+      document.querySelectorAll("#hboxhatch .hatchline").forEach(function (ln, k) {
+        tl.set(ln, { autoAlpha: 0.85 }, 13.77 + k * 0.04);
+      });
+      tl.to("#gfurn2", { autoAlpha: 0, duration: 0.12 }, 14.75);
+
+      /* ----- scene I : wordmark + glow decay ----- */
+      tl.set(["#iwordmark", "#iglow1", "#iglow2", "#iglow3", "#ifurn"], { autoAlpha: 0 }, 13.7);
+      // glow legible from ~f444, saturated core by f445 (ref)
+      tl.to("#iwordmark", { autoAlpha: 1, duration: 0.1, ease: "power1.inOut" }, 14.7333);
+      tl.to("#iglow1", { autoAlpha: 0.95, duration: 0.1 }, 14.7333);
+      tl.to("#iglow2", { autoAlpha: 1, duration: 0.1 }, 14.7667);
+      tl.to("#iglow3", { autoAlpha: 0.9, duration: 0.1 }, 14.7667);
+      tl.to("#iglow3", { autoAlpha: 0, duration: 0.8, ease: "power2.out" }, 14.95);
+      tl.to("#iglow2", { autoAlpha: 0, duration: 0.95, ease: "power2.out" }, 14.95);
+      tl.to("#iglow1", { autoAlpha: 0.28, duration: 0.95, ease: "power2.out" }, 14.95);
+      // ruler strips arrive after the dissolve dust clears (ref shows no
+      // bright y~540 furniture during f444-455)
+      tl.to("#ifurn", { autoAlpha: 1, duration: 0.16 }, 15.3);
+      // flanking dashes flash in around formation, gone by ~15.4 (ref f443-f455)
+      tl.set(["#idashL", "#idashR"], { autoAlpha: 0 }, 13.7);
+      tl.set(["#idashL", "#idashR"], { autoAlpha: 0.85 }, 14.7);
+      tl.to(["#idashL", "#idashR"], { autoAlpha: 0, duration: 0.25 }, 15.1);
+
+      tl.to("#hbox", { scale: 0.4, duration: 0.14, ease: "power2.in" }, 14.6);
+
+      tl.to("#hbox", { autoAlpha: 0, duration: 0.14, ease: "power2.in" }, 14.6);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
