@@ -24,6 +24,7 @@
 
       /* green play-orb mascot: rounded triangle + a white eye */
       #cd-root .orb{position:absolute;width:9cqw;height:9cqw;z-index:4;left:0;top:0;will-change:transform,opacity}
+      #cd-root .orb-fly{position:absolute;left:0;top:0;z-index:4;will-change:transform}
       #cd-root .orb svg{width:100%;height:100%;display:block;filter:drop-shadow(0 6px 14px rgba(0,0,0,.18))}
     </style>
 
@@ -34,6 +35,7 @@
       <div class="claim row2" id="row2">commands<span id="anchor" style="position:absolute;right:-1cqw;bottom:0.4cqw;width:1px;height:1px"></span></div>
     </div>
 
+    <div class="orb-fly" id="orbFly">
     <div class="orb" id="orb">
       <svg viewBox="0 0 254 252" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M59.1646 96.8772C56.1702 85.4379 68.3552 75.9932 78.6861 81.7463L156.899 125.302C173.335 134.455 174.17 157.791 158.43 168.096L118.704 194.103C104.399 203.468 85.1231 196.045 80.7933 179.504L59.1646 96.8772Z" fill="#35C838" stroke="white" stroke-width="3.6644" />
@@ -42,12 +44,13 @@
         <rect x="123.669" y="136.245" width="3.35644" height="6.60985" rx="1.67822" fill="#151515" />
       </svg>
     </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script>
     (function(){
       const root=document.querySelector('[data-composition-id="commands"]');
-      const wrap=root.querySelector('#wrap'), claim2=root.querySelector('#row2'), orb=root.querySelector('#orb');
+      const wrap=root.querySelector('#wrap'), claim2=root.querySelector('#row2'), orb=root.querySelector('#orb'), orbFly=root.querySelector('#orbFly');
       const bg=root.querySelector('.bg');
       const E='power3.out';
 
@@ -58,7 +61,8 @@
       gsap.set(wrap,{opacity:0,scale:1.35,filter:'blur(12px)'});
       // orb starts off-screen at the BOTTOM-RIGHT corner; travels a straight DIAGONAL to the "s".
       // It's a flat triangle — no rotation.
-      gsap.set(orb,{opacity:0,left:'98%',top:'124%',rotation:0});
+      gsap.set(orb,{opacity:0,rotation:0});
+      gsap.set(orbFly,{x:1881.6,y:1339.2});
 
       const tl=gsap.timeline({paused:true,defaults:{ease:E}});
       // slow sunburst zoom/drift across the whole beat (deterministic, seek-safe)
@@ -75,7 +79,7 @@
         width: 411,
         height: 324
       }, "100%": { opacity: 1, x: -63, y: -72, width: 411, height: 324 }, easeEach: "none" },duration:.2,ease: "none"},3.05);
-      tl.to(orb,{left:'60.5%',top:'56%',duration:.5,ease:E},3.05);
+      tl.to(orbFly,{x:1161.6,y:604.8,duration:.5,ease:E},3.05);
       // CLICK exactly on "video" (~film 12.6 = local 3.8) — quick press + release
       tl.to(orb,{scale:0.8,duration:.1,ease:'power2.in',transformOrigin:'30% 30%'},3.78);
       tl.to(wrap,{scale:0.96,duration:.1,ease:'power2.in'},3.80);          // whole "Three commands" presses
