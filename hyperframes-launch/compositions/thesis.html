@@ -212,9 +212,10 @@
           2.59);
 
         // --- Settle (3.85 → 4.52). Sustained stillness; text holds. ---
-        // Tiny letter-spacing breath on line 2 (italic) so the frame stays alive.
+        // Tiny breath on line 2 (italic) so the frame stays alive: a transform, not letter-spacing.
+        // 1.0123 is the width -0.015em letter-spacing gave the line (from -0.02em).
         tl.to(root.querySelector(".line-2"),
-          { letterSpacing: "-0.015em", duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 0 },
+          { scaleX: 1.0123, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 0 },
           4.10);
 
         // --- Fade exit (4.52 → 4.82) ---
