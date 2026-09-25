@@ -6,7 +6,7 @@ cream paper **#F0EEE6** · ink **#262624** · muted **#6F6E66** · single ration
 Hanken Grotesk (UI/display) · Galaxie Copernicus serif (giant reply beats) ·
 Spline Sans Mono (terminal/labels). Terminal window dark = **#1F1F1E**, composer inset **#2C2C2B**.
 
-**Runtime = 35.8s. Built SILENT — sound is baked in post (see §Audio cue map).**
+**Runtime = 35.8s. Built silent, sound added in post (see §Audio cue map); that post mix is now `assets/soundtrack.mp3`, taken from the published render.**
 **Latest render: `renders/sfx-music-launch-v2.mp4` (35.8s, lint-clean).**
 
 The hook: a launch video is spammed-clicked in dead silence ("Boring."), then an agent adds
