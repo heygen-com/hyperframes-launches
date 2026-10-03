@@ -1,0 +1,10 @@
+{
+  "name": "onboarding-sample-30s",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@latest preview",
+    "check": "npx --yes hyperframes@latest check",
+    "render": "npx --yes hyperframes@latest render . --fps 24 --quality delivery --crf 12 -o renders/out.mp4"
+  }
+}
